@@ -1,0 +1,8 @@
+build
+coverage
+node_modules
+.next
+out
+**/*.html
+**/*.css
+**/*.scss

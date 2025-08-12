@@ -1,0 +1,7 @@
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+# проверка имени ветки
+echo "$branch_name" | grep -qE "^(((feature|fix|feat|chore|hotfix)\/YH-[0-9]+(-[0-9]+)?)|(release\/[0-9]+\.[0-9]+\.[0-9]+))$" \
+  || { echo "❌ Неверное имя ветки: $branch_name"; exit 1; }
+
+echo '🔍🎨 Formatting & linting staged files...'
+npx lint-staged || { echo '💀❌ lint-staged failed'; exit 1; }
