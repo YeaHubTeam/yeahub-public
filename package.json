@@ -12,7 +12,10 @@
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
 		"lint:css": "stylelint \"**/*.css\"",
 		"lint:css:fix": "stylelint \"**/*.css\" --fix",
-		"prepare": "husky"
+		"prepare": "husky",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:coverage": "jest --coverage"
 	},
 	"dependencies": {
 		"next": "^15.4.6",
@@ -44,9 +47,11 @@
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"husky": "^9.1.7",
+		"identity-obj-proxy": "^3.0.0",
 		"jest": "^30.0.5",
 		"jest-environment-jsdom": "^30.0.5",
 		"lint-staged": "^16.1.5",
+		"next-router-mock": "^1.0.2",
 		"prettier": "^3.6.2",
 		"stylelint": "^16.23.1",
 		"stylelint-config-css-modules": "^4.5.1",
@@ -55,6 +60,8 @@
 		"stylelint-order": "^7.0.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5",
-		"typescript-eslint": "^8.39.0"
+		"typescript-eslint": "^8.39.0",
+		"undici": "^7.13.0",
+		"web-streams-polyfill": "^4.1.0"
 	}
 }

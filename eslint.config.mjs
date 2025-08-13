@@ -16,7 +16,6 @@ const sanitize = (cfg) => ({
 	...cfg,
 	languageOptions: {
 		...(cfg.languageOptions ?? {}),
-		// приводим к числу или 'latest'
 		ecmaVersion:
 			cfg.languageOptions?.ecmaVersion === 'latest'
 				? 'latest'
@@ -28,12 +27,12 @@ const sanitize = (cfg) => ({
 // удобная обёртка над compat.extends с нормализацией
 const x = (...names) => compat.extends(...names).map(sanitize);
 
-const eslintConfig = [
+export default [
 	{ ignores },
 
 	js.configs.recommended,
 
-	// TS пресет ТОЛЬКО для *.ts/tsx и с project
+	// TS пресет только для *.ts/tsx и с project
 	...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
 		...cfg,
 		files: ['**/*.{ts,tsx}'],
@@ -49,12 +48,12 @@ const eslintConfig = [
 		},
 	})),
 
-	// пресеты через compat.extends — уже «санитизированные»
+	// пресеты через compat
 	...x('plugin:react/recommended'),
 	...x('plugin:react-hooks/recommended'),
 	...x('plugin:jsx-a11y/recommended'),
 	...x('next/core-web-vitals'),
-	...x('prettier'),
+	...x('prettier'), // выключает конфликтующие форматирующие правила в ESLint
 	...x('plugin:@conarti/feature-sliced/recommended'),
 
 	{
@@ -76,20 +75,32 @@ const eslintConfig = [
 			'jsx-a11y': jsxA11y,
 			prettier: prettierPlugin,
 		},
-		settings: { react: { version: 'detect' } },
+		settings: {
+			react: { version: 'detect' },
+			// чтобы import плагин корректно понимал алиасы и ts
+			'import/resolver': {
+				typescript: {
+					project: './tsconfig.json',
+				},
+				node: true,
+			},
+		},
 		rules: {
-			'prettier/prettier': 'error',
+			// ⛔️ Пусть сортирует и ставит пустые строки только Prettier
+			'import/order': 'off',
+
+			// Показывать ошибки форматирования Prettier в ESLint-выводе (по желанию)
+			'prettier/prettier': ['error', { pluginSearchDirs: ['.'] }],
+
+			// React/TS правила как были
 			'react/function-component-definition': [
-				2,
+				'error',
 				{ namedComponents: 'arrow-function', unnamedComponents: 'arrow-function' },
 			],
 			'react/jsx-uses-react': 'off',
 			'react/react-in-jsx-scope': 'off',
+
 			'@typescript-eslint/no-shadow': 'off',
-			'import/prefer-default-export': 'off',
-			'import/extensions': 'off',
-			'import/no-absolute-path': 'off',
-			'no-console': 1,
 			'@typescript-eslint/ban-ts-comment': 'error',
 			'@typescript-eslint/no-non-null-assertion': 'off',
 			'@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -107,39 +118,29 @@ const eslintConfig = [
 					ignoreRestSiblings: true,
 				},
 			],
-			'import/order': [
-				'warn',
-				{
-					groups: [
-						'builtin',      // fs, path...
-						'external',     // react, next, lodash...
-						'internal',     // src/, @/*
-						'parent',       // ../
-						'sibling',      // ./
-						'index',
-						'object',
-						'type'
-					],
-					'newlines-between': 'always',
-					alphabetize: { order: 'asc', caseInsensitive: true },
-					pathGroups: [
-						{ pattern: 'react', group: 'external', position: 'before' },
-						{ pattern: 'next/**', group: 'external', position: 'before' },
-						{ pattern: '@/**', group: 'internal', position: 'after' },
-						{ pattern: 'src/**', group: 'internal', position: 'after' }
-					],
-					pathGroupsExcludedImportTypes: ['react', 'next/**']
-				}
-			],
 
-			// твой пресет на пустые строки можно вернуть позже; сейчас оставим error
-			'padding-line-between-statements': 'error',
+			// Прочее
+			'import/prefer-default-export': 'off',
+			'import/extensions': 'off',
+			'import/no-absolute-path': 'off',
+			'no-console': 1,
 
-			// из FSD-плагина явно отключал
+			// пустые строки пускай контролирует Prettier, чтобы не конфликтовать
+			'padding-line-between-statements': 'off',
+
+			// FSD-правило отключено как у тебя
 			'@conarti/feature-sliced/absolute-relative': 'off',
 		},
 		linterOptions: { reportUnusedDisableDirectives: true },
 	},
-];
 
-export default eslintConfig;
+	// Можно добавить оверрайды специально для тестов/сета пов:
+	{
+		files: ['**/*.test.{ts,tsx}', 'jest.setup.ts', 'config/jest/**/*.ts'],
+		rules: {
+			// примеры ослаблений, если вдруг будет нужно:
+			// '@typescript-eslint/no-unsafe-return': 'off',
+			// '@typescript-eslint/no-require-imports': 'off',
+		},
+	},
+];
