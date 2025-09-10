@@ -1,5 +1,5 @@
 {
-	"extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
+	"extends": ["stylelint-config-standard-scss", "stylelint-config-css-modules"],
 	"ignoreFiles": [
 		"coverage/**/*.css",
 		"build/**/*.css",
@@ -10,10 +10,9 @@
 	"plugins": ["stylelint-order", "stylelint-declaration-strict-value"],
 	"rules": {
 		"scale-unlimited/declaration-strict-value": [
-			["color", "background-color", "font-size", "font-weight", "font-family", "filter"],
+			["color", "background-color"],
 			{ "ignoreValues": ["currentColor", "unset", "inherit", "initial", "transparent"] }
 		],
-		"indentation": [2],
 		"order/properties-order": [
 			"all",
 			"position",

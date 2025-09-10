@@ -18,9 +18,11 @@
 		"test:coverage": "jest --coverage"
 	},
 	"dependencies": {
+		"@reduxjs/toolkit": "^2.8.2",
 		"next": "^15.4.6",
 		"react": "19.1.0",
-		"react-dom": "19.1.0"
+		"react-dom": "19.1.0",
+		"react-redux": "^9.2.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.1",
@@ -56,6 +58,7 @@
 		"stylelint": "^16.23.1",
 		"stylelint-config-css-modules": "^4.5.1",
 		"stylelint-config-standard": "^39.0.0",
+		"stylelint-config-standard-scss": "^15.0.1",
 		"stylelint-declaration-strict-value": "^1.10.11",
 		"stylelint-order": "^7.0.0",
 		"ts-node": "^10.9.2",
