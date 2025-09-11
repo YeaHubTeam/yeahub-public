@@ -1,15 +1,31 @@
-import styles from './page.module.css';
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useTranslation } from 'react-i18next';
 
-const Home = () => {
-	return (
-		<div className={styles.page}>
-			<main className={styles.main}>
-				<ol>
-					<li>
-						Get started by editing <code>src/app/page.tsx</code>.
-					</li>
-					<li>Save and see your changes instantly.</li>
-				</ol>
+import { i18Namespace } from '@/shared/config/i18n';
+import { Translation } from '@/shared/config/i18n/Translations';
+
+export default function Home() {
+  const { t } = useTranslation(i18Namespace.translation);
+
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <ol>
+          <li>
+            Get started by editing <code>src/app/page.tsx</code>.
+          </li>
+          <li>Save and see your changes instantly.</li>
+          <p>{t(Translation.TEST)}</p>
+        </ol>
 
 				<div className={styles.ctas}>
 					<a
