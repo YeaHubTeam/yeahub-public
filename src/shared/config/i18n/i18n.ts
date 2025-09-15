@@ -8,17 +8,17 @@ type Langs = 'en' | 'ru';
 const supportedLngs: Langs[] = ['en', 'ru'];
 
 export const i18Namespace = {
-    translation: 'translation',
+	translation: 'translation',
 };
 
-i18n
+void i18n
 	.use(Backend)
 	.use(LanguageDetector)
 	.use(initReactI18next)
 	.init({
 		defaultNS: [i18Namespace.translation],
 		fallbackLng: 'ru',
-		debug:  __IS_DEV__,
+		debug: __IS_DEV__,
 		interpolation: {
 			escapeValue: false,
 		},

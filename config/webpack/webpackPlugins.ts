@@ -1,5 +1,3 @@
-import path from 'path';
-
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
@@ -8,9 +6,11 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlInlineScriptPlugin from 'html-inline-script-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
 import { Configuration, DefinePlugin, ProgressPlugin } from 'webpack';
 
 import { WebpackOptions } from './types/types';
+
 //Разобраться
 export const webpackPlugins = ({
 	isDev,
@@ -53,9 +53,7 @@ export const webpackPlugins = ({
 		);
 		plugins.push(
 			new CopyPlugin({
-				patterns: [
-					{ from: paths.locales, to: paths.buildLocales },
-				],
+				patterns: [{ from: paths.locales, to: paths.buildLocales }],
 			}),
 		);
 	}

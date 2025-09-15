@@ -15,7 +15,7 @@ export const webpackDevServer = ({ port }: WebpackOptions): DevServerConfigurati
 		historyApiFallback: true,
 		hot: true,
 		server: {
-			type: 'http'
+			type: 'http',
 		},
 	};
 };

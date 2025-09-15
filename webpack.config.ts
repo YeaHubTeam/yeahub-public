@@ -1,14 +1,13 @@
+import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-import dotenv from 'dotenv';
 import type { Configuration } from 'webpack';
 
 import { WebpackMode, WebpackOptions, WebpackPaths } from './config/webpack/types/types';
 import { webpackConfig } from './config/webpack/webpackConfig';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface EnvVariables {
 	mode: WebpackMode;

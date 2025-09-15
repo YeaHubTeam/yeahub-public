@@ -1,74 +1,35 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 
-import { i18Namespace } from '@/shared/config/i18n';
-import { Translation } from '@/shared/config/i18n/Translations';
+import { LanguageSwitcher } from '@/features/internationalization/switch-language';
+import { detectLocale } from '@/shared/config/i18n/detectLocale';
+import { getServerT } from '@/shared/config/i18n/i18nServer';
 
-export default function Home() {
-  const { t } = useTranslation(i18Namespace.translation);
+import styles from './page.module.css';
 
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-          <p>{t(Translation.TEST)}</p>
-        </ol>
+const Home = async () => {
+	const locale = await detectLocale(); // 'ru' | 'en'
+	const t = await getServerT(locale, 'translation');
 
-				<div className={styles.ctas}>
-					<a
-						className={styles.primary}
-						href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Deploy now
-					</a>
-					<a
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.secondary}
-					>
-						Read our docs
-					</a>
-				</div>
+	return (
+		<div className={styles.page}>
+			<main className={styles.main}>
+				<Image
+					className={styles.logo}
+					src="/next.svg"
+					alt="Next.js logo"
+					width={180}
+					height={38}
+					priority
+				/>
+
+				<ol>
+					<li>{t('edit')}</li>
+					<li>{t('save')}</li>
+				</ol>
+
+				<p>{t('test')}</p>
+				<LanguageSwitcher />
 			</main>
-			<footer className={styles.footer}>
-				<a
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn
-				</a>
-				<a
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Examples
-				</a>
-				<a
-					href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Go to nextjs.org →
-				</a>
-			</footer>
 		</div>
 	);
 };

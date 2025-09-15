@@ -1,3 +1,5 @@
 {
-    "test": "test"
+    "test": "test",
+		"edit": "Start editing src/app/page.tsx",
+    "save": "Save the file and see your changes instantly"
 }
