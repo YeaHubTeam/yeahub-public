@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Providers } from '@/lib/providers';
+import { getLocale } from 'next-intl/server';
 
 import './globals.css';
 
-const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const RootLayout: React.FC<{ children: React.ReactNode }> = async ({ children }) => {
+	const locale = await getLocale();
+
 	return (
-		<html lang="en">
-			<body>
-				<Providers>{children}</Providers>
-			</body>
+		<html lang={locale}>
+			<body>{children}</body>
 		</html>
 	);
 };

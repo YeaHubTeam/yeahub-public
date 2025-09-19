@@ -143,4 +143,13 @@ export default [
 			// '@typescript-eslint/no-require-imports': 'off',
 		},
 	},
+	{
+    files: ['src/shared/config/i18n.ts'],
+    rules: {
+      '@conarti/feature-sliced/public-api': 'off',
+			'@conarti/feature-sliced/layers-slices': 'off',
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/no-unsafe-member-access': 'off',
+		},
+	},
 ];
