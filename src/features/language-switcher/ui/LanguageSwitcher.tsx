@@ -15,10 +15,8 @@ export const LanguageSwitcher = () => {
 
 	const handleLanguageChange = (newLocale: string) => {
 		try {
-			// Пытаемся использовать типизированный роутер next-intl
 			router.push(pathname, { locale: newLocale });
 		} catch {
-			// Fallback - прямое перенаправление через window.location
 			const currentPath = window.location.pathname;
 			const cleanPath = currentPath.startsWith(`/${locale}`)
 				? currentPath.slice(`/${locale}`.length)
