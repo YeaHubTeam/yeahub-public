@@ -1,0 +1,7 @@
+.header-auth-desktop { display: block; }
+.header-auth-mobile { display: none; }
+
+@media (width <= 1023px) {
+  .header-auth-desktop { display: none; }
+  .header-auth-mobile { display: block; }
+}
