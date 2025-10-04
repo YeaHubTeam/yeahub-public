@@ -40,5 +40,8 @@
 			},
 			"logoAlt": "Логотип YeaHub"
 		}
+	},
+	"questions": {
+		"title": "База вопросов"
 	}
 }

@@ -4,6 +4,8 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { Header } from '@/shared/config/i18n/i18nTranslations';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
@@ -13,14 +15,14 @@ import { AUTH_LINKS } from '../../../model/constants/headerConstants';
 import styles from './HeaderAuthMobile.module.css';
 
 export const HeaderAuthMobile = () => {
-	const t = useTranslations('landing.header.auth');
+	const t = useTranslations(i18Namespace.header);
 
 	const authMenuLinks: PopoverMenuItem[] = [
 		{
 			renderComponent: (onToggle) => (
 				<Flex onClick={onToggle}>
 					<a href={AUTH_LINKS.login} rel="noopener noreferrer" className={styles.link}>
-						{t('signIn')}
+						{t(Header.AUTH_SIGN_IN)}
 					</a>
 				</Flex>
 			),
@@ -29,7 +31,7 @@ export const HeaderAuthMobile = () => {
 			renderComponent: (onToggle) => (
 				<Flex onClick={onToggle}>
 					<a href={AUTH_LINKS.register} rel="noopener noreferrer" className={styles.link}>
-						{t('signUp')}
+						{t(Header.AUTH_SIGN_UP)}
 					</a>
 				</Flex>
 			),
@@ -46,7 +48,7 @@ export const HeaderAuthMobile = () => {
 					onClick={onToggle}
 					className={styles['burger-button']}
 					icon={<Icon icon="burger" size={32} />}
-					aria-label={t('menuAria', { default: 'Auth menu' })}
+					aria-label={t(Header.AUTH_MENU_ARIA)}
 				/>
 			)}
 		</Popover>

@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { Footer } from '@/shared/config/i18n/i18nTranslations';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
@@ -12,7 +14,7 @@ import { RESOURCES_LINKS } from '../../model/constants/footerConstants';
 import styles from './FooterLinks.module.css';
 
 export const FooterLinks = async () => {
-	const t = await getTranslations('landing.footer');
+	const t = await getTranslations(i18Namespace.footer);
 	const locale = await getLocale();
 
 	return (
@@ -24,7 +26,7 @@ export const FooterLinks = async () => {
 					variant="body2-accent"
 					color="black-400"
 				>
-					{t('docs')}
+					{t(Footer.HOME_DOCS)}
 				</Text>
 			</Link>
 
@@ -35,7 +37,7 @@ export const FooterLinks = async () => {
 					variant="body2-accent"
 					color="black-400"
 				>
-					{t('media')}
+					{t(Footer.HOME_MEDIA)}
 				</Text>
 			</Link>
 
@@ -45,7 +47,7 @@ export const FooterLinks = async () => {
 					href={url}
 					target="_blank"
 					rel="noopener noreferrer"
-					aria-label={`${label} ${t('links.link.aria-label')}`}
+					aria-label={`${label} ${t(Footer.HOME_LINKS_LINK_ARIA)}`}
 					className={styles[className]}
 				>
 					<Icon icon={icon} color={color} dataTestId={`icon-${label}`} />

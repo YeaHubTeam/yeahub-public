@@ -1,0 +1,20 @@
+.params {
+  background-color: var(--background-light-hover);
+}
+
+.size-medium {
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.size-small {
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.value {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: var(--text-color-link-active);
+}
+

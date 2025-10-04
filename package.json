@@ -20,6 +20,9 @@
 	"dependencies": {
 		"@floating-ui/react": "^0.27.16",
 		"@reduxjs/toolkit": "^2.8.2",
+		"dompurify": "^3.2.7",
+		"hast-util-to-html": "^9.0.5",
+		"lowlight": "^3.3.0",
 		"next": "^15.4.6",
 		"next-intl": "^4.3.9",
 		"react": "19.1.0",

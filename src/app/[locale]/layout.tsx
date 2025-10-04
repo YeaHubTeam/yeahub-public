@@ -7,6 +7,8 @@ import { Providers } from '@/lib/providers';
 import { Footer } from '@/widgets/Landing/Footer';
 import { Header } from '@/widgets/Landing/Header';
 
+import styles from './layout.module.css';
+
 interface LocaleLayoutProps {
 	children: React.ReactNode;
 	params: Promise<{ locale: string }>;
@@ -23,7 +25,9 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 		<NextIntlClientProvider locale={locale} messages={messages}>
 			<Providers>
 				<Header />
-				{children}
+				<main className={styles.main}>
+					<div className={styles['main-content']}>{children}</div>
+				</main>
 				<Footer />
 			</Providers>
 		</NextIntlClientProvider>

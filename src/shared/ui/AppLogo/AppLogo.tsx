@@ -9,6 +9,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import logoDark from '@/shared/assets/icons/logoDark.avif';
 import logoLight from '@/shared/assets/icons/logoLight.avif';
 import LogoText from '@/shared/assets/icons/logoText.svg';
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { Header } from '@/shared/config/i18n/i18nTranslations';
 
 import styles from './AppLogo.module.css';
 
@@ -30,7 +32,7 @@ export const AppLogo = async ({
 	disabled = false,
 }: AppLogoProps) => {
 	const locale = await getLocale();
-	const t = await getTranslations('landing.header');
+	const t = await getTranslations(i18Namespace.header);
 
 	const targetHref = disabled ? '#' : href === '/' ? `/${locale}` : `/${locale}${href}`;
 
@@ -42,7 +44,7 @@ export const AppLogo = async ({
 				<Image
 					className={styles.logo}
 					src={logoSrc}
-					alt={t('logoAlt', { default: 'Yeahub logo' })}
+					alt={t(Header.LOGO_ALT, { default: 'Yeahub logo' })}
 					width={33}
 					height={33}
 					unoptimized

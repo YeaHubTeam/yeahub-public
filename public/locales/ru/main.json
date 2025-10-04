@@ -1,0 +1,16 @@
+{
+	"home": {
+		"title": "Начните редактировать",
+		"subtitle": "Сохраните и увидите изменения мгновенно.",
+		"deployNow": "Развернуть сейчас",
+		"readDocs": "Прочитать документацию",
+		"learn": "Изучить",
+		"examples": "Примеры",
+		"goToNextjs": "Перейти на nextjs.org →"
+	},
+	"language": {
+		"label": "Язык:",
+		"russian": "Русский",
+		"english": "English"
+	}
+}

@@ -1,0 +1,19 @@
+.code-block-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid var(--color-black-700);
+  border-top: none;
+  border-bottom: none;
+  border-radius: 10px;
+  background: var(--color-black-900);
+  scrollbar-width: thin;
+  scrollbar-color: #b0b0b0 transparent;
+}
+
+.code-block-language {
+  color: var(--color-black-300);
+  font-size: var(--font-size-p-s);
+}

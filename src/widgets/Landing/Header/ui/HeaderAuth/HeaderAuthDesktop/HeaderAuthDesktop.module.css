@@ -1,3 +1,7 @@
+.login-link {
+  font-weight: var(--font-weight-400);
+}
+
 .login-link:hover {
   text-decoration: none;
 }

@@ -55,3 +55,10 @@ export type Pallete =
 	| 'black-30'
 	| 'black-25'
 	| 'white-900';
+
+export interface Response<T> {
+	data: T;
+	limit: number;
+	total: number;
+	page: number;
+}

@@ -152,7 +152,7 @@ export default [
 		},
 	},
 	{
-    files: ['src/shared/config/i18n.ts'],
+    files: ['src/shared/config/i18n/**/*.ts'],
     rules: {
       '@conarti/feature-sliced/public-api': 'off',
 			'@conarti/feature-sliced/layers-slices': 'off',

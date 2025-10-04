@@ -1,0 +1,13 @@
+{
+	"nav": {
+		"questions": "Questions",
+		"quiz": "Quiz",
+		"collections": "Collections"
+	},
+	"auth": {
+		"signIn": "Sign in",
+		"signUp": "Sign up",
+		"menuAria": "Auth menu"
+	},
+	"logoAlt": "YeaHub logo"
+}
