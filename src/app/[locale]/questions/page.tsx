@@ -2,7 +2,7 @@ import React from 'react';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { PublicQuestionsPage } from '@/pages-components/PublicQuestionsPage';
+import { QuestionsPage } from '@/pages-components/QuestionsPage';
 import { locales } from '@/shared/config/i18n/i18n.locales';
 
 interface QuestionsPageProps {
@@ -24,12 +24,12 @@ export const generateStaticParams = () => {
 	return params;
 };
 
-const QuestionsPage = async ({ params, searchParams }: QuestionsPageProps) => {
+const MainQuestionsPage = async ({ params, searchParams }: QuestionsPageProps) => {
 	const { locale } = await params;
 	setRequestLocale(locale);
 	const { page } = await searchParams;
 
-	return <PublicQuestionsPage locale={locale} page={Number(page) || 1} />;
+	return <QuestionsPage locale={locale} page={Number(page) || 1} />;
 };
 
-export default QuestionsPage;
+export default MainQuestionsPage;

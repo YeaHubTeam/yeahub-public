@@ -7,14 +7,14 @@ import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { FullQuestionsList } from '@/widgets/question/QuestionsList';
 
-import { PublicQuestionPagePagination } from '../PublicQuestionsPagePagination/PublicQuestionPagePagination';
+import { QuestionPagePagination } from '../QuestionsPagePagination/QuestionPagePagination';
 
 interface QuestionsPageProps {
 	locale: string;
 	page: number;
 }
 
-export const PublicQuestionsPage = async ({ locale, page }: QuestionsPageProps) => {
+export const QuestionsPage = async ({ locale, page }: QuestionsPageProps) => {
 	setRequestLocale(locale);
 	const limit = 10;
 
@@ -31,8 +31,8 @@ export const PublicQuestionsPage = async ({ locale, page }: QuestionsPageProps) 
 	return (
 		<Flex gap="20" align="start">
 			<Card>
-				<FullQuestionsList questions={questionsResponse.data} isPublic />
-				<PublicQuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
+				<FullQuestionsList questions={questionsResponse.data} />
+				<QuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
 			</Card>
 		</Flex>
 	);

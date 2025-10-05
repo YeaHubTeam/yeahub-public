@@ -16,15 +16,12 @@ import styles from './FullQuestionItem.module.css';
 
 interface FullQuestionItemProps {
 	question: Question;
-	isPublic?: boolean;
 }
 
-export const FullQuestionItem = async ({ question, isPublic = true }: FullQuestionItemProps) => {
+export const FullQuestionItem = async ({ question }: FullQuestionItemProps) => {
 	const t = await getTranslations(i18Namespace.questions);
 	const { id, imageSrc, complexity = 0, rate, shortAnswer } = question;
-	const detailRoute = isPublic
-		? route(ROUTES.questions.detail.page, id)
-		: route(ROUTES.interview.questions.detail.page, id);
+	const detailRoute = route(ROUTES.questions.detail.page, id);
 
 	return (
 		<Flex direction="column" gap="24" className={styles.item}>
@@ -51,12 +48,10 @@ export const FullQuestionItem = async ({ question, isPublic = true }: FullQuesti
 
 			<TextHtml html={shortAnswer} />
 
-			{isPublic ? (
-				<Link href={detailRoute} className={styles.link}>
-					{t(Questions.QUESTIONS_LINK)}
-					<Icon icon="arrowRight" size={24} />
-				</Link>
-			) : null}
+			<Link href={detailRoute} className={styles.link}>
+				{t(Questions.QUESTIONS_LINK)}
+				<Icon icon="arrowRight" size={24} />
+			</Link>
 		</Flex>
 	);
 };

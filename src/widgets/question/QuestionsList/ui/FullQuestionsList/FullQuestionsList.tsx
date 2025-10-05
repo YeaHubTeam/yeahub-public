@@ -7,14 +7,12 @@ import styles from './FullQuestionsList.module.css';
 
 interface FullQuestionsListProps {
 	questions: Question[];
-	isPublic?: boolean;
 	additionalTitle?: string;
 	filterButton?: React.ReactNode;
 }
 
 export const FullQuestionsList = ({
 	questions,
-	isPublic,
 	additionalTitle,
 	filterButton,
 }: FullQuestionsListProps) => {
@@ -32,7 +30,7 @@ export const FullQuestionsList = ({
 			<hr className={styles.divider} />
 			{questions.map((question) => (
 				<Accordion key={question.id} title={question.title} className={styles.gap}>
-					<FullQuestionItem question={question} isPublic={isPublic} />
+					<FullQuestionItem question={question} />
 				</Accordion>
 			))}
 		</>

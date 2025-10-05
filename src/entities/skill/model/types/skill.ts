@@ -17,27 +17,5 @@ export type GetSkillsListParamsRequest = {
 	limit?: number;
 	specializations?: number[];
 };
+
 export type GetSkillsListResponse = Response<Skill[]>;
-
-export type GetSkillByIdParamsRequest = {
-	skillId: string;
-};
-export type GetSkillByIdResponse = Skill;
-
-export type CreateOrEditSkillFormValues = Pick<
-	Skill,
-	'id' | 'title' | 'description' | 'imageSrc'
-> & {
-	skillImage?: string;
-	specializations?: number[];
-};
-
-export type EditSkillParamsRequest = GetSkillByIdParamsRequest;
-
-export type ErrorResponce = {
-	message: string;
-};
-
-export type EditSkillBodyRequest = CreateOrEditSkillFormValues;
-
-export type EditSkillResponse = Skill | ErrorResponce;

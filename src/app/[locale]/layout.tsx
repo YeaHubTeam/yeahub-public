@@ -4,8 +4,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
 import { Providers } from '@/lib/providers';
-import { Footer } from '@/widgets/Landing/Footer';
-import { Header } from '@/widgets/Landing/Header';
+import { Footer } from '@/widgets/Footer';
+import { Header } from '@/widgets/Header';
 
 import styles from './layout.module.css';
 

@@ -8,14 +8,14 @@ import { GetQuestionsListResponse } from '@/entities/question';
 import { Flex } from '@/shared/ui/Flex';
 import { Pagination } from '@/shared/ui/Pagination';
 
-import styles from './PublicQuestionPagePagination.module.css';
+import styles from './QuestionPagePagination.module.css';
 
 interface QuestionPagePaginationProps {
 	questionsResponse: GetQuestionsListResponse;
 	currentPage: number;
 }
 
-export const PublicQuestionPagePagination = ({
+export const QuestionPagePagination = ({
 	questionsResponse,
 	currentPage,
 }: QuestionPagePaginationProps) => {

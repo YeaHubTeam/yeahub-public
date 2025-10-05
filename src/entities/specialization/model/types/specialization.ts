@@ -15,15 +15,5 @@ export type GetSpecializationsListParamsRequest = {
 	limit?: number;
 	specializations?: number[];
 };
+
 export type GetSpecializationsListResponse = Response<Specialization[]>;
-
-export type GetSpecializationByIdParamsRequest = {
-	specializationId: string;
-};
-
-export type GetSpecializationByIdResponse = Specialization;
-
-export type CreateOrEditSpecializationFormValues = Pick<
-	Specialization,
-	'id' | 'title' | 'description' | 'imageSrc'
->;

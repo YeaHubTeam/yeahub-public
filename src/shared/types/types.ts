@@ -62,3 +62,5 @@ export interface Response<T> {
 	total: number;
 	page: number;
 }
+
+export type Author = { id: string; username: string };
