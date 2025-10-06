@@ -1,0 +1,7 @@
+.nav-desktop { display: flex; }
+.nav-mobile { display: none; }
+
+@media (width <= 1023px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+}

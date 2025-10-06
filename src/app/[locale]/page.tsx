@@ -3,6 +3,8 @@ import React from 'react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { LanguageSwitcher } from '@/features/language-switcher';
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { Main } from '@/shared/config/i18n/i18nTranslations';
 
 import styles from './page.module.css';
 
@@ -20,38 +22,36 @@ const HomePage = async ({ params }: HomePageProps) => {
 	const { locale } = await params;
 	setRequestLocale(locale);
 
-	const t = await getTranslations('home');
+	const t = await getTranslations(i18Namespace.main);
 
 	return (
-		<div className={styles.page}>
+		<>
 			<LanguageSwitcher />
-			<main className={styles.main}>
-				<ol>
-					<li>
-						{t('title')} <code>src/app/[locale]/page.tsx</code>.
-					</li>
-					<li>{t('subtitle')}</li>
-				</ol>
-				<div className={styles.ctas}>
-					<a
-						className={styles.primary}
-						href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{t('deployNow')}
-					</a>
-					<a
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.secondary}
-					>
-						{t('readDocs')}
-					</a>
-				</div>
-			</main>
-		</div>
+			<ol>
+				<li>
+					{t(Main.HOME_TITLE)} <code>src/app/[locale]/page.tsx</code>.
+				</li>
+				<li>{t(Main.HOME_SUBTITLE)}</li>
+			</ol>
+			<div className={styles.ctas}>
+				<a
+					className={styles.primary}
+					href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{t(Main.HOME_DEPLOY_NOW)}
+				</a>
+				<a
+					href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+					target="_blank"
+					rel="noopener noreferrer"
+					className={styles.secondary}
+				>
+					{t(Main.HOME_READ_DOCS)}
+				</a>
+			</div>
+		</>
 	);
 };
 

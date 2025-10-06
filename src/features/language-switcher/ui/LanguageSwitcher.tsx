@@ -4,14 +4,16 @@ import React from 'react';
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import { locales } from '@/shared/config/i18n.locales';
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { locales } from '@/shared/config/i18n/i18n.locales';
+import { Main } from '@/shared/config/i18n/i18nTranslations';
 import { usePathname, useRouter } from '@/shared/config/navigation';
 
 export const LanguageSwitcher = () => {
 	const locale = useLocale();
 	const router = useRouter();
 	const pathname = usePathname();
-	const t = useTranslations('language');
+	const t = useTranslations(i18Namespace.main);
 
 	const handleLanguageChange = (newLocale: string) => {
 		try {
@@ -26,12 +28,12 @@ export const LanguageSwitcher = () => {
 	};
 
 	const getLocaleName = (localeCode: string) => {
-		return localeCode === 'ru' ? t('russian') : t('english');
+		return localeCode === 'ru' ? t(Main.HOME_LANGUAGE_RUSSIAN) : t(Main.HOME_LANGUAGE_ENGLISH);
 	};
 
 	return (
 		<div>
-			<span>{t('label')}</span>
+			<span>{t(Main.HOME_LANGUAGE_LABEL)}</span>
 			<div>
 				{locales.map((localeOption) => (
 					<button
