@@ -13,7 +13,7 @@ interface PageProps {
 	searchParams: Promise<{ page?: string; difficulty?: string; skill?: string }>;
 }
 
-export const dynamic = 'force-static';
+export const dynamic = 'auto';
 
 export const generateStaticParams = () => {
 	return locales.flatMap((locale) =>
