@@ -1,8 +1,13 @@
 {
 	"title": "База вопросов",
+	"questions_title": "Вопросы {specialization}",
 	"questions": {
+		"rate_title": "Рейтинг вопросов",
 		"rate": "Рейтинг",
 		"complexity": "Сложность",
 		"link": "Подробнее"
+	},
+	"search": {
+		"placeholder": "Введите вопрос..."
 	}
 }

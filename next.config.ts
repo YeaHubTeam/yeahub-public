@@ -6,6 +6,15 @@ import withSvgr from 'next-svgr';
 const withNextIntl = createNextIntlPlugin('./src/shared/config/i18n/i18n.ts');
 
 const nextConfig: NextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: '**.selstorage.ru',
+				pathname: '/**',
+			},
+		],
+	},
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			config.resolve.fallback = {

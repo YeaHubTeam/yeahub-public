@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListResponse } from '@/entities/question';
+import { GetQuestionsListParamsRequest, GetQuestionsListResponse } from '@/entities/question';
 import { QuestionsPage } from '@/pages-components/QuestionsPage';
 import { locales } from '@/shared/config/i18n/i18n.locales';
 import { SPEC_MAP } from '@/shared/constants/mappingStaticParams';
@@ -10,7 +10,7 @@ import { QUESTIONS_PER_PAGE } from '@/shared/constants/queryConstants';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;
-	searchParams: Promise<{ page?: string; difficulty?: string; skill?: string }>;
+	searchParams: Promise<GetQuestionsListParamsRequest>;
 }
 
 export const dynamic = 'auto';
@@ -26,7 +26,7 @@ export const generateStaticParams = () => {
 
 const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
-	const { page = '1' } = await searchParams;
+	const { title, skills, complexity, rate, page = '1' } = await searchParams;
 
 	const pageNum = Number(page);
 
@@ -35,21 +35,32 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const qs = new URLSearchParams({
-		specialization: specializationId.toString(),
-		page: page,
-		skillFilterMode: 'ALL',
-		limit: QUESTIONS_PER_PAGE.toString(),
-	});
+	const qs = new URLSearchParams();
+	qs.set('page', pageNum.toString());
+	qs.set('specialization', specializationId.toString());
+	qs.set('limit', QUESTIONS_PER_PAGE.toString());
+	qs.set('skillFilterMode', 'ANY');
+	if (skills) qs.set('skills', skills.toString());
+	if (complexity) qs.set('complexity', complexity);
+	if (rate) qs.set('rate', rate);
+	if (title) qs.set('title', title);
 
-	const res = await fetch(`https://api.yeahub.ru/questions/public-questions?${qs.toString()}`, {
+	const res = await fetch(`https://api.yeahub.ru/questions/public-questions?${qs}`, {
 		cache: 'force-cache',
 	});
 
-	if (!res.ok) throw new Error('Failed to load questions');
+	if (!res.ok) throw new Error('Failed to load questions', { cause: res });
 	const questions = (await res.json()) as GetQuestionsListResponse;
 
-	return <QuestionsPage locale={locale} page={pageNum} questionsResponse={questions} />;
+	return (
+		<QuestionsPage
+			locale={locale}
+			page={pageNum}
+			questionsResponse={questions}
+			specialization={specialization}
+			searchParamsTitle={title}
+		/>
+	);
 };
 
 export default MainQuestionsPage;

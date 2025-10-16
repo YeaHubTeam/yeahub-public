@@ -8,6 +8,10 @@ export const i18Namespace = {
 	footer: 'footer',
 	main: 'main',
 	questions: 'questions',
+	media: 'media',
+	specialization: 'specialization',
+	translation: 'translation',
+	skill: 'skill',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {

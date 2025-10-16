@@ -1,8 +1,13 @@
 {
 	"title": "Questions",
+	"questions_title": "Questions {specialization}",
 	"questions": {
+		"rate_title": "Questions rate",
 		"rate": "Rate",
 		"complexity": "Complexity",
 		"link": "More"
+	},
+	"search": {
+		"placeholder": "Enter question..."
 	}
 }
