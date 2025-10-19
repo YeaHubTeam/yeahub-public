@@ -1,3 +1,11 @@
+'use client';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { useTranslations } from 'next-intl';
+
+import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { Translation } from '@/shared/config/i18n/i18nTranslations';
 import { Button } from '@/shared/ui/Button';
 import { emptyStubTestIds } from '@/shared/ui/EmptyStub/constants';
 import { Text } from '@/shared/ui/Text';
@@ -5,11 +13,24 @@ import { Text } from '@/shared/ui/Text';
 import styles from './EmptyStub.module.css';
 
 export interface EmptyStubProps {
-	text?: string;
-	resetFilters?: () => void;
+	text?: string | undefined;
 }
 
-export const EmptyStub = ({ resetFilters, text }: EmptyStubProps) => {
+export const EmptyStub = ({ text }: EmptyStubProps) => {
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const t = useTranslations(i18Namespace.translation);
+
+	const resetFilters = () => {
+		const params = new URLSearchParams(searchParams);
+		params.delete('title');
+		params.delete('skills');
+		params.delete('complexity');
+		params.delete('rate');
+		router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+	};
+
 	return (
 		<>
 			<Text
@@ -17,7 +38,7 @@ export const EmptyStub = ({ resetFilters, text }: EmptyStubProps) => {
 				variant={'body5-accent'}
 				className={styles.text}
 			>
-				{text ? `“${text}”` : undefined}
+				{t(Translation.STUB_FILTER_TITLE, { text: text ? `“${text}”` : '' })}
 			</Text>
 			<Button
 				dataTestId={emptyStubTestIds.emptyStubButton}

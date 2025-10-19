@@ -1,0 +1,72 @@
+'use client';
+
+import { Key } from 'react';
+
+import Image from 'next/image';
+
+import { Flex } from '@/shared/ui/Flex';
+import { Text } from '@/shared/ui/Text';
+
+import { Chip } from '../Chip';
+import { Icon, IconName } from '../Icon';
+import { Tooltip } from '../Tooltip';
+import styles from './BaseFilterSection.module.css';
+
+export type BaseFilterItem<T> = {
+	id: T;
+	title: string;
+	imageSrc?: string | null;
+	active?: boolean;
+	tooltip?: string;
+	iconName?: IconName;
+};
+
+export interface BaseFilterSectionProps<T> {
+	title: string;
+	data: BaseFilterItem<T>[];
+	onClick: (id: T) => void;
+}
+
+export const BaseFilterSection = <T,>({ title, data, onClick }: BaseFilterSectionProps<T>) => {
+	const onHandleClick = (id: T) => () => {
+		onClick(id);
+	};
+
+	return (
+		<Flex direction="column" gap="8" style={{ maxWidth: 'max-content' }}>
+			<Text variant="body2" color="black-700">
+				{title}
+			</Text>
+			<Flex wrap="wrap" gap="8">
+				{data &&
+					data.map((item) => (
+						<Tooltip title={item.tooltip} key={item?.id as Key}>
+							<Chip
+								className={styles.chip}
+								label={item.title}
+								theme="primary"
+								prefix={
+									item.iconName ? (
+										<Icon icon={item.iconName} size={20} color="black-700" />
+									) : (
+										item.imageSrc && (
+											<Image
+												width={20}
+												height={20}
+												style={{ width: 20, height: 20 }}
+												src={item.imageSrc}
+												alt={item.title}
+												loading="lazy"
+											/>
+										)
+									)
+								}
+								onClick={onHandleClick(item.id)}
+								active={item.active}
+							/>
+						</Tooltip>
+					))}
+			</Flex>
+		</Flex>
+	);
+};

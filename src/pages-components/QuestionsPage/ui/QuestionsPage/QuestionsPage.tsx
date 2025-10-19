@@ -2,37 +2,46 @@ import React from 'react';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { DEFAULT_SPECIALIZATION_NUMBER } from '@/shared/constants/queryConstants';
+import { GetQuestionsListResponse } from '@/entities/question';
+import { SPEC_MAP } from '@/shared/constants/mappingStaticParams';
 import { Card } from '@/shared/ui/Card';
+import { EmptyStub } from '@/shared/ui/EmptyStub';
 import { Flex } from '@/shared/ui/Flex';
 import { FullQuestionsList } from '@/widgets/question/QuestionsList';
 
+import { QuestionsFilterPanel } from '../QuestionsFilterPanel/QuestionsFilterPanel';
 import { QuestionPagePagination } from '../QuestionsPagePagination/QuestionPagePagination';
+import styles from './QuestionsPage.module.css';
 
 interface QuestionsPageProps {
 	locale: string;
 	page: number;
+	questionsResponse: GetQuestionsListResponse;
+	specialization: keyof typeof SPEC_MAP;
+	searchParamsTitle: string | undefined;
 }
 
-export const QuestionsPage = async ({ locale, page }: QuestionsPageProps) => {
+export const QuestionsPage = ({
+	locale,
+	page,
+	questionsResponse,
+	specialization,
+	searchParamsTitle,
+}: QuestionsPageProps) => {
 	setRequestLocale(locale);
-	const limit = 10;
-
-	// TODO: После подключения фильтрации нужно сетать все квери-параметры в строку браузера
-	const response = await fetch(
-		`https://api.yeahub.ru/questions/public-questions?page=${page || 1}&limit=${limit}&skillFilterMode=ANY&specialization=${DEFAULT_SPECIALIZATION_NUMBER}`,
-		{ cache: 'no-store' },
-	);
-
-	if (!response.ok) throw new Error('Failed to load questions');
-
-	const questionsResponse = await response.json();
 
 	return (
 		<Flex gap="20" align="start">
-			<Card>
-				<FullQuestionsList questions={questionsResponse.data} />
-				<QuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
+			<Card className={styles.main}>
+				<FullQuestionsList questions={questionsResponse.data} specialization={specialization} />
+
+				{questionsResponse.total > questionsResponse.limit && (
+					<QuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
+				)}
+				{questionsResponse.data.length === 0 && <EmptyStub text={searchParamsTitle} />}
+			</Card>
+			<Card className={styles.filters}>
+				<QuestionsFilterPanel />
 			</Card>
 		</Flex>
 	);

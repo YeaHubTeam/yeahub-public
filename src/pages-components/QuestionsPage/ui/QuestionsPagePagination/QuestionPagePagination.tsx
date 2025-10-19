@@ -24,9 +24,9 @@ export const QuestionPagePagination = ({
 	const searchParams = useSearchParams();
 
 	const navigateToPage = (page: number) => {
-		const params = new URLSearchParams(searchParams?.toString());
+		const params = new URLSearchParams(searchParams);
 		params.set('page', page.toString());
-		router.push(`${pathname}?${params.toString()}`);
+		router.replace(`${pathname}?${params.toString()}`, { scroll: false });
 	};
 
 	const onPrevPageClick = () => {

@@ -1,35 +1,9 @@
-import React from 'react';
+import { redirect } from 'next/navigation';
 
-import { setRequestLocale } from 'next-intl/server';
+import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/constants/queryConstants';
 
-import { QuestionsPage } from '@/pages-components/QuestionsPage';
-import { locales } from '@/shared/config/i18n/i18n.locales';
-
-interface QuestionsPageProps {
-	params: Promise<{ locale: string }>;
-	searchParams: Promise<{ [key: string]: string | undefined }>;
-}
-
-// TODO: необходимо изменить АПИ для SSG
-export const generateStaticParams = () => {
-	const pagesToGenerate = 5;
-	const params = [];
-
-	for (const locale of locales) {
-		for (let page = 1; page <= pagesToGenerate; page++) {
-			params.push({ locale });
-		}
-	}
-
-	return params;
+const QuestionsRoot = () => {
+	redirect(`/questions/${DEFAULT_SPECIALIZATION_SLUG}`);
 };
 
-const MainQuestionsPage = async ({ params, searchParams }: QuestionsPageProps) => {
-	const { locale } = await params;
-	setRequestLocale(locale);
-	const { page } = await searchParams;
-
-	return <QuestionsPage locale={locale} page={Number(page) || 1} />;
-};
-
-export default MainQuestionsPage;
+export default QuestionsRoot;

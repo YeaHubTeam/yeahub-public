@@ -34,13 +34,13 @@ export interface GetQuestionsListParamsRequest {
 	limit?: number;
 	title?: string;
 	titleOrDescription?: string;
-	skills?: number[];
-	complexity?: number[];
+	skills?: string;
+	complexity?: string;
 	collection?: number;
-	rate?: number[];
+	rate?: string;
 	keywords?: string[];
 	skillFilterMode?: skillFilterMode;
-	specialization?: number | number[];
+	specialization?: number;
 	order?: string;
 	orderBy?: string;
 	random?: boolean;
