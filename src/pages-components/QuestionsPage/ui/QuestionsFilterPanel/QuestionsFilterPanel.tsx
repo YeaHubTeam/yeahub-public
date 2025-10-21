@@ -4,13 +4,12 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/media';
-import { ChooseQuestionComplexity, RateFilterSection } from '@/entities/question';
-import { SkillsListField } from '@/entities/skill';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationsListField } from '@/entities/specialization';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions } from '@/shared/config/i18n/i18nTranslations';
-import { SPEC_MAP } from '@/shared/constants/mappingStaticParams';
+import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/medias';
+import { ChooseQuestionComplexity, RateFilterSection } from '@/entities/questions';
+import { SkillsListField } from '@/entities/skills';
+import { DEFAULT_SPECIALIZATION_ID, SpecializationsListField } from '@/entities/specializations';
+import { Questions, i18Namespace } from '@/shared/config';
+import { SPEC_MAP } from '@/shared/constants';
 import { useDebounce } from '@/shared/hooks';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';

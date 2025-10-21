@@ -4,8 +4,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Header } from '@/shared/config/i18n/i18nTranslations';
+import { Header, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';

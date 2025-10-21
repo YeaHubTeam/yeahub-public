@@ -2,8 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions } from '@/shared/config/i18n/i18nTranslations';
+import { Questions, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 
 import { QuestionFilterStatus, QuestionFilterStatusItem } from '../../model/types';

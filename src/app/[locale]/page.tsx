@@ -3,8 +3,7 @@ import React from 'react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { LanguageSwitcher } from '@/features/language-switcher';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Main } from '@/shared/config/i18n/i18nTranslations';
+import { Main, i18Namespace } from '@/shared/config';
 
 import styles from './page.module.css';
 

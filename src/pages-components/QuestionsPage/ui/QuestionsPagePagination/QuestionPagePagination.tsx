@@ -4,7 +4,7 @@ import React from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { GetQuestionsListResponse } from '@/entities/question';
+import { GetQuestionsListResponse } from '@/entities/questions';
 import { Flex } from '@/shared/ui/Flex';
 import { Pagination } from '@/shared/ui/Pagination';
 

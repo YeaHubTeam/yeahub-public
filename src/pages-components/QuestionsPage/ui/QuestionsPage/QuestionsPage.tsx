@@ -2,8 +2,8 @@ import React from 'react';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListResponse } from '@/entities/question';
-import { SPEC_MAP } from '@/shared/constants/mappingStaticParams';
+import { GetQuestionsListResponse } from '@/entities/questions';
+import { SPEC_MAP } from '@/shared/constants';
 import { Card } from '@/shared/ui/Card';
 import { EmptyStub } from '@/shared/ui/EmptyStub';
 import { Flex } from '@/shared/ui/Flex';

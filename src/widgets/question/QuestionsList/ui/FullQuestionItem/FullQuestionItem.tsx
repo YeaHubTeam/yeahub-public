@@ -3,11 +3,9 @@ import Link from 'next/link';
 
 import { getTranslations } from 'next-intl/server';
 
-import { Question, QuestionGradeList } from '@/entities/question';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions } from '@/shared/config/i18n/i18nTranslations';
-import { ROUTES } from '@/shared/config/router/routes';
-import { route } from '@/shared/helpers/route';
+import { Question, QuestionGradeList } from '@/entities/questions';
+import { Questions, ROUTES, i18Namespace } from '@/shared/config';
+import { route } from '@/shared/helpers';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { TextHtml } from '@/shared/ui/TextHtml';

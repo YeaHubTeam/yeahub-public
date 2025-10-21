@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListParamsRequest, GetQuestionsListResponse } from '@/entities/question';
+import { GetQuestionsListParamsRequest, GetQuestionsListResponse } from '@/entities/questions';
 import { QuestionsPage } from '@/pages-components/QuestionsPage';
-import { locales } from '@/shared/config/i18n/i18n.locales';
-import { SPEC_MAP } from '@/shared/constants/mappingStaticParams';
-import { QUESTIONS_PER_PAGE } from '@/shared/constants/queryConstants';
+import { locales } from '@/shared/config';
+import { SPEC_MAP } from '@/shared/constants';
+import { QUESTIONS_PER_PAGE } from '@/shared/constants';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;

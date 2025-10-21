@@ -1,9 +1,8 @@
 import { useTranslations } from 'next-intl';
 
-import { Question } from '@/entities/question';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions as QuestionsTranslations } from '@/shared/config/i18n/i18nTranslations';
-import { SPEC_MAP, SPEC_MAP_TO_TITLE } from '@/shared/constants/mappingStaticParams';
+import { Question } from '@/entities/questions';
+import { Questions as QuestionsTranslations, i18Namespace } from '@/shared/config';
+import { SPEC_MAP, SPEC_MAP_TO_TITLE } from '@/shared/constants';
 import { Accordion } from '@/shared/ui/Accordion';
 import { Text } from '@/shared/ui/Text';
 
