@@ -6,11 +6,10 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import logoDark from '@/shared/assets/icons/logoDark.avif';
-import logoLight from '@/shared/assets/icons/logoLight.avif';
-import LogoText from '@/shared/assets/icons/logoText.svg';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Header } from '@/shared/config/i18n/i18nTranslations';
+import { LogoText } from '@/shared/assets';
+import { logoDark } from '@/shared/assets';
+import { logoLight } from '@/shared/assets';
+import { Header, i18Namespace } from '@/shared/config';
 
 import styles from './AppLogo.module.css';
 

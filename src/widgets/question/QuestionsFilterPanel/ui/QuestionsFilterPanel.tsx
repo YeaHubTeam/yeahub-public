@@ -2,9 +2,8 @@ import { useTranslations } from 'next-intl';
 
 import { ChooseQuestionComplexity, RateFilterSection } from '@/entities/question';
 import { SkillsListField } from '@/entities/skill';
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions } from '@/shared/config/i18n/i18nTranslations';
-import { useDebounce } from '@/shared/hooks';
+import { Questions, i18Namespace } from '@/shared/config';
+import { useDebounce } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 

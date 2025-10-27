@@ -4,10 +4,9 @@ import React from 'react';
 
 import { useLocale, useTranslations } from 'next-intl';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { locales } from '@/shared/config/i18n/i18n.locales';
-import { Main } from '@/shared/config/i18n/i18nTranslations';
-import { usePathname, useRouter } from '@/shared/config/navigation';
+import { i18Namespace, locales } from '@/shared/config';
+import { Main } from '@/shared/config';
+import { usePathname, useRouter } from '@/shared/config';
 
 export const LanguageSwitcher = () => {
 	const locale = useLocale();

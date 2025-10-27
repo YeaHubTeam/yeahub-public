@@ -1,8 +1,8 @@
 // eslint-disable-next-line @conarti/feature-sliced/layers-slices
-import { Skill } from '@/entities/skill';
+import { Skill } from '@/entities/skill/@x/question';
 // eslint-disable-next-line @conarti/feature-sliced/layers-slices
-import { Specialization } from '@/entities/specialization';
-import { Author, Response } from '@/shared/types/types';
+import { Specialization } from '@/entities/specialization/@x/question';
+import { type Author, type Response } from '@/shared/libs';
 
 export type QuestionStatus = 'public' | 'draft';
 

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 import styles from './TextHtml.module.css';
-import { ProcessedCodeBlock } from './lib/processHtmlContent';
+import { ProcessedCodeBlock } from './processHtmlContent';
 
 interface CodeBlocksHydratorProps {
 	codeBlocks: ProcessedCodeBlock[];

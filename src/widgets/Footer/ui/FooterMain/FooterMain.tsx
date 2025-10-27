@@ -2,8 +2,7 @@ import React from 'react';
 
 import { getTranslations } from 'next-intl/server';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Footer } from '@/shared/config/i18n/i18nTranslations';
+import { Footer, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';

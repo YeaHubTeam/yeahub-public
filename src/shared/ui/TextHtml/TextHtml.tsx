@@ -4,7 +4,7 @@ import 'highlight.js/styles/atom-one-dark.css';
 import { CodeBlocksHydrator } from './CodeBlocksHydrator';
 import './TextHtml.global.css';
 import styles from './TextHtml.module.css';
-import { processHtmlContent } from './lib/processHtmlContent';
+import { processHtmlContent } from './processHtmlContent';
 
 export interface TextHtmlProps {
 	html: string;

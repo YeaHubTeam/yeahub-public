@@ -1,5 +1,5 @@
-import type { Specialization } from '@/entities/specialization';
-import { Response } from '@/shared/types/types';
+import type { Specialization } from '@/entities/specialization/@x/skill';
+import type { Response } from '@/shared/libs';
 
 export interface Skill {
 	id: number;

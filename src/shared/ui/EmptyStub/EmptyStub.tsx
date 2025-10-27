@@ -4,8 +4,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useTranslations } from 'next-intl';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Translation } from '@/shared/config/i18n/i18nTranslations';
+import { Translation, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { emptyStubTestIds } from '@/shared/ui/EmptyStub/constants';
 import { Text } from '@/shared/ui/Text';
@@ -23,7 +22,7 @@ export const EmptyStub = ({ text }: EmptyStubProps) => {
 	const t = useTranslations(i18Namespace.translation);
 
 	const resetFilters = () => {
-		const params = new URLSearchParams(searchParams);
+		const params = new URLSearchParams(searchParams?.toString() ?? '');
 		params.delete('title');
 		params.delete('skills');
 		params.delete('complexity');

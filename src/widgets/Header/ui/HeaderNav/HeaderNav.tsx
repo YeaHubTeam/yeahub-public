@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
+import { i18Namespace } from '@/shared/config';
 
 import { HEADER_NAV_LINKS } from '../../model/constants/headerConstants';
 import styles from './HeaderNav.module.css';

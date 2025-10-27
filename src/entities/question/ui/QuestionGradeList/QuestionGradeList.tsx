@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { i18Namespace } from '@/shared/config/i18n/i18n';
-import { Questions } from '@/shared/config/i18n/i18nTranslations';
+import { Questions, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { GradeChip } from '@/shared/ui/GradeChip';
 
