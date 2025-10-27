@@ -3,7 +3,7 @@ import { JSX, ReactNode, forwardRef } from 'react';
 
 import classNames from 'classnames';
 
-import { Pallete } from '@/shared/types';
+import { Pallete } from '@/shared/libs';
 
 import styles from './Text.module.css';
 import { TextVariant } from './types';

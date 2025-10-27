@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import { getTranslations } from 'next-intl/server';
 
-import { Question, QuestionGradeList } from '@/entities/questions';
+import { Question, QuestionGradeList } from '@/entities/question';
 import { Questions, ROUTES, i18Namespace } from '@/shared/config';
-import { route } from '@/shared/helpers';
+import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { TextHtml } from '@/shared/ui/TextHtml';

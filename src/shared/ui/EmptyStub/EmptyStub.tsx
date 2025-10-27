@@ -22,7 +22,7 @@ export const EmptyStub = ({ text }: EmptyStubProps) => {
 	const t = useTranslations(i18Namespace.translation);
 
 	const resetFilters = () => {
-		const params = new URLSearchParams(searchParams);
+		const params = new URLSearchParams(searchParams?.toString() ?? '');
 		params.delete('title');
 		params.delete('skills');
 		params.delete('complexity');

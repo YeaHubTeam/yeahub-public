@@ -3,8 +3,8 @@ import { toHtml } from 'hast-util-to-html';
 import { JSDOM } from 'jsdom';
 import { common, createLowlight } from 'lowlight';
 
-import { determineLanguage } from '@/shared/libs';
-import { normalizeHtmlContent } from '@/shared/utils';
+import { determineLanguage } from './determineLanguage';
+import { normalizeHtmlContent } from './normalizeHtmlContent';
 
 const lowlight = createLowlight(common);
 

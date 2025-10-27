@@ -1,4 +1,4 @@
-import { Pallete } from '@/shared/types';
+import { Pallete } from '@/shared/libs';
 import { IconName } from '@/shared/ui/Icon';
 
 export interface LinkIcon {

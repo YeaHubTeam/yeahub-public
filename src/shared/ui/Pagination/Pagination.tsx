@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { getArrayFromTwoNumbers } from '@/shared/helpers';
+import { getArrayFromTwoNumbers } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
