@@ -23,7 +23,7 @@ export const EmptyStub = ({ text }: EmptyStubProps) => {
 
 	const resetFilters = () => {
 		const params = new URLSearchParams(searchParams?.toString() ?? '');
-		params.delete('title');
+		params.delete('titleOrDescription');
 		params.delete('skills');
 		params.delete('complexity');
 		params.delete('rate');

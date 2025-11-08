@@ -1,3 +1,5 @@
+'use client';
+
 import { SocialMedia } from '../../model/types/socialMedia';
 import { MediaLinkSimpleItem } from '../MediaLinkSimpleItem/MediaLinkSimpleItem';
 

@@ -1,0 +1,11 @@
+.user-check-icon {
+  path {
+    fill: var(--color-white-900);
+  }
+}
+
+.img-social{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}

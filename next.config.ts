@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
 				hostname: '**.selstorage.ru',
 				pathname: '/**',
 			},
+			{
+				protocol: 'https',
+				hostname: 'upload.wikimedia.org',
+				pathname: '/**',
+			},
 		],
 	},
 	webpack: (config, { isServer }) => {

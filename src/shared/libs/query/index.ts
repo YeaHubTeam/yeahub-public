@@ -8,6 +8,6 @@ export {
 	DEFAULT_SPECIALIZATION_SLUG,
 } from './queryConstants';
 
-export { SPEC_MAP, SPEC_MAP_TO_TITLE } from './mappingStaticParams';
+export { SPEC_MAP, SPEC_MAP_TO_TITLE, getSpecializationSlugById } from './mappingStaticParams';
 
 export { route } from './route';

@@ -49,3 +49,8 @@ export const SPEC_MAP_TO_TITLE = {
 	'1c-analyst': '1C Аналитик',
 	'business-analyst': 'Business Analyst',
 } as const;
+
+export const getSpecializationSlugById = (id: number) =>
+	Object.entries(SPEC_MAP).find(([, value]) => value === id)?.[0] as
+		| keyof typeof SPEC_MAP
+		| undefined;

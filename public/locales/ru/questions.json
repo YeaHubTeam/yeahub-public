@@ -9,5 +9,22 @@
 	},
 	"search": {
 		"placeholder": "Введите вопрос..."
+	},
+	"short": {
+		"answer": {
+			"title": "Короткий ответ"
+		}
+	},
+	"long": {
+		"answer": {
+			"title": "Длинный ответ"
+		}
+	},
+	"additional": {
+		"info": {
+			"level": "Уровень",
+			"skills": "Навыки",
+			"keywords": "Ключевые слова"
+		}
 	}
 }

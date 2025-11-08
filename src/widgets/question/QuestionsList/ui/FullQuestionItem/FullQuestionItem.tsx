@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import { getTranslations } from 'next-intl/server';
 
-import { Question, QuestionGradeList } from '@/entities/question';
+import { QuestionGradeList, QuestionWithSlug } from '@/entities/question';
 import { Questions, ROUTES, i18Namespace } from '@/shared/config';
-import { route } from '@/shared/libs';
+import { SPEC_MAP, route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { TextHtml } from '@/shared/ui/TextHtml';
@@ -13,13 +13,14 @@ import { TextHtml } from '@/shared/ui/TextHtml';
 import styles from './FullQuestionItem.module.css';
 
 interface FullQuestionItemProps {
-	question: Question;
+	question: QuestionWithSlug;
+	specialization: keyof typeof SPEC_MAP;
 }
 
-export const FullQuestionItem = async ({ question }: FullQuestionItemProps) => {
+export const FullQuestionItem = async ({ question, specialization }: FullQuestionItemProps) => {
 	const t = await getTranslations(i18Namespace.questions);
-	const { id, imageSrc, complexity = 0, rate, shortAnswer } = question;
-	const detailRoute = route(ROUTES.questions.detail.page, id);
+	const { slug, imageSrc, complexity = 0, rate, shortAnswer } = question;
+	const detailRoute = `${route(ROUTES.questions.detail.page, slug)}?specialization=${specialization}`;
 
 	return (
 		<Flex direction="column" gap="24" className={styles.item}>

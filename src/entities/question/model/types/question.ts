@@ -48,4 +48,8 @@ export interface GetQuestionsListParamsRequest {
 	areFavorites?: boolean;
 }
 
-export type GetQuestionsListResponse = Response<Question[]>;
+export interface QuestionWithSlug extends Question {
+	slug: string;
+}
+
+export type GetQuestionsListResponse = Response<QuestionWithSlug[]>;

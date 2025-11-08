@@ -217,6 +217,11 @@ export enum Footer {
 
 export enum Questions {
 	TITLE = 'title',
+	SHORT_ANSWER_TITLE = 'short.answer.title',
+	LONG_ANSWER_TITLE = 'long.answer.title',
+	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
+	ADDITIONAL_INFO_SKILLS = 'additional.info.skills',
+	ADDITIONAL_INFO_KEYWORDS = 'additional.info.keywords',
 	QUESTIONS_TITLE = 'questions_title',
 	QUESTIONS_RATE = 'questions.rate',
 	QUESTIONS_COMPLEXITY = 'questions.complexity',
@@ -283,4 +288,8 @@ export enum Skills {
 	IMAGE_SRC = 'image.src',
 	CREATE_PAGE_TITLE = 'create.page.title',
 	EDIT_PAGE_TITLE = 'edit.page.title',
+}
+
+export enum Guru {
+	BANNER_DESCRIPTION = 'banner.description',
 }

@@ -23,7 +23,7 @@ export const QuestionsFilterPanel = () => {
 	const locale = useLocale();
 
 	const filter: FilterParams = {
-		title: searchParams?.get('title') ?? '',
+		title: searchParams?.get('titleOrDescription') ?? '',
 		skills: searchParams?.get('skills')?.split(',').map(Number),
 		complexity: searchParams?.get('complexity')?.split(',').map(Number),
 		rate: searchParams?.get('rate')?.split(',').map(Number),
@@ -45,7 +45,7 @@ export const QuestionsFilterPanel = () => {
 
 	const getSpecSlugById = (id: number) => Object.entries(SPEC_MAP).find(([, v]) => v === id)?.[0];
 
-	const onChangeSearch = (value: string) => setParam('title', value);
+	const onChangeSearch = (value: string) => setParam('titleOrDescription', value);
 	const onChangeSkills = (skills?: number[]) => setParam('skills', skills);
 	const onChangeComplexity = (val?: number[]) => setParam('complexity', val);
 	const onChangeRate = (rate: number[]) => setParam('rate', rate);
