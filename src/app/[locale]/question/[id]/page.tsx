@@ -2,43 +2,24 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { Question } from '@/entities/question';
-import type { GetQuestionsListResponse } from '@/entities/question';
-import { type QuestionWithSlug, attachQuestionSlugs } from '@/entities/question';
+import { getQuestionById, getQuestionsList } from '@/entities/question';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { locales } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG, SPEC_MAP, getSpecializationSlugById } from '@/shared/libs';
 
-const QUESTIONS_API_URL =
-	'https://api.yeahub.ru/questions/public-questions?page=1&limit=100&skillFilterMode=ANY';
-
 interface PageProps {
-	params: Promise<{ locale: string; slug: string }>;
+	params: Promise<{ locale: string; id: string }>;
 	searchParams: Promise<{ specialization?: string }>;
 }
 
-const fetchQuestions = async () => {
-	const res = await fetch(QUESTIONS_API_URL, {
-		cache: 'force-cache',
-	});
-
-	if (!res.ok) {
-		throw new Error('Failed to load questions', { cause: res });
-	}
-
-	const response = (await res.json()) as GetQuestionsListResponse;
-
-	return attachQuestionSlugs(response.data);
-};
-
 export const generateStaticParams = async () => {
 	try {
-		const questions = await fetchQuestions();
+		const { data } = await getQuestionsList({ page: 1, limit: 100, skillFilterMode: 'ANY' });
 
 		return locales.flatMap((locale) =>
-			questions.map(({ slug }) => ({
+			data.map(({ id }) => ({
 				locale,
-				slug,
+				id: id.toString(),
 			})),
 		);
 	} catch (error) {
@@ -50,27 +31,20 @@ export const generateStaticParams = async () => {
 export const dynamic = 'force-static';
 
 const QuestionPage = async ({ params, searchParams }: PageProps) => {
-	const { locale, slug } = await params;
+	const { locale, id } = await params;
 	const { specialization: specializationQuery } = await searchParams;
 
 	setRequestLocale(locale);
 
-	const questions = await fetchQuestions();
-	const matched = questions.find((question) => question.slug === slug);
-
-	if (!matched) {
+	const questionId = Number(id);
+	if (isNaN(questionId)) {
 		notFound();
 	}
 
-	let question: QuestionWithSlug | Question = matched;
+	const question = await getQuestionById(questionId);
 
-	const detailRes = await fetch(`https://api.yeahub.ru/questions/public-questions/${matched.id}`, {
-		cache: 'force-cache',
-	});
-	if (detailRes.ok) {
-		question = await detailRes.json();
-	} else if (detailRes.status !== 404) {
-		throw new Error('Failed to load question', { cause: detailRes });
+	if (!question) {
+		notFound();
 	}
 
 	const isSpecializationValid =
@@ -87,7 +61,7 @@ const QuestionPage = async ({ params, searchParams }: PageProps) => {
 
 	const questionsRoute = `/${locale}/questions/${specializationSlug}`;
 
-	return <QuestionPageComponent question={question as Question} questionsRoute={questionsRoute} />;
+	return <QuestionPageComponent question={question} questionsRoute={questionsRoute} />;
 };
 
 export default QuestionPage;

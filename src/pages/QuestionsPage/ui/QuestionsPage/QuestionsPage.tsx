@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { GetQuestionsListResponse } from '@/entities/question';
 import { SPEC_MAP } from '@/shared/libs';
+import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { EmptyStub } from '@/shared/ui/EmptyStub';
 import { Flex } from '@/shared/ui/Flex';
@@ -33,9 +34,9 @@ export const QuestionsPage = ({
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
-				<FullQuestionsList questions={questionsResponse.data} specialization={specialization} />
+				<FullQuestionsList questions={questionsResponse} specialization={specialization} />
 
-				{questionsResponse.total > questionsResponse.limit && (
+				{questionsResponse.total > QUESTIONS_PER_PAGE && (
 					<QuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
 				)}
 				{questionsResponse.data.length === 0 && <EmptyStub text={searchParamsTitle} />}

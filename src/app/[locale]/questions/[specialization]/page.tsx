@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListParamsRequest, GetQuestionsListResponse } from '@/entities/question';
-import { attachQuestionSlugs } from '@/entities/question';
+import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
 import { SPEC_MAP } from '@/shared/libs';
@@ -46,19 +45,22 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 	if (rate) qs.set('rate', rate);
 	if (titleOrDescription) qs.set('titleOrDescription', titleOrDescription);
 
-	const res = await fetch(`https://api.yeahub.ru/questions/public-questions?${qs}`, {
-		cache: 'force-cache',
+	const response = await getQuestionsList({
+		page: pageNum,
+		limit: QUESTIONS_PER_PAGE,
+		specialization: specializationId,
+		skills,
+		complexity,
+		rate,
+		titleOrDescription,
+		skillFilterMode: 'ANY',
 	});
-
-	if (!res.ok) throw new Error('Failed to load questions', { cause: res });
-	const questionsResponse = (await res.json()) as GetQuestionsListResponse;
-	const questionsWithSlugs = attachQuestionSlugs(questionsResponse.data);
 
 	return (
 		<QuestionsPage
 			locale={locale}
 			page={pageNum}
-			questionsResponse={{ ...questionsResponse, data: questionsWithSlugs }}
+			questionsResponse={response}
 			specialization={specialization}
 			searchParamsTitle={titleOrDescription}
 		/>

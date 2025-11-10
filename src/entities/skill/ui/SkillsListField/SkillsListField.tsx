@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 
 import { MAX_SHOW_LIMIT_SKILLS } from '../../model/constants/skillConstants';
-import { GetSkillsListResponse } from '../../model/types/skill';
+import { useSkills } from '../../model/hooks/useSkills';
 
 interface SkillsListFieldProps {
 	selectedSkills?: number[];
@@ -30,17 +30,7 @@ export const SkillsListField = ({
 
 	const [showAll, setShowAll] = useState(false);
 	const [limit, setLimit] = useState(MAX_SHOW_LIMIT_SKILLS);
-	const [skills, setSkills] = useState<GetSkillsListResponse | null>(null);
-	const getSkills = async () => {
-		const response = (await fetch(
-			`${process.env.NEXT_PUBLIC_API_URL}skills?limit=${limit}&specializations=${selectedSpecialization || '11'}`,
-		).then((res) => res.json())) as GetSkillsListResponse;
-		setSkills(response);
-	};
-
-	useEffect(() => {
-		void getSkills();
-	}, [limit]);
+	const { data: skills } = useSkills({ limit, specializations: selectedSpecialization });
 
 	const onToggleShowAll = () => {
 		setShowAll(!showAll);

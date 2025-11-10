@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin('./src/shared/config/i18n/i18n.ts');
 
 const nextConfig: NextConfig = {
 	images: {
+		unoptimized: process.env.NODE_ENV === 'development',
 		remotePatterns: [
 			{
 				protocol: 'https',

@@ -4,8 +4,8 @@ export const ROUTES = {
 		route: 'questions',
 		page: '/questions',
 		detail: {
-			route: 'question/:slug',
-			page: '/question/:slug',
+			route: 'question/:id',
+			page: '/question/:id',
 		},
 	},
 	interview: {
