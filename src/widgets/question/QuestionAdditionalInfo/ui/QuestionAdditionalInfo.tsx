@@ -24,7 +24,6 @@ export interface QuestionAdditionalInfoProps {
 	questionSkills: Skill[];
 	createdBy: Author;
 	className?: string;
-	route?: string;
 	showAuthor?: boolean;
 	questionSpecializations: Specialization[];
 }
@@ -36,18 +35,11 @@ export const QuestionAdditionalInfo = async ({
 	keywords,
 	createdBy,
 	className,
-	route,
 	showAuthor = true,
 	questionSpecializations,
 }: QuestionAdditionalInfoProps) => {
 	const t = await getTranslations(i18Namespace.questions);
 	const media = getChannelsForSpecialization(questionSpecializations);
-	const questionsRoute = route ?? '/';
-	let normalizedRoute = questionsRoute;
-
-	if (questionsRoute !== '/' && questionsRoute.endsWith('/')) {
-		normalizedRoute = questionsRoute.slice(0, questionsRoute.length - 1);
-	}
 
 	return (
 		<>
@@ -67,16 +59,13 @@ export const QuestionAdditionalInfo = async ({
 						<Text variant="body3" color="black-700">
 							{t(Questions.ADDITIONAL_INFO_SKILLS)}
 						</Text>
-						<SkillList skills={questionSkills} route={normalizedRoute} />
+						<SkillList skills={questionSkills} />
 					</Flex>
 					<Flex direction="column" gap="8">
 						<Text variant="body3" color="black-700">
 							{t(Questions.ADDITIONAL_INFO_KEYWORDS)}
 						</Text>
-						<KeywordsList
-							keywords={keywords}
-							path={`${normalizedRoute}?page=1&status=all&titleOrDescription=`}
-						/>
+						<KeywordsList keywords={keywords} />
 					</Flex>
 					{media && (
 						<MediaLinksBanner

@@ -9,10 +9,9 @@ import styles from './QuestionPage.module.css';
 
 interface QuestionPageProps {
 	question: Question;
-	questionsRoute: string;
 }
 
-export const QuestionPage = ({ question, questionsRoute }: QuestionPageProps) => {
+export const QuestionPage = ({ question }: QuestionPageProps) => {
 	if (!question) {
 		return null;
 	}
@@ -45,7 +44,6 @@ export const QuestionPage = ({ question, questionsRoute }: QuestionPageProps) =>
 						keywords={keywords}
 						complexity={complexity}
 						questionSkills={questionSkills}
-						route={questionsRoute}
 						questionSpecializations={questionSpecializations}
 					/>
 				</Flex>

@@ -5,11 +5,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { getQuestionById, getQuestionsList } from '@/entities/question';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { locales } from '@/shared/config';
-import { DEFAULT_SPECIALIZATION_SLUG, SPEC_MAP, getSpecializationSlugById } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; id: string }>;
-	searchParams: Promise<{ specialization?: string }>;
 }
 
 export const generateStaticParams = async () => {
@@ -30,9 +28,8 @@ export const generateStaticParams = async () => {
 
 export const dynamic = 'force-static';
 
-const QuestionPage = async ({ params, searchParams }: PageProps) => {
+const QuestionPage = async ({ params }: PageProps) => {
 	const { locale, id } = await params;
-	const { specialization: specializationQuery } = await searchParams;
 
 	setRequestLocale(locale);
 
@@ -47,21 +44,7 @@ const QuestionPage = async ({ params, searchParams }: PageProps) => {
 		notFound();
 	}
 
-	const isSpecializationValid =
-		specializationQuery && Object.prototype.hasOwnProperty.call(SPEC_MAP, specializationQuery);
-
-	const fallbackSpecializationSlug =
-		question.questionSpecializations?.[0] &&
-		getSpecializationSlugById(question.questionSpecializations[0].id);
-
-	const specializationSlug =
-		(isSpecializationValid ? (specializationQuery as keyof typeof SPEC_MAP) : undefined) ??
-		fallbackSpecializationSlug ??
-		DEFAULT_SPECIALIZATION_SLUG;
-
-	const questionsRoute = `/${locale}/questions/${specializationSlug}`;
-
-	return <QuestionPageComponent question={question} questionsRoute={questionsRoute} />;
+	return <QuestionPageComponent question={question} />;
 };
 
 export default QuestionPage;

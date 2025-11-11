@@ -1,92 +1,42 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import { ChooseQuestionComplexity, RateFilterSection } from '@/entities/question';
 import { SkillsListField } from '@/entities/skill';
-import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationsListField } from '@/entities/specialization';
+import { MediaLinksBanner } from '@/entities/socialMedia';
+import { SpecializationsListField } from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
-import { useDebounce } from '@/shared/libs';
-import { SPEC_MAP } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
-import type { FilterParams } from '@/widgets/question/QuestionsFilterPanel';
+
+import { useQuestionsFilter } from './model/useQuestionsFilter';
 
 export const QuestionsFilterPanel = () => {
 	const t = useTranslations(i18Namespace.questions);
-	const router = useRouter();
-	const pathname = usePathname();
-	const searchParams = useSearchParams();
-	const locale = useLocale();
-
-	const filter: FilterParams = {
-		title: searchParams?.get('titleOrDescription') ?? '',
-		skills: searchParams?.get('skills')?.split(',').map(Number),
-		complexity: searchParams?.get('complexity')?.split(',').map(Number),
-		rate: searchParams?.get('rate')?.split(',').map(Number),
-		status: 'all',
-		specialization:
-			SPEC_MAP[(pathname?.split('/')[3] as keyof typeof SPEC_MAP | undefined) ?? 'react-developer'],
-	};
-
-	const setParam = (key: string, value?: string | number | number[]) => {
-		const params = new URLSearchParams(searchParams?.toString() ?? '');
-		if (!value || (Array.isArray(value) && value.length === 0)) {
-			params.delete(key);
-		} else {
-			params.set(key, Array.isArray(value) ? value.join(',') : value.toString());
-		}
-		params.delete('page');
-		router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-	};
-
-	const getSpecSlugById = (id: number) => Object.entries(SPEC_MAP).find(([, v]) => v === id)?.[0];
-
-	const onChangeSearch = (value: string) => setParam('titleOrDescription', value);
-	const onChangeSkills = (skills?: number[]) => setParam('skills', skills);
-	const onChangeComplexity = (val?: number[]) => setParam('complexity', val);
-	const onChangeRate = (rate: number[]) => setParam('rate', rate);
-	const onChangeSpecialization = (newId?: number) => {
-		if (!newId) return;
-
-		const slug = getSpecSlugById(newId);
-		if (!slug) return;
-
-		router.push(`/${locale}/questions/${slug}`, { scroll: false });
-	};
-
-	const debouncedSearch = useDebounce(onChangeSearch, 500);
-
-	const selectedSpecialization = Array.isArray(filter.specialization)
-		? filter.specialization[0]
-		: filter.specialization;
-
-	const media = getChannelsForSpecialization(selectedSpecialization ?? DEFAULT_SPECIALIZATION_ID);
+	const { filter, selectedSpecialization, media, handlers } = useQuestionsFilter();
 
 	return (
 		<Flex direction="column" gap="24">
 			<SearchInput
 				placeholder={t(Questions.QUESTIONS_SEARCH_PLACEHOLDER)}
-				onSearch={debouncedSearch}
+				onSearch={handlers.onSearch}
 				currentValue={filter.title}
 			/>
 			<SpecializationsListField
-				selectedSpecialization={selectedSpecialization || DEFAULT_SPECIALIZATION_ID}
-				onChangeSpecialization={onChangeSpecialization}
+				selectedSpecialization={selectedSpecialization}
+				onChangeSpecialization={handlers.onChangeSpecialization}
 			/>
 			<SkillsListField
 				selectedSkills={filter.skills}
-				onChangeSkills={onChangeSkills}
-				selectedSpecialization={selectedSpecialization || DEFAULT_SPECIALIZATION_ID}
+				onChangeSkills={handlers.onChangeSkills}
+				selectedSpecialization={selectedSpecialization}
 			/>
 			<ChooseQuestionComplexity
-				onChangeComplexity={onChangeComplexity}
+				onChangeComplexity={handlers.onChangeComplexity}
 				selectedComplexity={filter.complexity}
 			/>
-			<RateFilterSection onChangeRate={onChangeRate} selectedRate={filter.rate} />
+			<RateFilterSection onChangeRate={handlers.onChangeRate} selectedRate={filter.rate} />
 			{media && <MediaLinksBanner mediaLink={media} />}
 		</Flex>
 	);
