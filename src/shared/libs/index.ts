@@ -1,6 +1,7 @@
 export { type Pallete, type Response, type Author } from './types';
 
 export {
+	COUNT_TO_GET_QUESTIONS_FOR_SSG,
 	DEFAULT_SPECIALIZATION_NUMBER,
 	MAX_LIMIT_CATEGORIES,
 	MAX_CHOOSE_QUESTION_COUNT,

@@ -5,6 +5,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getQuestionById, getQuestionsList } from '@/entities/question';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { locales } from '@/shared/config';
+import { COUNT_TO_GET_QUESTIONS_FOR_SSG } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; id: string }>;
@@ -12,7 +13,11 @@ interface PageProps {
 
 export const generateStaticParams = async () => {
 	try {
-		const { data } = await getQuestionsList({ page: 1, limit: 100, skillFilterMode: 'ANY' });
+		const { data } = await getQuestionsList({
+			page: 1,
+			limit: COUNT_TO_GET_QUESTIONS_FOR_SSG,
+			skillFilterMode: 'ANY',
+		});
 
 		return locales.flatMap((locale) =>
 			data.map(({ id }) => ({
