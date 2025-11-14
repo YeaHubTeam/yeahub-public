@@ -17,3 +17,4 @@ export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
+export { parseNumberArray } from './fp/parseNumberArray';

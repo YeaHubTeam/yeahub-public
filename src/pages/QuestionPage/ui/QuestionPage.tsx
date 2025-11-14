@@ -17,7 +17,6 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 	}
 
 	const {
-		createdBy,
 		rate,
 		keywords,
 		complexity,
@@ -40,7 +39,6 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 				<Flex direction="column" gap="20" className={styles.additional}>
 					<QuestionAdditionalInfo
 						rate={rate}
-						createdBy={createdBy}
 						keywords={keywords}
 						complexity={complexity}
 						questionSkills={questionSkills}

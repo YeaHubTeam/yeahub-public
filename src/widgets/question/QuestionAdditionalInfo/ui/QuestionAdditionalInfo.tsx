@@ -9,7 +9,6 @@ import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socia
 import { Specialization } from '@/entities/specialization/@x/question';
 import { i18Namespace } from '@/shared/config';
 import { Questions } from '@/shared/config';
-import { Author, AuthorInfo } from '@/shared/ui/AuthorInfo';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { KeywordsList } from '@/shared/ui/KeywordsList';
@@ -22,9 +21,7 @@ export interface QuestionAdditionalInfoProps {
 	complexity: number;
 	keywords: string[];
 	questionSkills: Skill[];
-	createdBy: Author;
 	className?: string;
-	showAuthor?: boolean;
 	questionSpecializations: Specialization[];
 }
 
@@ -33,9 +30,7 @@ export const QuestionAdditionalInfo = async ({
 	complexity,
 	questionSkills,
 	keywords,
-	createdBy,
 	className,
-	showAuthor = true,
 	questionSpecializations,
 }: QuestionAdditionalInfoProps) => {
 	const t = await getTranslations(i18Namespace.questions);
@@ -78,7 +73,6 @@ export const QuestionAdditionalInfo = async ({
 					)}
 				</Flex>
 			</Card>
-			{showAuthor && createdBy && <AuthorInfo createdBy={createdBy} isCenter />}
 		</>
 	);
 };

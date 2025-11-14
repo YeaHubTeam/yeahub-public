@@ -15,7 +15,7 @@ interface GuruSocialsListProps {
 export const GuruSocialsList = ({ socials }: GuruSocialsListProps) => {
 	return (
 		<Flex gap="12">
-			<Link href={route(ROUTES.users.page, socials.profileId)}>
+			<Link href={route(ROUTES.appRoute, socials.profileId)}>
 				<Icon
 					icon="userCheckWithBackground"
 					color="purple-700"

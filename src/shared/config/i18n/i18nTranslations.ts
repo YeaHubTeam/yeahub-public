@@ -7,6 +7,7 @@ export enum Translation {
 
 	/* Stub */
 	STUB_FILTER_TITLE = 'stub.filter.text',
+	RESET_FILTERS = 'stub.filter.submit',
 }
 
 export enum Header {

@@ -10,7 +10,7 @@ import { Questions, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useQuestionsFilter } from './model/useQuestionsFilter';
+import { useQuestionsFilter } from '../../model/api/useQuestionsFilter';
 
 export const QuestionsFilterPanel = () => {
 	const t = useTranslations(i18Namespace.questions);

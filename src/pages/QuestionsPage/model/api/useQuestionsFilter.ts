@@ -8,20 +8,9 @@ import { useLocale } from 'next-intl';
 
 import { getChannelsForSpecialization } from '@/entities/socialMedia';
 import { DEFAULT_SPECIALIZATION_ID } from '@/entities/specialization';
-import { useDebounce } from '@/shared/libs';
+import { parseNumberArray, useDebounce } from '@/shared/libs';
 import { SPEC_MAP } from '@/shared/libs';
 import type { FilterParams } from '@/widgets/question/QuestionsFilterPanel';
-
-const parseNumberArray = (value: string | null) => {
-	if (!value) return undefined;
-
-	const parsed = value
-		.split(',')
-		.map((item) => Number(item))
-		.filter((item) => Number.isFinite(item));
-
-	return parsed.length > 0 ? parsed : undefined;
-};
 
 const findSpecializationSlugById = (id: number) => {
 	const entry = Object.entries(SPEC_MAP).find(([, value]) => value === id);

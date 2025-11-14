@@ -46,7 +46,7 @@ export const EmptyStub = ({ text }: EmptyStubProps) => {
 				onClick={resetFilters}
 				className={styles.button}
 			>
-				{'resetFilters'}
+				{t(Translation.RESET_FILTERS)}
 			</Button>
 		</>
 	);

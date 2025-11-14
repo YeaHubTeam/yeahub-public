@@ -2,8 +2,6 @@ import classNames from 'classnames';
 
 import { QuestionGradeListSkeleton } from '@/entities/question';
 import { SkillListSkeleton } from '@/entities/skill';
-import { useScreenSize } from '@/shared/libs';
-import { AuthorInfoSkeleton } from '@/shared/ui/AuthorInfo/AuthorInfo.skeleton';
 import { CardSkeleton } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { KeywordsListSkeleton } from '@/shared/ui/KeywordsList';
@@ -15,8 +13,6 @@ import styles from './QuestionAdditionalInfo.module.css';
 export const QuestionAdditionalInfoSkeleton = ({
 	className,
 }: Partial<QuestionAdditionalInfoProps>) => {
-	const { isMobile, isTablet } = useScreenSize();
-
 	return (
 		<>
 			<CardSkeleton className={classNames(styles['normal-height'], className)} withOutsideShadow>
@@ -35,7 +31,6 @@ export const QuestionAdditionalInfoSkeleton = ({
 					</Flex>
 				</Flex>
 			</CardSkeleton>
-			{!isMobile && !isTablet && <AuthorInfoSkeleton isCenter />}
 		</>
 	);
 };

@@ -60,7 +60,9 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 		<QuestionsPage
 			locale={locale}
 			page={pageNum}
-			questionsResponse={response}
+			questions={response?.data || []}
+			total={response?.total || 0}
+			limit={response?.limit || 0}
 			specialization={specialization}
 			searchParamsTitle={titleOrDescription}
 		/>

@@ -4,19 +4,23 @@ import React from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { GetQuestionsListResponse } from '@/entities/question';
+import { Question } from '@/entities/question';
 import { Flex } from '@/shared/ui/Flex';
 import { Pagination } from '@/shared/ui/Pagination';
 
 import styles from './QuestionPagePagination.module.css';
 
 interface QuestionPagePaginationProps {
-	questionsResponse: GetQuestionsListResponse;
+	questions: Question[];
+	total: number;
+	limit: number;
 	currentPage: number;
 }
 
 export const QuestionPagePagination = ({
-	questionsResponse,
+	questions,
+	total,
+	limit,
 	currentPage,
 }: QuestionPagePaginationProps) => {
 	const router = useRouter();
@@ -36,7 +40,7 @@ export const QuestionPagePagination = ({
 	};
 
 	const onNextPageClick = () => {
-		const totalPages = Math.ceil(questionsResponse?.total / questionsResponse?.limit);
+		const totalPages = Math.ceil(total / limit);
 		if (currentPage < totalPages) {
 			navigateToPage(currentPage + 1);
 		}
@@ -46,11 +50,11 @@ export const QuestionPagePagination = ({
 		navigateToPage(newPage);
 	};
 
-	if (!questionsResponse?.data || questionsResponse.data.length === 0) {
+	if (!questions || questions.length === 0) {
 		return null;
 	}
 
-	const totalPages = Math.ceil(questionsResponse.total / questionsResponse.limit);
+	const totalPages = Math.ceil(total / limit);
 
 	return (
 		<Flex justify="center" className={styles.wrapper}>

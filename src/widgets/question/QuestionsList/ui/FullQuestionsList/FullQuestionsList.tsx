@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { GetQuestionsListResponse } from '@/entities/question';
+import { Question } from '@/entities/question';
 import { Questions as QuestionsTranslations, i18Namespace } from '@/shared/config';
 import { SPEC_MAP, SPEC_MAP_TO_TITLE } from '@/shared/libs';
 import { Accordion } from '@/shared/ui/Accordion';
@@ -10,7 +10,7 @@ import { FullQuestionItem } from '../FullQuestionItem/FullQuestionItem';
 import styles from './FullQuestionsList.module.css';
 
 interface FullQuestionsListProps {
-	questions: GetQuestionsListResponse;
+	questions: Question[];
 	specialization: keyof typeof SPEC_MAP;
 }
 
@@ -29,7 +29,7 @@ export const FullQuestionsList = ({ questions, specialization }: FullQuestionsLi
 				</Text>
 			</div>
 			<hr className={styles.divider} />
-			{questions.data.map((question) => (
+			{questions.map((question) => (
 				<Accordion key={question.id} title={question.title} className={styles.gap}>
 					<FullQuestionItem question={question} specialization={specialization} />
 				</Accordion>
