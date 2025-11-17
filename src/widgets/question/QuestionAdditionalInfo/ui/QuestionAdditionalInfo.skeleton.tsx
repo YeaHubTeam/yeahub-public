@@ -1,0 +1,36 @@
+import classNames from 'classnames';
+
+import { QuestionGradeListSkeleton } from '@/entities/question';
+import { SkillListSkeleton } from '@/entities/skill';
+import { CardSkeleton } from '@/shared/ui/Card';
+import { Flex } from '@/shared/ui/Flex';
+import { KeywordsListSkeleton } from '@/shared/ui/KeywordsList';
+import { TextSkeleton } from '@/shared/ui/Text';
+
+import { QuestionAdditionalInfoProps } from './QuestionAdditionalInfo';
+import styles from './QuestionAdditionalInfo.module.css';
+
+export const QuestionAdditionalInfoSkeleton = ({
+	className,
+}: Partial<QuestionAdditionalInfoProps>) => {
+	return (
+		<>
+			<CardSkeleton className={classNames(styles['normal-height'], className)} withOutsideShadow>
+				<Flex direction="column" gap="24">
+					<Flex direction="column" gap="16">
+						<TextSkeleton variant="body3" width={150} />
+						<QuestionGradeListSkeleton />
+					</Flex>
+					<Flex direction="column" gap="16">
+						<TextSkeleton variant="body3" width={150} />
+						<SkillListSkeleton />
+					</Flex>
+					<Flex direction="column" gap="16">
+						<TextSkeleton variant="body3" width={150} />
+						<KeywordsListSkeleton />
+					</Flex>
+				</Flex>
+			</CardSkeleton>
+		</>
+	);
+};

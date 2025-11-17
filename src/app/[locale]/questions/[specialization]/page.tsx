@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListParamsRequest, GetQuestionsListResponse } from '@/entities/question';
+import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
 import { SPEC_MAP } from '@/shared/libs';
@@ -26,7 +26,7 @@ export const generateStaticParams = () => {
 
 const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
-	const { title, skills, complexity, rate, page = '1' } = await searchParams;
+	const { titleOrDescription, skills, complexity, rate, page = '1' } = await searchParams;
 
 	const pageNum = Number(page);
 
@@ -43,22 +43,28 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 	if (skills) qs.set('skills', skills.toString());
 	if (complexity) qs.set('complexity', complexity);
 	if (rate) qs.set('rate', rate);
-	if (title) qs.set('title', title);
+	if (titleOrDescription) qs.set('titleOrDescription', titleOrDescription);
 
-	const res = await fetch(`https://api.yeahub.ru/questions/public-questions?${qs}`, {
-		cache: 'force-cache',
+	const response = await getQuestionsList({
+		page: pageNum,
+		limit: QUESTIONS_PER_PAGE,
+		specialization: specializationId,
+		skills,
+		complexity,
+		rate,
+		titleOrDescription,
+		skillFilterMode: 'ANY',
 	});
-
-	if (!res.ok) throw new Error('Failed to load questions', { cause: res });
-	const questions = (await res.json()) as GetQuestionsListResponse;
 
 	return (
 		<QuestionsPage
 			locale={locale}
 			page={pageNum}
-			questionsResponse={questions}
+			questions={response?.data || []}
+			total={response?.total || 0}
+			limit={response?.limit || 0}
 			specialization={specialization}
-			searchParamsTitle={title}
+			searchParamsTitle={titleOrDescription}
 		/>
 	);
 };

@@ -9,6 +9,7 @@ export {
 	Media,
 	Specializations,
 	Skills,
+	Guru,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

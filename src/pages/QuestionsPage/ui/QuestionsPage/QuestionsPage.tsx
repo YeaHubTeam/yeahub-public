@@ -2,8 +2,9 @@ import React from 'react';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { GetQuestionsListResponse } from '@/entities/question';
+import { Question } from '@/entities/question';
 import { SPEC_MAP } from '@/shared/libs';
+import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { EmptyStub } from '@/shared/ui/EmptyStub';
 import { Flex } from '@/shared/ui/Flex';
@@ -16,7 +17,9 @@ import styles from './QuestionsPage.module.css';
 interface QuestionsPageProps {
 	locale: string;
 	page: number;
-	questionsResponse: GetQuestionsListResponse;
+	questions: Question[];
+	total: number;
+	limit: number;
 	specialization: keyof typeof SPEC_MAP;
 	searchParamsTitle: string | undefined;
 }
@@ -24,7 +27,9 @@ interface QuestionsPageProps {
 export const QuestionsPage = ({
 	locale,
 	page,
-	questionsResponse,
+	questions,
+	total,
+	limit,
 	specialization,
 	searchParamsTitle,
 }: QuestionsPageProps) => {
@@ -33,12 +38,17 @@ export const QuestionsPage = ({
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
-				<FullQuestionsList questions={questionsResponse.data} specialization={specialization} />
+				<FullQuestionsList questions={questions} specialization={specialization} />
 
-				{questionsResponse.total > questionsResponse.limit && (
-					<QuestionPagePagination questionsResponse={questionsResponse} currentPage={page} />
+				{total > QUESTIONS_PER_PAGE && (
+					<QuestionPagePagination
+						questions={questions}
+						total={total}
+						limit={limit}
+						currentPage={page}
+					/>
 				)}
-				{questionsResponse.data.length === 0 && <EmptyStub text={searchParamsTitle} />}
+				{questions.length === 0 && <EmptyStub text={searchParamsTitle} />}
 			</Card>
 			<Card className={styles.filters}>
 				<QuestionsFilterPanel />

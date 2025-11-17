@@ -9,5 +9,22 @@
 	},
 	"search": {
 		"placeholder": "Enter question..."
+	},
+	"short": {
+		"answer": {
+			"title": "Short answer"
+		}
+	},
+	"long": {
+		"answer": {
+			"title": "Long answer"
+		}
+	},
+	"additional": {
+		"info": {
+			"level": "Level",
+			"skills": "Skills",
+			"keywords": "Keywords"
+		}
 	}
 }

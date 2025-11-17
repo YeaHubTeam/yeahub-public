@@ -13,7 +13,7 @@ import {
 	DEFAULT_SPECIALIZATION_ID,
 	MAX_SHOW_LIMIT_SPECIALIZATIONS,
 } from '../../model/constants/specializationConstants';
-import { GetSpecializationsListResponse } from '../../model/types/specialization';
+import { useSpecializations } from '../../model/hooks/useSpecializations';
 
 interface SpecializationsListFieldProps {
 	selectedSpecialization?: number;
@@ -29,32 +29,22 @@ export const SpecializationsListField = ({
 
 	const [showAll, setShowAll] = useState(false);
 	const [limit, setLimit] = useState(MAX_SHOW_LIMIT_SPECIALIZATIONS);
-	const [specializations, setSpecializations] = useState<GetSpecializationsListResponse | null>(
-		null,
-	);
 
-	const getSpecializations = async () => {
-		const response = (await fetch(
-			`${process.env.NEXT_PUBLIC_API_URL}specializations?limit=${limit}`,
-		).then((res) => res.json())) as GetSpecializationsListResponse;
-		setSpecializations(response);
-	};
+	const { data: specializations } = useSpecializations({ limit });
 
 	useEffect(() => {
-		void getSpecializations();
-	}, [limit]);
+		if (showAll) {
+			const total = specializations?.total ?? MAX_SHOW_LIMIT_SPECIALIZATIONS;
+
+			setLimit(total);
+		} else {
+			setLimit(MAX_SHOW_LIMIT_SPECIALIZATIONS);
+		}
+	}, [showAll, specializations?.total]);
 
 	const onToggleShowAll = () => {
 		setShowAll(!showAll);
 	};
-
-	useEffect(() => {
-		if (showAll) {
-			setLimit((limit) => specializations?.total ?? limit);
-		} else {
-			setLimit(MAX_SHOW_LIMIT_SPECIALIZATIONS);
-		}
-	}, [limit, specializations?.total, showAll]);
 
 	const onChooseSpecialization = (id: number) => {
 		onChangeSpecialization(id);
