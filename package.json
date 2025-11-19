@@ -28,7 +28,8 @@
 		"next-intl": "^4.3.9",
 		"react": "19.1.0",
 		"react-dom": "19.1.0",
-		"react-redux": "^9.2.0"
+		"react-redux": "^9.2.0",
+		"react-responsive": "^10.0.1"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.1",
