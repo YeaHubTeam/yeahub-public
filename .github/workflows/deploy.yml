@@ -53,15 +53,23 @@ jobs:
         run: |
           if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
             IMAGE_TAG=${{ steps.docker_tag_dev.outputs.IMAGE_TAG }}
+            NODE_ENV_ARG=development
+            NEXT_PUBLIC_API_URL_ARG=http://api.yeatwork.ru/
+            NEXT_PUBLIC_SITE_URL_ARG=http://yeatwork.ru/
           else
             IMAGE_TAG=${{ steps.docker_tag_prod.outputs.IMAGE_TAG }}
+            NODE_ENV_ARG=production
+            NEXT_PUBLIC_API_URL_ARG=https://api.yeahub.ru/
+            NEXT_PUBLIC_SITE_URL_ARG=https://yeahub.ru/
           fi
 
           docker build \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG \
-            --build-arg PORT=3000 \
-            --build-arg NODE_ENV=production \
+            --build-arg NODE_ENV=$NODE_ENV_ARG \
+            --build-arg NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_ARG \
+            --build-arg NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL_ARG \
             .
+
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG
 
       # ================== Checkout Helm repo ==================
