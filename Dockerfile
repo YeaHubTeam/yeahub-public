@@ -1,35 +1,31 @@
-# 1. Используем официальный Node.js образ для сборки
+# 1. Build stage
 FROM node:20-alpine AS builder
 
-# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json (или yarn.lock)
 COPY package*.json ./
-
-# Устанавливаем зависимости
 RUN npm ci
 
-# Копируем исходники
 COPY . .
-
-# Сборка проекта
 RUN npm run build
 
-# 2. Минимальный runtime контейнер
+# 2. Runtime
 FROM node:20-alpine AS runner
 
-# Рабочая директория для runtime
 WORKDIR /app
 
-# Копируем только необходимые файлы из сборки standalone
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+ENV NODE_ENV=production
 
-# Порт приложения
+# Копируем всё, что нужно для запуска приложения
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+
 EXPOSE 3000
 
-# Запуск
-CMD ["node", "server.js"]
+# ВАЖНО: Next.js 15+ запускается через файл app.mjs
+CMD ["node", ".next/server/app.mjs"]
+
 
 
