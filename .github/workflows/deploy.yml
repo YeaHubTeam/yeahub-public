@@ -53,9 +53,9 @@ jobs:
         run: |
           if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
             IMAGE_TAG=${{ steps.docker_tag_dev.outputs.IMAGE_TAG }}
-            NODE_ENV_ARG=development
-            NEXT_PUBLIC_API_URL_ARG=http://api.yeatwork.ru/
-            NEXT_PUBLIC_SITE_URL_ARG=http://yeatwork.ru/
+            NODE_ENV_ARG=production
+            NEXT_PUBLIC_API_URL_ARG=https://api.yeatwork.ru/
+            NEXT_PUBLIC_SITE_URL_ARG=https://yeatwork.ru/
           else
             IMAGE_TAG=${{ steps.docker_tag_prod.outputs.IMAGE_TAG }}
             NODE_ENV_ARG=production
