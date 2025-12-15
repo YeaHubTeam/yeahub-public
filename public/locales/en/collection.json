@@ -1,0 +1,89 @@
+{
+	"title": {
+		"full": "Collection name",
+		"short": "Name",
+		"label": "Add collection name"
+	},
+	"description": {
+		"full": "Collection description",
+		"short": "Описание",
+		"label": "Add description",
+		"placeholder": "Collection description"
+	},
+	"icon": {
+		"title": "Collection image",
+		"title-short": "Image",
+		"label": "Add collection image"
+	},
+	"tariff": {
+		"chooseCollections": "Collections",
+		"label": "Select option",
+		"paid": "For participants",
+		"free": "For all"
+	},
+	"specialization": {
+		"title": "Specialization",
+		"label": "Select corresponding specialization"
+	},
+	"keywords": {
+		"title": "Keywords",
+		"label": "Add keywords to text"
+	},
+	"tags": {
+		"title": "Tags"
+	},
+	"access": "Access",
+	"specializations": {
+		"show-all": "Show all",
+		"hide": "Hide"
+	},
+	"tooltip": {
+		"title": "There is already an active interview",
+		"aria-label": "Warning: you cannot create a new interview because there is already an active one"
+	},
+	"search":{
+		"placeholder": "Enter query..."
+	},
+	"questions": {
+		"short": "Questions",
+		"label": "Add questions",
+		"selected": "Selected questions: {count}",
+		"length": "{count, plural, one {# question} few {# questions} many {# questions} other {# question}}"
+	},
+	"image-src": "Image link",
+	"create-page-title": "Collection",
+	"image-alt": "Company image",
+	"numberOfQuestions": "Number of questions",
+	"collections": {
+		"title": "Collections",
+		"detail": "More",
+		"train": "Train"
+	},
+	"navigation": {
+		"previous": "Previous",
+		"next": "Next"
+	},
+	"empty": "Collections will appear here soon",
+	"additional": {
+		"aria-label": "Go to additional information"
+	},
+	"warning": {
+		"intro": "This section is created by candidates for candidates. We share real interview questions to help you prepare more effectively — understand what topics are really important, develop skills, and feel more confident.",
+		"disclaimer": "It is important to note: we have no relationship with these companies and do not try to interfere in their hiring processes. All questions are collected from open sources and the personal experience of job seekers. Our goal is to make preparation more conscious, not to give ready answers."
+	},
+	"banner-interview": {
+		"title": "Interview recordings",
+		"description": "1000+ real interview recordings",
+		"link": "Join",
+		"watch-button": "Interview channel"
+	},
+	"stub-empty": {
+		"title": "It seems there are no collections here yet",
+		"subtitle": "Collections are periodically added, just need to wait a little bit"
+	},
+	"sort": {
+		"author": {
+			"title": "My collections"
+		}
+	}
+}
