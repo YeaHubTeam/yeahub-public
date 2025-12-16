@@ -11,3 +11,7 @@ export * from './api/getCollections';
 export { ChooseCollectionAccess } from './ui/ChooseCollectionAccess/ChooseCollectionAccess';
 export { CollectionPreview } from './ui/CollectionPreview/CollectionPreview';
 export { CollectionsPreviewSkeleton } from './ui/CollectionPreview/CollectionPreview.skeleton';
+export { CollectionAccessInfo } from './ui/CollectionAccessInfo/CollectionAccessInfo';
+export { CollectionCompanyInfo } from './ui/CollectionCompanyInfo/CollectionCompanyInfo';
+export { CollectionQuestionsCount } from './ui/CollectionQuestionsCount/CollectionQuestionsCount';
+export { CollectionWarningInfo } from './ui/CollectionWarningInfo/CollectionWarningInfo';

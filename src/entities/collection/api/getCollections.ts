@@ -1,3 +1,5 @@
+/* eslint-disable @conarti/feature-sliced/layers-slices */
+import { GetQuestionsListResponse } from '@/entities/question/@x/collection';
 import { apiFetch } from '@/shared/api';
 
 import type {
@@ -8,6 +10,7 @@ import type {
 
 const COLLECTIONS_BASE = 'collections/public';
 const COLLECTION_BASE = 'collections';
+const COLLECTION_QUESTIONS_BASE = 'questions/public-questions';
 
 export async function getCollectionsList(params: GetCollectionsListParamsRequest) {
 	return apiFetch<GetCollectionsListResponse>(COLLECTIONS_BASE, {
@@ -21,4 +24,10 @@ export async function getCollectionsList(params: GetCollectionsListParamsRequest
 
 export async function getCollectionById(id: number) {
 	return apiFetch<Collection>(`${COLLECTION_BASE}/${id}/public`);
+}
+
+export async function getCollectionQuestions(id: number, limit: number) {
+	return apiFetch<GetQuestionsListResponse>(
+		`${COLLECTION_QUESTIONS_BASE}?skillFilterMode=ANY&collection=${id}&limit=${limit}`,
+	);
 }

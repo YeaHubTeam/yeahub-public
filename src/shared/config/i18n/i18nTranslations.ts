@@ -17,6 +17,9 @@ export enum Translation {
 	ACCESS_DENIED_TITLE = 'access.denied.title',
 	ACCESS_DENIED_DESCRIPTION = 'access.denied.description',
 	ACCESS_DENIED_BUTTON = 'access.denied.button',
+
+	QUESTIONS_COUNT_AVAILABLE_AUTHORIZED = 'questions-count-available',
+	LOGIN_REGISTER_LINK = 'banner-authorized',
 }
 
 export enum Header {
@@ -64,12 +67,16 @@ export enum Questions {
 	QUESTIONS_STATUS_ALL = 'questions.status.all',
 	QUESTIONS_STATUS_FAVORITE = 'questions.status.favorite',
 	QUESTIONS_STATUS_TITLE = 'questions.status.title',
+	PREVIEW_TITLE = 'preview.title',
+	COMMUNITY_JOIN = 'community.join',
+	PREVIEW_LOCKED_COLLECTION = 'preview.locked.collection',
+	PREVIEW_EMPTY_COLLECTION = 'preview.empty.collection',
 }
 
 export enum Media {
 	MEDIA_LINK_START = 'label.start',
 	MEDIA_LINK_END = 'label.end',
-	GURU_DESCRIPTION = 'guru.description',
+	GURU_DESCRIPTION = 'banner.description',
 	TELEGRAM_SUBSCRIBE = 'telegram.subscribe',
 	TELEGRAM_DESCRIPTION = 'telegram.description',
 }

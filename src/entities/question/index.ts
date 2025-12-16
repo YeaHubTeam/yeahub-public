@@ -10,3 +10,4 @@ export { ChooseQuestionComplexity } from './ui/ChooseQuestionComplexity/ChooseQu
 export { RateFilterSection } from './ui/RateFilterSection/RateFilterSection';
 export { getQuestionImage } from './model/lib/getQuestionImage';
 export { getQuestionsList, getQuestionById } from './api/getQuestions';
+export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestionsItem';

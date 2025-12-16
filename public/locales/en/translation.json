@@ -23,5 +23,7 @@
 			"description": "You do not have access to view this section, if you think this is an error, please contact support",
 			"button": "Return to the main page"
 		}
-	}
+	},
+	"questions-count-available": "{count, plural, one {# more question is available for registered users} other {# more questions are available for registered users}}",
+	"banner-authorized": "Register"
 }
