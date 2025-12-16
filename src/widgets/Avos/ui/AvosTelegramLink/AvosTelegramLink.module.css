@@ -1,0 +1,20 @@
+.button {
+	margin-top: 20px;
+	width: 240px;
+}
+
+.button-skeleton {
+	margin-top: auto;
+}
+
+@media (width < 1024px) {
+	.button-skeleton {
+		margin-top: 20px;
+	}
+}
+
+@media (width < 480px) {
+	.button {
+		width: 100%;
+	}
+}

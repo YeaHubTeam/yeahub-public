@@ -18,3 +18,4 @@ export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
+export { AVOS_TELEGRAM_URL } from './app';
