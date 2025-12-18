@@ -7,7 +7,7 @@ export const ROUTES = {
 		page: '/questions',
 		detail: {
 			route: 'question/:id',
-			page: '/question/',
+			page: '/question/:id',
 		},
 	},
 	interview: {

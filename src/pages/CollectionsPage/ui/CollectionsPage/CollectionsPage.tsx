@@ -4,7 +4,6 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { Collection } from '@/entities/collection';
 import { SPEC_MAP } from '@/shared/libs';
-import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { CollectionsList } from '@/widgets/Collection';
@@ -42,14 +41,7 @@ export const CollectionsPage = ({
 					hasFilters={hasFilters}
 				/>
 
-				{total > QUESTIONS_PER_PAGE && (
-					<CollectionsPagePagination
-						collections={collections}
-						total={total}
-						limit={limit}
-						currentPage={page}
-					/>
-				)}
+				<CollectionsPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>
 			<Card className={styles.filters}>
 				<CollectionsFilterPanel />

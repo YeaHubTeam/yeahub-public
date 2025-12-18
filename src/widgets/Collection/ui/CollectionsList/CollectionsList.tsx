@@ -31,7 +31,7 @@ export const CollectionsList = ({
 	return (
 		<>
 			<Flex className={styles.header} direction="row" justify="between">
-				<Text variant="head1" className={styles.title}>
+				<Text variant="body6" isMainTitle>
 					{t(Collections.COLLECTIONS_TITLE)}
 				</Text>
 			</Flex>

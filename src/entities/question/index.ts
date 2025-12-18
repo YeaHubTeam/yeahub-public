@@ -9,5 +9,5 @@ export { QuestionGradeListSkeleton } from './ui/QuestionGradeList/QuestionGradeL
 export { ChooseQuestionComplexity } from './ui/ChooseQuestionComplexity/ChooseQuestionComplexity';
 export { RateFilterSection } from './ui/RateFilterSection/RateFilterSection';
 export { getQuestionImage } from './model/lib/getQuestionImage';
-export { getQuestionsList, getQuestionById } from './api/getQuestions';
+export { getQuestionsList, getQuestionById, getCollectionQuestions } from './api/getQuestions';
 export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestionsItem';

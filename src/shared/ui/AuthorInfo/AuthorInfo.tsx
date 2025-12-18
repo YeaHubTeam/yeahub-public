@@ -5,14 +5,9 @@ import { useTranslations } from 'next-intl';
 import { i18Namespace } from '@/shared/config';
 import { Translation } from '@/shared/config';
 import { ROUTES } from '@/shared/config';
-import { route } from '@/shared/libs';
+import { Author, route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
-
-export interface Author {
-	id: string;
-	username: string;
-}
 
 export interface AuthorInfoProps {
 	createdBy: Author;

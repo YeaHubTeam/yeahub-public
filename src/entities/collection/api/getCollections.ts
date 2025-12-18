@@ -1,19 +1,15 @@
-/* eslint-disable @conarti/feature-sliced/layers-slices */
-import { GetQuestionsListResponse } from '@/entities/question/@x/collection';
 import { apiFetch } from '@/shared/api';
+import { route } from '@/shared/libs';
 
+import { collectionApiUrls } from '../model/constants/collection';
 import type {
 	Collection,
 	GetCollectionsListParamsRequest,
 	GetCollectionsListResponse,
 } from '../model/types/collection';
 
-const COLLECTIONS_BASE = 'collections/public';
-const COLLECTION_BASE = 'collections';
-const COLLECTION_QUESTIONS_BASE = 'questions/public-questions';
-
 export async function getCollectionsList(params: GetCollectionsListParamsRequest) {
-	return apiFetch<GetCollectionsListResponse>(COLLECTIONS_BASE, {
+	return apiFetch<GetCollectionsListResponse>(collectionApiUrls.getCollectionsList, {
 		searchParams: {
 			...params,
 			page: params.page ?? 1,
@@ -23,11 +19,5 @@ export async function getCollectionsList(params: GetCollectionsListParamsRequest
 }
 
 export async function getCollectionById(id: number) {
-	return apiFetch<Collection>(`${COLLECTION_BASE}/${id}/public`);
-}
-
-export async function getCollectionQuestions(id: number, limit: number) {
-	return apiFetch<GetQuestionsListResponse>(
-		`${COLLECTION_QUESTIONS_BASE}?skillFilterMode=ANY&collection=${id}&limit=${limit}`,
-	);
+	return apiFetch<Collection>(route(collectionApiUrls.getCollectionById, id || ''));
 }

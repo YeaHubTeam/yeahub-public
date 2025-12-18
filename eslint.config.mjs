@@ -138,6 +138,7 @@ export default [
 
 			// FSD-правило отключено как у тебя
 			'@conarti/feature-sliced/absolute-relative': 'off',
+			'@conarti/feature-sliced/layers-slices': 'warn',
 		},
 		linterOptions: { reportUnusedDisableDirectives: true },
 	},

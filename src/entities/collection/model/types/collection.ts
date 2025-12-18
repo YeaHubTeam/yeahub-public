@@ -1,6 +1,7 @@
-/* eslint-disable @conarti/feature-sliced/layers-slices */
+import { Company } from '@/entities/company/@x/collection';
 import { Question } from '@/entities/question/@x/collection';
 import { Specialization } from '@/entities/specialization/@x/collection';
+import { Author } from '@/shared/libs';
 import { Response } from '@/shared/libs';
 
 export type CollectionTariff = 'free' | 'premium';
@@ -21,20 +22,9 @@ export interface Collection {
 	company?: Company;
 	companyId?: string;
 	createdById?: string;
-	createdBy?: { id: string; username: string };
+	createdBy?: Author;
 	disabled?: boolean;
 }
-
-export type CreateOrEditCollectionFormValues = Pick<
-	Collection,
-	'id' | 'title' | 'description' | 'imageSrc' | 'keywords'
-> & {
-	isFree: boolean;
-	questions: number[];
-	specializations: number[];
-	companyId?: string;
-	collectionImage?: string;
-};
 
 export interface GetCollectionsListParamsRequest {
 	page?: number;
@@ -55,16 +45,3 @@ export type GetCollectionByIdParamsRequest = {
 	collectionId?: string;
 	limit?: number;
 };
-
-export interface Company {
-	id: string | number;
-	title?: string;
-	legalName?: string | null;
-	description?: string | null;
-	imageSrc?: string | null;
-	inn?: string | null;
-	kpp?: string | null;
-	createdAt?: string;
-	updatedAt?: string;
-	createdBy?: { id: string; username: string };
-}

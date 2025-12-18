@@ -2,11 +2,8 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import {
-	getCollectionById,
-	getCollectionQuestions,
-	getCollectionsList,
-} from '@/entities/collection';
+import { getCollectionById, getCollectionsList } from '@/entities/collection';
+import { getCollectionQuestions } from '@/entities/question';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { locales } from '@/shared/config';
 import {

@@ -1,7 +1,6 @@
 export type {
 	Collection,
 	CollectionTariff,
-	CreateOrEditCollectionFormValues,
 	GetCollectionsListParamsRequest,
 } from './model/types/collection';
 export type { CollectionsFilterParams } from './model/types/filters';
