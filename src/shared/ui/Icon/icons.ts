@@ -63,6 +63,7 @@ import Trash from '@/shared/assets/icons/trash.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
 import UserCheckWithBackground from '@/shared/assets/icons/userCheckWithBackground.svg';
 import Warning from '@/shared/assets/icons/warning.svg';
+import Watch from '@/shared/assets/icons/watch.svg';
 import Whatsapp from '@/shared/assets/icons/whatsapp.svg';
 import Youtube from '@/shared/assets/icons/youtube.svg';
 import YoutubeWithBackground from '@/shared/assets/icons/youtubeWithBackground.svg';
@@ -138,4 +139,5 @@ export const icons: Record<IconName, IconComponent> = {
 	listWithBackground: ListWithBackground,
 	thumbsDown: ThumbsDown,
 	thumbsUp: ThumbsUp,
+	watch: Watch,
 };

@@ -1,0 +1,50 @@
+.button {
+	padding: 0 32px;
+  min-width: 240px;
+	height: 48px;
+	border: 1px solid var(--button-border-outline);
+  border-radius: 12px;
+	color: var(--button-text-color-outline);
+	font-size: var(--font-size-p-m);
+  cursor: pointer;
+
+	&:hover {
+		border: 1px solid var(--button-border-outline-hover);
+		background-color: var(--button-background-outline-hover);
+		text-decoration: none;
+	}
+
+	&:focus-visible {
+		outline: 1px solid var(--button-border-outline-focus);
+	}
+
+	&:active {
+		border: 1px solid var(--button-border-outline-active);
+		background-color: var(--button-background-outline-active);
+		color: var(--button-text-color-outline-active);
+	}
+
+	&:disabled {
+		border: 1px solid var(--button-border-outline-disabled);
+		color: var(--button-text-color-outline-disabled);
+	}
+
+	&:disabled:hover {
+		background-color: inherit;
+	}
+
+	&:disabled:active {
+		background-color: inherit;
+	}
+}
+
+.card {
+  padding: 16px 20px;
+  min-height: 80px;
+}
+
+@media (width < 768px) {
+  .button {
+    min-width: 300px;
+  }
+}

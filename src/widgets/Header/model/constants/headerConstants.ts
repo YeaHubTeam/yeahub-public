@@ -8,6 +8,11 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		path: '/questions',
 		title: Header.NAV_QUESTIONS,
 	},
+	{
+		link: ROUTES.collections.page,
+		path: '/collections',
+		title: Header.NAV_COLLECTIONS,
+	},
 ];
 
 export const AUTH_LINKS = {

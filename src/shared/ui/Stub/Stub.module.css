@@ -1,0 +1,20 @@
+.wrapper {
+  padding: 20px;
+  width: 100%;
+}
+
+.img {
+  height: 186px;
+  object-fit: contain;
+}
+
+.icon {
+  height: 76px;
+}
+
+.button {
+  width: 240px;
+}
+
+
+

@@ -11,6 +11,7 @@ export {
 	Skills,
 	Guru,
 	Avos,
+	Collections,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

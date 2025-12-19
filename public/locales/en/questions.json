@@ -26,5 +26,18 @@
 			"skills": "Skills",
 			"keywords": "Keywords"
 		}
+	},
+	"preview": {
+		"title": "Questions list",
+		"empty": {
+			"specialization": "Questions for the selected specialization will appear soon",
+			"collection": "The questions for this collection will appear soon"
+		},
+		"locked": {
+			"collection": "The questions list will appear for community members"
+		}
+	},
+	"community": {
+		"join": "Become a community member"
 	}
 }

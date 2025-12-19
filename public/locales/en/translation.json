@@ -7,7 +7,23 @@
 	"stub": {
 		"filter": {
 			"text": "Unfortunately, nothing was found for the query {text}. Try to change the query or use our categories",
+			"title": "Unfortunately, nothing was found for the query.",
+			"subtitle": "Try changing the query or using our categories.",
 			"submit": "Reset filter"
+		},
+		"error": {
+			"title": "Failed to load data",
+			"subtitle": "Try again or refresh the page",
+			"submit": "Try again"
 		}
-	}
+	},
+	"access":{
+		"denied": {
+			"title": "No access to the page",
+			"description": "You do not have access to view this section, if you think this is an error, please contact support",
+			"button": "Return to the main page"
+		}
+	},
+	"questions-count-available": "{count, plural, one {# more question is available for registered users} other {# more questions are available for registered users}}",
+	"banner-authorized": "Register"
 }

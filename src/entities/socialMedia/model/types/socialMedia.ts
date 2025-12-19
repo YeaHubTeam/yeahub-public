@@ -4,5 +4,6 @@ export interface SocialMedia {
 	title: string;
 	link: string;
 	specializationId: number;
+	specializations?: number[];
 	image?: IconComponent;
 }

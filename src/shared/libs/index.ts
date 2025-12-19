@@ -2,6 +2,7 @@ export { type Pallete, type Response, type Author } from './types';
 
 export {
 	COUNT_TO_GET_QUESTIONS_FOR_SSG,
+	COUNT_TO_GET_COLLECTIONS_FOR_SSG,
 	DEFAULT_SPECIALIZATION_NUMBER,
 	MAX_LIMIT_CATEGORIES,
 	MAX_CHOOSE_QUESTION_COUNT,
@@ -16,6 +17,7 @@ export { route } from './query';
 export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';
+export { useModal } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
 export { AVOS_TELEGRAM_URL } from './app';

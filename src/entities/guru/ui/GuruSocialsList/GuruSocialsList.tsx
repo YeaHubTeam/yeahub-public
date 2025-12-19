@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import { ROUTES } from '@/shared/config';
-import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 
@@ -15,7 +14,7 @@ interface GuruSocialsListProps {
 export const GuruSocialsList = ({ socials }: GuruSocialsListProps) => {
 	return (
 		<Flex gap="12">
-			<Link href={route(ROUTES.appRoute, socials.profileId)}>
+			<Link href={ROUTES.users.page + socials.profileId}>
 				<Icon
 					icon="userCheckWithBackground"
 					color="purple-700"
