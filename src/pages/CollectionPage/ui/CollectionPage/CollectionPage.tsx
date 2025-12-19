@@ -1,7 +1,14 @@
+import { useTranslations } from 'next-intl';
+
 import type { Collection } from '@/entities/collection';
 import { GurusBanner, getGuruWithMatchingSpecialization } from '@/entities/guru';
+import { CollectionNavigationButtons } from '@/features/collections/navigateCollection';
+import { Collections, Link, ROUTES, i18Namespace } from '@/shared/config';
 import { SPEC_MAP } from '@/shared/libs';
+import { Button } from '@/shared/ui/Button';
+import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
+import { Icon } from '@/shared/ui/Icon';
 import { AdditionalInfo, CollectionBody, CollectionHeader } from '@/widgets/Collection';
 
 import styles from './CollectionPage.module.css';
@@ -27,8 +34,11 @@ export const CollectionPage = ({ collection, specialization }: CollectionPagePro
 
 	const imageSrc = collectionImageSrc ?? company?.imageSrc;
 
+	const t = useTranslations(i18Namespace.collection);
+
 	const guru = getGuruWithMatchingSpecialization(specializations || []);
 	const showAuthor = guru ? false : true;
+	const avosLink = ROUTES.avos.page;
 
 	return (
 		<Flex direction="column" align="start">
@@ -40,6 +50,18 @@ export const CollectionPage = ({ collection, specialization }: CollectionPagePro
 						imageSrc={imageSrc}
 						company={company}
 					/>
+					<Card>
+						<Flex align="center" direction="column" gap="12">
+							<Button
+								className={styles.button}
+								variant="tertiary"
+								preffix={<Icon icon="watch" size={24} />}
+							>
+								<Link href={avosLink}>{t(Collections.BANNER_INTERVIEW_WATCH_BUTTON)}</Link>
+							</Button>
+							<CollectionNavigationButtons isDisabled={true} />
+						</Flex>
+					</Card>
 					<CollectionBody
 						isFree={isFree}
 						questions={questions || []}
