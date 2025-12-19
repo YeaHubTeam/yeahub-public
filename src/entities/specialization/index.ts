@@ -3,3 +3,4 @@ export { useSpecializations } from './model/hooks/useSpecializations';
 export { DEFAULT_SPECIALIZATION_ID } from './model/constants/specializationConstants';
 
 export { SpecializationsListField } from './ui/SpecializationsListField/SpecializationsListField';
+export { SpecializationsList } from './ui/SpecializationsList/SpecializationsList';

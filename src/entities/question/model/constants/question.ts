@@ -1,5 +1,6 @@
 export const questionApiUrls = {
-	getPublicQuestionsList: 'questions/public-questions',
+	getQuestionsList: 'questions/public-questions',
+	getQuestionById: 'questions/public-questions/:questionId',
 };
 
 export const QUESTIONS_COMPLEXITY = [
