@@ -14,6 +14,8 @@ export const i18Namespace = {
 	skill: 'skill',
 	guru: 'guru',
 	collection: 'collection',
+	marketplace: 'marketplace',
+	resources: 'resources',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {

@@ -11,6 +11,8 @@ export {
 	Skills,
 	Guru,
 	Collections,
+	Marketplace,
+	Resources,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

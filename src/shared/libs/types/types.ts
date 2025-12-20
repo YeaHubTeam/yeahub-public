@@ -64,3 +64,5 @@ export interface Response<T> {
 }
 
 export type Author = { id: string; username: string };
+
+export type SortOrder = 'ASC' | 'DESC';

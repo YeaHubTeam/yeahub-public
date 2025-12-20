@@ -1,0 +1,25 @@
+{
+	"header": {
+		"title": "Useful IT resources"
+	},
+	"resourceTypes": {
+		"video": "Video",
+		"podcast": "Podcast",
+		"channel": "Channel",
+		"course": "Course",
+		"article": "Article",
+		"book": "Book",
+		"guide": "Guide",
+		"roadmap": "Roadmap",
+		"trainer": "Trainer",
+		"game": "Game",
+		"repository": "Repository",
+		"chat": "Chat",
+		"tool": "Tool",
+		"documentation": "Documentation"
+	},
+	"search": {
+		"placeholder": "Enter a query…"
+	},
+	"title": "Resource types"
+}

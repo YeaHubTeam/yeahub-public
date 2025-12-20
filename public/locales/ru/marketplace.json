@@ -1,0 +1,27 @@
+{
+	"header": {
+		"title": "Полезные ресурсы в IT"
+	},
+	"resourceTypes": {
+		"video": "Видео",
+		"podcast": "Подкаст",
+		"channel": "Канал",
+		"course": "Курс",
+		"article": "Статья",
+		"book": "Книга",
+		"guide": "Гайд",
+		"roadmap": "Роадмап",
+		"trainer": "Тренажер",
+		"game": "Игра",
+		"repository": "Репозиторий",
+		"chat": "Чат",
+		"tool": "Инструмент",
+		"documentation": "Документация"
+	},
+	"search": {
+		"placeholder": "Введите запрос…"
+	},
+	"resources": {
+		"title": "Типы ресурсов"
+	}
+}
