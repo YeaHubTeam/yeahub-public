@@ -6,7 +6,7 @@ import { Collection } from '@/entities/collection';
 import { SPEC_MAP } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { CollectionsList } from '@/widgets/Collection';
+import { CollectionsList, InterviewRecordingsBanner } from '@/widgets/Collection';
 
 import { CollectionsFilterPanel } from '../CollectionsFilterPanel/CollectionsFilterPanel';
 import { CollectionsPagePagination } from '../CollectionsPagePagination/CollectionsPagePagination';
@@ -43,9 +43,12 @@ export const CollectionsPage = ({
 
 				<CollectionsPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>
-			<Card className={styles.filters}>
-				<CollectionsFilterPanel />
-			</Card>
+			<Flex gap="20" direction="column" className={styles.filters}>
+				<Card>
+					<CollectionsFilterPanel />
+				</Card>
+				<InterviewRecordingsBanner />
+			</Flex>
 		</Flex>
 	);
 };

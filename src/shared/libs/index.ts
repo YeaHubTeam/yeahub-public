@@ -22,3 +22,4 @@ export { useModal } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
 export { parseStringArray } from './fp/parseStringArray';
+export { AVOS_TELEGRAM_URL } from './app';

@@ -35,4 +35,8 @@ export const ROUTES = {
 		route: 'settings',
 		page: process.env.NEXT_PUBLIC_SITE_URL + '/dashboard/settings',
 	},
+	avos: {
+		route: 'avos',
+		page: '/avos',
+	},
 } as const;

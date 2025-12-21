@@ -10,6 +10,7 @@ export {
 	Specializations,
 	Skills,
 	Guru,
+	Avos,
 	Collections,
 	Marketplace,
 	Resources,
