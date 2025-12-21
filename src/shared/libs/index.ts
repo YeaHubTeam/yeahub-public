@@ -20,3 +20,4 @@ export { getArrayFromTwoNumbers } from './fp';
 export { useModal } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
+export { AVOS_TELEGRAM_URL } from './app';

@@ -93,6 +93,25 @@ export enum Guru {
 	BANNER_DESCRIPTION = 'banner.description',
 }
 
+export enum Avos {
+	AVOS_TITLE = 'title',
+	AVOS_SUBTITLE = 'subtitle',
+	AVOS_INTERVIEWS = 'interviews',
+	AVOS_LISTEN_PRACTICE = 'listen.practice',
+	AVOS_LISTEN_JOIN = 'listen.join',
+	AVOS_PROMO_CHIPS_REVIEWS = 'promo.chips.reviews',
+	AVOS_PROMO_CHIPS_RECORDINGS = 'promo.chips.recordings',
+	AVOS_PROMO_CHIPS_BREAKDOWNS = 'promo.chips.breakdowns',
+	AVOS_PROMO_CHIPS_INTERVIEW = 'promo.chips.interview',
+	AVOS_PROMO_CHIPS_GUIDES = 'promo.chips.guides',
+	AVOS_PROMO_CHIPS_CONTACTS = 'promo.chips.contacts',
+	AVOS_PROMO_ABOUT = 'promo.about',
+	AVOS_PROMO_LEARN = 'promo.learn',
+	AVOS_PROMO_SUM = 'promo.sum',
+	AVOS_PROMO_WARN = 'promo.warn',
+	AVOS_PROMO_JOIN_PRICE = 'promo.join.price',
+}
+
 export enum Collections {
 	TITLE_FULL = 'title.full',
 	TITLE_SHORT = 'title.short',

@@ -16,6 +16,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 			variant = 'small',
 			theme = 'primary',
 			label,
+			labelVariant = 'body3-accent',
 			className,
 			disabled,
 			active,
@@ -60,7 +61,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 					<div className={classNames(styles['chip-prefix'], { [styles.gap]: label })}>{prefix}</div>
 				)}
 				{label && (
-					<Text variant="body3-accent" color="black-800" className={styles['chip-label']}>
+					<Text variant={labelVariant} color="black-800" className={styles['chip-label']}>
 						{label}
 					</Text>
 				)}{' '}
