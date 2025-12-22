@@ -12,7 +12,6 @@ export {
 	Guru,
 	Avos,
 	Collections,
-	Marketplace,
 	Resources,
 } from './i18n/i18nTranslations';
 

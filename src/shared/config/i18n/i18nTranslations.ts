@@ -171,13 +171,10 @@ export enum Collections {
 	SORT_AUTHOR_TITLE = 'sort.author.title',
 }
 
-export enum Marketplace {
+export enum Resources {
 	HEADER_TITLE = 'header.title',
 	SEARCH_PLACEHOLDER = 'search.placeholder',
 	RESOURCES_TITLE = 'resources.title',
-}
-
-export enum Resources {
 	STUB_EMPTY_RESOURCES_TITLE = 'stub.empty.resources.title',
 	STUB_EMPTY_RESOURCES_SUBTITLE = 'stub.empty.resources.subtitle',
 }

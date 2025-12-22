@@ -17,7 +17,7 @@ type ResourceCardProps = {
 export const ResourceCard = ({ resource }: ResourceCardProps) => {
 	const { name, description, url, imageSrc, type } = resource;
 
-	const t = useTranslations(i18Namespace.marketplace);
+	const t = useTranslations(i18Namespace.resources);
 
 	const resourceHostname = url?.replace(/^(https?:\/\/)?(www\.)?([^/]+).*$/, '$3');
 
@@ -37,7 +37,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
 						{type && (
 							<StatusChip
 								status={{
-									text: t(`resourceTypes.${resource.type.code}`),
+									text: t(`type.${resource.type.code}`),
 									variant: 'purple',
 								}}
 							/>

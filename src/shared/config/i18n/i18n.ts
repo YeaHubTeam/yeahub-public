@@ -15,7 +15,6 @@ export const i18Namespace = {
 	guru: 'guru',
 	avos: 'avos',
 	collection: 'collection',
-	marketplace: 'marketplace',
 	resources: 'resources',
 } as const;
 

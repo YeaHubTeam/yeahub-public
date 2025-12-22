@@ -54,3 +54,4 @@ export interface GetResourcesListParamsRequest {
 }
 
 export type GetResourcesListResponse = Response<Resource[]>;
+export type GetResourceTypesResponse = ResourceType[];

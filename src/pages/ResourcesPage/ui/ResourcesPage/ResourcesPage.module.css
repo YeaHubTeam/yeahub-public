@@ -42,22 +42,22 @@
 	padding: 8px 16px 16px;
 }
 
-@media screen and (width <= 1023px) {
-	.main {
-		padding: 20px 16px 40px;
-	}
-
-	.filters {
-		display: none;
-	}
-}
-
 @media screen and (width >= 1023px) {
 	.header {
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 		gap: 0;
+	}
+}
+
+@media screen and (width <= 1023px) {
+	.main {
+		padding: 20px 16px 40px;
+	}
+
+	.filters {
+		display: none !important;
 	}
 }
 

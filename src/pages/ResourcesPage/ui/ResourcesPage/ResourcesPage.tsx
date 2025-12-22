@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 import { type Resource } from '@/entities/resource';
-import { Marketplace, i18Namespace } from '@/shared/config';
+import { Resources, i18Namespace } from '@/shared/config';
 import { RESOURCES_PER_PAGE } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -31,23 +31,18 @@ export const ResourcesPage = ({
 	hasFilters,
 }: ResourcesPageProps) => {
 	setRequestLocale(locale);
-	const t = useTranslations(i18Namespace.marketplace);
+	const t = useTranslations(i18Namespace.resources);
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
 				<Flex className={styles.header}>
 					<Text variant="body6" isMainTitle>
-						{t(Marketplace.HEADER_TITLE)}
+						{t(Resources.HEADER_TITLE)}
 					</Text>
 				</Flex>
 				<ResourcesList resources={resources} hasFilters={hasFilters} />
 				{total > RESOURCES_PER_PAGE && (
-					<ResourcesPagePagination
-						resources={resources}
-						total={total}
-						limit={limit}
-						currentPage={page}
-					/>
+					<ResourcesPagePagination total={total} limit={limit} currentPage={page} />
 				)}
 			</Card>
 			<Card className={styles.filters}>
