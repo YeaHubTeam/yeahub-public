@@ -2,7 +2,8 @@
 	"nav": {
 		"questions": "Questions",
 		"quiz": "Quiz",
-		"collections": "Collections"
+		"collections": "Collections",
+		"learning": "Learning"
 	},
 	"auth": {
 		"signIn": "Sign in",
