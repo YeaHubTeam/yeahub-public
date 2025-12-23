@@ -25,6 +25,7 @@ type FlexGap =
 	| '48'
 	| '52'
 	| '60'
+	| '100'
 	| '120';
 
 const justifyClasses: Record<FlexJustify, string> = {
@@ -71,6 +72,7 @@ const gapClasses: Record<FlexGap, string> = {
 	'48': styles.gap48,
 	'52': styles.gap52,
 	'60': styles.gap60,
+	'100': styles.gap100,
 	'120': styles.gap120,
 };
 
