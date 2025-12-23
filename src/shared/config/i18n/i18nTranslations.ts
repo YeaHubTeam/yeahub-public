@@ -26,6 +26,7 @@ export enum Header {
 	NAV_QUESTIONS = 'nav.questions',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
+	NAV_LEARNING = 'nav.learning',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
@@ -110,6 +111,32 @@ export enum Avos {
 	AVOS_PROMO_SUM = 'promo.sum',
 	AVOS_PROMO_WARN = 'promo.warn',
 	AVOS_PROMO_JOIN_PRICE = 'promo.join.price',
+}
+
+export enum Learning {
+	BANNER_TITLE = 'advantages.main.title',
+	BANNER_DESCRIPTION = 'advantages.main.description',
+	PROCESS_TITLE = 'advantages.process.title',
+	PROCESS_DESCRIPTION = 'advantages.process.description',
+	TECHNO_TITLE = 'advantages.techno.title',
+	TECHNO_DESCRIPTION = 'advantages.techno.description',
+	TEAM_TITLE = 'advantages.team.title',
+	TEAM_DESCRIPTION = 'advantages.team.description',
+	SUPPORT_TITLE = 'advantages.support.title',
+	SUPPORT_DESCRIPTION = 'advantages.support.description',
+	PROJECT_TITLE = 'advantages.project.title',
+	PROJECT_DESCRIPTION = 'advantages.project.description',
+	EXPERIENCE_TITLE = 'advantages.experience.title',
+	EXPERIENCE_DESCRIPTION = 'advantages.experience.description',
+	MENTORS_TITLE = 'mentors.title',
+	MENTORS_DESCRIPTION = 'mentors.description',
+	MENTORS_LINK = 'mentors.link',
+	MENTORS_BANNER = 'mentors.banner',
+	GURU_TITLE = 'guru.title',
+	GURU_DESCRIPTION = 'guru.description',
+	GURU_BANNER = 'guru.banner',
+	GURU_BADGE = 'guru.badge',
+	GURU_LINK = 'guru.link',
 }
 
 export enum Collections {

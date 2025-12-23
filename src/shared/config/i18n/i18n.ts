@@ -14,6 +14,7 @@ export const i18Namespace = {
 	skill: 'skill',
 	guru: 'guru',
 	avos: 'avos',
+	learning: 'learning',
 	collection: 'collection',
 } as const;
 
