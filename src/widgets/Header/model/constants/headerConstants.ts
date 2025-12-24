@@ -13,6 +13,11 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		path: '/collections',
 		title: Header.NAV_COLLECTIONS,
 	},
+	{
+		link: ROUTES.quiz.page,
+		path: '/quiz',
+		title: Header.NAV_TRAINER,
+	},
 ];
 
 export const AUTH_LINKS = {

@@ -11,3 +11,4 @@ export { RateFilterSection } from './ui/RateFilterSection/RateFilterSection';
 export { getQuestionImage } from './model/lib/getQuestionImage';
 export { getQuestionsList, getQuestionById, getCollectionQuestions } from './api/getQuestions';
 export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestionsItem';
+export { ChooseQuestionCount } from './ui/ChooseQuestionCount/ChooseQuestionCount';

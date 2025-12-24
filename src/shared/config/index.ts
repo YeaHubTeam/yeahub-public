@@ -12,6 +12,7 @@ export {
 	Guru,
 	Avos,
 	Collections,
+	InterviewQuizCreate,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

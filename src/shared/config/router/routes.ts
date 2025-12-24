@@ -35,4 +35,8 @@ export const ROUTES = {
 		route: 'avos',
 		page: '/avos',
 	},
+	quiz: {
+		route: 'quiz',
+		page: '/quiz',
+	},
 } as const;

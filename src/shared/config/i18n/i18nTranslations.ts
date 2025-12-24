@@ -26,6 +26,7 @@ export enum Header {
 	NAV_QUESTIONS = 'nav.questions',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
+	NAV_TRAINER = 'nav.trainer',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
@@ -71,6 +72,7 @@ export enum Questions {
 	COMMUNITY_JOIN = 'community.join',
 	PREVIEW_LOCKED_COLLECTION = 'preview.locked.collection',
 	PREVIEW_EMPTY_COLLECTION = 'preview.empty.collection',
+	COUNT = 'count',
 }
 
 export enum Media {
@@ -168,4 +170,15 @@ export enum Collections {
 	BANNER_INTERVIEW_LINK = 'banner-interview.link',
 	BANNER_INTERVIEW_WATCH_BUTTON = 'banner-interview.watch-button',
 	SORT_AUTHOR_TITLE = 'sort.author.title',
+}
+
+export enum InterviewQuizCreate {
+	TITLE = 'title',
+	CREATE_BUTTON = 'create.button',
+	MODE_REPEAT = 'mode.repeat',
+	MODE_NEW = 'mode.new',
+	MODE_RANDOM = 'mode.random',
+	MODE_SELECT = 'mode.select.select',
+	MODE_SELECT_TOOLTIP_UNAUTHORIZED = 'mode.select.tooltip.unauthorized',
+	MODE_SELECT_TOOLTIP_PREMIUMONLY = 'mode.select.tooltip.premiumonly',
 }
