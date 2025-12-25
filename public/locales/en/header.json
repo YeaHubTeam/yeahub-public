@@ -2,7 +2,8 @@
 	"nav": {
 		"questions": "Questions",
 		"quiz": "Quiz",
-		"collections": "Collections"
+		"collections": "Collections",
+		"hhAnalytics": "Skills"
 	},
 	"auth": {
 		"signIn": "Sign in",

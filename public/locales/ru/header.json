@@ -2,7 +2,8 @@
 	"nav": {
 		"questions": "База вопросов",
 		"quiz": "Тренажёр",
-		"collections": "Собеседования"
+		"collections": "Собеседования",
+		"hhAnalytics": "Навыки"
 	},
 	"auth": {
 		"signIn": "Вход",

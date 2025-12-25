@@ -12,6 +12,7 @@ export {
 	Guru,
 	Avos,
 	Collections,
+	Analytics,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

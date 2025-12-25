@@ -25,6 +25,7 @@ export type IconName =
 	| 'slidersHorizontal'
 	| 'search'
 	| 'closeCircle'
+	| 'copy'
 	| 'trash'
 	| 'pen'
 	| 'eye'

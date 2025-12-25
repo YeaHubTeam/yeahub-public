@@ -15,6 +15,7 @@ export const i18Namespace = {
 	guru: 'guru',
 	avos: 'avos',
 	collection: 'collection',
+	analytics: 'analytics',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {

@@ -1,0 +1,18 @@
+{
+	"hhAnalytics": {
+		"title": {
+			"skills": "Top 100 skills mentioned by recruiters",
+			"keywords": "Top 100 keywords from job descriptions"
+		},
+		"tab": {
+			"skills": "Skills",
+			"keywords": "Keywords"
+		},
+		"table": {
+			"index": "№",
+			"skills": "Skills",
+			"keywords": "Keywords",
+			"count": "Count"
+		}
+	}
+}

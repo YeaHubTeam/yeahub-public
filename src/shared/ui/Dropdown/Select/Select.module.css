@@ -1,0 +1,117 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  width: 100%; 
+  min-height: 48px; 
+  border: 1px solid var(--background-button);
+  border-radius: 12px;
+  background-color: var(--background-block);
+  color: var(--border-color);
+  direction: ltr; 
+  transition: 0.2s; 
+  cursor: text;
+
+  --icon-fill: var(--text-color-more-lightest);
+  
+
+  &:hover {
+    border: 1px solid var(--text-color-link-disabled); 
+
+    --icon-fill: var(--text-color-lighter); 
+  }
+
+  &:active {
+    border: 1px solid var(--border-focus-purple); 
+
+    --icon-fill: var(--text-color-more-lightest);
+  }
+
+  &:focus-within {
+    border: 1px solid var(--background-primary);
+
+    --icon-fill: var(--text-color-bright); 
+  }
+}
+
+.input {
+  flex-grow: 1;
+  align-self: center;
+  box-sizing: border-box; 
+  outline: none;
+  border: none; 
+  background: transparent;
+  color: var(--text-color-bright); 
+  line-height: 120%;
+}
+
+.button {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  box-sizing: border-box;
+  height: 40px; 
+  outline: none;
+  border: none; 
+  background: transparent;
+  color: var(--text-color-the-lightest); 
+  line-height: 120%;
+}
+
+.with-value {
+  color: var(--color-black-900);
+}
+
+.wrapper-s {
+  width: 320px; 
+}
+
+.wrapper-l {
+  width: 400px; 
+}
+
+.wrapper-disabled { 
+  border: 1px solid var(--background-button);
+  background: var(--background-app);
+  cursor: not-allowed; 
+  opacity: 0.6; 
+  color: var(--text-color-lighter);
+
+  &:hover,
+  &:focus-within,
+  &:active {
+    border: 1px solid var(--background-button);
+
+    --icon-fill: var(--text-color-more-lightest);
+  }
+
+}
+
+.dropdown {
+  cursor: pointer;
+}
+
+@media (width < 768px) {
+  .wrapper, .wrapper-l, .wrapper-s {
+    width: 100%;
+  }
+}
+
+.select-prefix {
+  display: flex;
+  flex-shrink: 0;
+  margin-right: 8px;
+  padding: 0; 
+  fill: var(--icon-fill); 
+  pointer-events: none;
+}
+
+.select-suffix {
+  display: flex;
+  flex-shrink: 0;
+  margin-left: 8px;
+  padding: 0;
+  fill: var(--icon-fill); 
+  pointer-events: none;
+}

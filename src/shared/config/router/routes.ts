@@ -27,6 +27,10 @@ export const ROUTES = {
 			page: '/collection',
 		},
 	},
+	hhAnalytics: {
+		route: 'hh-analytics',
+		page: '/hh-analytics',
+	},
 	settings: {
 		route: 'settings',
 		page: process.env.NEXT_PUBLIC_SITE_URL + '/dashboard/settings',
