@@ -25,6 +25,7 @@ export type IconName =
 	| 'slidersHorizontal'
 	| 'search'
 	| 'closeCircle'
+	| 'copy'
 	| 'trash'
 	| 'pen'
 	| 'eye'
@@ -69,6 +70,7 @@ export type IconName =
 	| 'listWithBackground'
 	| 'thumbsDown'
 	| 'thumbsUp'
-	| 'watch';
+	| 'watch'
+	| 'tickWithBackground';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

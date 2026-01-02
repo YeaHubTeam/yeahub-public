@@ -1,4 +1,4 @@
-export { type Pallete, type Response, type Author } from './types';
+export { type Pallete, type Response, type Author, type SortOrder } from './types';
 
 export {
 	COUNT_TO_GET_QUESTIONS_FOR_SSG,
@@ -10,6 +10,7 @@ export {
 	MAX_LIMIT_RESOURCES,
 	QUESTIONS_PER_PAGE,
 	DEFAULT_SPECIALIZATION_SLUG,
+	RESOURCES_PER_PAGE,
 	getSpecializationSlugById,
 } from './query';
 export { SPEC_MAP, SPEC_MAP_TO_TITLE } from './query';
@@ -20,4 +21,5 @@ export { getArrayFromTwoNumbers } from './fp';
 export { useModal } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
+export { parseStringArray } from './fp/parseStringArray';
 export { AVOS_TELEGRAM_URL } from './app';

@@ -4,3 +4,4 @@ export { DEFAULT_SPECIALIZATION_ID } from './model/constants/specializationConst
 
 export { SpecializationsListField } from './ui/SpecializationsListField/SpecializationsListField';
 export { SpecializationsList } from './ui/SpecializationsList/SpecializationsList';
+export { SpecializationSelect } from './ui/SpecializationSelect/SpecializationSelect';

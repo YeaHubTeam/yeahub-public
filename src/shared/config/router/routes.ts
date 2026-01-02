@@ -10,6 +10,10 @@ export const ROUTES = {
 			page: '/question/:id',
 		},
 	},
+	resources: {
+		route: 'resources',
+		page: '/resources',
+	},
 	interview: {
 		questions: {
 			route: 'questions',
@@ -27,6 +31,10 @@ export const ROUTES = {
 			page: '/collection',
 		},
 	},
+	hhAnalytics: {
+		route: 'hh-analytics',
+		page: '/hh-analytics',
+	},
 	settings: {
 		route: 'settings',
 		page: process.env.NEXT_PUBLIC_SITE_URL + '/dashboard/settings',
@@ -38,5 +46,8 @@ export const ROUTES = {
 	quiz: {
 		route: 'quiz',
 		page: '/quiz',
+	learning: {
+		route: 'learning',
+		page: '/learning',
 	},
 } as const;

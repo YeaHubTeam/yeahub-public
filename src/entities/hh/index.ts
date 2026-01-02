@@ -1,0 +1,1 @@
+export { getHhTopBySpec } from './api';

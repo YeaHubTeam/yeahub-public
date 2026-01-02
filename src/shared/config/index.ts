@@ -13,6 +13,9 @@ export {
 	Avos,
 	Collections,
 	InterviewQuizCreate,
+	Analytics,
+	Learning,
+	Resources,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

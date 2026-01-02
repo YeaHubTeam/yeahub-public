@@ -38,7 +38,7 @@
   }
 
   .filters {
-    display: none;
+    display: none !important;
   }
 }
 

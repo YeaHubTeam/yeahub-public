@@ -21,6 +21,7 @@ import CheckList from '@/shared/assets/icons/checkList.svg';
 import Clock from '@/shared/assets/icons/clock.svg';
 import ClockCounterClockwise from '@/shared/assets/icons/clockCounterClockwise.svg';
 import CloseCircle from '@/shared/assets/icons/closeCircle.svg';
+import Copy from '@/shared/assets/icons/copy.svg';
 import Dislike from '@/shared/assets/icons/dislike.svg';
 import DotsThree from '@/shared/assets/icons/dotsThree.svg';
 import DotsThreeVertical from '@/shared/assets/icons/dotsThreeVertical.svg';
@@ -58,6 +59,7 @@ import Telegram from '@/shared/assets/icons/telegram.svg';
 import TelegramWithBackground from '@/shared/assets/icons/telegramWithBackground.svg';
 import ThumbsDown from '@/shared/assets/icons/thumbsDown.svg';
 import ThumbsUp from '@/shared/assets/icons/thumbsUp.svg';
+import TickWithBackground from '@/shared/assets/icons/tickWithBackground.svg';
 import TikTok from '@/shared/assets/icons/tiktok.svg';
 import Trash from '@/shared/assets/icons/trash.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
@@ -88,6 +90,7 @@ export const icons: Record<IconName, IconComponent> = {
 	slidersHorizontal: SlidersHorizontal,
 	search: Search,
 	closeCircle: CloseCircle,
+	copy: Copy,
 	trash: Trash,
 	pen: Pen,
 	eye: Eye,
@@ -140,4 +143,5 @@ export const icons: Record<IconName, IconComponent> = {
 	thumbsDown: ThumbsDown,
 	thumbsUp: ThumbsUp,
 	watch: Watch,
+	tickWithBackground: TickWithBackground,
 };
