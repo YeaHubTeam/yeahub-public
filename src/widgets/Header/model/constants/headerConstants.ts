@@ -23,6 +23,11 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		path: '/learning',
 		title: Header.NAV_LEARNING,
   },
+  {
+		link: ROUTES.hhAnalytics.page,
+		path: '/hh-analytics',
+		title: Header.NAV_HH_ANALYTICS,
+	},
 ];
 
 export const AUTH_LINKS = {

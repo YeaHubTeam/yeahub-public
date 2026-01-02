@@ -12,6 +12,7 @@ export {
 	Guru,
 	Avos,
 	Collections,
+	Analytics,
 	Learning,
 	Resources,
 } from './i18n/i18nTranslations';

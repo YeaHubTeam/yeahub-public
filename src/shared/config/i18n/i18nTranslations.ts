@@ -27,6 +27,7 @@ export enum Header {
 	NAV_RESOURCES = 'nav.resources',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
+	NAV_HH_ANALYTICS = 'nav.hhAnalytics',
 	NAV_LEARNING = 'nav.learning',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
@@ -85,6 +86,9 @@ export enum Media {
 
 export enum Specializations {
 	TITLE_MAIN = 'title.main',
+	SELECT_CHOOSE = 'select.choose',
+	SELECT_EMPTY = 'select.empty',
+	SELECT_SELECTED = 'select.selected',
 }
 
 export enum Skills {
@@ -196,6 +200,17 @@ export enum Collections {
 	BANNER_INTERVIEW_LINK = 'banner-interview.link',
 	BANNER_INTERVIEW_WATCH_BUTTON = 'banner-interview.watch-button',
 	SORT_AUTHOR_TITLE = 'sort.author.title',
+}
+
+export enum Analytics {
+	HH_ANALYTICS_TITLE_SKILLS = 'hhAnalytics.title.skills',
+	HH_ANALYTICS_TITLE_KEYWORDS = 'hhAnalytics.title.keywords',
+	HH_ANALYTICS_TAB_SKILLS = 'hhAnalytics.tab.skills',
+	HH_ANALYTICS_TAB_KEYWORDS = 'hhAnalytics.tab.keywords',
+	HH_ANALYTICS_TABLE_INDEX = 'hhAnalytics.table.index',
+	HH_ANALYTICS_TABLE_SKILLS = 'hhAnalytics.table.skills',
+	HH_ANALYTICS_TABLE_KEYWORDS = 'hhAnalytics.table.keywords',
+	HH_ANALYTICS_TABLE_COUNT = 'hhAnalytics.table.count',
 }
 
 export enum Resources {
