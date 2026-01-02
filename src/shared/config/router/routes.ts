@@ -10,6 +10,10 @@ export const ROUTES = {
 			page: '/question/:id',
 		},
 	},
+	resources: {
+		route: 'resources',
+		page: '/resources',
+	},
 	interview: {
 		questions: {
 			route: 'questions',

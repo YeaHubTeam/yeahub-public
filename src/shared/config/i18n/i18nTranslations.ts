@@ -24,6 +24,7 @@ export enum Translation {
 
 export enum Header {
 	NAV_QUESTIONS = 'nav.questions',
+	NAV_RESOURCES = 'nav.resources',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
 	NAV_LEARNING = 'nav.learning',
@@ -195,4 +196,12 @@ export enum Collections {
 	BANNER_INTERVIEW_LINK = 'banner-interview.link',
 	BANNER_INTERVIEW_WATCH_BUTTON = 'banner-interview.watch-button',
 	SORT_AUTHOR_TITLE = 'sort.author.title',
+}
+
+export enum Resources {
+	HEADER_TITLE = 'header.title',
+	SEARCH_PLACEHOLDER = 'search.placeholder',
+	RESOURCES_TITLE = 'resources.title',
+	STUB_EMPTY_RESOURCES_TITLE = 'stub.empty.resources.title',
+	STUB_EMPTY_RESOURCES_SUBTITLE = 'stub.empty.resources.subtitle',
 }

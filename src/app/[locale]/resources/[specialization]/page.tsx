@@ -1,0 +1,61 @@
+import { notFound } from 'next/navigation';
+
+import { setRequestLocale } from 'next-intl/server';
+
+import { type GetResourcesListParamsRequest, getResourcesList } from '@/entities/resource';
+import { ResourcesPage } from '@/pages/ResourcesPage';
+import { locales } from '@/shared/config';
+import { SPEC_MAP } from '@/shared/libs';
+import { RESOURCES_PER_PAGE } from '@/shared/libs';
+
+interface PageProps {
+	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;
+	searchParams: Promise<GetResourcesListParamsRequest>;
+}
+
+export const dynamic = 'auto';
+
+export const generateStaticParams = () => {
+	return locales.flatMap((locale) =>
+		Object.keys(SPEC_MAP).map((specSlug) => ({
+			locale,
+			specialization: specSlug,
+		})),
+	);
+};
+
+const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
+	const { locale, specialization } = await params;
+	const { types, name, skills, page = '1' } = await searchParams;
+
+	const pageNum = Number(page);
+
+	const specializationId = SPEC_MAP[specialization];
+	if (!specializationId) notFound();
+
+	setRequestLocale(locale);
+
+	const response = await getResourcesList({
+		page: pageNum,
+		limit: RESOURCES_PER_PAGE,
+		specializations: specializationId,
+		skills,
+		types,
+		name,
+	});
+
+	const hasFilters = !!name || !!types || !!skills;
+
+	return (
+		<ResourcesPage
+			locale={locale}
+			page={pageNum}
+			resources={response?.data || []}
+			total={response?.total || 0}
+			limit={response?.limit || 0}
+			hasFilters={hasFilters}
+		/>
+	);
+};
+
+export default MainResourcesPage;

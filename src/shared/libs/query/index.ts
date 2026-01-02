@@ -8,6 +8,7 @@ export {
 	MAX_LIMIT_RESOURCES,
 	QUESTIONS_PER_PAGE,
 	DEFAULT_SPECIALIZATION_SLUG,
+	RESOURCES_PER_PAGE,
 } from './queryConstants';
 
 export { SPEC_MAP, SPEC_MAP_TO_TITLE, getSpecializationSlugById } from './mappingStaticParams';

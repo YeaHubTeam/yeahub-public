@@ -13,11 +13,16 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		path: '/collections',
 		title: Header.NAV_COLLECTIONS,
 	},
-	{
+  {
+		link: ROUTES.resources.page,
+		path: '/resources',
+		title: Header.NAV_RESOURCES,
+	},
+  {
 		link: ROUTES.learning.page,
 		path: '/learning',
 		title: Header.NAV_LEARNING,
-	},
+  },
 ];
 
 export const AUTH_LINKS = {

@@ -16,6 +16,7 @@ export const i18Namespace = {
 	avos: 'avos',
 	learning: 'learning',
 	collection: 'collection',
+	resources: 'resources',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {
