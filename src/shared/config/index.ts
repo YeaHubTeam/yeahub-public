@@ -13,6 +13,8 @@ export {
 	Avos,
 	Collections,
 	Analytics,
+	Learning,
+	Resources,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

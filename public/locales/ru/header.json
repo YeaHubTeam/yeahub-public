@@ -1,9 +1,11 @@
 {
 	"nav": {
 		"questions": "База вопросов",
+		"resources": "База ресурсов",
 		"quiz": "Тренажёр",
 		"collections": "Собеседования",
 		"hhAnalytics": "Навыки"
+		"learning": "Обучение"
 	},
 	"auth": {
 		"signIn": "Вход",

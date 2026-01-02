@@ -59,6 +59,7 @@ import Telegram from '@/shared/assets/icons/telegram.svg';
 import TelegramWithBackground from '@/shared/assets/icons/telegramWithBackground.svg';
 import ThumbsDown from '@/shared/assets/icons/thumbsDown.svg';
 import ThumbsUp from '@/shared/assets/icons/thumbsUp.svg';
+import TickWithBackground from '@/shared/assets/icons/tickWithBackground.svg';
 import TikTok from '@/shared/assets/icons/tiktok.svg';
 import Trash from '@/shared/assets/icons/trash.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
@@ -142,4 +143,5 @@ export const icons: Record<IconName, IconComponent> = {
 	thumbsDown: ThumbsDown,
 	thumbsUp: ThumbsUp,
 	watch: Watch,
+	tickWithBackground: TickWithBackground,
 };

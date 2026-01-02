@@ -24,9 +24,11 @@ export enum Translation {
 
 export enum Header {
 	NAV_QUESTIONS = 'nav.questions',
+	NAV_RESOURCES = 'nav.resources',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
 	NAV_HH_ANALYTICS = 'nav.hhAnalytics',
+	NAV_LEARNING = 'nav.learning',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
@@ -116,6 +118,32 @@ export enum Avos {
 	AVOS_PROMO_JOIN_PRICE = 'promo.join.price',
 }
 
+export enum Learning {
+	BANNER_TITLE = 'advantages.main.title',
+	BANNER_DESCRIPTION = 'advantages.main.description',
+	PROCESS_TITLE = 'advantages.process.title',
+	PROCESS_DESCRIPTION = 'advantages.process.description',
+	TECHNO_TITLE = 'advantages.techno.title',
+	TECHNO_DESCRIPTION = 'advantages.techno.description',
+	TEAM_TITLE = 'advantages.team.title',
+	TEAM_DESCRIPTION = 'advantages.team.description',
+	SUPPORT_TITLE = 'advantages.support.title',
+	SUPPORT_DESCRIPTION = 'advantages.support.description',
+	PROJECT_TITLE = 'advantages.project.title',
+	PROJECT_DESCRIPTION = 'advantages.project.description',
+	EXPERIENCE_TITLE = 'advantages.experience.title',
+	EXPERIENCE_DESCRIPTION = 'advantages.experience.description',
+	MENTORS_TITLE = 'mentors.title',
+	MENTORS_DESCRIPTION = 'mentors.description',
+	MENTORS_LINK = 'mentors.link',
+	MENTORS_BANNER = 'mentors.banner',
+	GURU_TITLE = 'guru.title',
+	GURU_DESCRIPTION = 'guru.description',
+	GURU_BANNER = 'guru.banner',
+	GURU_BADGE = 'guru.badge',
+	GURU_LINK = 'guru.link',
+}
+
 export enum Collections {
 	TITLE_FULL = 'title.full',
 	TITLE_SHORT = 'title.short',
@@ -183,4 +211,12 @@ export enum Analytics {
 	HH_ANALYTICS_TABLE_SKILLS = 'hhAnalytics.table.skills',
 	HH_ANALYTICS_TABLE_KEYWORDS = 'hhAnalytics.table.keywords',
 	HH_ANALYTICS_TABLE_COUNT = 'hhAnalytics.table.count',
+}
+
+export enum Resources {
+	HEADER_TITLE = 'header.title',
+	SEARCH_PLACEHOLDER = 'search.placeholder',
+	RESOURCES_TITLE = 'resources.title',
+	STUB_EMPTY_RESOURCES_TITLE = 'stub.empty.resources.title',
+	STUB_EMPTY_RESOURCES_SUBTITLE = 'stub.empty.resources.subtitle',
 }

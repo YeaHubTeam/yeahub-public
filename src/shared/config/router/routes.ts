@@ -10,6 +10,10 @@ export const ROUTES = {
 			page: '/question/:id',
 		},
 	},
+	resources: {
+		route: 'resources',
+		page: '/resources',
+	},
 	interview: {
 		questions: {
 			route: 'questions',
@@ -38,5 +42,9 @@ export const ROUTES = {
 	avos: {
 		route: 'avos',
 		page: '/avos',
+	},
+	learning: {
+		route: 'learning',
+		page: '/learning',
 	},
 } as const;
