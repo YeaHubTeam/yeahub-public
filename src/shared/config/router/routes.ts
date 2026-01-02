@@ -43,6 +43,9 @@ export const ROUTES = {
 		route: 'avos',
 		page: '/avos',
 	},
+	quiz: {
+		route: 'quiz',
+		page: '/quiz',
 	learning: {
 		route: 'learning',
 		page: '/learning',

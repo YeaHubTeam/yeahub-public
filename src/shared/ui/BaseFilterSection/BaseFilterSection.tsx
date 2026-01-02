@@ -17,6 +17,7 @@ export type BaseFilterItem<T> = {
 	title: string;
 	imageSrc?: string | null;
 	active?: boolean;
+	disabled?: boolean;
 	tooltip?: string;
 	iconName?: IconName;
 };
@@ -25,9 +26,15 @@ export interface BaseFilterSectionProps<T> {
 	title: string;
 	data: BaseFilterItem<T>[];
 	onClick: (id: T) => void;
+	disabled?: boolean;
 }
 
-export const BaseFilterSection = <T,>({ title, data, onClick }: BaseFilterSectionProps<T>) => {
+export const BaseFilterSection = <T,>({
+	title,
+	data,
+	onClick,
+	disabled = false,
+}: BaseFilterSectionProps<T>) => {
 	const onHandleClick = (id: T) => () => {
 		onClick(id);
 	};
@@ -62,7 +69,8 @@ export const BaseFilterSection = <T,>({ title, data, onClick }: BaseFilterSectio
 									)
 								}
 								onClick={onHandleClick(item.id)}
-								active={item.active}
+								active={!disabled && item.active}
+								disabled={disabled || item.disabled}
 							/>
 						</Tooltip>
 					))}

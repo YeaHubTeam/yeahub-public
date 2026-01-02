@@ -1,0 +1,18 @@
+{
+	"title": "Interview",
+	"create": {
+		"button": "Start"
+	},
+	"mode": {
+		"select": {
+			"select": "Choose mode",
+			"toolttip": {
+				"premiumonly": "Available to members",
+				"unauthorized": "The choice of mode will be available after registration"
+			}
+		},
+		"repeat": "Repeat",
+		"new": "Only new",
+		"random": "Random"
+	}
+}

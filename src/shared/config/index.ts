@@ -12,6 +12,7 @@ export {
 	Guru,
 	Avos,
 	Collections,
+	InterviewQuizCreate,
 	Analytics,
 	Learning,
 	Resources,
