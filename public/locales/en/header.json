@@ -3,7 +3,8 @@
 		"questions": "Questions",
 		"resources": "Resources",
 		"quiz": "Quiz",
-		"collections": "Collections"
+		"collections": "Collections",
+		"learning": "Learning"
 	},
 	"auth": {
 		"signIn": "Sign in",

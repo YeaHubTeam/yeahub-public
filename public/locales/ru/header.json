@@ -3,7 +3,8 @@
 		"questions": "База вопросов",
 		"resources": "База ресурсов",
 		"quiz": "Тренажёр",
-		"collections": "Собеседования"
+		"collections": "Собеседования",
+		"learning": "Обучение"
 	},
 	"auth": {
 		"signIn": "Вход",

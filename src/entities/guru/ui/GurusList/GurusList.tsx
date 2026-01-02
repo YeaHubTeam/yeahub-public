@@ -11,9 +11,10 @@ type GuruListViewVariant = 'single' | 'list' | 'list-with-borders';
 interface GurusListProps {
 	variant: GuruListViewVariant;
 	gurus: Guru[];
+	layout?: 'row' | 'column';
 }
 
-export const GurusList = ({ variant, gurus }: GurusListProps) => {
+export const GurusList = ({ variant, gurus, layout = 'row' }: GurusListProps) => {
 	const t = useTranslations(i18Namespace.guru);
 
 	const avatarSize: Record<GuruListViewVariant, number> = {
@@ -41,6 +42,7 @@ export const GurusList = ({ variant, gurus }: GurusListProps) => {
 					description={description[variant]}
 					key={index}
 					hasBorder={variant === 'list-with-borders'}
+					layout={layout}
 				/>
 			))}
 		</ul>
