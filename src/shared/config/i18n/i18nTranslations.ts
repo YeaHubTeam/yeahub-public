@@ -233,3 +233,15 @@ export enum Resources {
 	STUB_EMPTY_RESOURCES_TITLE = 'stub.empty.resources.title',
 	STUB_EMPTY_RESOURCES_SUBTITLE = 'stub.empty.resources.subtitle',
 }
+
+export enum Landing {
+	BANNER_STICKER_SKILL = 'banner.sticker.skill',
+	BANNER_STICKER_CANDIDATE = 'banner.sticker.candidate',
+	BANNER_TITLE = 'banner.title',
+	BANNER_DESCRIPTION = 'banner.description',
+	BANNER_BUTTON = 'banner.button',
+	BANNER_IMG_HOMEPAGE = 'banner.img.homepage',
+	BANNER_IMG_STATISTICS = 'banner.img.statistics',
+	BANNER_IMG_COMPANY = 'banner.img.company',
+	BANNER_IMG_PROGRESS = 'banner.img.progress',
+}

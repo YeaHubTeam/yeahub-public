@@ -1,0 +1,17 @@
+{
+    "banner": {
+		"sticker": {
+			"skill": "YeaHub — level up your skills",
+			"candidate": "Candidate"
+		},
+		"title": "Interview Training \nPlatform and question database for successful preparation",
+		"description": "Join the YeaHub community: learn, practice, develop skills, and find a job in IT",
+		"button": "Join the community",
+		"img": {
+			"homepage": "Homepage banner",
+			"statistics": "Statistics",
+			"company": "Company",
+			"progress": "Progress"
+		}
+	}
+}

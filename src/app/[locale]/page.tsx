@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { LanguageSwitcher } from '@/features/language-switcher';
 import { Main, i18Namespace } from '@/shared/config';
 
+import LandingPage from './landing/page';
 import styles from './page.module.css';
 
 export const dynamic = 'force-static';
@@ -25,6 +26,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
 	return (
 		<>
+			<LandingPage />
 			<LanguageSwitcher />
 			<ol>
 				<li>

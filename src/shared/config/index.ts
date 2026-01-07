@@ -16,6 +16,7 @@ export {
 	Analytics,
 	Learning,
 	Resources,
+	Landing,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';
