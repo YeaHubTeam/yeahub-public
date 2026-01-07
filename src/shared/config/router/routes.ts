@@ -15,6 +15,8 @@ export const ROUTES = {
 		page: '/resources',
 	},
 	interview: {
+		route: 'interview',
+		page: '/dashboard/interview',
 		questions: {
 			route: 'questions',
 			page: process.env.NEXT_PUBLIC_SITE_URL + '/dashboard/interview/questions',
@@ -46,6 +48,7 @@ export const ROUTES = {
 	quiz: {
 		route: 'quiz',
 		page: '/quiz',
+	},
 	learning: {
 		route: 'learning',
 		page: '/learning',

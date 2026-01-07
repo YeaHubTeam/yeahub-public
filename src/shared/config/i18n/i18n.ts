@@ -19,6 +19,7 @@ export const i18Namespace = {
 	interviewQuizCreate: 'interviewQuizCreate',
 	analytics: 'analytics',
 	resources: 'resources',
+	landing: 'landing',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {

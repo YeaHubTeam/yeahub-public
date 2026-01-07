@@ -4,8 +4,8 @@
 		"resources": "Resources",
 		"quiz": "Quiz",
 		"collections": "Collections",
-		"trainer": "Trainer"
-		"hhAnalytics": "Skills"
+		"trainer": "Trainer",
+		"hhAnalytics": "Skills",
 		"learning": "Learning"
 	},
 	"auth": {
