@@ -25,5 +25,9 @@
 		}
 	},
 	"questions-count-available": "{count, plural, one {# more question is available for registered users} other {# more questions are available for registered users}}",
-	"banner-authorized": "Register"
+	"banner-authorized": "Register",
+	"error-404": {
+		"title": "Page not found",
+		"button": "Return to the previous page"
+	}
 }

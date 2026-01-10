@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Image, { StaticImageData } from 'next/image';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -28,21 +28,13 @@ type StubProps = {
 	title?: string;
 	subtitle?: string;
 	buttonText?: string;
-	filtersToReset?: string[];
 	className?: string;
+	onClick?: () => void;
 };
 
-export const Stub = ({
-	type,
-	title,
-	subtitle,
-	buttonText,
-	filtersToReset,
-	className,
-}: StubProps) => {
+export const Stub = ({ type, title, subtitle, buttonText, className, onClick }: StubProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
-	const searchParams = useSearchParams();
 	const t = useTranslations(i18Namespace.translation);
 
 	const { isMobile } = useScreenSize();
@@ -82,12 +74,25 @@ export const Stub = ({
 	const resolvedButtonText = buttonText ?? buttonTextByType[type];
 	const resolvedButtonType = type === 'filter-empty' ? 'outline' : 'primary';
 
-	const onClick = () => {
-		const params = new URLSearchParams(searchParams?.toString() ?? '');
-		filtersToReset?.forEach((filter) => {
-			params.delete(filter);
-		});
-		router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+	const handleClick = () => {
+		if (onClick) {
+			onClick();
+			return;
+		}
+
+		if (type === 'empty') {
+			router.back();
+			return;
+		}
+
+		if (type === 'filter-empty') {
+			if (pathname) {
+				router.replace(pathname, { scroll: false });
+			}
+			return;
+		}
+
+		return;
 	};
 
 	return (
@@ -106,8 +111,8 @@ export const Stub = ({
 					<Button
 						size="large"
 						variant={resolvedButtonType}
-						onClick={onClick}
-						disabled={!onClick}
+						onClick={handleClick}
+						disabled={!handleClick}
 						className={styles.button}
 					>
 						{resolvedButtonText}

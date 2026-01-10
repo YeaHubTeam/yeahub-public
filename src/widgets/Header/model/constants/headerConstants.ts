@@ -17,18 +17,18 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		link: ROUTES.quiz.page,
 		path: '/quiz',
 		title: Header.NAV_TRAINER,
-  },
-  {
+	},
+	{
 		link: ROUTES.resources.page,
 		path: '/resources',
 		title: Header.NAV_RESOURCES,
 	},
-  {
+	{
 		link: ROUTES.learning.page,
 		path: '/learning',
 		title: Header.NAV_LEARNING,
-  },
-  {
+	},
+	{
 		link: ROUTES.hhAnalytics.page,
 		path: '/hh-analytics',
 		title: Header.NAV_HH_ANALYTICS,
