@@ -56,7 +56,6 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 		activeQuestion,
 		totalCount,
 		answer,
-		// changeAnswer,
 		goToNextSlide,
 		goToPrevSlide,
 	} = useSlideSwitcher(combinedQuestions);
@@ -94,7 +93,6 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 		};
 
 		setActiveMockQuiz(newMockData);
-		// changeAnswer(newAnswer);
 	};
 
 	const onInterruptQuiz = () => {
@@ -124,7 +122,6 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 						goToNextSlide={onRightSlide}
 						goToPrevSlide={onPrevSlide}
 						answer={answer}
-						// changeAnswer={changeAnswer}
 						changeAnswer={handleAnswerChange}
 						questionNumber={activeQuestion}
 						totalCount={totalCount}
@@ -135,7 +132,6 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 						imageSrc={imageSrc}
 						shortAnswer={shortAnswer}
 						answer={answer}
-						// changeAnswer={handleAnswerChange}
 						changeAnswer={handleAnswerChange}
 						isAnswerVisible={isAnswerVisible}
 						setIsAnswerVisible={setIsAnswerVisible}

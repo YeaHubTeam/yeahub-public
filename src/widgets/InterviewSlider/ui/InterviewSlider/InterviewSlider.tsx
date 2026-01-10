@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import { QuizQuestionAnswerType, ResponseButtons } from '@/entities/quiz';
-// import { FavoriteQuestionButton } from '@/features/question/favoriteQuestion';
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -31,8 +30,6 @@ export const InterviewSlider = ({
 	changeAnswer,
 	isAnswerVisible,
 	setIsAnswerVisible,
-	// isFavorite,
-	// isPublic = false,
 }: InterviewSliderProps) => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
 
@@ -67,16 +64,6 @@ export const InterviewSlider = ({
 				className={styles['response-buttons']}
 				answer={answer}
 				changeAnswer={changeAnswer}
-				// favoriteButton={
-				// 	isPublic ? undefined : (
-				// 		<FavoriteQuestionButton
-				// 			questionId={id}
-				// 			size="small"
-				// 			isFavorite={isFavorite}
-				// 			isQuiz={true}
-				// 		/>
-				// 	)
-				// }
 			/>
 			{imageSrc && <ImageWithWrapper src={imageSrc} alt={title} className={styles.image} />}
 		</article>
