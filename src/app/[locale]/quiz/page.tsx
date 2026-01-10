@@ -1,9 +1,24 @@
-import { redirect } from 'next/navigation';
+import { createNewMockQuiz } from '@/entities/quiz';
+import { PublicQuizPage } from '@/pages/PublicQuiz';
 
-import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
+interface PageProps {
+	searchParams: Promise<{
+		skills?: string;
+		limit?: string;
+		specialization?: string;
+	}>;
+}
 
-const CreateQuizRoot = () => {
-	redirect(`/quiz/${DEFAULT_SPECIALIZATION_SLUG}`);
+const MainPublicQuizPage = async ({ searchParams }: PageProps) => {
+	const { specialization, skills, limit } = await searchParams;
+
+	const mockQuiz = await createNewMockQuiz({
+		skills,
+		limit: Number(limit ?? 1),
+		specialization: Number(specialization),
+	});
+
+	return <PublicQuizPage mockQuiz={mockQuiz} />;
 };
 
-export default CreateQuizRoot;
+export default MainPublicQuizPage;

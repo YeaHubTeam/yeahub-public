@@ -24,7 +24,7 @@ export interface QuizResponse {
 export interface Answers {
 	questionId: number;
 	questionTitle: string;
-	answer: QuizQuestionAnswerType;
+	answer?: QuizQuestionAnswerType;
 	imageSrc?: string;
 	shortAnswer: string;
 	isFavorite?: boolean;
@@ -58,4 +58,11 @@ export interface GetActiveQuizParamsRequest {
 	profileId: string;
 	page: number;
 	limit: number;
+}
+
+export interface ChangeQuestionAnswerParams {
+	questionId: number;
+	profileId: string;
+	answer: QuizQuestionAnswerType;
+	shouldSaveToLS?: boolean;
 }

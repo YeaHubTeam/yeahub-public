@@ -211,6 +211,19 @@ export enum Collections {
 	SORT_AUTHOR_TITLE = 'sort.author.title',
 }
 
+export enum InterviewQuiz {
+	TITLE = 'title',
+	COMPLETE = 'complete',
+	NEXT = 'next',
+	CHECK = 'check.quiz',
+	A11Y_NEXT = 'a11y.next',
+	A11Y_PREV = 'a11y.prev',
+	ANSWER_SHOW = 'answer.show',
+	ANSWER_HIDE = 'answer.hide',
+	ANSWER_DO_NOT_KNOW = 'answer.doNotKnow',
+	ANSWER_KNOW = 'answer.know',
+}
+
 export enum InterviewQuizCreate {
 	TITLE = 'title',
 	CREATE_BUTTON = 'create.button',
