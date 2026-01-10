@@ -1,4 +1,6 @@
+import ArrowSelect from '@/shared/assets/icons/ArrowSelect.svg';
 import ClipboardText from '@/shared/assets/icons/ClipboardText.svg';
+import Magnifer from '@/shared/assets/icons/Magnifer.svg';
 import Megaphone from '@/shared/assets/icons/Megaphone.svg';
 import NotePencil from '@/shared/assets/icons/NotePencil.svg';
 import SealCheck from '@/shared/assets/icons/SealCheck.svg';
@@ -77,6 +79,7 @@ export const icons: Record<IconName, IconComponent> = {
 	arrowRight: ArrowRight,
 	arrowUpSquare: ArrowUpSquare,
 	arrowDownSquare: ArrowDownSquare,
+	arrowSelect: ArrowSelect,
 	clock: Clock,
 	calendar: Calendar,
 	altArrowLeft: AltArrowLeft,
@@ -134,6 +137,7 @@ export const icons: Record<IconName, IconComponent> = {
 	notePencil: NotePencil,
 	clipboardText: ClipboardText,
 	megaphone: Megaphone,
+	magnifer: Magnifer,
 	yeaHubCommunity: YeaHubCommunity,
 	figmaWhite: Figma,
 	logoText: LogoText,
