@@ -7,6 +7,7 @@ import { getCollectionQuestions } from '@/entities/question';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { locales } from '@/shared/config';
 import {
+	COLLECTION_QUESTIONS_LIMIT,
 	COUNT_TO_GET_COLLECTIONS_FOR_SSG,
 	DEFAULT_SPECIALIZATION_SLUG,
 	SPEC_MAP,
@@ -55,7 +56,10 @@ const CollectionPage = async ({ params, searchParams }: PageProps) => {
 		notFound();
 	}
 
-	const questions = await getCollectionQuestions(collectionId, collection.questionsCount || 0);
+	const questions = await getCollectionQuestions(
+		collectionId,
+		collection.questionsCount || COLLECTION_QUESTIONS_LIMIT,
+	);
 
 	collection.questions = questions?.data || [];
 
