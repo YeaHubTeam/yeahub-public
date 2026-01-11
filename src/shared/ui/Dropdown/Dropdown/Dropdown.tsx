@@ -2,8 +2,6 @@ import React, { useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 
-import Arrow from '@/shared/assets/icons/arrowSelect.svg';
-import Lens from '@/shared/assets/icons/magnifer.svg';
 import { useOutsideClick } from '@/shared/libs/dom/useOutsideClick';
 import { Icon } from '@/shared/ui/Icon';
 
@@ -101,7 +99,7 @@ export const Dropdown = ({
 			<Select
 				width={width}
 				size={size}
-				prefix={prefix || <Lens className={styles.suffix} />}
+				prefix={prefix || <Icon icon="magnifer" className={styles.suffix} />}
 				suffix={
 					<>
 						{isInput && (
@@ -114,7 +112,12 @@ export const Dropdown = ({
 								style={{ display: !inputValue ? 'none' : undefined }}
 							/>
 						)}
-						{suffix || <Arrow className={classNames(styles.suffix, { [styles.active]: isOpen })} />}
+						{suffix || (
+							<Icon
+								icon="arrowSelect"
+								className={classNames(styles.suffix, { [styles.active]: isOpen })}
+							/>
+						)}
 					</>
 				}
 				disabled={disabled}
