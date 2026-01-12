@@ -35,16 +35,6 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const qs = new URLSearchParams();
-	qs.set('page', pageNum.toString());
-	qs.set('specialization', specializationId.toString());
-	qs.set('limit', QUESTIONS_PER_PAGE.toString());
-	qs.set('skillFilterMode', 'ANY');
-	if (skills) qs.set('skills', skills.toString());
-	if (complexity) qs.set('complexity', complexity);
-	if (rate) qs.set('rate', rate);
-	if (titleOrDescription) qs.set('titleOrDescription', titleOrDescription);
-
 	const response = await getQuestionsList({
 		page: pageNum,
 		limit: QUESTIONS_PER_PAGE,
@@ -56,6 +46,8 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 		skillFilterMode: 'ANY',
 	});
 
+	const hasFilters = !!skills || !!complexity || !!rate || !!titleOrDescription;
+
 	return (
 		<QuestionsPage
 			locale={locale}
@@ -64,7 +56,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 			total={response?.total || 0}
 			limit={response?.limit || 0}
 			specialization={specialization}
-			searchParamsTitle={titleOrDescription}
+			hasFilters={hasFilters}
 		/>
 	);
 };

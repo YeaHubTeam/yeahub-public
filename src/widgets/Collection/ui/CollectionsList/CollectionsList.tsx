@@ -26,8 +26,6 @@ export const CollectionsList = ({
 	const showFilterEmptyStub = collections.length === 0 && hasFilters;
 	const showCollectionsList = collections.length > 0;
 
-	const filtersToReset = ['isFree', 'titleOrDescriptionSearch'];
-
 	return (
 		<>
 			<Flex className={styles.header} direction="row" justify="between">
@@ -44,7 +42,7 @@ export const CollectionsList = ({
 					/>
 				)}
 
-				{showFilterEmptyStub && <Stub type="filter-empty" filtersToReset={filtersToReset} />}
+				{showFilterEmptyStub && <Stub type="filter-empty" />}
 
 				{showCollectionsList &&
 					collections.map((collection) => (

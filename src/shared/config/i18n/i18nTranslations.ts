@@ -20,6 +20,10 @@ export enum Translation {
 
 	QUESTIONS_COUNT_AVAILABLE_AUTHORIZED = 'questions-count-available',
 	LOGIN_REGISTER_LINK = 'banner-authorized',
+
+	/* Error 404 */
+	ERROR_404_TITLE = 'error-404.title',
+	ERROR_404_BUTTON = 'error-404.button',
 }
 
 export enum Header {
@@ -76,6 +80,9 @@ export enum Questions {
 	PREVIEW_LOCKED_COLLECTION = 'preview.locked.collection',
 	PREVIEW_EMPTY_COLLECTION = 'preview.empty.collection',
 	COUNT = 'count',
+
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
 }
 
 export enum Media {

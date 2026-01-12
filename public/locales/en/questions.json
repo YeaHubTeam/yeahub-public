@@ -40,5 +40,11 @@
 	"community": {
 		"join": "Become a community member"
 	},
-	"count": "Questions count"
+	"count": "Questions count",
+	"stub": {
+		"empty": {
+			"title": "No questions found yet",
+			"subtitle": "Questions are added periodically, just wait a bit"
+		}
+	}
 }
