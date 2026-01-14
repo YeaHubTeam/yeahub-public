@@ -19,15 +19,16 @@ import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ProgressBar } from '@/shared/ui/ProgressBar';
+import { Text } from '@/shared/ui/Text';
 import { InterviewSlider } from '@/widgets/InterviewSlider';
 
-import styles from './PublicQuizPage.module.css';
+import styles from './QuizPage.module.css';
 
-interface PublicQuizPageProps {
+interface QuizPageProps {
 	mockQuiz: CreateNewMockQuizResponse;
 }
 
-export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
+export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
 	const [activeMockQuiz, setActiveMockQuiz] = useState<CreateNewMockQuizResponse>(mockQuiz);
 	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
@@ -105,10 +106,10 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 		<Flex direction="column" gap="20" className={styles.container}>
 			<Card withOutsideShadow>
 				<div className={styles['progress-bar']}>
-					<p className={styles['progress-bar-title']}>{t(InterviewQuiz.TITLE)}</p>
-					<span className={styles['progress-num']}>
+					<Text variant="body5">{t(InterviewQuiz.TITLE)}</Text>
+					<Text variant="body2" color="black-500">
 						{activeQuestion}/{totalCount}
-					</span>
+					</Text>
 					<ProgressBar
 						className={styles['progress-component']}
 						currentCount={answeredCount}
@@ -135,7 +136,6 @@ export const PublicQuizPage = ({ mockQuiz }: PublicQuizPageProps) => {
 						changeAnswer={handleAnswerChange}
 						isAnswerVisible={isAnswerVisible}
 						setIsAnswerVisible={setIsAnswerVisible}
-						isPublic={true}
 					/>
 					<Flex direction="row">
 						<Button onClick={isNextButton ? onRightSlide : onCheckQuizResult} disabled={isDisabled}>

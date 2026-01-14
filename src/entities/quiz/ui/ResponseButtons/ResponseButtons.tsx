@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -18,15 +18,9 @@ interface ResponseButtonsProps {
 	className?: string;
 	answer?: string;
 	changeAnswer: (answer: QuizQuestionAnswerType) => void;
-	favoriteButton?: ReactNode;
 }
 
-export const ResponseButtons = ({
-	className,
-	answer,
-	changeAnswer,
-	favoriteButton,
-}: ResponseButtonsProps) => {
+export const ResponseButtons = ({ className, answer, changeAnswer }: ResponseButtonsProps) => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
 	const { isMobile } = useScreenSize();
 
@@ -50,7 +44,6 @@ export const ResponseButtons = ({
 			>
 				{!isMobile && <span>{t(InterviewQuiz.ANSWER_KNOW)}</span>}
 			</Button>
-			{favoriteButton}
 		</Flex>
 	);
 };

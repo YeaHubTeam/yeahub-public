@@ -5,6 +5,7 @@ import { QuizQuestionAnswerType, ResponseButtons } from '@/entities/quiz';
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
+import { Text } from '@/shared/ui/Text';
 
 import styles from './InterviewSlider.module.css';
 
@@ -17,8 +18,6 @@ interface InterviewSliderProps {
 	changeAnswer: (answer: QuizQuestionAnswerType) => void;
 	isAnswerVisible: boolean;
 	setIsAnswerVisible: (value: boolean) => void;
-	isFavorite?: boolean;
-	isPublic?: boolean;
 }
 
 export const InterviewSlider = ({
@@ -53,7 +52,7 @@ export const InterviewSlider = ({
 					</button>
 				) : (
 					<Flex direction="column" gap="16" className={styles['answer-wrapper']}>
-						<span>{shortAnswer}</span>
+						<Text variant="body3">{shortAnswer}</Text>
 						<button className={styles.answer} onClick={onToggleAnswerVisibility}>
 							{t(InterviewQuiz.ANSWER_HIDE)}
 						</button>
