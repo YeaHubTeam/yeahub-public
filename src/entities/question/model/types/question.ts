@@ -24,6 +24,7 @@ export interface Question {
 	updatedBy: Author | null;
 	questionSpecializations: Specialization[];
 	questionSkills: Skill[];
+	slug: string;
 	disabled?: boolean;
 }
 
@@ -49,3 +50,15 @@ export interface GetQuestionsListParamsRequest {
 }
 
 export type GetQuestionsListResponse = Response<Question[]>;
+
+export interface GetQuestionsSlugsParamsRequest {
+	page?: number;
+	limit?: number;
+}
+
+export interface QuestionSlug {
+	id: number;
+	slug: string;
+}
+
+export type GetQuestionSlugsResponse = Response<QuestionSlug[]>;

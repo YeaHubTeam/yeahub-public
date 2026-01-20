@@ -3,8 +3,10 @@ import { route } from '@/shared/libs';
 
 import { questionApiUrls } from '../model/constants/question';
 import type {
+	GetQuestionSlugsResponse,
 	GetQuestionsListParamsRequest,
 	GetQuestionsListResponse,
+	GetQuestionsSlugsParamsRequest,
 	Question,
 } from '../model/types/question';
 
@@ -27,4 +29,17 @@ export async function getCollectionQuestions(id: number, limit: number) {
 	return apiFetch<GetQuestionsListResponse>(
 		`${questionApiUrls.getQuestionsList}?skillFilterMode=ANY&collection=${id}&limit=${limit}`,
 	);
+}
+
+export async function getQuestionSlugs(params?: GetQuestionsSlugsParamsRequest) {
+	return apiFetch<GetQuestionSlugsResponse>(questionApiUrls.getSlugs, {
+		searchParams: {
+			page: params?.page ?? 1,
+			limit: params?.limit ?? 100,
+		},
+	});
+}
+
+export async function getQuestionBySlug(slug: string) {
+	return apiFetch<Question>(route(questionApiUrls.getQuestionBySlug, slug));
 }

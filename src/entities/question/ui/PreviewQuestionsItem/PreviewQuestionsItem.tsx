@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { ROUTES } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
+import { SPEC_MAP, route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -12,22 +12,22 @@ import styles from './PreviewQuestionsItem.module.css';
 
 interface PreviewQuestionsItemProps {
 	title: string;
-	questionId: number;
 	specialization: keyof typeof SPEC_MAP;
 	rate?: number;
 	complexity?: number;
 	imageSrc?: string;
+	slug: string;
 }
 
 export const PreviewQuestionsItem = ({
 	title,
-	questionId,
 	specialization,
 	rate,
 	complexity,
 	imageSrc,
+	slug,
 }: PreviewQuestionsItemProps) => {
-	const detailRoute = `${ROUTES.questions.detail.page}/${questionId}?specialization=${specialization}`;
+	const detailRoute = `${route(ROUTES.questions.detail.page, slug)}?specialization=${specialization}`;
 	return (
 		<li>
 			<Card withOutsideShadow size="small">
