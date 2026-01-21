@@ -19,8 +19,8 @@ interface FullQuestionItemProps {
 
 export const FullQuestionItem = async ({ question, specialization }: FullQuestionItemProps) => {
 	const t = await getTranslations(i18Namespace.questions);
-	const { id, imageSrc, complexity = 0, rate, shortAnswer } = question;
-	const detailRoute = `${route(ROUTES.questions.detail.page, id)}?specialization=${specialization}`;
+	const { slug, imageSrc, complexity = 0, rate, shortAnswer } = question;
+	const detailRoute = `${route(ROUTES.questions.detail.page, slug)}?specialization=${specialization}`;
 
 	return (
 		<Flex direction="column" gap="24" className={styles.item}>
