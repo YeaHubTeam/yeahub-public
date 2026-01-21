@@ -56,7 +56,7 @@ export const CollectionBody = ({ questions, isFree, specialization }: Collection
 							title={question.title}
 							rate={question.rate}
 							complexity={question.complexity}
-							imageSrc={question.questionSkills[0].imageSrc ?? undefined}
+							imageSrc={question.questionSkills[0]?.imageSrc ?? undefined}
 							specialization={specialization}
 							slug={question.slug}
 						/>
