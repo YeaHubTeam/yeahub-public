@@ -36,7 +36,7 @@ export const generateStaticParams = async () => {
 		}
 
 		return locales.flatMap((locale) =>
-			firstPage.data.map(({ slug }) => ({
+			allSlugs.map(({ slug }) => ({
 				locale,
 				slug,
 			})),
