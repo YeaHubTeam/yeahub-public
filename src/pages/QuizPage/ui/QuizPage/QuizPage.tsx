@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { Question } from '@/entities/question';
 import {
 	Answers,
+	LS_ACTIVE_MOCK_QUIZ_KEY,
 	QuestionNavPanel,
 	QuizQuestionAnswerType,
 	useSlideSwitcher,
@@ -23,30 +24,39 @@ import { Text } from '@/shared/ui/Text';
 import { InterviewSlider } from '@/widgets/InterviewSlider';
 
 import styles from './QuizPage.module.css';
+import { QuizPageSkeleton } from './QuizPage.skeleton';
 
-interface QuizPageProps {
-	mockQuiz: CreateNewMockQuizResponse;
-}
-
-export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
+export const QuizPage = () => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
-	const [activeMockQuiz, setActiveMockQuiz] = useState<CreateNewMockQuizResponse>(mockQuiz);
-	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
-
 	const router = useRouter();
 
-	const isAllQuestionsAnswered = activeMockQuiz?.response.answers.every(
-		(question: Answers) => question.answer !== undefined && question.answer !== null,
-	);
+	const [isMounted, setIsMounted] = useState(false);
+	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
-	const combinedQuestions = activeMockQuiz?.questions.map((question: Question) => ({
-		...question,
-		questionId: question.id,
-		questionTitle: question.title,
-		imageSrc: question.imageSrc ?? undefined,
-		answer: activeMockQuiz.response.answers.find((a: Answers) => a.questionId === question.id)
-			?.answer,
-	}));
+	const activeMockQuiz: CreateNewMockQuizResponse | null = isMounted
+		? JSON.parse(localStorage.getItem(LS_ACTIVE_MOCK_QUIZ_KEY) || 'null')
+		: null;
+
+	const combinedQuestions =
+		activeMockQuiz?.questions.map((question: Question) => ({
+			...question,
+			questionId: question.id,
+			questionTitle: question.title,
+			imageSrc: question.imageSrc ?? undefined,
+			answer: activeMockQuiz.response.answers.find((a: Answers) => a.questionId === question.id)
+				?.answer,
+		})) ?? [];
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	useEffect(() => {
+		if (isMounted && !activeMockQuiz) {
+			router.replace(ROUTES.quiz.page);
+		}
+	}, [isMounted, activeMockQuiz, router]);
 
 	const {
 		questionId,
@@ -61,12 +71,20 @@ export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 		goToPrevSlide,
 	} = useSlideSwitcher(combinedQuestions);
 
+	if (!isMounted || !activeMockQuiz) {
+		return <QuizPageSkeleton />;
+	}
+
+	const isAllQuestionsAnswered = activeMockQuiz.response.answers.every(
+		(q: Answers) => q.answer !== undefined && q.answer !== null,
+	);
+
 	const onPrevSlide = () => {
 		setIsAnswerVisible(false);
 		goToPrevSlide();
 	};
 
-	const onRightSlide = () => {
+	const onNextSlide = () => {
 		setIsAnswerVisible(false);
 		goToNextSlide();
 	};
@@ -75,12 +93,7 @@ export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 		router.replace(ROUTES.quiz.result.page);
 	};
 
-	const isLastQuestion = activeQuestion === totalCount;
-	const isNextButton = !isLastQuestion && !isAllQuestionsAnswered;
-	const isDisabled = (isLastQuestion && !isAllQuestionsAnswered) || (!isLastQuestion && !answer);
-
 	const handleAnswerChange = (newAnswer: QuizQuestionAnswerType) => {
-		if (!activeMockQuiz) return;
 		const updatedAnswers = [...activeMockQuiz.response.answers];
 
 		updatedAnswers[activeQuestion - 1] = {
@@ -88,19 +101,27 @@ export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 			answer: newAnswer,
 		};
 
-		const newMockData = {
+		const updatedQuiz: CreateNewMockQuizResponse = {
 			...activeMockQuiz,
-			response: { ...activeMockQuiz.response, answers: updatedAnswers },
+			response: {
+				...activeMockQuiz.response,
+				answers: updatedAnswers,
+			},
 		};
 
-		setActiveMockQuiz(newMockData);
+		localStorage.setItem(LS_ACTIVE_MOCK_QUIZ_KEY, JSON.stringify(updatedQuiz));
+
+		forceUpdate();
 	};
 
 	const onInterruptQuiz = () => {
-		if (activeMockQuiz) {
-			router.push(`${ROUTES.quiz.page}`);
-		}
+		localStorage.removeItem(LS_ACTIVE_MOCK_QUIZ_KEY);
+		router.push(ROUTES.quiz.page);
 	};
+
+	const isLastQuestion = activeQuestion === totalCount;
+	const isNextButton = !isLastQuestion && !isAllQuestionsAnswered;
+	const isDisabled = (isLastQuestion && !isAllQuestionsAnswered) || (!isLastQuestion && !answer);
 
 	return (
 		<Flex direction="column" gap="20" className={styles.container}>
@@ -117,16 +138,18 @@ export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 					/>
 				</div>
 			</Card>
+
 			<Card withOutsideShadow>
 				<Flex direction="column" gap="20" className={styles.question}>
 					<QuestionNavPanel
-						goToNextSlide={onRightSlide}
+						goToNextSlide={onNextSlide}
 						goToPrevSlide={onPrevSlide}
 						answer={answer}
 						changeAnswer={handleAnswerChange}
 						questionNumber={activeQuestion}
 						totalCount={totalCount}
 					/>
+
 					<InterviewSlider
 						id={questionId}
 						title={questionTitle}
@@ -137,10 +160,12 @@ export const QuizPage = ({ mockQuiz }: QuizPageProps) => {
 						isAnswerVisible={isAnswerVisible}
 						setIsAnswerVisible={setIsAnswerVisible}
 					/>
+
 					<Flex direction="row">
-						<Button onClick={isNextButton ? onRightSlide : onCheckQuizResult} disabled={isDisabled}>
+						<Button onClick={isNextButton ? onNextSlide : onCheckQuizResult} disabled={isDisabled}>
 							{isNextButton ? t(InterviewQuiz.NEXT) : t(InterviewQuiz.CHECK)}
 						</Button>
+
 						{isNextButton && (
 							<Button className={styles['end-button']} onClick={onInterruptQuiz}>
 								{t(InterviewQuiz.COMPLETE)}
