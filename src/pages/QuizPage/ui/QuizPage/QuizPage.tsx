@@ -1,22 +1,29 @@
 'use client';
 
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { useTranslations } from 'next-intl';
 
+import { Question } from '@/entities/question';
 import {
 	LS_ACTIVE_MOCK_QUIZ_KEY,
 	QuestionNavPanel,
 	QuizQuestionAnswerType,
 	checkAllQuestionsAnswered,
-	combineQuizQuestions,
-	readActiveMockQuiz,
 	useSlideSwitcher,
 } from '@/entities/quiz';
-import type { CreateNewMockQuizResponse } from '@/entities/quiz';
+import type { Answers } from '@/entities/quiz';
+import { getActiveQuizQuestions } from '@/entities/quiz/selectors/quizSelectors';
+import {
+	changeQuestionAnswer,
+	clearActiveQuizState,
+	setActiveQuizQuestions,
+} from '@/entities/quiz/slice/activeQuizSlice';
 import { InterviewQuiz, ROUTES, i18Namespace } from '@/shared/config';
+import { getJSONFromLS } from '@/shared/libs';
+import { useAppDispatch, useAppSelector } from '@/shared/libs/redux';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -29,25 +36,35 @@ import { QuizPageSkeleton } from './QuizPage.skeleton';
 
 export const QuizPage = () => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
-	const router = useRouter();
-
 	const [isMounted, setIsMounted] = useState(false);
 	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
+	const questions = useAppSelector(getActiveQuizQuestions);
 
-	const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-	const activeMockQuiz = isMounted ? readActiveMockQuiz() : null;
-	const combinedQuestions = combineQuizQuestions(activeMockQuiz);
+	const router = useRouter();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
+		const quizFromLS = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
+
+		const combinedQuestions =
+			quizFromLS?.questions?.map((question: Question) => ({
+				...question,
+				questionId: question.id,
+				questionTitle: question.title,
+				answer: quizFromLS.response.answers.find((a: Answers) => a.questionId === question.id)
+					?.answer,
+			})) ?? [];
+
+		dispatch(setActiveQuizQuestions(combinedQuestions));
+
 		setIsMounted(true);
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
-		if (isMounted && !activeMockQuiz) {
+		if (isMounted && !questions.length) {
 			router.replace(ROUTES.quiz.page);
 		}
-	}, [isMounted, activeMockQuiz, router]);
+	}, [isMounted, questions.length, router]);
 
 	const {
 		questionId,
@@ -60,40 +77,23 @@ export const QuizPage = () => {
 		answer,
 		goToNextSlide,
 		goToPrevSlide,
-	} = useSlideSwitcher(combinedQuestions);
+	} = useSlideSwitcher(questions);
 
-	if (!isMounted || !activeMockQuiz) {
+	if (!isMounted) {
 		return <QuizPageSkeleton />;
 	}
 
-	const isAllQuestionsAnswered = checkAllQuestionsAnswered(activeMockQuiz);
+	const isAllQuestionsAnswered = checkAllQuestionsAnswered(questions);
 	const isLastQuestion = activeQuestion === totalCount;
 	const isNextButton = !isLastQuestion && !isAllQuestionsAnswered;
 	const isDisabled = (isLastQuestion && !isAllQuestionsAnswered) || (!isLastQuestion && !answer);
 
-	const handleAnswerChange = (newAnswer: QuizQuestionAnswerType) => {
-		const updatedAnswers = [...activeMockQuiz.response.answers];
-
-		updatedAnswers[activeQuestion - 1] = {
-			...updatedAnswers[activeQuestion - 1],
-			answer: newAnswer,
-		};
-
-		const updatedQuiz: CreateNewMockQuizResponse = {
-			...activeMockQuiz,
-			response: {
-				...activeMockQuiz.response,
-				answers: updatedAnswers,
-			},
-		};
-
-		localStorage.setItem(LS_ACTIVE_MOCK_QUIZ_KEY, JSON.stringify(updatedQuiz));
-
-		forceUpdate();
+	const handleAnswerChange = (answer: QuizQuestionAnswerType) => {
+		dispatch(changeQuestionAnswer({ questionId, answer }));
 	};
 
 	const onInterruptQuiz = () => {
-		localStorage.removeItem(LS_ACTIVE_MOCK_QUIZ_KEY);
+		dispatch(clearActiveQuizState());
 		router.push(ROUTES.quiz.page);
 	};
 
@@ -144,7 +144,6 @@ export const QuizPage = () => {
 						isAnswerVisible={isAnswerVisible}
 						setIsAnswerVisible={setIsAnswerVisible}
 					/>
-
 					<Flex direction="row">
 						<Button
 							onClick={isNextButton ? onNextSlide : () => router.replace(ROUTES.quiz.result.page)}

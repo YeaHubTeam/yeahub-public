@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { api } from './api';
+import { activeQuizSlice } from '@/entities/quiz/slice/activeQuizSlice';
+
+import { baseApi } from './api';
 
 export const store = configureStore({
 	reducer: {
-		[api.reducerPath]: api.reducer,
+		[baseApi.reducerPath]: baseApi.reducer,
+		activeQuiz: activeQuizSlice.reducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

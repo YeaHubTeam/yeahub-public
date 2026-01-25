@@ -15,5 +15,3 @@ export type {
 export { useSlideSwitcher } from './model/hooks/useSlideSwitcher';
 export { ResponseButtons } from './ui/ResponseButtons/ResponseButtons';
 export { checkAllQuestionsAnswered } from './model/helpers/checkAllQuestionsAnswered';
-export { combineQuizQuestions } from './model/helpers/combineQuizQuestions';
-export { readActiveMockQuiz } from './model/helpers/readActiveMockQuiz';
