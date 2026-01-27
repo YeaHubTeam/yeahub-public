@@ -2,24 +2,26 @@
 
 import React from 'react';
 
-import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
 
+import { HeaderNavLink } from '../../HeaderNavLink/HeaderNavLink';
+import type { NavItem } from '../types/headerNavTypes';
 import styles from './HeaderNavMobile.module.css';
 
-type NavItem = { href: string; path?: string; label: string };
-
 export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
-	const menuItems: PopoverMenuItem[] = items.map(({ href, label }) => ({
+	const pathname = usePathname();
+
+	const menuItems: PopoverMenuItem[] = items.map(({ href, label, path }) => ({
 		renderComponent: (onToggle) => (
 			<Flex onClick={onToggle}>
-				<Link href={href} className={styles.link}>
+				<HeaderNavLink key={href} link={href} path={path} isActive={pathname?.includes(href)}>
 					{label}
-				</Link>
+				</HeaderNavLink>
 			</Flex>
 		),
 	}));
