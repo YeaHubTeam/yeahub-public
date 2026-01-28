@@ -6,8 +6,8 @@ export const ROUTES = {
 		route: 'questions',
 		page: '/questions',
 		detail: {
-			route: 'question/:slug',
-			page: '/question/:slug',
+			route: 'questions/:slug',
+			page: '/questions/:slug',
 		},
 	},
 	resources: {
@@ -29,8 +29,8 @@ export const ROUTES = {
 		route: 'collections',
 		page: '/collections',
 		detail: {
-			route: 'collection',
-			page: '/collection',
+			route: 'collections',
+			page: '/collections',
 		},
 	},
 	hhAnalytics: {
