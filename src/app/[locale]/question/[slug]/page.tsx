@@ -1,13 +1,41 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { QuestionSlug, getQuestionBySlug, getQuestionSlugs } from '@/entities/question';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
-import { locales } from '@/shared/config';
+import { Translation, i18Namespace, locales } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+	const { slug, locale } = await params;
+	const t = await getTranslations({ locale, namespace: i18Namespace.translation });
+	const question = await getQuestionBySlug(slug).catch(() => null);
+
+	if (!question) {
+		return {
+			title: t(Translation.ERROR_404_TITLE),
+		};
+	}
+
+	const description =
+		question.description || question.shortAnswer?.slice(0, 160).replace(/<[^>]*>/g, '') || '';
+
+	return {
+		title: question.title,
+		description,
+		keywords: question.keywords,
+		openGraph: {
+			title: question.title,
+			description,
+			type: 'article',
+			images: question.imageSrc ? [question.imageSrc] : [],
+		},
+	};
 }
 
 export const generateStaticParams = async () => {

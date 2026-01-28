@@ -41,6 +41,8 @@ export enum Header {
 }
 
 export enum Main {
+	PROJECT_TITLE = 'project.title',
+	PROJECT_DESCRIPTION = 'project.description',
 	HOME_TITLE = 'home.title',
 	HOME_SUBTITLE = 'home.subtitle',
 	HOME_DEPLOY_NOW = 'home.deployNow',
