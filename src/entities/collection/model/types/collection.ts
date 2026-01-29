@@ -45,3 +45,15 @@ export type GetCollectionByIdParamsRequest = {
 	collectionId?: string;
 	limit?: number;
 };
+
+export interface GetCollectionsSlugsParamsRequest {
+	page?: number;
+	limit?: number;
+}
+
+export interface CollectionSlug {
+	id: number;
+	slug: string;
+}
+
+export type GetCollectionSlugsResponse = Response<CollectionSlug[]>;
