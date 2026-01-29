@@ -32,3 +32,7 @@ export async function getCollectionSlugs(params?: GetCollectionsSlugsParamsReque
 		},
 	});
 }
+
+export async function getCollectionBySlug(slug: string) {
+	return apiFetch<Collection>(route(collectionApiUrls.getCollectionBySlug, slug));
+}

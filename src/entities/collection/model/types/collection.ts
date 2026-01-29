@@ -24,6 +24,7 @@ export interface Collection {
 	createdById?: string;
 	createdBy?: Author;
 	disabled?: boolean;
+	slug: string;
 }
 
 export interface GetCollectionsListParamsRequest {

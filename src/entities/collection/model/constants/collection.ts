@@ -5,4 +5,5 @@ export const collectionApiUrls = {
 	getCollectionById: 'collections/:collectionId/public',
 	getCollectionsList: 'collections/public',
 	getSlugs: 'collections/slugs',
+	getCollectionBySlug: 'collections/by-slug/:slug',
 };
