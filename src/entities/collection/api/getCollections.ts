@@ -2,7 +2,7 @@ import { apiFetch } from '@/shared/api';
 import { route } from '@/shared/libs';
 
 import { collectionApiUrls } from '../model/constants/collection';
-import {
+import type {
 	Collection,
 	GetCollectionSlugsResponse,
 	GetCollectionsListParamsRequest,
