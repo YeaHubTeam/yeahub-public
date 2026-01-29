@@ -15,7 +15,6 @@ interface QuestionHeaderProps {
 export const QuestionHeader = ({ question }: QuestionHeaderProps) => {
 	const { title, description } = question;
 	const imagePriorityToShow = getQuestionImage(question);
-	console.log('imagePriorityToShow', imagePriorityToShow);
 
 	const imageClassName = styles['image-default'];
 
