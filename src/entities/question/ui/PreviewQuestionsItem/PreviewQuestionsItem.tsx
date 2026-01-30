@@ -27,7 +27,7 @@ export const PreviewQuestionsItem = ({
 	imageSrc,
 	slug,
 }: PreviewQuestionsItemProps) => {
-	const detailRoute = `${route(ROUTES.questions.detail.page, slug)}?specialization=${specialization}`;
+	const detailRoute = route(ROUTES.questions.detail.page, specialization, slug);
 	return (
 		<li>
 			<Card withOutsideShadow size="small">

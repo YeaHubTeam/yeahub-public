@@ -6,8 +6,8 @@ export const ROUTES = {
 		route: 'questions',
 		page: '/questions',
 		detail: {
-			route: 'question/:slug',
-			page: '/question/:slug',
+			route: 'questions/:specialization/:slug',
+			page: '/questions/:specialization/:slug',
 		},
 	},
 	resources: {

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { useLocale } from 'next-intl';
 
@@ -17,11 +17,16 @@ interface SkillListProps {
 
 export const SkillList = ({ skills, route }: SkillListProps) => {
 	const searchParams = useSearchParams();
+	const params = useParams();
 	const locale = useLocale();
 	const router = useRouter();
 	const onClick = (skillId: number) => {
 		if (!route) {
-			const specializationSlug = searchParams?.get('specialization') || DEFAULT_SPECIALIZATION_SLUG;
+			const specializationParam = params?.specialization;
+			const specializationSlug =
+				(Array.isArray(specializationParam) ? specializationParam[0] : specializationParam) ||
+				searchParams?.get('specialization') ||
+				DEFAULT_SPECIALIZATION_SLUG;
 			router.push(`/${locale}/questions/${specializationSlug}?page=1&status=all&skills=${skillId}`);
 		} else {
 			router.push(`${route}?page=1&status=all&skills=${skillId}`);
