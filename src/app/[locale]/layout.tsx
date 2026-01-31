@@ -5,7 +5,6 @@ import { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { Providers } from '@/lib/providers';
 import { Main, i18Namespace } from '@/shared/config';
 import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
@@ -43,13 +42,11 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
-			<Providers>
-				<Header />
-				<main className={styles.main}>
-					<div className={styles['main-content']}>{children}</div>
-				</main>
-				<Footer />
-			</Providers>
+			<Header />
+			<main className={styles.main}>
+				<div className={styles['main-content']}>{children}</div>
+			</main>
+			<Footer />
 		</NextIntlClientProvider>
 	);
 };

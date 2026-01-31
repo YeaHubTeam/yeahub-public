@@ -48,6 +48,14 @@ export const ROUTES = {
 	quiz: {
 		route: 'quiz',
 		page: '/quiz',
+		new: {
+			route: 'new',
+			page: '/quiz/new',
+		},
+		result: {
+			route: 'result',
+			page: '/quiz/result',
+		},
 	},
 	learning: {
 		route: 'learning',
