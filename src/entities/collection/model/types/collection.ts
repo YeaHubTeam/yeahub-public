@@ -24,6 +24,7 @@ export interface Collection {
 	createdById?: string;
 	createdBy?: Author;
 	disabled?: boolean;
+	slug: string;
 }
 
 export interface GetCollectionsListParamsRequest {
@@ -45,3 +46,15 @@ export type GetCollectionByIdParamsRequest = {
 	collectionId?: string;
 	limit?: number;
 };
+
+export interface GetCollectionsSlugsParamsRequest {
+	page?: number;
+	limit?: number;
+}
+
+export interface CollectionSlug {
+	id: number;
+	slug: string;
+}
+
+export type GetCollectionSlugsResponse = Response<CollectionSlug[]>;

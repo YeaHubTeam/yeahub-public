@@ -2,6 +2,7 @@ export type {
 	Collection,
 	CollectionTariff,
 	GetCollectionsListParamsRequest,
+	CollectionSlug,
 } from './model/types/collection';
 export type { CollectionsFilterParams } from './model/types/filters';
 export { LS_INIT_COLLECTION_ID } from './model/constants/collection';

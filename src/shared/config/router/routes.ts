@@ -6,8 +6,8 @@ export const ROUTES = {
 		route: 'questions',
 		page: '/questions',
 		detail: {
-			route: 'questions/:slug',
-			page: '/questions/:slug',
+			route: 'questions/:specialization/:slug',
+			page: '/questions/:specialization/:slug',
 		},
 	},
 	resources: {
@@ -29,8 +29,8 @@ export const ROUTES = {
 		route: 'collections',
 		page: '/collections',
 		detail: {
-			route: 'collections',
-			page: '/collections',
+			route: 'collections/:specialization/:slug',
+			page: '/collections/:specialization/:slug',
 		},
 	},
 	hhAnalytics: {
@@ -48,6 +48,14 @@ export const ROUTES = {
 	quiz: {
 		route: 'quiz',
 		page: '/quiz',
+		new: {
+			route: 'new',
+			page: '/quiz/new',
+		},
+		result: {
+			route: 'result',
+			page: '/quiz/result',
+		},
 	},
 	learning: {
 		route: 'learning',

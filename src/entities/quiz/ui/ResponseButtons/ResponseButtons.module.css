@@ -1,0 +1,46 @@
+.wrapper {
+  min-width: auto;
+  height: 48px;
+}
+
+.btn {
+  flex-shrink: 0 ;
+  padding: 12px 10px;
+  width: auto ;
+  min-width: auto;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-white-900);
+  color: var(--text-color-light);
+}
+
+.btn svg {
+  color: var(--text-color-light);
+}
+
+.btn:is(:hover, :focus, :active) {
+  border: none;
+  background-color: var(--background-light-hover) ;
+  color: var(--text-color-link-active);
+}
+
+.active-btn svg {
+  color: var(--text-color-link-active);
+}
+
+.btn:is(:hover, :focus, :active) svg {
+  border: none;
+  color: var(--text-color-link-active);
+}
+
+.active-btn {
+  border: none ;
+  background-color: var(--background-light-hover);
+  color: var(--text-color-link-active);
+}
+
+@media (width <= 768px) {
+  .btn {
+    padding: 14px;
+  }
+}

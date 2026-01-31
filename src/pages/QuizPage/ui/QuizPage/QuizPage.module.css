@@ -1,0 +1,66 @@
+.container {
+  gap: 20px;
+  color: var(--text-color-bright);
+  font-weight: var(--font-weight-400);
+}
+
+.container > div {
+  height: auto;
+}
+
+.progress-bar {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: 1fr auto;
+}
+
+.progress-component {
+  grid-column: span 2;
+}
+
+.question {
+  position: relative;
+}
+
+.end-button {
+  position: relative;
+  margin-left: auto;
+  background-color: var(--button-background-destructive-secondary);
+  color: var(--button-text-color-destructive-secondary);
+  font-weight: var(--font-weight-600);
+
+  &:hover {
+    background-color: var(--button-background-destructive-secondary-hover);
+  }
+
+  &:focus {
+    border: 1px solid var(--button-border-destructive-secondary-focus);
+    background-color: var(--button-background-destructive-secondary-focus)
+  }
+
+  &:active {
+    background-color: var(--color-red-300);
+    color: var(--button-text-color-destructive-secondary-active);
+  }
+}
+
+@media (width <= 767px) {
+  .container > div {
+    padding: 20px 10px;
+  }
+
+  .question {
+    gap: 16px;
+  }
+}
+
+@media (width <= 480px) {
+  .progress-bar {
+    grid-template-rows: repeat(3, auto);
+  }
+
+  .progress-component {
+    grid-row: 2 / 3;
+    grid-column: 1 / -1;
+  }
+}

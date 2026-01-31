@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Questions, i18Namespace } from '@/shared/config';
+import { Questions, Translation, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 import { Tooltip } from '@/shared/ui/Tooltip';
 
@@ -18,6 +18,7 @@ export const ChooseQuestionComplexity = ({
 	disabled,
 }: ChooseQuestionComplexityProps) => {
 	const t = useTranslations(i18Namespace.questions);
+	const tTranslation = useTranslations(i18Namespace.translation);
 
 	const onChooseComplexity = (id: number) => {
 		const newValues = QUESTIONS_COMPLEXITY.find((item) => item.id === id)?.value || [];
@@ -36,7 +37,7 @@ export const ChooseQuestionComplexity = ({
 	return (
 		<div style={{ maxWidth: '290px' }}>
 			<Tooltip
-				title={''}
+				title={tTranslation(Translation.MODE_SELECT_TOOLTIP_PREMIUM_ONLY)}
 				placement="top"
 				color="violet"
 				offsetTooltip={0}
@@ -47,6 +48,7 @@ export const ChooseQuestionComplexity = ({
 					data={preparedData}
 					title={t(Questions.QUESTIONS_COMPLEXITY)}
 					onClick={onChooseComplexity}
+					disabled={disabled}
 				/>
 			</Tooltip>
 		</div>

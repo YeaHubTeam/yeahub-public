@@ -2,22 +2,25 @@ import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import { QuestionSlug, getQuestionBySlug, getQuestionSlugs } from '@/entities/question';
-import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
+import { getCollectionBySlug, getCollectionSlugs } from '@/entities/collection';
+import type { CollectionSlug } from '@/entities/collection';
+import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { locales } from '@/shared/config';
+import { DEFAULT_SPECIALIZATION_SLUG, SPEC_MAP } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; slug: string }>;
+	searchParams: Promise<{ specialization: keyof typeof SPEC_MAP }>;
 }
 
 export const generateStaticParams = async () => {
 	try {
 		const BATCH_SIZE = 100;
 
-		const firstPage = await getQuestionSlugs({ page: 1, limit: BATCH_SIZE });
+		const firstPage = await getCollectionSlugs({ page: 1, limit: BATCH_SIZE });
 
 		const { data: initialData, total } = firstPage;
-		let allSlugs: QuestionSlug[] = [...initialData];
+		let allSlugs: CollectionSlug[] = [...initialData];
 
 		const totalPages = Math.ceil(total / BATCH_SIZE);
 
@@ -25,7 +28,7 @@ export const generateStaticParams = async () => {
 			const promises = [];
 
 			for (let page = 2; page <= totalPages; page++) {
-				promises.push(getQuestionSlugs({ page, limit: BATCH_SIZE }));
+				promises.push(getCollectionSlugs({ page, limit: BATCH_SIZE }));
 			}
 
 			const results = await Promise.all(promises);
@@ -49,18 +52,24 @@ export const generateStaticParams = async () => {
 
 export const dynamic = 'force-static';
 
-const QuestionPage = async ({ params }: PageProps) => {
+const CollectionPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, slug } = await params;
+	const { specialization } = await searchParams;
 
 	setRequestLocale(locale);
 
-	const question = await getQuestionBySlug(slug);
+	const collection = await getCollectionBySlug(slug);
 
-	if (!question) {
+	if (!collection) {
 		notFound();
 	}
 
-	return <QuestionPageComponent question={question} />;
+	return (
+		<CollectionPageComponent
+			collection={collection}
+			specialization={specialization ?? DEFAULT_SPECIALIZATION_SLUG}
+		/>
+	);
 };
 
-export default QuestionPage;
+export default CollectionPage;
