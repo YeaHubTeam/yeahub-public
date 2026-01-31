@@ -6,8 +6,8 @@ export const ROUTES = {
 		route: 'questions',
 		page: '/questions',
 		detail: {
-			route: 'question/:slug',
-			page: '/question/:slug',
+			route: 'questions/:specialization/:slug',
+			page: '/questions/:specialization/:slug',
 		},
 	},
 	resources: {
@@ -48,6 +48,14 @@ export const ROUTES = {
 	quiz: {
 		route: 'quiz',
 		page: '/quiz',
+		new: {
+			route: 'new',
+			page: '/quiz/new',
+		},
+		result: {
+			route: 'result',
+			page: '/quiz/result',
+		},
 	},
 	learning: {
 		route: 'learning',

@@ -23,3 +23,9 @@ export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
 export { parseStringArray } from './fp/parseStringArray';
 export { AVOS_TELEGRAM_URL } from './app';
+export {
+	getFromLS,
+	getJSONFromLS,
+	removeFromLS,
+	setToLS,
+} from './browser/managaLocalStorage/manageLocalStorage';
