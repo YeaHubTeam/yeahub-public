@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import Question from '@/shared/assets/icons/collectionsQuestion.svg';
 import Star from '@/shared/assets/icons/starsMinimalistic.svg';
 import { Collections, ROUTES, i18Namespace } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
+import { SPEC_MAP, route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -39,7 +39,7 @@ export const CollectionPreview = ({
 		paid: t(Collections.TARIFF_PAID, { ns: i18Namespace.collection }),
 	};
 
-	const collectionPath = `${ROUTES.collections.detail.page}/${slug}?specialization=${specialization}`;
+	const collectionPath = route(ROUTES.collections.detail.page, specialization, slug);
 
 	return (
 		<Link href={collectionPath}>
