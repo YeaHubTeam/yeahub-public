@@ -25,7 +25,6 @@ export const useLazyFetchData = <T, P>({
 		setError(null);
 		try {
 			const response = await fetcher(params);
-			console.log(response);
 			if (controllerRef.current) {
 				setData(response);
 				onSuccess?.(response);
@@ -45,8 +44,6 @@ export const useLazyFetchData = <T, P>({
 			controllerRef.current = false;
 		};
 	}, []);
-	console.log(data);
-	console.log(controllerRef.current);
 
 	return { data, loading, error, fetch: load };
 };

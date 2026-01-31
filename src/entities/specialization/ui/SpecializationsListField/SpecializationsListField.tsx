@@ -59,7 +59,7 @@ export const SpecializationsListField = ({
 			})),
 		[specializations, selectedSpecialization],
 	);
-	console.log(specializationsItems);
+
 	if (!specializationsItems) return null;
 
 	return (
