@@ -29,8 +29,8 @@ export const ROUTES = {
 		route: 'collections',
 		page: '/collections',
 		detail: {
-			route: 'collection',
-			page: '/collection',
+			route: 'collections/:specialization/:slug',
+			page: '/collections/:specialization/:slug',
 		},
 	},
 	hhAnalytics: {
