@@ -5,13 +5,13 @@ import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 
-import { QuizQuestionAnswerType } from '../../model/types/quiz';
+import { MockQuizQuestionAnswerType } from '../../model/types/quiz';
 import { ResponseButtons } from '../ResponseButtons/ResponseButtons';
 import styles from './QuestionNavPanel.module.css';
 
 interface QuestionNavPanelProps {
-	answer?: QuizQuestionAnswerType;
-	changeAnswer: (answer: QuizQuestionAnswerType) => void;
+	answer?: MockQuizQuestionAnswerType;
+	changeAnswer: (answer: MockQuizQuestionAnswerType) => void;
 	showResponseButtons?: boolean;
 	questionNumber: number;
 	totalCount: number;

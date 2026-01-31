@@ -5,9 +5,9 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { InterviewQuizCreate, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
+import { Text } from '@/shared/ui/Text';
 
 import { CreateQuizFilterPanel } from '../CreateQuizFilterPanel/CreateQuizFilterPanel';
-import { CreateQuizLink } from '../CreateQuizLink/CreateQuizLink';
 import styles from './CreateQuizPage.module.css';
 
 interface CreateQuizPageProps {
@@ -21,9 +21,10 @@ export const CreateQuizPage = ({ locale }: CreateQuizPageProps) => {
 	return (
 		<section>
 			<Card className={styles.container}>
-				<h2 className={styles.title}>{t(InterviewQuizCreate.TITLE)}</h2>
+				<Text variant="body6" isMainTitle className={styles.title}>
+					{t(InterviewQuizCreate.TITLE)}
+				</Text>
 				<CreateQuizFilterPanel />
-				<CreateQuizLink />
 			</Card>
 		</section>
 	);

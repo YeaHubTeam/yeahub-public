@@ -11,13 +11,13 @@ import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 
-import { QuizQuestionAnswerType } from '../../model/types/quiz';
+import { MockQuizQuestionAnswerType } from '../../model/types/quiz';
 import styles from './ResponseButtons.module.css';
 
 interface ResponseButtonsProps {
 	className?: string;
 	answer?: string;
-	changeAnswer: (answer: QuizQuestionAnswerType) => void;
+	changeAnswer: (answer: MockQuizQuestionAnswerType) => void;
 }
 
 export const ResponseButtons = ({ className, answer, changeAnswer }: ResponseButtonsProps) => {

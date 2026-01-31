@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { InterviewQuizCreate, Questions, i18Namespace } from '@/shared/config';
+import { Questions, Translation, i18Namespace } from '@/shared/config';
 import { MAX_CHOOSE_QUESTION_COUNT } from '@/shared/libs';
 import { Counter } from '@/shared/ui/Counter';
 import { Text } from '@/shared/ui/Text';
@@ -20,18 +20,18 @@ export const ChooseQuestionCount = ({
 	maxCount = MAX_CHOOSE_QUESTION_COUNT,
 }: ChooseQuestionCountProps) => {
 	const tQuestions = useTranslations(i18Namespace.questions);
-	const tQuiz = useTranslations(i18Namespace.interviewQuizCreate);
+	const tTranslation = useTranslations(i18Namespace.translation);
 
 	const onChange = (counter: number) => {
 		onChangeCount(counter);
 	};
 
 	const isTooltipVisible = maxCount !== undefined && count >= maxCount;
-	const tooltipTitle = tQuiz(InterviewQuizCreate.MODE_SELECT_TOOLTIP_PREMIUMONLY);
+
 	return (
 		<div style={{ maxWidth: '290px' }}>
 			<Tooltip
-				title={tooltipTitle}
+				title={tTranslation(Translation.MODE_SELECT_TOOLTIP_PREMIUM_ONLY)}
 				placement="top"
 				color="violet"
 				offsetTooltip={0}

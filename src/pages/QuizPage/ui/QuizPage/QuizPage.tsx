@@ -9,21 +9,14 @@ import { useTranslations } from 'next-intl';
 import { Question } from '@/entities/question';
 import {
 	LS_ACTIVE_MOCK_QUIZ_KEY,
+	MockQuizQuestionAnswerType,
 	QuestionNavPanel,
-	QuizQuestionAnswerType,
 	checkAllQuestionsAnswered,
 	useSlideSwitcher,
 } from '@/entities/quiz';
 import type { Answers } from '@/entities/quiz';
-import { getActiveQuizQuestions } from '@/entities/quiz/selectors/quizSelectors';
-import {
-	changeQuestionAnswer,
-	clearActiveQuizState,
-	setActiveQuizQuestions,
-} from '@/entities/quiz/slice/activeQuizSlice';
 import { InterviewQuiz, ROUTES, i18Namespace } from '@/shared/config';
-import { getJSONFromLS } from '@/shared/libs';
-import { useAppDispatch, useAppSelector } from '@/shared/libs/redux';
+import { getJSONFromLS, removeFromLS, setToLS } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -32,19 +25,20 @@ import { Text } from '@/shared/ui/Text';
 import { InterviewSlider } from '@/widgets/InterviewSlider';
 
 import styles from './QuizPage.module.css';
-import { QuizPageSkeleton } from './QuizPage.skeleton';
 
 export const QuizPage = () => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
-	const [isMounted, setIsMounted] = useState(false);
+	const [activeQuizQuestions, setActiveQuizQuestions] = useState<Answers[]>([]);
 	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
-	const questions = useAppSelector(getActiveQuizQuestions);
 
 	const router = useRouter();
-	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const quizFromLS = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
+
+		if (!quizFromLS) {
+			router.replace(ROUTES.quiz.page);
+		}
 
 		const combinedQuestions =
 			quizFromLS?.questions?.map((question: Question) => ({
@@ -54,17 +48,8 @@ export const QuizPage = () => {
 				answer: quizFromLS.response.answers.find((a: Answers) => a.questionId === question.id)
 					?.answer,
 			})) ?? [];
-
-		dispatch(setActiveQuizQuestions(combinedQuestions));
-
-		setIsMounted(true);
-	}, [dispatch]);
-
-	useEffect(() => {
-		if (isMounted && !questions.length) {
-			router.replace(ROUTES.quiz.page);
-		}
-	}, [isMounted, questions.length, router]);
+		setActiveQuizQuestions(combinedQuestions);
+	}, []);
 
 	const {
 		questionId,
@@ -77,23 +62,34 @@ export const QuizPage = () => {
 		answer,
 		goToNextSlide,
 		goToPrevSlide,
-	} = useSlideSwitcher(questions);
+	} = useSlideSwitcher(activeQuizQuestions);
 
-	if (!isMounted) {
-		return <QuizPageSkeleton />;
-	}
-
-	const isAllQuestionsAnswered = checkAllQuestionsAnswered(questions);
+	const isAllQuestionsAnswered = checkAllQuestionsAnswered(activeQuizQuestions);
 	const isLastQuestion = activeQuestion === totalCount;
 	const isNextButton = !isLastQuestion && !isAllQuestionsAnswered;
 	const isDisabled = (isLastQuestion && !isAllQuestionsAnswered) || (!isLastQuestion && !answer);
 
-	const handleAnswerChange = (answer: QuizQuestionAnswerType) => {
-		dispatch(changeQuestionAnswer({ questionId, answer }));
+	const handleAnswerChange = (answer: MockQuizQuestionAnswerType) => {
+		const updatedQuestions = activeQuizQuestions.map((question) => {
+			return question.questionId === questionId ? { ...question, answer } : question;
+		});
+		const activeMockQuiz = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
+		const updatedAnswers = [...activeMockQuiz.response.answers];
+		updatedAnswers[activeQuestion - 1] = {
+			...updatedAnswers[activeQuestion - 1],
+			answer,
+		};
+		const newMockData = {
+			...activeMockQuiz,
+			response: { ...activeMockQuiz.response, answers: updatedAnswers },
+		};
+		setToLS(LS_ACTIVE_MOCK_QUIZ_KEY, newMockData);
+		setActiveQuizQuestions(updatedQuestions);
 	};
 
 	const onInterruptQuiz = () => {
-		dispatch(clearActiveQuizState());
+		setActiveQuizQuestions([]);
+		removeFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
 		router.push(ROUTES.quiz.page);
 	};
 
@@ -111,7 +107,9 @@ export const QuizPage = () => {
 		<Flex direction="column" gap="20" className={styles.container}>
 			<Card withOutsideShadow>
 				<div className={styles['progress-bar']}>
-					<Text variant="body5">{t(InterviewQuiz.TITLE)}</Text>
+					<Text variant="body5" isMainTitle>
+						{t(InterviewQuiz.TITLE)}
+					</Text>
 					<Text variant="body2" color="black-500">
 						{activeQuestion}/{totalCount}
 					</Text>

@@ -17,6 +17,7 @@ export enum Translation {
 	ACCESS_DENIED_TITLE = 'access.denied.title',
 	ACCESS_DENIED_DESCRIPTION = 'access.denied.description',
 	ACCESS_DENIED_BUTTON = 'access.denied.button',
+	MODE_SELECT_TOOLTIP_PREMIUM_ONLY = 'mode.select.tooltip.premium.only',
 
 	QUESTIONS_COUNT_AVAILABLE_AUTHORIZED = 'questions-count-available',
 	LOGIN_REGISTER_LINK = 'banner-authorized',
@@ -232,7 +233,6 @@ export enum InterviewQuizCreate {
 	MODE_RANDOM = 'mode.random',
 	MODE_SELECT = 'mode.select.select',
 	MODE_SELECT_TOOLTIP_UNAUTHORIZED = 'mode.select.tooltip.unauthorized',
-	MODE_SELECT_TOOLTIP_PREMIUMONLY = 'mode.select.tooltip.premiumonly',
 }
 
 export enum Analytics {

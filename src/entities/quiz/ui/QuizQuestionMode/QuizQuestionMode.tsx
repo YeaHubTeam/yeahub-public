@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { InterviewQuizCreate, i18Namespace } from '@/shared/config';
+import { InterviewQuizCreate, Translation, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 import { Tooltip } from '@/shared/ui/Tooltip';
 
@@ -23,6 +23,7 @@ interface QuizQuestionModeData {
 
 export const QuizQuestionMode = ({ disabled }: QuizQuestionModeProps) => {
 	const t = useTranslations(i18Namespace.interviewQuizCreate);
+	const tTranslation = useTranslations(i18Namespace.translation);
 
 	const quizQuestionModeData: QuizQuestionModeData[] = [
 		{ id: 1, value: 'REPEAT', title: t(InterviewQuizCreate.MODE_REPEAT), active: false },
@@ -40,12 +41,10 @@ export const QuizQuestionMode = ({ disabled }: QuizQuestionModeProps) => {
 		setQuizQuestionMode(updatedModeData);
 	};
 
-	const tooltipTitle = t(InterviewQuizCreate.MODE_SELECT_TOOLTIP_PREMIUMONLY);
-
 	return (
 		<div style={{ maxWidth: '384px' }}>
 			<Tooltip
-				title={tooltipTitle}
+				title={tTranslation(Translation.MODE_SELECT_TOOLTIP_PREMIUM_ONLY)}
 				placement="top"
 				color="violet"
 				offsetTooltip={0}

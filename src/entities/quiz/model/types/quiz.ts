@@ -1,30 +1,23 @@
 import { Question } from '@/entities/question/@x/quiz';
-import { Response } from '@/shared/libs';
 
 export type QuestionModeType = 'REPEAT' | 'NEW' | 'RANDOM';
-export type QuizQuestionAnswerType = 'KNOWN' | 'UNKNOWN';
+export type MockQuizQuestionAnswerType = 'KNOWN' | 'UNKNOWN';
 
-export interface Quiz {
-	id: string;
-	profileId: string;
-	quizNumber: number;
+export interface MockQuiz {
 	startDate: string;
-	endDate: string;
 	fullCount: number;
-	successCount: number;
-	skills: string[];
-	response: QuizResponse;
+	response: MockQuizResponse;
 	questions: Question[];
 }
 
-export interface QuizResponse {
+export interface MockQuizResponse {
 	answers: Answers[];
 }
 
 export interface Answers {
 	questionId: number;
 	questionTitle: string;
-	answer: QuizQuestionAnswerType;
+	answer: MockQuizQuestionAnswerType;
 	imageSrc?: string;
 	shortAnswer: string;
 }
@@ -33,33 +26,18 @@ export interface ActiveQuizState {
 	questions: Answers[];
 }
 
-export interface CreateNewQuizParamsRequest {
-	profileId: string;
+export interface CreateNewMockQuizParamsRequest {
 	skills?: string;
 	complexity?: string;
 	collection?: number;
 	limit?: number;
 	mode?: QuestionModeType;
-}
-export type ActiveQuiz = Omit<Quiz, 'endDate'>;
-
-export type CreateNewQuizResponse = ActiveQuiz;
-
-export interface CreateNewMockQuizParamsRequest
-	extends Omit<CreateNewQuizParamsRequest, 'profileId'> {
 	specialization?: number;
 }
 
-export type CreateNewMockQuizResponse = Omit<CreateNewQuizResponse, 'profileId'>;
-
-export type GetActiveQuizResponse = Response<ActiveQuiz[]>;
-export interface GetActiveQuizParamsRequest {
-	profileId: string;
-	page: number;
-	limit: number;
-}
+export type CreateNewMockQuizResponse = MockQuiz;
 
 export interface ChangeQuestionAnswerParams {
 	questionId: number;
-	answer: QuizQuestionAnswerType;
+	answer: MockQuizQuestionAnswerType;
 }

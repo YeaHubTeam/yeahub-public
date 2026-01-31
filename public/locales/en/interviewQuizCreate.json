@@ -6,8 +6,7 @@
 	"mode": {
 		"select": {
 			"select": "Choose mode",
-			"toolttip": {
-				"premiumonly": "Available to members",
+			"tooltip": {
 				"unauthorized": "The choice of mode will be available after registration"
 			}
 		},
