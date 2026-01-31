@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import { Text } from '@/shared/ui/Text';
 
-import { HeaderNavLinks } from '../../model/types/headerTypes';
+import type { HeaderNavLinks } from '../../model/types/headerTypes';
 import styles from './HeaderNavLink.module.css';
 
 interface HeaderNavLinkProps extends Pick<HeaderNavLinks, 'link' | 'path'> {
