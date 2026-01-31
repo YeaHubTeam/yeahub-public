@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
-import { QuizQuestionAnswerType, ResponseButtons } from '@/entities/quiz';
+import { MockQuizQuestionAnswerType, ResponseButtons } from '@/entities/quiz';
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -15,7 +15,7 @@ interface InterviewSliderProps {
 	imageSrc?: string;
 	shortAnswer: string;
 	answer?: string;
-	changeAnswer: (answer: QuizQuestionAnswerType) => void;
+	changeAnswer: (answer: MockQuizQuestionAnswerType) => void;
 	isAnswerVisible: boolean;
 	setIsAnswerVisible: (value: boolean) => void;
 }
