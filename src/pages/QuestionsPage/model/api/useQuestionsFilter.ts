@@ -75,9 +75,13 @@ export const useQuestionsFilter = () => {
 			const slug = findSpecializationSlugById(nextId);
 			if (!slug) return;
 
-			router.push(`/${locale}/questions/${slug}`, { scroll: false });
+			const params = new URLSearchParams(searchParamsString);
+			params.delete('page');
+			params.delete('skills');
+
+			router.push(`/${locale}/questions/${slug}?${params.toString()}`, { scroll: false });
 		},
-		[locale, router],
+		[locale, router, searchParamsString],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

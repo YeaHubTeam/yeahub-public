@@ -14,15 +14,18 @@ import {
 	MAX_SHOW_LIMIT_SPECIALIZATIONS,
 } from '../../model/constants/specializationConstants';
 import { useSpecializations } from '../../model/hooks/useSpecializations';
+import { GetSpecializationsListResponse } from '../../model/types/specialization';
 
 interface SpecializationsListFieldProps {
 	selectedSpecialization?: number;
 	onChangeSpecialization: (specialization: number | undefined) => void;
+	initialData?: GetSpecializationsListResponse | null;
 }
 
 export const SpecializationsListField = ({
 	selectedSpecialization = DEFAULT_SPECIALIZATION_ID,
 	onChangeSpecialization,
+	initialData,
 }: SpecializationsListFieldProps) => {
 	const t = useTranslations(i18Namespace.specialization);
 	const tCommon = useTranslations(i18Namespace.translation);
@@ -30,7 +33,7 @@ export const SpecializationsListField = ({
 	const [showAll, setShowAll] = useState(false);
 	const [limit, setLimit] = useState(MAX_SHOW_LIMIT_SPECIALIZATIONS);
 
-	const { data: specializations } = useSpecializations({ limit });
+	const { data: specializations } = useSpecializations({ limit }, initialData);
 
 	useEffect(() => {
 		if (showAll) {
