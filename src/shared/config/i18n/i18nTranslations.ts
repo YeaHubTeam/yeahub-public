@@ -285,4 +285,10 @@ export enum Landing {
 	SPECIALIZATION_CARD_IMG_ANDROID = 'specialization.card.img.android',
 	SPECIALIZATION_CARD_IMG_GAME = 'specialization.card.img.game',
 	SPECIALIZATION_CARD_BUTTON = 'specialization.card.button',
+	TRAINING_INTERVIEW_TITLE = 'training_interview.title',
+	TRAINING_INTERVIEW_SUBTITLE = 'training_interview.subtitle',
+	TRAINING_INTERVIEW_SUBTITLE_TABLET = 'training_interview.subtitle_tablet',
+	TRAINING_INTERVIEW_ADVANTAGES_FIRST = 'training_interview.advantages.first',
+	TRAINING_INTERVIEW_ADVANTAGES_SECOND = 'training_interview.advantages.second',
+	TRAINING_INTERVIEW_LINK = 'training_interview.link',
 }
