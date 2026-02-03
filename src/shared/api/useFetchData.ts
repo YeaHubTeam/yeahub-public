@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface UseFetchDataParams<T, P> {
 	fetcher: (params: P) => Promise<T>;
@@ -12,8 +12,15 @@ export const useFetchData = <T, P>({ fetcher, params, initialData }: UseFetchDat
 	const [data, setData] = useState<T | null>(initialData);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<unknown>(null);
+	const isFirstRender = useRef(true);
 
 	useEffect(() => {
+		if (isFirstRender.current && initialData !== null) {
+			isFirstRender.current = false;
+			return;
+		}
+		isFirstRender.current = false;
+
 		let active = true;
 
 		const load = async () => {

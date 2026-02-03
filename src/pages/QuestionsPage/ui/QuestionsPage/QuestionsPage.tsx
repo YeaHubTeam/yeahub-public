@@ -4,6 +4,8 @@ import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 import { Question } from '@/entities/question';
+import { GetSkillsListResponse } from '@/entities/skill';
+import { GetSpecializationsListResponse } from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
 import { SPEC_MAP } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
@@ -23,6 +25,8 @@ interface QuestionsPageProps {
 	limit: number;
 	specialization: keyof typeof SPEC_MAP;
 	hasFilters: boolean;
+	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialSkills?: GetSkillsListResponse | null;
 }
 
 export const QuestionsPage = ({
@@ -33,6 +37,8 @@ export const QuestionsPage = ({
 	limit,
 	specialization,
 	hasFilters,
+	initialSpecializations,
+	initialSkills,
 }: QuestionsPageProps) => {
 	setRequestLocale(locale);
 
@@ -58,7 +64,10 @@ export const QuestionsPage = ({
 				) : null}
 			</Card>
 			<Card className={styles.filters}>
-				<QuestionsFilterPanel />
+				<QuestionsFilterPanel
+					initialSpecializations={initialSpecializations}
+					initialSkills={initialSkills}
+				/>
 			</Card>
 		</Flex>
 	);

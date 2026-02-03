@@ -3,16 +3,27 @@
 import { useTranslations } from 'next-intl';
 
 import { ChooseQuestionComplexity, RateFilterSection } from '@/entities/question';
-import { SkillsListField } from '@/entities/skill';
+import { GetSkillsListResponse, SkillsListField } from '@/entities/skill';
 import { MediaLinksBanner } from '@/entities/socialMedia';
-import { SpecializationsListField } from '@/entities/specialization';
+import {
+	GetSpecializationsListResponse,
+	SpecializationsListField,
+} from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
 import { useQuestionsFilter } from '../../model/api/useQuestionsFilter';
 
-export const QuestionsFilterPanel = () => {
+interface QuestionsFilterPanelProps {
+	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialSkills?: GetSkillsListResponse | null;
+}
+
+export const QuestionsFilterPanel = ({
+	initialSpecializations,
+	initialSkills,
+}: QuestionsFilterPanelProps) => {
 	const t = useTranslations(i18Namespace.questions);
 	const { filter, selectedSpecialization, media, handlers } = useQuestionsFilter();
 
@@ -26,11 +37,13 @@ export const QuestionsFilterPanel = () => {
 			<SpecializationsListField
 				selectedSpecialization={selectedSpecialization}
 				onChangeSpecialization={handlers.onChangeSpecialization}
+				initialData={initialSpecializations}
 			/>
 			<SkillsListField
 				selectedSkills={filter.skills}
 				onChangeSkills={handlers.onChangeSkills}
 				selectedSpecialization={selectedSpecialization}
+				initialData={initialSkills}
 			/>
 			<ChooseQuestionComplexity
 				onChangeComplexity={handlers.onChangeComplexity}

@@ -3,10 +3,11 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
 import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
+import { getSkills } from '@/entities/skill';
+import { getSpecializations } from '@/entities/specialization';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
-import { QUESTIONS_PER_PAGE } from '@/shared/libs';
+import { QUESTIONS_PER_PAGE, SPEC_MAP } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;
@@ -35,16 +36,20 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const response = await getQuestionsList({
-		page: pageNum,
-		limit: QUESTIONS_PER_PAGE,
-		specialization: specializationId,
-		skills,
-		complexity,
-		rate,
-		titleOrDescription,
-		skillFilterMode: 'ANY',
-	});
+	const [questionsResponse, specializationsResponse, skillsResponse] = await Promise.all([
+		getQuestionsList({
+			page: pageNum,
+			limit: QUESTIONS_PER_PAGE,
+			specialization: specializationId,
+			skills,
+			complexity,
+			rate,
+			titleOrDescription,
+			skillFilterMode: 'ANY',
+		}),
+		getSpecializations({ limit: 5 }),
+		getSkills({ limit: 5, specializations: specializationId }),
+	]);
 
 	const hasFilters = !!skills || !!complexity || !!rate || !!titleOrDescription;
 
@@ -52,11 +57,13 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 		<QuestionsPage
 			locale={locale}
 			page={pageNum}
-			questions={response?.data || []}
-			total={response?.total || 0}
-			limit={response?.limit || 0}
+			questions={questionsResponse?.data || []}
+			total={questionsResponse?.total || 0}
+			limit={questionsResponse?.limit || 0}
 			specialization={specialization}
 			hasFilters={hasFilters}
+			initialSpecializations={specializationsResponse}
+			initialSkills={skillsResponse}
 		/>
 	);
 };
