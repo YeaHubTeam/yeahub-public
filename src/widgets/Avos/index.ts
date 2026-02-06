@@ -4,3 +4,4 @@ export { AvosPromo } from './ui/AvosPromo/AvosPromo';
 export { AvosPromoSkeleton } from './ui/AvosPromo/AvosPromo.skeleton';
 export { AvosListen } from './ui/AvosListen/AvosListen';
 export { AvosListenSkeleton } from './ui/AvosListen/AvosListen.skeleton';
+export { avosAndYeahubLogo } from './model/assets';
