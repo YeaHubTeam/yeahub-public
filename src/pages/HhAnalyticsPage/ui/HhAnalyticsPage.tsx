@@ -61,7 +61,7 @@ export const HhAnalyticsPage = async ({ searchParams, params }: HhAnalyticsPageP
 		return (
 			<Card>
 				<Flex direction="column" gap="24">
-					<Text variant="body6">
+					<Text variant="body6" isMainTitle>
 						{mode === 'skills'
 							? t(Analytics.HH_ANALYTICS_TITLE_SKILLS)
 							: t(Analytics.HH_ANALYTICS_TITLE_KEYWORDS)}

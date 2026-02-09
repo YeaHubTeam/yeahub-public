@@ -32,7 +32,7 @@ export const CollectionHeader = ({
 				/>
 				<Flex flex={1} direction="column">
 					<Flex direction="row" gap="8" justify="between" align="start">
-						<Text variant="head2" className={styles.title}>
+						<Text variant="head2" isMainTitle className={styles.title}>
 							{title}
 						</Text>
 					</Flex>
