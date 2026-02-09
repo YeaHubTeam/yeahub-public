@@ -1,5 +1,5 @@
 {
-    "banner": {
+	"banner": {
 		"sticker": {
 			"skill": "YeaHub — level up your skills",
 			"candidate": "Candidate"
@@ -41,5 +41,15 @@
 			},
 			"button": "Go to Questions"
 		}
+	},
+	"training_interview": {
+		"title": "Interview trainer",
+		"subtitle": "Turn preparation into a game! Our interactive trainer will help you \neffectively memorize information and pass interviews\n with confidence.",
+		"subtitle_tablet": "Repeat Mode — practice with questions you’ve already tackled.",
+		"advantages": {
+			"first": "Memorization mode — learn new topics with a smart repetition algorithm",
+			"second": "Flexible customization — choose difficulty level, key skills, and IT specialties"
+		},
+		"link": "Try it"
 	}
 }
