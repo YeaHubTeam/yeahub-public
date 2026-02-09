@@ -1,16 +1,43 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
 import { getCollectionBySlug, getCollectionSlugs } from '@/entities/collection';
 import type { CollectionSlug } from '@/entities/collection';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
+import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG, SPEC_MAP } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; slug: string }>;
 	searchParams: Promise<{ specialization: keyof typeof SPEC_MAP }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+	const { slug, locale } = await params;
+	const t = await getTranslations({ locale, namespace: i18Namespace.translation });
+	const collection = await getCollectionBySlug(slug).catch(() => null);
+
+	if (!collection) {
+		return { title: t(Translation.ERROR_404_TITLE) };
+	}
+
+	const description = collection.description?.slice(0, 160) || collection.title || '';
+
+	return {
+		title: collection.title,
+		description,
+		keywords: collection.keywords,
+		openGraph: {
+			title: collection.title,
+			description,
+			type: 'article',
+			images: collection.imageSrc ? [collection.imageSrc] : [],
+		},
+	};
 }
 
 export const generateStaticParams = async () => {

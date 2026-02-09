@@ -29,5 +29,7 @@
 	"search": {
 		"placeholder": "Enter a query…"
 	},
-	"title": "Resource types"
+	"resources": {
+		"title": "Resource types"
+	}
 }
