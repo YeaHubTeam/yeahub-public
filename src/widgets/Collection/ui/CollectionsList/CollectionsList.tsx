@@ -2,7 +2,6 @@ import { useTranslations } from 'next-intl';
 
 import { Collection, CollectionPreview } from '@/entities/collection';
 import { Collections, i18Namespace } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
 import { Text } from '@/shared/ui/Text';
@@ -12,7 +11,7 @@ import styles from './CollectionsList.module.css';
 interface CollectionsListProps {
 	collections: Collection[];
 	hasFilters: boolean;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 }
 
 export const CollectionsList = ({

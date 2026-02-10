@@ -1,6 +1,9 @@
 import { apiFetch } from '@/shared/api';
 
-import type { GetSpecializationsListResponse } from '../model/types/specialization';
+import type {
+	GetSpecializationSlugsResponse,
+	GetSpecializationsListResponse,
+} from '../model/types/specialization';
 
 export interface GetSpecializationsParams {
 	limit?: number;
@@ -14,4 +17,8 @@ export function getSpecializations({ limit, offset = 0 }: GetSpecializationsPara
 			offset: offset ?? 0,
 		},
 	});
+}
+
+export function getSpecializationSlugs() {
+	return apiFetch<GetSpecializationSlugsResponse>('specializations/slugs');
 }

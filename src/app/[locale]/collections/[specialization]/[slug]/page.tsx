@@ -4,16 +4,15 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 
-import { getCollectionBySlug, getCollectionSlugs } from '@/entities/collection';
-import type { CollectionSlug } from '@/entities/collection';
+import { getCollectionBySlug, getCollectionsList } from '@/entities/collection';
+import { getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { DEFAULT_SPECIALIZATION_SLUG, SPEC_MAP } from '@/shared/libs';
+import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
 interface PageProps {
-	params: Promise<{ locale: string; slug: string }>;
-	searchParams: Promise<{ specialization: keyof typeof SPEC_MAP }>;
+	params: Promise<{ locale: string; specialization: string; slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -42,35 +41,49 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const generateStaticParams = async () => {
 	try {
+		const { data: specializations } = await getSpecializationSlugs();
+		const allParams: { locale: string; specialization: string; slug: string }[] = [];
 		const BATCH_SIZE = 100;
 
-		const firstPage = await getCollectionSlugs({ page: 1, limit: BATCH_SIZE });
+		for (const spec of specializations) {
+			try {
+				const firstPage = await getCollectionsList({
+					specializationId: spec.id,
+					page: 1,
+					limit: BATCH_SIZE,
+				});
 
-		const { data: initialData, total } = firstPage;
-		let allSlugs: CollectionSlug[] = [...initialData];
+				const { data: initialData, total } = firstPage;
+				const specCollections = initialData.map((c) => c.slug);
 
-		const totalPages = Math.ceil(total / BATCH_SIZE);
+				const totalPages = Math.ceil(total / BATCH_SIZE);
 
-		if (totalPages > 1) {
-			const promises = [];
+				if (totalPages > 1) {
+					for (let page = 2; page <= totalPages; page++) {
+						const response = await getCollectionsList({
+							specializationId: spec.id,
+							page,
+							limit: BATCH_SIZE,
+						});
+						specCollections.push(...response.data.map((c) => c.slug));
+					}
+				}
 
-			for (let page = 2; page <= totalPages; page++) {
-				promises.push(getCollectionSlugs({ page, limit: BATCH_SIZE }));
+				specCollections.forEach((cSlug) => {
+					locales.forEach((locale) => {
+						allParams.push({
+							locale,
+							specialization: spec.slug,
+							slug: cSlug,
+						});
+					});
+				});
+			} catch (error) {
+				console.error(`Error fetching collections for specialization ${spec.slug}:`, error);
 			}
-
-			const results = await Promise.all(promises);
-
-			results.forEach((response) => {
-				allSlugs = [...allSlugs, ...response.data];
-			});
 		}
 
-		return locales.flatMap((locale) =>
-			allSlugs.map(({ slug }) => ({
-				locale,
-				slug,
-			})),
-		);
+		return allParams;
 	} catch (error) {
 		console.error('generateStaticParams error:', error);
 		return [];
@@ -79,9 +92,8 @@ export const generateStaticParams = async () => {
 
 export const dynamic = 'force-static';
 
-const CollectionPage = async ({ params, searchParams }: PageProps) => {
-	const { locale, slug } = await params;
-	const { specialization } = await searchParams;
+const CollectionPage = async ({ params }: PageProps) => {
+	const { locale, slug, specialization } = await params;
 
 	setRequestLocale(locale);
 

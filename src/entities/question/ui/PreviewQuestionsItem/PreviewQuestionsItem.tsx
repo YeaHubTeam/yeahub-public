@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { ROUTES } from '@/shared/config';
-import { SPEC_MAP, route } from '@/shared/libs';
+import { route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -12,7 +12,7 @@ import styles from './PreviewQuestionsItem.module.css';
 
 interface PreviewQuestionsItemProps {
 	title: string;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 	rate?: number;
 	complexity?: number;
 	imageSrc?: string;

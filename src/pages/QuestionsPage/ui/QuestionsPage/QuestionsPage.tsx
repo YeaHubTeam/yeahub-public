@@ -5,9 +5,8 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { Question } from '@/entities/question';
 import { GetSkillsListResponse } from '@/entities/skill';
-import { GetSpecializationsListResponse } from '@/entities/specialization';
+import { GetSpecializationsListResponse, SpecializationSlug } from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
@@ -23,10 +22,12 @@ interface QuestionsPageProps {
 	questions: Question[];
 	total: number;
 	limit: number;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 	hasFilters: boolean;
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
+	specializationSlugs: SpecializationSlug[];
+	specializationTitle: string;
 }
 
 export const QuestionsPage = ({
@@ -39,6 +40,8 @@ export const QuestionsPage = ({
 	hasFilters,
 	initialSpecializations,
 	initialSkills,
+	specializationSlugs,
+	specializationTitle,
 }: QuestionsPageProps) => {
 	setRequestLocale(locale);
 
@@ -47,7 +50,11 @@ export const QuestionsPage = ({
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
-				<FullQuestionsList questions={questions} specialization={specialization} />
+				<FullQuestionsList
+					questions={questions}
+					specialization={specialization}
+					specializationTitle={specializationTitle}
+				/>
 
 				<QuestionPagePagination total={total} limit={limit} currentPage={page} />
 
@@ -67,6 +74,7 @@ export const QuestionsPage = ({
 				<QuestionsFilterPanel
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
+					specializationSlugs={specializationSlugs}
 				/>
 			</Card>
 		</Flex>

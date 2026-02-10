@@ -4,7 +4,6 @@ import { Collection, CollectionWarningInfo } from '@/entities/collection';
 import { PreviewQuestionsItem, Question } from '@/entities/question';
 import { Questions, i18Namespace } from '@/shared/config';
 import { ROUTES } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { SimpleStub } from '@/shared/ui/SimpleStub';
@@ -16,7 +15,7 @@ const GUEST_QUESTIONS_COUNT = 5;
 
 interface CollectionBodyProps extends Pick<Collection, 'isFree'> {
 	questions: Question[];
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 }
 
 export const CollectionBody = ({ questions, isFree, specialization }: CollectionBodyProps) => {

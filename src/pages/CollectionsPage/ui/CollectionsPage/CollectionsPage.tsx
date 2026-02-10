@@ -1,9 +1,7 @@
-import React from 'react';
-
 import { setRequestLocale } from 'next-intl/server';
 
 import { Collection } from '@/entities/collection';
-import { SPEC_MAP } from '@/shared/libs';
+import { SpecializationSlug } from '@/entities/specialization';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { CollectionsList, InterviewRecordingsBanner } from '@/widgets/Collection';
@@ -18,8 +16,9 @@ interface CollectionsPageProps {
 	collections: Collection[];
 	total: number;
 	limit: number;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 	hasFilters: boolean;
+	specializationSlugs: SpecializationSlug[];
 }
 export const CollectionsPage = ({
 	locale,
@@ -29,6 +28,7 @@ export const CollectionsPage = ({
 	limit,
 	specialization,
 	hasFilters,
+	specializationSlugs,
 }: CollectionsPageProps) => {
 	setRequestLocale(locale);
 
@@ -45,7 +45,7 @@ export const CollectionsPage = ({
 			</Card>
 			<Flex gap="20" direction="column" className={styles.filters}>
 				<Card>
-					<CollectionsFilterPanel />
+					<CollectionsFilterPanel specializationSlugs={specializationSlugs} />
 				</Card>
 				<InterviewRecordingsBanner />
 			</Flex>

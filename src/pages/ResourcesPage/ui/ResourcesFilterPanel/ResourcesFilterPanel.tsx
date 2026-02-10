@@ -4,16 +4,20 @@ import { useTranslations } from 'next-intl';
 
 import { ResourceTypesListField } from '@/entities/resource';
 import { SkillsListField } from '@/entities/skill';
-import { SpecializationsListField } from '@/entities/specialization';
+import { SpecializationSlug, SpecializationsListField } from '@/entities/specialization';
 import { Resources, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
 import { useResourcesFilter } from '../../model/api/useResourcesFilter';
 
-export const ResourcesFilterPanel = () => {
+interface ResourcesFilterPanelProps {
+	specializationSlugs: SpecializationSlug[];
+}
+
+export const ResourcesFilterPanel = ({ specializationSlugs }: ResourcesFilterPanelProps) => {
 	const t = useTranslations(i18Namespace.resources);
-	const { filter, selectedSpecialization, handlers } = useResourcesFilter();
+	const { filter, selectedSpecialization, handlers } = useResourcesFilter(specializationSlugs);
 
 	return (
 		<Flex direction="column" gap="24">

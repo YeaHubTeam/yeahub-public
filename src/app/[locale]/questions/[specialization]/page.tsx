@@ -4,25 +4,32 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { getSkills } from '@/entities/skill';
-import { getSpecializations } from '@/entities/specialization';
+import { getSpecializationSlugs, getSpecializations } from '@/entities/specialization';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
-import { QUESTIONS_PER_PAGE, SPEC_MAP } from '@/shared/libs';
+import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
-	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;
+	params: Promise<{ locale: string; specialization: string }>;
 	searchParams: Promise<GetQuestionsListParamsRequest>;
 }
 
 export const dynamic = 'auto';
 
-export const generateStaticParams = () => {
-	return locales.flatMap((locale) =>
-		Object.keys(SPEC_MAP).map((specSlug) => ({
-			locale,
-			specialization: specSlug,
-		})),
-	);
+export const generateStaticParams = async () => {
+	try {
+		const { data: specializations } = await getSpecializationSlugs();
+
+		return locales.flatMap((locale) =>
+			specializations.map((spec) => ({
+				locale,
+				specialization: spec.slug,
+			})),
+		);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
 };
 
 const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
@@ -31,8 +38,12 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const specializationId = SPEC_MAP[specialization];
-	if (!specializationId) notFound();
+	const { data: specializationsSlugs } = await getSpecializationSlugs();
+	const currentSpec = specializationsSlugs.find((s) => s.slug === specialization);
+
+	if (!currentSpec) notFound();
+
+	const specializationId = currentSpec.id;
 
 	setRequestLocale(locale);
 
@@ -40,7 +51,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 		getQuestionsList({
 			page: pageNum,
 			limit: QUESTIONS_PER_PAGE,
-			specialization: specializationId,
+			specializationId,
 			skills,
 			complexity,
 			rate,
@@ -53,6 +64,10 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!skills || !!complexity || !!rate || !!titleOrDescription;
 
+	const specializationTitle = questionsResponse.data?.[0]?.questionSpecializations.find(
+		(q) => q.id === specializationId,
+	)?.title;
+
 	return (
 		<QuestionsPage
 			locale={locale}
@@ -64,6 +79,8 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 			hasFilters={hasFilters}
 			initialSpecializations={specializationsResponse}
 			initialSkills={skillsResponse}
+			specializationSlugs={specializationsSlugs}
+			specializationTitle={specializationTitle || ''}
 		/>
 	);
 };

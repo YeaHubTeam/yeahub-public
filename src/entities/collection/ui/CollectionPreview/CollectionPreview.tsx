@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import Question from '@/shared/assets/icons/collectionsQuestion.svg';
 import Star from '@/shared/assets/icons/starsMinimalistic.svg';
 import { Collections, ROUTES, i18Namespace } from '@/shared/config';
-import { SPEC_MAP, route } from '@/shared/libs';
+import { route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
@@ -20,7 +20,7 @@ const MAX_LIMIT_KEYWORDS = 4;
 
 type CollectionProps = {
 	collection: Collection;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 	variant?: 'row' | 'column';
 };
 

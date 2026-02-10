@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 import { type Resource } from '@/entities/resource';
+import { SpecializationSlug } from '@/entities/specialization';
 import { Resources, i18Namespace } from '@/shared/config';
 import { RESOURCES_PER_PAGE } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
@@ -20,6 +21,7 @@ interface ResourcesPageProps {
 	total: number;
 	limit: number;
 	hasFilters: boolean;
+	specializationSlugs: SpecializationSlug[];
 }
 
 export const ResourcesPage = ({
@@ -29,6 +31,7 @@ export const ResourcesPage = ({
 	total,
 	limit,
 	hasFilters,
+	specializationSlugs,
 }: ResourcesPageProps) => {
 	setRequestLocale(locale);
 	const t = useTranslations(i18Namespace.resources);
@@ -46,7 +49,7 @@ export const ResourcesPage = ({
 				)}
 			</Card>
 			<Card className={styles.filters}>
-				<ResourcesFilterPanel />
+				<ResourcesFilterPanel specializationSlugs={specializationSlugs} />
 			</Card>
 		</Flex>
 	);

@@ -2,7 +2,6 @@ import { useTranslations } from 'next-intl';
 
 import { Question } from '@/entities/question';
 import { Questions as QuestionsTranslations, i18Namespace } from '@/shared/config';
-import { SPEC_MAP, SPEC_MAP_TO_TITLE } from '@/shared/libs';
 import { Accordion } from '@/shared/ui/Accordion';
 import { Text } from '@/shared/ui/Text';
 
@@ -11,14 +10,19 @@ import styles from './FullQuestionsList.module.css';
 
 interface FullQuestionsListProps {
 	questions: Question[];
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
+	specializationTitle: string;
 }
 
-export const FullQuestionsList = ({ questions, specialization }: FullQuestionsListProps) => {
+export const FullQuestionsList = ({
+	questions,
+	specialization,
+	specializationTitle,
+}: FullQuestionsListProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
 	const title = t(QuestionsTranslations.QUESTIONS_TITLE, {
-		specialization: SPEC_MAP_TO_TITLE[specialization],
+		specialization: specializationTitle,
 	});
 
 	return (
