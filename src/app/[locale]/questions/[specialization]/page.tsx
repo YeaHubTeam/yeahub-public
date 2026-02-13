@@ -69,20 +69,84 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const specializationTitle = currentSpec.title;
 
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}`;
+
+	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
+
+	const faqEntities = questionsResponse.data?.map((q) => ({
+		'@type': 'Question' as const,
+		name: q.title,
+		acceptedAnswer: {
+			'@type': 'Answer' as const,
+			text: stripHtml(q.shortAnswer).slice(0, 2000),
+		},
+	}));
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'FAQPage',
+				'@id': pageUrl,
+				name: `${specializationTitle || specialization}`,
+				mainEntity: faqEntities,
+			},
+			{
+				'@type': 'CollectionPage',
+				name: `${specializationTitle || specialization}`,
+				url: pageUrl,
+				mainEntity: {
+					'@type': 'ItemList',
+					numberOfItems: questionsResponse.total,
+					itemListElement: questionsResponse.data?.map((q, index) => ({
+						'@type': 'ListItem',
+						position: index + 1 + (pageNum - 1) * QUESTIONS_PER_PAGE,
+						url: `${siteUrl}/${locale}/questions/${specialization}/${q.slug}`,
+						name: q.title,
+					})),
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'Questions',
+						item: `${siteUrl}/${locale}/questions`,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: specializationTitle || specialization,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
 	return (
-		<QuestionsPage
-			locale={locale}
-			page={pageNum}
-			questions={questionsResponse?.data || []}
-			total={questionsResponse?.total || 0}
-			limit={questionsResponse?.limit || 0}
-			specialization={specialization}
-			hasFilters={hasFilters}
-			initialSpecializations={specializationsResponse}
-			initialSkills={skillsResponse}
-			currentSpec={currentSpec}
-			specializationTitle={specializationTitle || ''}
-		/>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<QuestionsPage
+				locale={locale}
+				page={pageNum}
+				questions={questionsResponse?.data || []}
+				total={questionsResponse?.total || 0}
+				limit={questionsResponse?.limit || 0}
+				specialization={specialization}
+				hasFilters={hasFilters}
+				initialSpecializations={specializationsResponse}
+				initialSkills={skillsResponse}
+				currentSpec={currentSpec}
+				specializationTitle={specializationTitle || ''}
+			/>
+		</>
 	);
 };
 

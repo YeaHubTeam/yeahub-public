@@ -93,7 +93,7 @@ export const generateStaticParams = async () => {
 export const dynamic = 'force-static';
 
 const QuestionPage = async ({ params }: PageProps) => {
-	const { locale, slug } = await params;
+	const { locale, specialization, slug } = await params;
 
 	setRequestLocale(locale);
 
@@ -103,7 +103,71 @@ const QuestionPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	return <QuestionPageComponent question={question} />;
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}/${slug}`;
+
+	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'QAPage',
+				'@id': pageUrl,
+				name: question.title,
+				mainEntity: {
+					'@type': 'Question',
+					name: question.title,
+					text: stripHtml(question.shortAnswer),
+					dateCreated: question.createdAt,
+					answerCount: 1,
+					acceptedAnswer: {
+						'@type': 'Answer',
+						text: stripHtml(question.longAnswer).slice(0, 5000),
+						dateCreated: question.createdAt,
+						author: {
+							'@type': 'Organization',
+							name: 'YeaHub',
+							url: siteUrl,
+						},
+					},
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'Questions',
+						item: `${siteUrl}/${locale}/questions`,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: question.questionSpecializations?.[0]?.title || specialization,
+						item: `${siteUrl}/${locale}/questions/${specialization}`,
+					},
+					{
+						'@type': 'ListItem',
+						position: 3,
+						name: question.title,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<QuestionPageComponent question={question} />
+		</>
+	);
 };
 
 export default QuestionPage;
