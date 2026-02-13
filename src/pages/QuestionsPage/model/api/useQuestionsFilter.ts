@@ -7,24 +7,18 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import { getChannelsForSpecialization } from '@/entities/socialMedia';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationSlug } from '@/entities/specialization';
+import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specialization';
 import { parseNumberArray, useDebounce } from '@/shared/libs';
 import type { FilterParams } from '@/widgets/question/QuestionsFilterPanel';
 
-const findSpecializationSlugById = (id: number, slugs: SpecializationSlug[]) => {
-	return slugs.find((s) => s.id === id)?.slug;
-};
-
-export const useQuestionsFilter = (specializationSlugs: SpecializationSlug[]) => {
+export const useQuestionsFilter = (currentSpec: Specialization) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const locale = useLocale();
 
 	const searchParamsString = searchParams?.toString() ?? '';
-	const specializationSlug = pathname?.split('/')[3] ?? 'react-developer';
-	const specializationId =
-		specializationSlugs.find((s) => s.slug === specializationSlug)?.id ?? DEFAULT_SPECIALIZATION_ID;
+	const specializationId = currentSpec.id;
 
 	const filter: FilterParams = useMemo(
 		() => ({
@@ -70,7 +64,7 @@ export const useQuestionsFilter = (specializationSlugs: SpecializationSlug[]) =>
 		(nextId?: number) => {
 			if (!nextId) return;
 
-			const slug = findSpecializationSlugById(nextId, specializationSlugs);
+			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			const params = new URLSearchParams(searchParamsString);
@@ -79,7 +73,7 @@ export const useQuestionsFilter = (specializationSlugs: SpecializationSlug[]) =>
 
 			router.push(`/${locale}/questions/${slug}?${params.toString()}`, { scroll: false });
 		},
-		[locale, router, searchParamsString, specializationSlugs],
+		[locale, router, searchParamsString, currentSpec],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

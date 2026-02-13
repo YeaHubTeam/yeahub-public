@@ -7,7 +7,7 @@ import { GetSkillsListResponse, SkillsListField } from '@/entities/skill';
 import { MediaLinksBanner } from '@/entities/socialMedia';
 import {
 	GetSpecializationsListResponse,
-	SpecializationSlug,
+	Specialization,
 	SpecializationsListField,
 } from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
@@ -19,17 +19,16 @@ import { useQuestionsFilter } from '../../model/api/useQuestionsFilter';
 interface QuestionsFilterPanelProps {
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
-	specializationSlugs: SpecializationSlug[];
+	currentSpec: Specialization;
 }
 
 export const QuestionsFilterPanel = ({
 	initialSpecializations,
 	initialSkills,
-	specializationSlugs,
+	currentSpec,
 }: QuestionsFilterPanelProps) => {
 	const t = useTranslations(i18Namespace.questions);
-	const { filter, selectedSpecialization, media, handlers } =
-		useQuestionsFilter(specializationSlugs);
+	const { filter, selectedSpecialization, media, handlers } = useQuestionsFilter(currentSpec);
 
 	return (
 		<Flex direction="column" gap="24">

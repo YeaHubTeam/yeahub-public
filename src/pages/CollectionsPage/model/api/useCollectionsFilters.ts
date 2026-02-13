@@ -7,23 +7,17 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import type { CollectionsFilterParams } from '@/entities/collection';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationSlug } from '@/entities/specialization';
+import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specialization';
 import { useDebounce } from '@/shared/libs';
 
-const findSpecializationSlugById = (id: number, slugs: SpecializationSlug[]) => {
-	return slugs.find((s) => s.id === id)?.slug;
-};
-
-export const useCollectionsFilters = (specializationSlugs: SpecializationSlug[]) => {
+export const useCollectionsFilters = (currentSpec: Specialization) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const locale = useLocale();
 
 	const searchParamsString = searchParams?.toString() ?? '';
-	const specializationSlug = pathname?.split('/')[3] ?? 'react-developer';
-	const specializationId =
-		specializationSlugs.find((s) => s.slug === specializationSlug)?.id ?? DEFAULT_SPECIALIZATION_ID;
+	const specializationId = currentSpec.id;
 
 	const filter: CollectionsFilterParams = useMemo(() => {
 		const params: CollectionsFilterParams = {
@@ -77,12 +71,12 @@ export const useCollectionsFilters = (specializationSlugs: SpecializationSlug[])
 		(nextId?: number) => {
 			if (!nextId) return;
 
-			const slug = findSpecializationSlugById(nextId, specializationSlugs);
+			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			router.push(`/${locale}/collections/${slug}`, { scroll: false });
 		},
-		[locale, router, specializationSlugs],
+		[locale, router, currentSpec],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

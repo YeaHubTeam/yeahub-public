@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 
 import { Collection } from '@/entities/collection';
-import { SpecializationSlug } from '@/entities/specialization';
+import { Specialization } from '@/entities/specialization';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { CollectionsList, InterviewRecordingsBanner } from '@/widgets/Collection';
@@ -18,7 +18,7 @@ interface CollectionsPageProps {
 	limit: number;
 	specialization: string;
 	hasFilters: boolean;
-	specializationSlugs: SpecializationSlug[];
+	currentSpec: Specialization;
 }
 export const CollectionsPage = ({
 	locale,
@@ -28,7 +28,7 @@ export const CollectionsPage = ({
 	limit,
 	specialization,
 	hasFilters,
-	specializationSlugs,
+	currentSpec,
 }: CollectionsPageProps) => {
 	setRequestLocale(locale);
 
@@ -45,7 +45,7 @@ export const CollectionsPage = ({
 			</Card>
 			<Flex gap="20" direction="column" className={styles.filters}>
 				<Card>
-					<CollectionsFilterPanel specializationSlugs={specializationSlugs} />
+					<CollectionsFilterPanel currentSpec={currentSpec} />
 				</Card>
 				<InterviewRecordingsBanner />
 			</Flex>

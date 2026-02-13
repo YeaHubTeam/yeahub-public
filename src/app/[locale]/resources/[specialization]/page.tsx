@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { type GetResourcesListParamsRequest, getResourcesList } from '@/entities/resource';
-import { getSpecializationSlugs } from '@/entities/specialization';
+import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
@@ -61,8 +61,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const { data: specializationsSlugs } = await getSpecializationSlugs();
-	const currentSpec = specializationsSlugs.find((s) => s.slug === specialization);
+	const currentSpec = await getSpecializationBySlug(specialization).catch(() => null);
 
 	if (!currentSpec) notFound();
 
@@ -89,7 +88,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 			total={response?.total || 0}
 			limit={response?.limit || 0}
 			hasFilters={hasFilters}
-			specializationSlugs={specializationsSlugs}
+			currentSpec={currentSpec}
 		/>
 	);
 };

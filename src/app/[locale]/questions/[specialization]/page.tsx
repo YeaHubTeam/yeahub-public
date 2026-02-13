@@ -4,7 +4,11 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { getSkills } from '@/entities/skill';
-import { getSpecializationSlugs, getSpecializations } from '@/entities/specialization';
+import {
+	getSpecializationBySlug,
+	getSpecializationSlugs,
+	getSpecializations,
+} from '@/entities/specialization';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
@@ -38,8 +42,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const { data: specializationsSlugs } = await getSpecializationSlugs();
-	const currentSpec = specializationsSlugs.find((s) => s.slug === specialization);
+	const currentSpec = await getSpecializationBySlug(specialization);
 
 	if (!currentSpec) notFound();
 
@@ -64,9 +67,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!skills || !!complexity || !!rate || !!titleOrDescription;
 
-	const specializationTitle = questionsResponse.data?.[0]?.questionSpecializations.find(
-		(q) => q.id === specializationId,
-	)?.title;
+	const specializationTitle = currentSpec.title;
 
 	return (
 		<QuestionsPage
@@ -79,7 +80,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 			hasFilters={hasFilters}
 			initialSpecializations={specializationsResponse}
 			initialSkills={skillsResponse}
-			specializationSlugs={specializationsSlugs}
+			currentSpec={currentSpec}
 			specializationTitle={specializationTitle || ''}
 		/>
 	);

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
 import { GetCollectionsListParamsRequest, getCollectionsList } from '@/entities/collection';
-import { getSpecializationSlugs } from '@/entities/specialization';
+import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
 import { locales } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
@@ -37,8 +37,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const { data: specializationsSlugs } = await getSpecializationSlugs();
-	const currentSpec = specializationsSlugs.find((s) => s.slug === specialization);
+	const currentSpec = await getSpecializationBySlug(specialization).catch(() => null);
 
 	if (!currentSpec) notFound();
 
@@ -56,7 +55,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 	const response = await getCollectionsList({
 		page: pageNum,
 		limit: QUESTIONS_PER_PAGE,
-		specializationId,
+		specialization: specializationId,
 		titleOrDescriptionSearch,
 		isFree,
 	});
@@ -72,7 +71,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 			limit={response?.limit || 0}
 			specialization={specialization}
 			hasFilters={hasFilters}
-			specializationSlugs={specializationsSlugs}
+			currentSpec={currentSpec}
 		/>
 	);
 };

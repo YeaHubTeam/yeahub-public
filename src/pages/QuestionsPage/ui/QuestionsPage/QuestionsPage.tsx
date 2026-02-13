@@ -5,7 +5,7 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { Question } from '@/entities/question';
 import { GetSkillsListResponse } from '@/entities/skill';
-import { GetSpecializationsListResponse, SpecializationSlug } from '@/entities/specialization';
+import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import { Questions, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -26,7 +26,7 @@ interface QuestionsPageProps {
 	hasFilters: boolean;
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
-	specializationSlugs: SpecializationSlug[];
+	currentSpec: Specialization;
 	specializationTitle: string;
 }
 
@@ -40,7 +40,7 @@ export const QuestionsPage = ({
 	hasFilters,
 	initialSpecializations,
 	initialSkills,
-	specializationSlugs,
+	currentSpec,
 	specializationTitle,
 }: QuestionsPageProps) => {
 	setRequestLocale(locale);
@@ -74,7 +74,7 @@ export const QuestionsPage = ({
 				<QuestionsFilterPanel
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
-					specializationSlugs={specializationSlugs}
+					currentSpec={currentSpec}
 				/>
 			</Card>
 		</Flex>

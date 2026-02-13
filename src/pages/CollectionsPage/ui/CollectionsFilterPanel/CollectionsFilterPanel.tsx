@@ -6,7 +6,7 @@ import { ChooseCollectionAccess } from '@/entities/collection';
 import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
 import {
 	DEFAULT_SPECIALIZATION_ID,
-	SpecializationSlug,
+	Specialization,
 	SpecializationsListField,
 } from '@/entities/specialization';
 import { Collections, i18Namespace } from '@/shared/config';
@@ -16,11 +16,11 @@ import { SearchInput } from '@/shared/ui/SearchInput';
 import { useCollectionsFilters } from '../../model/api/useCollectionsFilters';
 
 interface CollectionsFilterPanelProps {
-	specializationSlugs: SpecializationSlug[];
+	currentSpec: Specialization;
 }
 
-export const CollectionsFilterPanel = ({ specializationSlugs }: CollectionsFilterPanelProps) => {
-	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(specializationSlugs);
+export const CollectionsFilterPanel = ({ currentSpec }: CollectionsFilterPanelProps) => {
+	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(currentSpec);
 	const t = useTranslations(i18Namespace.collection);
 
 	const media = getChannelsForSpecialization(selectedSpecialization ?? DEFAULT_SPECIALIZATION_ID);

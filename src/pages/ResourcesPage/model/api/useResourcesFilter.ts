@@ -7,25 +7,19 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import type { ResourceTypeCode } from '@/entities/resource';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationSlug } from '@/entities/specialization';
+import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specialization';
 import { parseNumberArray, parseStringArray, useDebounce } from '@/shared/libs';
 
 import type { ResourcesFilterParams } from '../types/types';
 
-const findSpecializationSlugById = (id: number, slugs: SpecializationSlug[]) => {
-	return slugs.find((s) => s.id === id)?.slug;
-};
-
-export const useResourcesFilter = (specializationSlugs: SpecializationSlug[]) => {
+export const useResourcesFilter = (currentSpec: Specialization) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const locale = useLocale();
 
 	const searchParamsString = searchParams?.toString() ?? '';
-	const specializationSlug = pathname?.split('/')[3] ?? 'react-developer';
-	const specializationId =
-		specializationSlugs.find((s) => s.slug === specializationSlug)?.id ?? DEFAULT_SPECIALIZATION_ID;
+	const specializationId = currentSpec.id;
 
 	const filter: ResourcesFilterParams = useMemo(
 		() => ({
@@ -66,12 +60,12 @@ export const useResourcesFilter = (specializationSlugs: SpecializationSlug[]) =>
 		(nextId?: number) => {
 			if (!nextId) return;
 
-			const slug = findSpecializationSlugById(nextId, specializationSlugs);
+			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			router.push(`/${locale}/resources/${slug}`, { scroll: false });
 		},
-		[locale, router, specializationSlugs],
+		[locale, router, currentSpec],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);
