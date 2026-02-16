@@ -4,15 +4,23 @@ import { useTranslations } from 'next-intl';
 
 import { ChooseCollectionAccess } from '@/entities/collection';
 import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
-import { DEFAULT_SPECIALIZATION_ID, SpecializationsListField } from '@/entities/specialization';
+import {
+	DEFAULT_SPECIALIZATION_ID,
+	Specialization,
+	SpecializationsListField,
+} from '@/entities/specialization';
 import { Collections, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
 import { useCollectionsFilters } from '../../model/api/useCollectionsFilters';
 
-export const CollectionsFilterPanel = () => {
-	const { filter, selectedSpecialization, handlers } = useCollectionsFilters();
+interface CollectionsFilterPanelProps {
+	currentSpec: Specialization;
+}
+
+export const CollectionsFilterPanel = ({ currentSpec }: CollectionsFilterPanelProps) => {
+	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(currentSpec);
 	const t = useTranslations(i18Namespace.collection);
 
 	const media = getChannelsForSpecialization(selectedSpecialization ?? DEFAULT_SPECIALIZATION_ID);

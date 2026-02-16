@@ -3,6 +3,7 @@ import type { Response } from '@/shared/libs';
 export interface Specialization {
 	id: number;
 	title: string;
+	slug: string;
 	description: string;
 	imageSrc?: string | null;
 	createdAt?: string;
@@ -17,3 +18,11 @@ export type GetSpecializationsListParamsRequest = {
 };
 
 export type GetSpecializationsListResponse = Response<Specialization[]>;
+
+export interface SpecializationSlug {
+	id: number;
+	slug: string;
+	title: string;
+}
+
+export type GetSpecializationSlugsResponse = Response<SpecializationSlug[]>;

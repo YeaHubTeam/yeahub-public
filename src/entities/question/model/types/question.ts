@@ -41,7 +41,7 @@ export interface GetQuestionsListParamsRequest {
 	rate?: string;
 	keywords?: string[];
 	skillFilterMode?: skillFilterMode;
-	specialization?: number;
+	specializationId?: number;
 	order?: string;
 	orderBy?: string;
 	random?: boolean;

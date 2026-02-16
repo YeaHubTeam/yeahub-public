@@ -98,6 +98,7 @@ export const SpecializationSelect = ({
 		const emptySpecialization: Specialization = {
 			id: 0,
 			title: t(Specializations.SELECT_CHOOSE),
+			slug: '',
 			imageSrc: null,
 			description: '',
 		};

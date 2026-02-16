@@ -4,14 +4,14 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { type GetResourcesListParamsRequest, getResourcesList } from '@/entities/resource';
+import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
 import { RESOURCES_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
-	params: Promise<{ locale: string; specialization: keyof typeof SPEC_MAP }>;
+	params: Promise<{ locale: string; specialization: string }>;
 	searchParams: Promise<GetResourcesListParamsRequest>;
 }
 
@@ -39,13 +39,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const dynamic = 'auto';
 
-export const generateStaticParams = () => {
-	return locales.flatMap((locale) =>
-		Object.keys(SPEC_MAP).map((specSlug) => ({
-			locale,
-			specialization: specSlug,
-		})),
-	);
+export const generateStaticParams = async () => {
+	try {
+		const { data: specializations } = await getSpecializationSlugs();
+
+		return locales.flatMap((locale) =>
+			specializations.map((spec) => ({
+				locale,
+				specialization: spec.slug,
+			})),
+		);
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
 };
 
 const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
@@ -54,8 +61,11 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const specializationId = SPEC_MAP[specialization];
-	if (!specializationId) notFound();
+	const currentSpec = await getSpecializationBySlug(specialization).catch(() => null);
+
+	if (!currentSpec) notFound();
+
+	const specializationId = currentSpec.id;
 
 	setRequestLocale(locale);
 
@@ -78,6 +88,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 			total={response?.total || 0}
 			limit={response?.limit || 0}
 			hasFilters={hasFilters}
+			currentSpec={currentSpec}
 		/>
 	);
 };

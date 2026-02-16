@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Question, QuestionGradeList } from '@/entities/question';
 import { Questions, ROUTES, i18Namespace } from '@/shared/config';
-import { SPEC_MAP, route } from '@/shared/libs';
+import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { TextHtml } from '@/shared/ui/TextHtml';
@@ -14,7 +14,7 @@ import styles from './FullQuestionItem.module.css';
 
 interface FullQuestionItemProps {
 	question: Question;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 }
 
 export const FullQuestionItem = async ({ question, specialization }: FullQuestionItemProps) => {

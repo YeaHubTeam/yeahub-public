@@ -4,7 +4,6 @@ import type { Collection } from '@/entities/collection';
 import { GurusBanner, getGuruWithMatchingSpecialization } from '@/entities/guru';
 import { CollectionNavigationButtons } from '@/features/collections/navigateCollection';
 import { Collections, Link, ROUTES, i18Namespace } from '@/shared/config';
-import { SPEC_MAP } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -15,7 +14,7 @@ import styles from './CollectionPage.module.css';
 
 interface CollectionPageProps {
 	collection: Collection;
-	specialization: keyof typeof SPEC_MAP;
+	specialization: string;
 }
 
 export const CollectionPage = ({ collection, specialization }: CollectionPageProps) => {

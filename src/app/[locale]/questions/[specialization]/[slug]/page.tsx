@@ -3,12 +3,13 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { QuestionSlug, getQuestionBySlug, getQuestionSlugs } from '@/entities/question';
+import { getQuestionBySlug, getQuestionsList } from '@/entities/question';
+import { getSpecializationSlugs } from '@/entities/specialization';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
 
 interface PageProps {
-	params: Promise<{ locale: string; slug: string }>;
+	params: Promise<{ locale: string; specialization: string; slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -40,35 +41,49 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const generateStaticParams = async () => {
 	try {
-		const BATCH_SIZE = 100;
+		const { data: specializations } = await getSpecializationSlugs();
+		const allParams: { locale: string; specialization: string; slug: string }[] = [];
+		const BATCH_SIZE = 50;
 
-		const firstPage = await getQuestionSlugs({ page: 1, limit: BATCH_SIZE });
+		for (const spec of specializations) {
+			try {
+				const firstPage = await getQuestionsList({
+					specializationId: spec.id,
+					page: 1,
+					limit: BATCH_SIZE,
+				});
 
-		const { data: initialData, total } = firstPage;
-		let allSlugs: QuestionSlug[] = [...initialData];
+				const { data: initialData, total } = firstPage;
+				const specQuestions = initialData.map((q) => q.slug);
 
-		const totalPages = Math.ceil(total / BATCH_SIZE);
+				const totalPages = Math.ceil(total / BATCH_SIZE);
 
-		if (totalPages > 1) {
-			const promises = [];
+				if (totalPages > 1) {
+					for (let page = 2; page <= totalPages; page++) {
+						const response = await getQuestionsList({
+							specializationId: spec.id,
+							page,
+							limit: BATCH_SIZE,
+						});
+						specQuestions.push(...response.data.map((q) => q.slug));
+					}
+				}
 
-			for (let page = 2; page <= totalPages; page++) {
-				promises.push(getQuestionSlugs({ page, limit: BATCH_SIZE }));
+				specQuestions.forEach((qSlug) => {
+					locales.forEach((locale) => {
+						allParams.push({
+							locale,
+							specialization: spec.slug,
+							slug: qSlug,
+						});
+					});
+				});
+			} catch (error) {
+				console.error(`Error fetching questions for specialization ${spec.slug}:`, error);
 			}
-
-			const results = await Promise.all(promises);
-
-			results.forEach((response) => {
-				allSlugs = [...allSlugs, ...response.data];
-			});
 		}
 
-		return locales.flatMap((locale) =>
-			allSlugs.map(({ slug }) => ({
-				locale,
-				slug,
-			})),
-		);
+		return allParams;
 	} catch (error) {
 		console.error('generateStaticParams error:', error);
 		return [];

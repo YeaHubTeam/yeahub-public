@@ -11,6 +11,4 @@ export {
 	RESOURCES_PER_PAGE,
 } from './queryConstants';
 
-export { SPEC_MAP, SPEC_MAP_TO_TITLE, getSpecializationSlugById } from './mappingStaticParams';
-
 export { route } from './route';

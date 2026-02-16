@@ -11,9 +11,7 @@ export {
 	QUESTIONS_PER_PAGE,
 	DEFAULT_SPECIALIZATION_SLUG,
 	RESOURCES_PER_PAGE,
-	getSpecializationSlugById,
 } from './query';
-export { SPEC_MAP, SPEC_MAP_TO_TITLE } from './query';
 export { route } from './query';
 export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
