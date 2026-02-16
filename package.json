@@ -29,7 +29,9 @@
 		"react": "19.1.0",
 		"react-dom": "19.1.0",
 		"react-redux": "^9.2.0",
-		"react-responsive": "^10.0.1"
+		"react-responsive": "^10.0.1",
+		"react-slick": "^0.30.3",
+		"slick-carousel": "^1.8.1"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.1",
@@ -49,6 +51,7 @@
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"@types/react-slick": "^0.23.13",
 		"classnames": "^2.5.1",
 		"eslint": "^9.33.0",
 		"eslint-config-next": "^15.4.6",
