@@ -2,28 +2,27 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getSpecializationSlugs } from '@/entities/specialization';
-import { CreateQuizPage } from '@/pages/CreateQuizPage';
-import { InterviewQuizCreate, i18Namespace } from '@/shared/config';
-import { locales } from '@/shared/config';
+import { QuizPage } from '@/pages/QuizPage';
+import { InterviewQuiz, i18Namespace } from '@/shared/config';
 
 interface PageProps {
-	params: Promise<{ locale: string; specialization: string }>;
+	params: Promise<{ locale: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
 	const { locale } = await params;
 
 	setRequestLocale(locale);
-	const t = await getTranslations({ locale, namespace: i18Namespace.interviewQuizCreate });
+	const t = await getTranslations({ locale, namespace: i18Namespace.interviewQuiz });
 
-	const title = t(InterviewQuizCreate.TITLE);
-	const description = `${t(InterviewQuizCreate.MODE_SELECT)}. ${t(InterviewQuizCreate.MODE_NEW)}, ${t(InterviewQuizCreate.MODE_REPEAT)}, ${t(InterviewQuizCreate.MODE_RANDOM)}.`;
+	const title = t(InterviewQuiz.TITLE);
+	const description = `${t(InterviewQuiz.ANSWER_SHOW)} / ${t(InterviewQuiz.ANSWER_HIDE)} — ${t(InterviewQuiz.COMPLETE)}.`;
 	const keywords = [
 		title,
-		t(InterviewQuizCreate.MODE_NEW),
-		t(InterviewQuizCreate.MODE_REPEAT),
-		t(InterviewQuizCreate.MODE_RANDOM),
+		t(InterviewQuiz.COMPLETE),
+		t(InterviewQuiz.NEXT),
+		t(InterviewQuiz.ANSWER_SHOW),
+		t(InterviewQuiz.ANSWER_HIDE),
 	];
 
 	return {
@@ -38,30 +37,68 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	};
 }
 
-export const dynamic = 'auto';
-
-export const generateStaticParams = async () => {
-	try {
-		const { data: specializations } = await getSpecializationSlugs();
-
-		return locales.flatMap((locale) =>
-			specializations.map((spec) => ({
-				locale,
-				specialization: spec.slug,
-			})),
-		);
-	} catch (error) {
-		console.error(error);
-		return [];
-	}
-};
-
-const MainCreateQuizPage = async ({ params }: PageProps) => {
+const MainQuizPage = async ({ params }: PageProps) => {
 	const { locale } = await params;
 
 	setRequestLocale(locale);
+	const t = await getTranslations({ locale, namespace: i18Namespace.interviewQuiz });
 
-	return <CreateQuizPage locale={locale} />;
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/quiz`;
+
+	const title = t(InterviewQuiz.TITLE);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'LearningResource',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: title,
+				description: `${t(InterviewQuiz.ANSWER_SHOW)} / ${t(InterviewQuiz.ANSWER_HIDE)} — ${t(InterviewQuiz.COMPLETE)}.`,
+				learningResourceType: 'Quiz',
+				interactivityType: 'active',
+				provider: {
+					'@type': 'Organization',
+					name: 'YeaHub',
+					url: siteUrl,
+				},
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: title,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<QuizPage />
+		</>
+	);
 };
 
-export default MainCreateQuizPage;
+export default MainQuizPage;

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const t = await getTranslations({ locale, namespace: i18Namespace.avos });
 
 	const title = t(Avos.AVOS_TITLE);
-	const description = t(Avos.AVOS_SUBTITLE); // можно заменить на t(Avos.AVOS_INTERVIEWS) или склеить оба
+	const description = t(Avos.AVOS_SUBTITLE);
 	const keywords = [
 		t(Avos.AVOS_PROMO_CHIPS_REVIEWS),
 		t(Avos.AVOS_PROMO_CHIPS_RECORDINGS),
@@ -39,8 +39,79 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	};
 }
 
-const AvosPage = () => {
-	return <AvosPageComponent />;
+const AvosPage = async ({ params }: PageProps) => {
+	const { locale } = await params;
+
+	setRequestLocale(locale);
+	const t = await getTranslations({ locale, namespace: i18Namespace.avos });
+
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/avos`;
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'WebPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: t(Avos.AVOS_TITLE),
+				description: t(Avos.AVOS_SUBTITLE),
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+			},
+			{
+				'@type': 'Product',
+				name: t(Avos.AVOS_PROMO_ABOUT),
+				description: t(Avos.AVOS_INTERVIEWS),
+				image: avosAndYeahubLogo ? avosAndYeahubLogo.src : undefined,
+				offers: {
+					'@type': 'Offer',
+					price: '1500',
+					priceCurrency: 'RUB',
+					availability: 'https://schema.org/InStock',
+					name: t(Avos.AVOS_PROMO_JOIN_PRICE),
+				},
+				category: [
+					t(Avos.AVOS_PROMO_CHIPS_REVIEWS),
+					t(Avos.AVOS_PROMO_CHIPS_RECORDINGS),
+					t(Avos.AVOS_PROMO_CHIPS_BREAKDOWNS),
+					t(Avos.AVOS_PROMO_CHIPS_INTERVIEW),
+					t(Avos.AVOS_PROMO_CHIPS_GUIDES),
+				],
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: t(Avos.AVOS_TITLE),
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<AvosPageComponent />
+		</>
+	);
 };
 
 export default AvosPage;

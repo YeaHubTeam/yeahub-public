@@ -48,6 +48,69 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const HhAnalyticsPage = async ({ searchParams, params }: PageProps) => {
 	const resolvedSearchParams = await searchParams;
 	const resolvedParams = await params;
+	const { locale } = resolvedParams;
+
+	setRequestLocale(locale);
+	const t = await getTranslations({ locale, namespace: i18Namespace.analytics });
+
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/hh-analytics`;
+
+	const titleSkills = t(Analytics.HH_ANALYTICS_TITLE_SKILLS);
+	const titleKeywords = t(Analytics.HH_ANALYTICS_TITLE_KEYWORDS);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'WebPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: `${titleSkills} / ${titleKeywords}`,
+				description: `${titleSkills}. ${titleKeywords}.`,
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+			},
+			{
+				'@type': 'Dataset',
+				name: titleSkills,
+				description: `${titleSkills}. ${titleKeywords}.`,
+				url: pageUrl,
+				keywords: [t(Analytics.HH_ANALYTICS_TAB_SKILLS), t(Analytics.HH_ANALYTICS_TAB_KEYWORDS)],
+				creator: {
+					'@type': 'Organization',
+					name: 'YeaHub',
+					url: siteUrl,
+				},
+				distribution: {
+					'@type': 'DataDownload',
+					encodingFormat: 'text/html',
+					contentUrl: pageUrl,
+				},
+				measurementTechnique: 'HeadHunter API',
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: `${titleSkills} / ${titleKeywords}`,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
 
 	const processedSearchParams = resolvedSearchParams
 		? {
@@ -59,7 +122,15 @@ const HhAnalyticsPage = async ({ searchParams, params }: PageProps) => {
 			}
 		: undefined;
 
-	return <HhAnalyticsPageComponent searchParams={processedSearchParams} params={resolvedParams} />;
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<HhAnalyticsPageComponent searchParams={processedSearchParams} params={resolvedParams} />
+		</>
+	);
 };
 
 export default HhAnalyticsPage;

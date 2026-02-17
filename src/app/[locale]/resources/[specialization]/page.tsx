@@ -55,6 +55,16 @@ export const generateStaticParams = async () => {
 	}
 };
 
+const RESOURCE_TYPE_SCHEMA_MAP: Record<string, string> = {
+	video: 'VideoObject',
+	podcast: 'PodcastEpisode',
+	course: 'Course',
+	article: 'Article',
+	book: 'Book',
+	guide: 'HowTo',
+	documentation: 'TechArticle',
+};
+
 const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
 	const { types, name, skills, page = '1' } = await searchParams;
@@ -69,6 +79,8 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
+	const t = await getTranslations({ locale, namespace: i18Namespace.resources });
+
 	const response = await getResourcesList({
 		page: pageNum,
 		limit: RESOURCES_PER_PAGE,
@@ -80,16 +92,81 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!name || !!types || !!skills;
 
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/resources/${specialization}`;
+	const headerTitle = t(Resources.HEADER_TITLE);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'CollectionPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: `${headerTitle} — ${currentSpec.title}`,
+				description: currentSpec.description || `${headerTitle} — ${currentSpec.title}`,
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+				mainEntity: {
+					'@type': 'ItemList',
+					numberOfItems: response.total,
+					itemListElement: response.data?.map((resource, index) => ({
+						'@type': 'ListItem',
+						position: index + 1 + (pageNum - 1) * RESOURCES_PER_PAGE,
+						url: resource.url,
+						name: resource.name,
+						item: {
+							'@type': RESOURCE_TYPE_SCHEMA_MAP[resource.type.code] || 'LearningResource',
+							name: resource.name,
+							description: resource.description?.slice(0, 300),
+							url: resource.url,
+							image: resource.imageSrc || undefined,
+							keywords: resource.keywords,
+							dateCreated: resource.createdAt,
+							dateModified: resource.updatedAt,
+						},
+					})),
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: `${headerTitle} — ${currentSpec.title}`,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
 	return (
-		<ResourcesPage
-			locale={locale}
-			page={pageNum}
-			resources={response?.data || []}
-			total={response?.total || 0}
-			limit={response?.limit || 0}
-			hasFilters={hasFilters}
-			currentSpec={currentSpec}
-		/>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<ResourcesPage
+				locale={locale}
+				page={pageNum}
+				resources={response?.data || []}
+				total={response?.total || 0}
+				limit={response?.limit || 0}
+				hasFilters={hasFilters}
+				currentSpec={currentSpec}
+			/>
+		</>
 	);
 };
 
