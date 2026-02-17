@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
 
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { GetCollectionsListParamsRequest, getCollectionsList } from '@/entities/collection';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
-import { locales } from '@/shared/config';
+import { i18Namespace, locales } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -45,6 +45,8 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
+	const t = await getTranslations({ locale, namespace: i18Namespace.collection });
+
 	const qs = new URLSearchParams();
 	qs.set('page', pageNum.toString());
 	qs.set('specialization', specializationId.toString());
@@ -62,17 +64,73 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch;
 
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
+	const collectionsTitle = t('collections.title');
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'CollectionPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: `${collectionsTitle} — ${currentSpec.title}`,
+				description: currentSpec.description || `${collectionsTitle} — ${currentSpec.title}`,
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+				mainEntity: {
+					'@type': 'ItemList',
+					numberOfItems: response.total,
+					itemListElement: response.data?.map((c, index) => ({
+						'@type': 'ListItem',
+						position: index + 1 + (pageNum - 1) * QUESTIONS_PER_PAGE,
+						url: `${siteUrl}/${locale}/collections/${specialization}/${c.slug}`,
+						name: c.title,
+						description: c.description?.slice(0, 200),
+					})),
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: `${collectionsTitle} — ${currentSpec.title}`,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
 	return (
-		<CollectionsPage
-			locale={locale}
-			page={pageNum}
-			collections={response?.data || []}
-			total={response?.total || 0}
-			limit={response?.limit || 0}
-			specialization={specialization}
-			hasFilters={hasFilters}
-			currentSpec={currentSpec}
-		/>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<CollectionsPage
+				locale={locale}
+				page={pageNum}
+				collections={response?.data || []}
+				total={response?.total || 0}
+				limit={response?.limit || 0}
+				specialization={specialization}
+				hasFilters={hasFilters}
+				currentSpec={currentSpec}
+			/>
+		</>
 	);
 };
 

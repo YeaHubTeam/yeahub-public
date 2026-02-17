@@ -103,11 +103,77 @@ const CollectionPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}/${slug}`;
+
+	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'CollectionPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: collection.title,
+				description: collection.description?.slice(0, 300) || collection.title,
+				image: collection.imageSrc || undefined,
+				dateCreated: collection.createdAt,
+				dateModified: collection.updatedAt,
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+				mainEntity: {
+					'@type': 'ItemList',
+					numberOfItems: collection.questionsCount || collection.questions?.length || 0,
+					itemListElement: collection.questions?.map((q, index) => ({
+						'@type': 'ListItem',
+						position: index + 1,
+						url: `${siteUrl}/${locale}/questions/${specialization}/${q.slug}`,
+						name: q.title,
+						description: stripHtml(q.shortAnswer).slice(0, 200),
+					})),
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: collection.specializations?.[0]?.title || specialization,
+						item: `${siteUrl}/${locale}/collections/${specialization}`,
+					},
+					{
+						'@type': 'ListItem',
+						position: 3,
+						name: collection.title,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
 	return (
-		<CollectionPageComponent
-			collection={collection}
-			specialization={specialization ?? DEFAULT_SPECIALIZATION_SLUG}
-		/>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<CollectionPageComponent
+				collection={collection}
+				specialization={specialization ?? DEFAULT_SPECIALIZATION_SLUG}
+			/>
+		</>
 	);
 };
 

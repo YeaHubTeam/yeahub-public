@@ -20,7 +20,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
 	return (
 		<>
-			<LandingPage />
+			<LandingPage params={params} />
 		</>
 	);
 };
