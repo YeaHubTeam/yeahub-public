@@ -1,0 +1,7 @@
+.chip {
+	padding: 6px 12px 6px 6px;
+	width: fit-content;
+	box-shadow: var(--main-shadow);
+	border: none;
+	pointer-events: none;
+}
