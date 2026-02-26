@@ -14,10 +14,12 @@ export {
 	Collections,
 	InterviewQuiz,
 	InterviewQuizCreate,
+	InterviewQuizResult,
 	Analytics,
 	Learning,
 	Resources,
 	Landing,
+	InterviewStatistics,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

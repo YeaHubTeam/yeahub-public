@@ -1,0 +1,61 @@
+{
+	"total": 1469,
+	"skillsQuestions": [
+			{
+					"skill": "TypeScript",
+					"count": 71
+			},
+			{
+					"skill": "Kubernetes",
+					"count": 4
+			},
+			{
+					"skill": "React",
+					"count": 291
+			},
+			{
+					"skill": "CI/CD",
+					"count": 32
+			},
+			{
+					"skill": "Networks ",
+					"count": 88
+			},
+			{
+					"skill": "Next.js",
+					"count": 19
+			},
+			{
+					"skill": "Docker",
+					"count": 22
+			},
+			{
+					"skill": "Git",
+					"count": 47
+			},
+			{
+					"skill": "JavaScript",
+					"count": 554
+			},
+			{
+					"skill": "Webpack",
+					"count": 41
+			},
+			{
+					"skill": "CSS",
+					"count": 153
+			},
+			{
+					"skill": "React Router",
+					"count": 41
+			},
+			{
+					"skill": "Redux",
+					"count": 71
+			},
+			{
+					"skill": "HTML",
+					"count": 87
+			}
+	]
+}

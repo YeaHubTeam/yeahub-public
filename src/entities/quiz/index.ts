@@ -9,6 +9,10 @@ export type {
 	QuestionModeType,
 	CreateNewMockQuizParamsRequest,
 	CreateNewMockQuizResponse,
+	ProfileSkillsStat,
+	ProgressByCategoriesData,
+	ProfileQuestionsStat,
+	Quiz,
 } from './model/types/quiz';
 
 export { useSlideSwitcher } from './model/hooks/useSlideSwitcher';

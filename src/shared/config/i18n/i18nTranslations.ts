@@ -237,6 +237,39 @@ export enum InterviewQuizCreate {
 	MODE_SELECT_TOOLTIP_UNAUTHORIZED = 'mode.select.tooltip.unauthorized',
 }
 
+export enum InterviewQuizResult {
+	TITLE_QUESTIONS_ANSWERS = 'title.questions.answers',
+	TITLE_STAT = 'title.stat',
+	TITLE_QUESTIONS_LIST = 'title.questionsList',
+	PASSED_QUESTION = 'passed.question',
+	TIME = 'time',
+	DATE = 'date',
+	DURATION = 'duration',
+	CLONE_BUTTON = 'clone.button',
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_EMPTY_BUTTON = 'stub.empty.button',
+	JOIN_COMMUNITY_TITLE = 'join.community.title',
+	JOIN_COMMUNITY_DESCRIPTION = 'join.community.description',
+	INTERVIEW_SIMULATOR = 'join.community.interview.simulator',
+	MEMORY_MODE = 'join.community.memory.mode',
+	STATS_HISTORY = 'join.community.stats.history',
+	FULL_ACCESS = 'join.community.full.access',
+	BECOME_MEMBER = 'join.community.become.member',
+	INTERVIEW_STATISTIC_TITLE = 'statistics.title',
+	INTERVIEW_STATISTIC_QUESTION = 'statistics.question',
+	INTERVIEW_STATISTIC_SCHEDULE = 'statistics.schedule',
+	INTERVIEW_STATISTIC_LINK = 'statistics.link',
+	MODAL_TITLE = 'modal.title',
+	MODAL_DESCRIPTION = 'modal.description',
+	MODAL_BENEFITS_FULL_ACCESS = 'modal.benefits.full.access',
+	MODAL_BENEFITS_SMART_MODE = 'modal.benefits.smart.mode',
+	MODAL_BENEFITS_STATISTICS = 'modal.benefits.statistics',
+	MODAL_BENEFITS_INTERVIEWS = 'modal.benefits.interviews',
+	MODAL_BUTTON_TEXT = 'modal.button.text',
+	MODAL_BUTTON_TIP = 'modal.button.tip',
+}
+
 export enum Analytics {
 	HH_ANALYTICS_TITLE_SKILLS = 'hhAnalytics.title.skills',
 	HH_ANALYTICS_TITLE_KEYWORDS = 'hhAnalytics.title.keywords',
@@ -303,4 +336,12 @@ export enum Landing {
 	SKILLS_DESCRIPTION = 'skills.description',
 	FILTERS_TITLE = 'filters.title',
 	FILTERS_DESCRIPTION = 'filters.description',
+}
+
+export enum InterviewStatistics {
+	QUESTION_STATS_TITLE_SHORT = 'question.stats.title.short',
+	QUESTION_STATS_TITLE = 'question.stats.title',
+	LINK = 'link',
+	PASSED = 'passed.questions',
+	SOON = 'soon',
 }
