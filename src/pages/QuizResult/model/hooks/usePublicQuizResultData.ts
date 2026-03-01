@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Answers, LS_ACTIVE_MOCK_QUIZ_KEY } from '@/entities/quiz';
-import { LS_ACTIVE_SPECIALIZATION_ID } from '@/entities/specialization';
-import { getJSONFromLS, removeFromLS } from '@/shared/libs';
+import { getJSONFromLS } from '@/shared/libs';
 
 export const usePublicQuizResultData = () => {
 	const [quizAnswers, setQuizAnswers] = useState<Answers[] | null>(null);
@@ -33,13 +32,6 @@ export const usePublicQuizResultData = () => {
 		}
 
 		return () => clearTimeout(timer);
-	}, []);
-
-	useEffect(() => {
-		return () => {
-			removeFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
-			removeFromLS(LS_ACTIVE_SPECIALIZATION_ID);
-		};
 	}, []);
 
 	return { quizAnswers, isLoading };

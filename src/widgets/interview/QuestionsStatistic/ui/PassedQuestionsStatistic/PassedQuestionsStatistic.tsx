@@ -18,7 +18,8 @@ export const PassedQuestionsStatistic = ({
 	isLoading,
 	className,
 }: PassedQuestionsStatisticProps) => {
-	const t = useTranslations(i18Namespace.interviewQuizResult);
+	const t = useTranslations(i18Namespace.interviewStatistics);
+	const tStatistic = useTranslations(i18Namespace.interviewQuizResult);
 
 	const activeMockQuiz = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
 	const answers = activeMockQuiz.response.answers;
@@ -32,13 +33,13 @@ export const PassedQuestionsStatistic = ({
 		inProgressQuestionsCount: inProcessCount,
 	};
 
-	const questionStats = getQuestionsStats(statDate);
+	const questionStats = getQuestionsStats(t, statDate);
 
 	return (
 		<AdditionalStatInfoGauge
 			isLoading={isLoading}
 			className={className}
-			title={t(InterviewQuizResult.INTERVIEW_STATISTIC_QUESTION)}
+			title={tStatistic(InterviewQuizResult.INTERVIEW_STATISTIC_QUESTION)}
 			statsInfo={questionStats}
 			learned={statDate?.learnedQuestionsCount ?? 0}
 			total={total ?? 0}

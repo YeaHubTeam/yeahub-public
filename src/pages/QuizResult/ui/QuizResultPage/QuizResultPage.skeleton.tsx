@@ -4,9 +4,9 @@ import { CategoryProgressListSkeleton } from '@/widgets/interview/CategoryProgre
 import { PassedQuestionsListSkeleton } from '@/widgets/interview/PassedQuestionsList';
 import { PassedQuestionsStatisticSkeleton } from '@/widgets/interview/QuestionsStatistic';
 
-import styles from './PublicQuizResultPage.module.css';
+import styles from './QuizResultPage.module.css';
 
-export const PublicQuizResultPageSkeleton = ({ dataTestId }: { dataTestId?: string }) => {
+export const QuizResultPageSkeleton = ({ dataTestId }: { dataTestId?: string }) => {
 	const { isMobile, isTablet } = useScreenSize();
 
 	return (

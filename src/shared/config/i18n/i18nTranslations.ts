@@ -339,9 +339,13 @@ export enum Landing {
 }
 
 export enum InterviewStatistics {
-	QUESTION_STATS_TITLE_SHORT = 'question.stats.title.short',
-	QUESTION_STATS_TITLE = 'question.stats.title',
+	QUESTION_STATS_TITLE_SHORT = 'questionStats.titleShort',
+	QUESTION_STATS_TITLE = 'questionStats.title',
 	LINK = 'link',
-	PASSED = 'passed.questions',
+	PASSED = 'passed',
 	SOON = 'soon',
+	QUESTION_STATS_ALL = 'questionStats.all',
+	QUESTION_STATS_NEW = 'questionStats.new',
+	QUESTION_STATS_IN_PROCESS = 'questionStats.inProcess',
+	QUESTION_STATS_LEARNED = 'questionStats.learned',
 }

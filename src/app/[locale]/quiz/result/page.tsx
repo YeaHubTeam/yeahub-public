@@ -3,13 +3,13 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getQuestionsSpecializationByIdCount } from '@/entities/question';
-import { LS_ACTIVE_SPECIALIZATION_ID, getSpecializationSlugs } from '@/entities/specialization';
-import { PublicQuizResultPage } from '@/pages/QuizResult';
+import { getSpecializationSlugs } from '@/entities/specialization';
+import { QuizResultPage } from '@/pages/QuizResult';
 import { InterviewQuizResult, i18Namespace, locales } from '@/shared/config';
-import { getJSONFromLS } from '@/shared/libs';
 
 interface PageProps {
-	params: Promise<{ locale: string; specialization: string }>;
+	params: Promise<{ locale: string }>;
+	searchParams: Promise<{ specializationId?: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -42,17 +42,16 @@ export const generateStaticParams = async () => {
 	}
 };
 
-const MainResultQuizPage = async ({ params }: PageProps) => {
+const MainResultQuizPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
+	const { specializationId } = await searchParams;
 	setRequestLocale(locale);
 
-	// specialization здесь — это slug, нужно получить id специализации
-	// если specializationId передаётся как параметр маршрута напрямую,
-	// замени specialization на нужный id
-	const specializationId = getJSONFromLS(LS_ACTIVE_SPECIALIZATION_ID);
-	const quizResults = await getQuestionsSpecializationByIdCount(specializationId);
+	const quizResults = specializationId
+		? await getQuestionsSpecializationByIdCount(Number(specializationId))
+		: undefined;
 
-	return <PublicQuizResultPage quizResults={quizResults} />;
+	return <QuizResultPage quizResults={quizResults} />;
 };
 
 export default MainResultQuizPage;

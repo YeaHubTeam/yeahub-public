@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 import { InterviewQuizResult, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
@@ -8,7 +8,7 @@ import { Text } from '@/shared/ui/Text';
 import styles from './AboutBenefits.module.css';
 
 export const AboutBenefits = () => {
-	const { t } = useTranslation(i18Namespace.interviewQuizResult);
+	const t = useTranslations(i18Namespace.interviewQuizResult);
 
 	const benefits = [
 		t(InterviewQuizResult.MODAL_BENEFITS_FULL_ACCESS),

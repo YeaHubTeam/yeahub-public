@@ -1,7 +1,12 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+
 import { useTranslations } from 'next-intl';
 
 import { GetQuestionsBySpecializationCountResponse } from '@/entities/question';
 import { InterviewQuizResult, i18Namespace } from '@/shared/config';
+import { ROUTES } from '@/shared/config';
 import { useScreenSize } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -14,13 +19,19 @@ import { useCalculationQuizResult } from '../../model/hooks/useCalculationQuizRe
 import { usePublicQuizResultData } from '../../model/hooks/usePublicQuizResultData';
 import styles from './QuizResultPage.module.css';
 
-export interface PublicQuizResultPageProps {
-	quizResults: GetQuestionsBySpecializationCountResponse;
+export interface QuizResultPageProps {
+	quizResults: GetQuestionsBySpecializationCountResponse | undefined;
 }
 
-const PublicQuizResultPage = ({ quizResults }: PublicQuizResultPageProps) => {
-	const { quizAnswers } = usePublicQuizResultData();
+export const QuizResultPage = ({ quizResults }: QuizResultPageProps) => {
+	const router = useRouter();
 	const t = useTranslations(i18Namespace.interviewQuizResult);
+
+	if (!quizResults) {
+		router.replace(ROUTES.quiz.new.page);
+	}
+
+	const { quizAnswers } = usePublicQuizResultData();
 	const { isMobile, isTablet } = useScreenSize();
 
 	const skillsData = useCalculationQuizResult(quizResults);
@@ -33,7 +44,7 @@ const PublicQuizResultPage = ({ quizResults }: PublicQuizResultPageProps) => {
 				headerAction={<QuizResultButton />}
 			>
 				<Flex gap="20" direction={isTablet || isMobile ? 'column' : 'row'}>
-					<PassedQuestionsStatistic total={quizResults.total} className={styles.statistic} />
+					<PassedQuestionsStatistic total={quizResults?.total || 0} className={styles.statistic} />
 					<CategoryProgressList
 						title={t(InterviewQuizResult.INTERVIEW_STATISTIC_SCHEDULE)}
 						className={styles.progress}
@@ -46,4 +57,4 @@ const PublicQuizResultPage = ({ quizResults }: PublicQuizResultPageProps) => {
 	);
 };
 
-export default PublicQuizResultPage;
+export default QuizResultPage;

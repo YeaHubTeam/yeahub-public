@@ -2,5 +2,15 @@
 	"title": "Statistics",
 	"question": "Questions",
 	"schedule": "Schedule",
-	"link": "View all questions"
+	"link": "View all questions",
+	"soon": "Statistics will \n appear here soon",
+	"passed": "passed",
+	"questionStats": {
+		"title": "Completed questions statistics for all categories",
+		"titleShort": "Interview statistics",
+		"learned": "Learned questions",
+		"inProcess": "In process",
+		"new": "New questions",
+		"all": "All questions"
+	}
 }

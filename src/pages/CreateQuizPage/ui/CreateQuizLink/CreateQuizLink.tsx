@@ -28,7 +28,7 @@ export const CreateQuizLink = ({ filter }: CreateQuizLinkProps) => {
 		onSuccess: (data) => {
 			if (data) {
 				setToLS(LS_ACTIVE_MOCK_QUIZ_KEY, data);
-				router.push(ROUTES.quiz.new.page);
+				router.push(`${ROUTES.quiz.page}?specializationId=${filter.specialization}`);
 			}
 		},
 	});

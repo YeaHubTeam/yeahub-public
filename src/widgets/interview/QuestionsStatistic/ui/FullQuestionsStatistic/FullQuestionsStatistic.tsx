@@ -19,7 +19,7 @@ export const FullQuestionsStatistic = ({
 }: FullQuestionsStatisticProps) => {
 	const t = useTranslations(i18Namespace.interviewStatistics);
 
-	const questionStats = getQuestionsStats(questionsStat);
+	const questionStats = getQuestionsStats(t, questionsStat);
 
 	return (
 		<AdditionalStatInfoGauge

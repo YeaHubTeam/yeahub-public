@@ -12,6 +12,7 @@ export type {
 	ProfileSkillsStat,
 	ProgressByCategoriesData,
 	ProfileQuestionsStat,
+	MockQuiz,
 	Quiz,
 } from './model/types/quiz';
 

@@ -1,2 +1,2 @@
-export { PublicQuizResultPage } from './ui/QuizResultPage/PublicQuizResultPage.lazy';
-export { PublicQuizResultPageSkeleton } from './ui/QuizResultPage/QuizResultPage.skeleton';
+export { QuizResultPage } from './ui/QuizResultPage/QuizResultPage';
+export { QuizResultPageSkeleton } from './ui/QuizResultPage/QuizResultPage.skeleton';
