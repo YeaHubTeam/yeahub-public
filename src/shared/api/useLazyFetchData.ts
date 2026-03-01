@@ -19,11 +19,11 @@ export const useLazyFetchData = <T, P>({
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<unknown>(null);
 	const controllerRef = useRef<boolean>(true);
+
 	const load = async (params: P) => {
 		setLoading(true);
 		setError(null);
 		try {
-			controllerRef.current = true;
 			const response = await fetcher(params);
 			if (controllerRef.current) {
 				setData(response);
