@@ -25,7 +25,7 @@
 		"full": {"access": "Access all collections"},
 		"become": {"member": "Join the community"}
 	}},
-	"statistic": {
+	"statistics": {
 		"title": "Smart mode for studying questions",
 		"question": "Statistics of completed questions",
 		"schedule": "Learning progress by skills",

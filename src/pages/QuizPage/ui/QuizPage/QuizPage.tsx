@@ -93,7 +93,7 @@ export const QuizPage = () => {
 	const onInterruptQuiz = () => {
 		setActiveQuizQuestions([]);
 		removeFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
-		router.push(ROUTES.quiz.page);
+		router.push(ROUTES.quiz.new.page);
 	};
 
 	const onPrevSlide = () => {
