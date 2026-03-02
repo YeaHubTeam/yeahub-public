@@ -1,5 +1,5 @@
 import { GetQuestionsBySpecializationCountResponse } from '@/entities/question';
-import { LS_ACTIVE_MOCK_QUIZ_KEY, Quiz } from '@/entities/quiz';
+import { LS_ACTIVE_MOCK_QUIZ_KEY, MockQuiz } from '@/entities/quiz';
 import { getJSONFromLS } from '@/shared/libs';
 
 export interface ProfileSkillsStat {
@@ -21,7 +21,7 @@ export const useCalculationQuizResult = (
 		};
 	}
 
-	const activeMockQuiz: Quiz = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
+	const activeMockQuiz: MockQuiz = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
 	const learnedCount = activeMockQuiz.response.answers.filter((el) => el.answer === 'KNOWN');
 
 	const learnedMap = new Map(learnedCount.map((lq) => [lq.questionId, true]));

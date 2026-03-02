@@ -4,10 +4,7 @@ export type {
 	SpecializationSlug,
 } from './model/types/specialization';
 export { useSpecializations } from './model/hooks/useSpecializations';
-export {
-	DEFAULT_SPECIALIZATION_ID,
-	LS_ACTIVE_SPECIALIZATION_ID,
-} from './model/constants/specializationConstants';
+export { DEFAULT_SPECIALIZATION_ID } from './model/constants/specializationConstants';
 
 export {
 	getSpecializations,

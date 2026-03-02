@@ -10,23 +10,6 @@ export interface MockQuiz {
 	questions: Question[];
 }
 
-export interface QuizResponse {
-	answers: Answers[];
-}
-
-export interface Quiz {
-	id: string;
-	profileId: string;
-	quizNumber: number;
-	startDate: string;
-	endDate: string;
-	fullCount: number;
-	successCount: number;
-	skills: string[];
-	response: QuizResponse;
-	questions: Question[];
-}
-
 export interface MockQuizResponse {
 	answers: Answers[];
 }

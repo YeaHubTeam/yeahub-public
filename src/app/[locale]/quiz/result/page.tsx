@@ -3,9 +3,8 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getQuestionsSpecializationByIdCount } from '@/entities/question';
-import { getSpecializationSlugs } from '@/entities/specialization';
 import { QuizResultPage } from '@/pages/QuizResult';
-import { InterviewQuizResult, i18Namespace, locales } from '@/shared/config';
+import { InterviewQuizResult, i18Namespace } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;
@@ -25,22 +24,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export const dynamic = 'auto';
-
-export const generateStaticParams = async () => {
-	try {
-		const { data: specializations } = await getSpecializationSlugs();
-
-		return locales.flatMap((locale) =>
-			specializations.map((spec) => ({
-				locale,
-				specialization: spec.slug,
-			})),
-		);
-	} catch (error) {
-		console.error(error);
-		return [];
-	}
-};
 
 const MainResultQuizPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
