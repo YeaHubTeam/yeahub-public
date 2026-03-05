@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl';
 
 import { Landing } from '@/shared/config';
-import { useScreenSize } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -11,19 +10,17 @@ import styles from './AdditionalBlock.module.css';
 
 export const AdditionalBlock = () => {
 	const t = useTranslations('landing');
-	const { isMobileS } = useScreenSize();
 
 	return (
 		<Flex dataTestId="AdditionalBlock" className={styles['additional-block']}>
-			{isMobileS && (
-				<Button
-					dataTestId="AdditionalBlock_ExpandButton"
-					className={styles['expand-button']}
-					variant="outline"
-				>
-					{t(Landing.COLLECTION_EXPAND)}
-				</Button>
-			)}
+			<Button
+				dataTestId="AdditionalBlock_ExpandButton"
+				className={styles['expand-button']}
+				variant="outline"
+			>
+				{t(Landing.COLLECTION_EXPAND)}
+			</Button>
+
 			<Card
 				dataTestId="AdditionalBlock_First"
 				className={styles['additional-first']}
@@ -33,6 +30,7 @@ export const AdditionalBlock = () => {
 					{t(Landing.COLLECTION_ADDITIONAL_FIRST)}
 				</Text>
 			</Card>
+
 			<Card
 				dataTestId="AdditionalBlock_Second"
 				className={styles['additional-second']}
@@ -40,15 +38,17 @@ export const AdditionalBlock = () => {
 			>
 				<Text variant="body3">{t(Landing.COLLECTION_ADDITIONAL_SECOND)}</Text>
 			</Card>
+
 			<Card
 				dataTestId="AdditionalBlock_Third"
 				className={styles['additional-third']}
 				withOutsideShadow
 			>
-				<Text variant={isMobileS ? 'body3' : 'body5'}>
+				<Text variant="body5" className={styles['adaptive-text']}>
 					{t(Landing.COLLECTION_ADDITIONAL_THIRD)}
 				</Text>
 			</Card>
+
 			<Button dataTestId="AdditionalBlock_LinkButton" className={styles.button}>
 				{t(Landing.COLLECTION_LINK)}
 				{/* {t('collections.link')} */}

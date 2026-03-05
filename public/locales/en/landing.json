@@ -85,6 +85,8 @@
 			"second": "Study and practice questions in the interactive YeaHub simulator",
 			"third": "Test if you can pass an interview at top IT companies!"
 		},
-		"link": "Try it"
+		"link": "Try it",
+		"expand": "See more",
+		"star": "For participants"
 	}
 }

@@ -1,0 +1,24 @@
+.title {
+	margin-bottom: 10px;
+}
+
+.subtitle {
+	margin-bottom: 10px;
+}
+
+.title-block {
+	white-space: pre-line;
+	align-self: flex-start;
+}
+
+.collection-wrapper {
+	max-width: 100%;
+}
+
+@media screen and (width < 767px) {
+	.title {
+		line-height: 120%;
+		font-weight: var(--font-weight-500);
+		font-size: var(--font-size-h-xs);
+	}
+}

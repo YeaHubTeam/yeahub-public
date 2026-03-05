@@ -2,7 +2,6 @@ import { useTranslations } from 'next-intl';
 
 import { CollectionPreview } from '@/entities/collection';
 import { Landing } from '@/shared/config';
-import { useScreenSize } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Slider } from '@/shared/ui/Slider';
 
@@ -12,7 +11,6 @@ import styles from './MainBlock.module.css';
 
 export const MainBlock = () => {
 	const t = useTranslations('landing');
-	const { isMobile } = useScreenSize();
 
 	const mockCards = [
 		{
@@ -21,14 +19,7 @@ export const MainBlock = () => {
 			description: '',
 			imageSrc: sberImg.src,
 			keywords: ['Frontend'],
-			specializations: [
-				{
-					id: 1,
-					title: 'Frontend',
-					description: '',
-					slug: 'frontend',
-				},
-			],
+			specializations: [{ id: 1, title: 'Frontend', description: '', slug: 'frontend' }],
 			tariff: 'premium' as const,
 			isFree: false,
 			slug: 'sber',
@@ -39,14 +30,7 @@ export const MainBlock = () => {
 			description: '',
 			imageSrc: tbankImg.src,
 			keywords: ['Frontend'],
-			specializations: [
-				{
-					id: 2,
-					title: 'Frontend',
-					description: '',
-					slug: 'frontend',
-				},
-			],
+			specializations: [{ id: 2, title: 'Frontend', description: '', slug: 'frontend' }],
 			tariff: 'premium' as const,
 			isFree: false,
 			slug: 'tbank',
@@ -57,22 +41,15 @@ export const MainBlock = () => {
 			description: '',
 			imageSrc: vkImg.src,
 			keywords: ['Backend'],
-			specializations: [
-				{
-					id: 3,
-					title: 'Backend',
-					description: '',
-					slug: 'backend',
-				},
-			],
+			specializations: [{ id: 3, title: 'Backend', description: '', slug: 'backend' }],
 			tariff: 'premium' as const,
 			isFree: false,
 			slug: 'vk',
 		},
 	];
 
-	const renderCards = mockCards.map((collection, index) => (
-		<div key={index} data-testid="MainBlock_Card">
+	const renderCards = mockCards.map((collection) => (
+		<div key={collection.id} data-testid="MainBlock_Card">
 			<CollectionPreview
 				variant="column"
 				collection={collection}
@@ -81,24 +58,22 @@ export const MainBlock = () => {
 		</div>
 	));
 
-	if (isMobile) {
-		return (
+	return (
+		<div className={styles['main-block']}>
 			<Flex
 				dataTestId="MainBlock_Mobile"
 				gap="20"
-				className={styles['main-block']}
+				className={styles['mobile-view']}
 				direction="column"
 			>
 				{renderCards}
 			</Flex>
-		);
-	}
 
-	return (
-		<div data-testid="MainBlock_Desktop" className={styles['main-block']}>
-			<Slider {...sliderSettings} className={styles['slider-container']}>
-				{renderCards}
-			</Slider>
+			<div data-testid="MainBlock_Desktop" className={styles['desktop-view']}>
+				<Slider {...sliderSettings} className={styles['slider-container']}>
+					{renderCards}
+				</Slider>
+			</div>
 		</div>
 	);
 };
