@@ -1,7 +1,9 @@
+import { StaticImageData } from 'next/image';
+
 import '../assets';
 import { avito, ozon, sber, tbank, vk, wb, yandex } from '../assets/miniatures';
 
-type ImageItem = { src: string; alt: string };
+type ImageItem = { src: StaticImageData; alt: string };
 
 export const filters: Record<string, ImageItem> = {
 	sber: { src: sber, alt: 'Сбер' },

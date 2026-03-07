@@ -101,8 +101,6 @@ const CollectionPage = async ({ params }: PageProps) => {
 	const collection = await getCollectionBySlug(slug);
 	const questions = await getCollectionQuestions(collection.id, 5);
 
-	console.log(collection);
-	console.log(questions);
 	if (!collection) {
 		notFound();
 	}

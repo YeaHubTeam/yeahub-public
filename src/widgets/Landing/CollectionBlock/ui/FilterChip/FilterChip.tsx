@@ -1,11 +1,11 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 import { Chip } from '@/shared/ui/Chip';
 
 import styles from './FilterChip.module.css';
 
 interface FilterChipProps {
-	src: string;
+	src: StaticImageData;
 	alt: string;
 }
 
