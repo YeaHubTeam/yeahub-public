@@ -14,7 +14,7 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		title: Header.NAV_COLLECTIONS,
 	},
 	{
-		link: ROUTES.quiz.page,
+		link: ROUTES.quiz.new.page,
 		path: '/quiz',
 		title: Header.NAV_TRAINER,
 	},

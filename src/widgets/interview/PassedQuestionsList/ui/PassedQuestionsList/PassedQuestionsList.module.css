@@ -1,0 +1,23 @@
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+  padding-bottom: 16px;
+  max-height: 800px;
+  overflow: auto;
+}
+
+@media screen and (width < 1024px) {
+  .list {
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 16px;
+    max-height: 1600px;
+  }
+}
+
+@media screen and (width < 768px) {
+  .list {
+    max-height: 1450px;
+  }
+}

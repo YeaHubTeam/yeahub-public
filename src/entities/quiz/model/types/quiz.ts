@@ -41,3 +41,28 @@ export interface ChangeQuestionAnswerParams {
 	questionId: number;
 	answer: MockQuizQuestionAnswerType;
 }
+
+export interface ProfileSkillsStat {
+	fullSkillsQuestionsMap: {
+		skill: string;
+		count: number;
+	}[];
+	learnedSkillsQuestionsMap: {
+		skill: string;
+		count: number;
+	}[];
+}
+
+export interface ProgressByCategoriesData {
+	category: string;
+	passed: number;
+	total: number;
+	value: number;
+}
+
+export interface ProfileQuestionsStat {
+	uniqueQuestionsCount: number;
+	learnedQuestionsCount: number;
+	unlearnedQuestionsCount: number;
+	inProgressQuestionsCount: number;
+}

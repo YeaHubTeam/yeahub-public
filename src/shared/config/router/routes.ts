@@ -61,4 +61,9 @@ export const ROUTES = {
 		route: 'learning',
 		page: '/learning',
 	},
+	wiki: {
+		questions: {
+			page: process.env.NEXT_PUBLIC_SITE_URL + '/dashboard/wiki/questions/:questionId',
+		},
+	},
 } as const;

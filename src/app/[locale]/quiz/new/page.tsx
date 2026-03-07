@@ -2,10 +2,8 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getSpecializationSlugs } from '@/entities/specialization';
 import { CreateQuizPage } from '@/pages/CreateQuizPage';
 import { InterviewQuiz, InterviewQuizCreate, i18Namespace } from '@/shared/config';
-import { locales } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string }>;
@@ -39,22 +37,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export const dynamic = 'auto';
-
-export const generateStaticParams = async () => {
-	try {
-		const { data: specializations } = await getSpecializationSlugs();
-
-		return locales.flatMap((locale) =>
-			specializations.map((spec) => ({
-				locale,
-				specialization: spec.slug,
-			})),
-		);
-	} catch (error) {
-		console.error(error);
-		return [];
-	}
-};
 
 const MainCreateQuizPage = async ({ params }: PageProps) => {
 	const { locale } = await params;

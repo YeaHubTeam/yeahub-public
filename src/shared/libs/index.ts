@@ -27,3 +27,5 @@ export {
 	removeFromLS,
 	setToLS,
 } from './browser/managaLocalStorage/manageLocalStorage';
+
+export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
