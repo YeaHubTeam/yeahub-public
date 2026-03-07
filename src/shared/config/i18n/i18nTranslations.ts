@@ -338,6 +338,17 @@ export enum Landing {
 	SKILLS_DESCRIPTION = 'skills.description',
 	FILTERS_TITLE = 'filters.title',
 	FILTERS_DESCRIPTION = 'filters.description',
+	COLLECTION_EXPAND = 'collections.expand',
+	COLLECTION_TITLE = 'collections.title',
+	COLLECTION_SUBTITLE = 'collections.subtitle',
+	COLLECTION_ADDITIONAL_FIRST = 'collections.additional.first',
+	COLLECTION_ADDITIONAL_SECOND = 'collections.additional.second',
+	COLLECTION_ADDITIONAL_THIRD = 'collections.additional.third',
+	COLLECTION_LINK = 'collections.link',
+	COLLECTION_STAR = 'collections.star',
+	COLLECTION_CARD_SBER = 'collections.cards.sber',
+	COLLECTION_CARD_TBANK = 'collections.cards.tbank',
+	COLLECTION_CARD_VK = 'collections.cards.vk',
 }
 
 export enum InterviewStatistics {

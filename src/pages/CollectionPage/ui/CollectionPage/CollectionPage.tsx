@@ -45,6 +45,7 @@ export const CollectionPage = ({ collection, specialization }: CollectionPagePro
 					<CollectionBody
 						isFree={isFree}
 						questions={questions || []}
+						questionsCount={questionsCount || 0}
 						specialization={specialization}
 					/>
 				</Flex>

@@ -5,6 +5,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 
 import { getCollectionBySlug, getCollectionsList } from '@/entities/collection';
+import { getCollectionQuestions } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
@@ -98,7 +99,10 @@ const CollectionPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 
 	const collection = await getCollectionBySlug(slug);
+	const questions = await getCollectionQuestions(collection.id, 5);
 
+	console.log(collection);
+	console.log(questions);
 	if (!collection) {
 		notFound();
 	}
@@ -162,6 +166,8 @@ const CollectionPage = async ({ params }: PageProps) => {
 			},
 		],
 	};
+
+	collection.questions = questions.data;
 
 	return (
 		<>

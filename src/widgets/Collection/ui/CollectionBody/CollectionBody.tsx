@@ -15,16 +15,22 @@ const GUEST_QUESTIONS_COUNT = 5;
 
 interface CollectionBodyProps extends Pick<Collection, 'isFree'> {
 	questions: Question[];
+	questionsCount: number;
 	specialization: string;
 }
 
-export const CollectionBody = ({ questions, isFree, specialization }: CollectionBodyProps) => {
+export const CollectionBody = ({
+	questions,
+	isFree,
+	specialization,
+	questionsCount,
+}: CollectionBodyProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
 	const link = ROUTES.settings.page + '#select-tariff';
 
-	const showRegistrationBanner = questions.length > GUEST_QUESTIONS_COUNT;
-	const hiddenQuestionsCount = questions.length - GUEST_QUESTIONS_COUNT;
+	const showRegistrationBanner = questionsCount > GUEST_QUESTIONS_COUNT;
+	const hiddenQuestionsCount = questionsCount - GUEST_QUESTIONS_COUNT;
 	const displayedQuestions = questions?.slice(0, GUEST_QUESTIONS_COUNT) || [];
 
 	if (!isFree)
