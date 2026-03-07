@@ -12,22 +12,26 @@ interface ResourcesListProps {
 
 export const ResourcesList = ({ resources, hasFilters }: ResourcesListProps) => {
 	const t = useTranslations(i18Namespace.resources);
-	const showEmptyResourcesStub = resources.length === 0 && !hasFilters;
-	const showFilterEmptyStub = resources.length === 0 && hasFilters;
-	const showResourcesList = resources.length > 0;
+
+	if (resources.length === 0 && !hasFilters) {
+		return (
+			<Stub
+				type="empty"
+				title={t(Resources.STUB_EMPTY_RESOURCES_TITLE)}
+				subtitle={t(Resources.STUB_EMPTY_RESOURCES_SUBTITLE)}
+			/>
+		);
+	}
+
+	if (resources.length === 0 && hasFilters) {
+		return <Stub type="filter-empty" />;
+	}
 
 	return (
 		<Flex direction="column" gap="20">
-			{showEmptyResourcesStub && (
-				<Stub
-					type="empty"
-					title={t(Resources.STUB_EMPTY_RESOURCES_TITLE)}
-					subtitle={t(Resources.STUB_EMPTY_RESOURCES_SUBTITLE)}
-				/>
-			)}
-			{showFilterEmptyStub && <Stub type="filter-empty" />}
-			{showResourcesList &&
-				resources.map((resource) => <ResourceCard key={resource.id} resource={resource} />)}
+			{resources.map((resource) => (
+				<ResourceCard key={resource.id} resource={resource} />
+			))}
 		</Flex>
 	);
 };

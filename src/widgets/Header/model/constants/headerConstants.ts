@@ -34,8 +34,3 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		title: Header.NAV_HH_ANALYTICS,
 	},
 ];
-
-export const AUTH_LINKS = {
-	login: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/login`,
-	register: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/register`,
-};

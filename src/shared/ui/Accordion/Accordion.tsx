@@ -7,7 +7,7 @@ import { Text } from '@/shared/ui/Text';
 
 import styles from './Accordion.module.css';
 
-interface AccordionProps {
+export interface AccordionProps {
 	title: string;
 	children: ReactNode;
 	className?: string;

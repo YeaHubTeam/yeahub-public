@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef } from 'react';
 
 import classNames from 'classnames';
@@ -20,6 +22,7 @@ export const ChipSkeleton = forwardRef<HTMLDivElement, ChipProps>(
 			prefix,
 			onClick,
 			onDelete,
+			withText,
 			...props
 		},
 		ref,
@@ -59,7 +62,7 @@ export const ChipSkeleton = forwardRef<HTMLDivElement, ChipProps>(
 				)}
 				{label && (
 					<TextSkeleton
-						width={props.withText ? props.withText : '100%'}
+						width={withText ? withText : '100%'}
 						variant="body3-accent"
 						color="black-800"
 						className={styles['chip-label']}

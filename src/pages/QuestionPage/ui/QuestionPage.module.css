@@ -1,5 +1,5 @@
 .additional {
-  width: 392px;
+  width: 360px;
   height: auto;
 }
 
@@ -7,13 +7,17 @@
   margin-bottom: 24px;
 }
 
-@media screen and (width <= 1023px) {
+@media screen and (width < 1024px) {
   .back-button {
     margin-bottom: 20px;
   }
+	
+	.additional {
+		display: none;
+	}
 }
 
-@media screen and (width <= 767px) {
+@media screen and (width < 768px) {
   .back-button {
     margin-bottom: 16px;
   }

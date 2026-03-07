@@ -37,6 +37,7 @@ export interface PopoverMenuItem {
 		text: string;
 	};
 	renderComponent?: (onToggleOpenPopover: () => void) => ReactNode;
+	link?: string;
 }
 
 export interface PopoverHeaderConfig {

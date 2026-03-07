@@ -57,15 +57,14 @@ export const useResourcesFilter = (currentSpec: Specialization) => {
 	);
 
 	const onChangeSpecialization = useCallback(
-		(nextId?: number) => {
+		(nextId?: number, slug?: string) => {
 			if (!nextId) return;
 
-			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			router.push(`/${locale}/resources/${slug}`, { scroll: false });
 		},
-		[locale, router, currentSpec],
+		[locale, router],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

@@ -1,18 +1,16 @@
 import React from 'react';
 
-import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 import { Question } from '@/entities/question';
 import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import { Questions, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { Stub } from '@/shared/ui/Stub';
 import { FullQuestionsList } from '@/widgets/question/QuestionsList';
 
 import { QuestionsFilterPanel } from '../QuestionsFilterPanel/QuestionsFilterPanel';
+import { QuestionsPageHeader } from '../QuestionsPageHeader/QuestionsPageHeader';
 import { QuestionPagePagination } from '../QuestionsPagePagination/QuestionPagePagination';
 import styles from './QuestionsPage.module.css';
 
@@ -26,8 +24,7 @@ interface QuestionsPageProps {
 	hasFilters: boolean;
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
-	currentSpec: Specialization;
-	specializationTitle: string;
+	currentSpecialization: Specialization;
 }
 
 export const QuestionsPage = ({
@@ -40,41 +37,30 @@ export const QuestionsPage = ({
 	hasFilters,
 	initialSpecializations,
 	initialSkills,
-	currentSpec,
-	specializationTitle,
+	currentSpecialization,
 }: QuestionsPageProps) => {
 	setRequestLocale(locale);
-
-	const t = useTranslations(i18Namespace.questions);
 
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
+				<QuestionsPageHeader
+					currentSpecialization={currentSpecialization}
+					initialSpecializations={initialSpecializations}
+					initialSkills={initialSkills}
+				/>
 				<FullQuestionsList
 					questions={questions}
 					specialization={specialization}
-					specializationTitle={specializationTitle}
+					hasFilters={hasFilters}
 				/>
-
 				<QuestionPagePagination total={total} limit={limit} currentPage={page} />
-
-				{questions.length === 0 ? (
-					hasFilters ? (
-						<Stub type="filter-empty" />
-					) : (
-						<Stub
-							type="empty"
-							title={t(Questions.STUB_EMPTY_TITLE)}
-							subtitle={t(Questions.STUB_EMPTY_SUBTITLE)}
-						/>
-					)
-				) : null}
 			</Card>
 			<Card className={styles.filters}>
 				<QuestionsFilterPanel
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
-					currentSpec={currentSpec}
+					currentSpecialization={currentSpecialization}
 				/>
 			</Card>
 		</Flex>

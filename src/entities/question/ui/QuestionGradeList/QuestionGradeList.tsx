@@ -1,5 +1,3 @@
-'use server';
-
 import { getTranslations } from 'next-intl/server';
 
 import { Questions, i18Namespace } from '@/shared/config';

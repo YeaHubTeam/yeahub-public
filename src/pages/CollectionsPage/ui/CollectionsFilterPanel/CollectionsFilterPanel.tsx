@@ -6,6 +6,7 @@ import { ChooseCollectionAccess } from '@/entities/collection';
 import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
 import {
 	DEFAULT_SPECIALIZATION_ID,
+	GetSpecializationsListResponse,
 	Specialization,
 	SpecializationsListField,
 } from '@/entities/specialization';
@@ -16,11 +17,15 @@ import { SearchInput } from '@/shared/ui/SearchInput';
 import { useCollectionsFilters } from '../../model/api/useCollectionsFilters';
 
 interface CollectionsFilterPanelProps {
-	currentSpec: Specialization;
+	currentSpecialization: Specialization;
+	initialSpecializations?: GetSpecializationsListResponse | null;
 }
 
-export const CollectionsFilterPanel = ({ currentSpec }: CollectionsFilterPanelProps) => {
-	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(currentSpec);
+export const CollectionsFilterPanel = ({
+	currentSpecialization,
+	initialSpecializations,
+}: CollectionsFilterPanelProps) => {
+	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(currentSpecialization);
 	const t = useTranslations(i18Namespace.collection);
 
 	const media = getChannelsForSpecialization(selectedSpecialization ?? DEFAULT_SPECIALIZATION_ID);
@@ -35,6 +40,7 @@ export const CollectionsFilterPanel = ({ currentSpec }: CollectionsFilterPanelPr
 			<SpecializationsListField
 				selectedSpecialization={selectedSpecialization}
 				onChangeSpecialization={handlers.onChangeSpecialization}
+				initialData={initialSpecializations}
 			/>
 			<ChooseCollectionAccess isFree={filter.isFree} onChangeIsFree={handlers.onChangeIsFree} />
 

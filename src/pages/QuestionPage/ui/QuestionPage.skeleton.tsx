@@ -1,4 +1,3 @@
-import { useScreenSize } from '@/shared/libs';
 import { ButtonSkeleton } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { QuestionAdditionalInfoSkeleton } from '@/widgets/question/QuestionAdditionalInfo';
@@ -7,11 +6,9 @@ import { QuestionHeaderSkeleton } from '@/widgets/question/QuestionHeader';
 
 import styles from './QuestionPage.module.css';
 
-export const QuestionPageSkeleton = ({ dataTestId }: { dataTestId?: string }) => {
-	const { isMobile, isTablet } = useScreenSize();
-
+export const QuestionPageSkeleton = () => {
 	return (
-		<Flex dataTestId={dataTestId} direction="column" align="start">
+		<Flex direction="column" align="start">
 			<ButtonSkeleton
 				width={100}
 				size="small"
@@ -23,11 +20,9 @@ export const QuestionPageSkeleton = ({ dataTestId }: { dataTestId?: string }) =>
 					<QuestionHeaderSkeleton />
 					<QuestionBodySkeleton />
 				</Flex>
-				{!isMobile && !isTablet && (
-					<Flex direction="column" gap="20" className={styles.additional}>
-						<QuestionAdditionalInfoSkeleton />
-					</Flex>
-				)}
+				<Flex direction="column" gap="20" className={styles.additional}>
+					<QuestionAdditionalInfoSkeleton />
+				</Flex>
 			</Flex>
 		</Flex>
 	);
