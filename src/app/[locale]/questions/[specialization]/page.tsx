@@ -42,11 +42,11 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const currentSpec = await getSpecializationBySlug(specialization);
+	const currentSpecialization = await getSpecializationBySlug(specialization);
 
-	if (!currentSpec) notFound();
+	if (!currentSpecialization) notFound();
 
-	const specializationId = currentSpec.id;
+	const specializationId = currentSpecialization.id;
 
 	setRequestLocale(locale);
 
@@ -67,7 +67,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!skills || !!complexity || !!rate || !!titleOrDescription;
 
-	const specializationTitle = currentSpec.title;
+	const specializationTitle = currentSpecialization.title;
 
 	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}`;
@@ -143,8 +143,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 				hasFilters={hasFilters}
 				initialSpecializations={specializationsResponse}
 				initialSkills={skillsResponse}
-				currentSpec={currentSpec}
-				specializationTitle={specializationTitle || ''}
+				currentSpecialization={currentSpecialization}
 			/>
 		</>
 	);

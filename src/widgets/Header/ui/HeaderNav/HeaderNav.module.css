@@ -1,7 +1,17 @@
-.nav-desktop { display: flex; }
-.nav-mobile { display: none; }
+.nav-desktop { 
+	display: flex;
+}
 
-@media (width <= 1023px) {
-  .nav-desktop { display: none; }
-  .nav-mobile { display: block; }
+.nav-mobile { 
+	display: none;
+}
+
+@media (width < 1280px) {
+  .nav-desktop { 
+		display: none;
+	}
+	
+  .nav-mobile { 
+		display: block;
+	}
 }

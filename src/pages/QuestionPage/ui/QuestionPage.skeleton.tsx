@@ -1,3 +1,5 @@
+'use client';
+
 import { useScreenSize } from '@/shared/libs';
 import { ButtonSkeleton } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
@@ -7,11 +9,11 @@ import { QuestionHeaderSkeleton } from '@/widgets/question/QuestionHeader';
 
 import styles from './QuestionPage.module.css';
 
-export const QuestionPageSkeleton = ({ dataTestId }: { dataTestId?: string }) => {
+export const QuestionPageSkeleton = () => {
 	const { isMobile, isTablet } = useScreenSize();
 
 	return (
-		<Flex dataTestId={dataTestId} direction="column" align="start">
+		<Flex direction="column" align="start">
 			<ButtonSkeleton
 				width={100}
 				size="small"

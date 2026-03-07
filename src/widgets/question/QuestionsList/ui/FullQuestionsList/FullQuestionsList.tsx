@@ -1,43 +1,49 @@
+import React from 'react';
+
 import { useTranslations } from 'next-intl';
 
 import { Question } from '@/entities/question';
-import { Questions as QuestionsTranslations, i18Namespace } from '@/shared/config';
+import { Questions, i18Namespace } from '@/shared/config';
 import { Accordion } from '@/shared/ui/Accordion';
-import { Text } from '@/shared/ui/Text';
+import { Flex } from '@/shared/ui/Flex';
+import { Stub } from '@/shared/ui/Stub';
 
 import { FullQuestionItem } from '../FullQuestionItem/FullQuestionItem';
-import styles from './FullQuestionsList.module.css';
 
 interface FullQuestionsListProps {
 	questions: Question[];
 	specialization: string;
-	specializationTitle: string;
+	hasFilters: boolean;
 }
 
 export const FullQuestionsList = ({
 	questions,
 	specialization,
-	specializationTitle,
+	hasFilters,
 }: FullQuestionsListProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
-	const title = t(QuestionsTranslations.QUESTIONS_TITLE, {
-		specialization: specializationTitle,
-	});
+	if (questions.length === 0 && !hasFilters) {
+		return (
+			<Stub
+				type="empty"
+				title={t(Questions.STUB_EMPTY_TITLE)}
+				subtitle={t(Questions.STUB_EMPTY_SUBTITLE)}
+			/>
+		);
+	}
+
+	if (questions.length === 0 && hasFilters) {
+		return <Stub type="filter-empty" />;
+	}
 
 	return (
-		<>
-			<div className={styles['questions-list-header']}>
-				<Text variant={'body6'} isMainTitle maxRows={1}>
-					{title}
-				</Text>
-			</div>
-			<hr className={styles.divider} />
+		<Flex direction="column" gap="20">
 			{questions.map((question) => (
-				<Accordion key={question.id} title={question.title} className={styles.gap}>
+				<Accordion key={question.id} title={question.title}>
 					<FullQuestionItem question={question} specialization={specialization} />
 				</Accordion>
 			))}
-		</>
+		</Flex>
 	);
 };

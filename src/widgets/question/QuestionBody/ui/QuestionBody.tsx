@@ -1,17 +1,17 @@
 import { useTranslations } from 'next-intl';
 
-import { Questions, i18Namespace } from '@/shared/config';
+import { AUTH_LINKS, Questions, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
+import { SimpleStub } from '@/shared/ui/SimpleStub';
 import { TextHtml } from '@/shared/ui/TextHtml';
 
 import styles from './QuestionBody.module.css';
 
 interface QuestionBodyProps {
 	shortAnswer: string;
-	longAnswer: string;
 }
 
-export const QuestionBody = ({ shortAnswer, longAnswer }: QuestionBodyProps) => {
+export const QuestionBody = ({ shortAnswer }: QuestionBodyProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
 	return (
@@ -27,8 +27,10 @@ export const QuestionBody = ({ shortAnswer, longAnswer }: QuestionBodyProps) => 
 				title={t(Questions.LONG_ANSWER_TITLE)}
 				withOutsideShadow
 				className={styles['long-block']}
+				actionRoute={AUTH_LINKS.register}
+				actionTitle={t(Questions.REGISTER)}
 			>
-				<TextHtml html={longAnswer} />
+				<SimpleStub variant="no-authorized" text={t(Questions.STUB_NOT_AUTH_TITLE)} />
 			</Card>
 		</>
 	);

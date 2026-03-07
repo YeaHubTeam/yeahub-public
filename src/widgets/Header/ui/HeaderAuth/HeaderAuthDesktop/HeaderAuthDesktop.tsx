@@ -2,11 +2,10 @@ import React from 'react';
 
 import { getTranslations } from 'next-intl/server';
 
-import { Header, i18Namespace } from '@/shared/config';
+import { AUTH_LINKS, Header, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 
-import { AUTH_LINKS } from '../../../model/constants/headerConstants';
 import styles from './HeaderAuthDesktop.module.css';
 
 export const HeaderAuthDesktop = async () => {
@@ -14,18 +13,6 @@ export const HeaderAuthDesktop = async () => {
 
 	return (
 		<Flex dataTestId="HeaderAuthDesktop_Wrapper" justify="between" align="center" gap="26">
-			<Button
-				dataTestId="LoginButton"
-				variant="link"
-				className={styles['login-link']}
-				size="large"
-				href={AUTH_LINKS.login}
-				rel="noopener noreferrer"
-				target="_blank"
-			>
-				{t(Header.AUTH_SIGN_IN)}
-			</Button>
-
 			<Button
 				dataTestId="RegisterButton"
 				variant="link"

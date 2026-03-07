@@ -9,6 +9,7 @@ import {
 	CollectionCompanyInfo,
 	CollectionQuestionsCount,
 } from '@/entities/collection';
+import { GurusBanner, getGuruWithMatchingSpecialization } from '@/entities/guru';
 import {
 	MediaLinksBanner,
 	SocialMedia,
@@ -30,7 +31,6 @@ interface AdditionalInfoProps
 		Collection,
 		'specializations' | 'isFree' | 'company' | 'questionsCount' | 'createdBy' | 'keywords'
 	> {
-	showAuthor?: boolean;
 	className?: string;
 	media?: SocialMedia;
 }
@@ -42,13 +42,14 @@ export const AdditionalInfo = ({
 	questionsCount,
 	createdBy,
 	keywords,
-	showAuthor = true,
 	className,
 }: AdditionalInfoProps) => {
 	const t = useTranslations(i18Namespace.collection);
 	const { isLargeScreen, isSmallScreen } = useScreenSize();
 
 	const media = getChannelsForSpecialization(specializations);
+	const guru = getGuruWithMatchingSpecialization(specializations || []);
+	const showAuthor = guru ? false : true;
 
 	return (
 		<>
@@ -73,6 +74,7 @@ export const AdditionalInfo = ({
 				</Flex>
 			</Card>
 			{isLargeScreen && showAuthor && createdBy && <AuthorInfo createdBy={createdBy} isCenter />}
+			{guru && <GurusBanner gurus={[guru]} />}
 		</>
 	);
 };

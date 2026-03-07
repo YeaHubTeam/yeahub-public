@@ -1,12 +1,13 @@
 import { setRequestLocale } from 'next-intl/server';
 
 import { Collection } from '@/entities/collection';
-import { Specialization } from '@/entities/specialization';
+import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { CollectionsList, InterviewRecordingsBanner } from '@/widgets/Collection';
 
 import { CollectionsFilterPanel } from '../CollectionsFilterPanel/CollectionsFilterPanel';
+import { CollectionsPageHeader } from '../CollectionsPageHeader/CollectionsPageHeader';
 import { CollectionsPagePagination } from '../CollectionsPagePagination/CollectionsPagePagination';
 import styles from './CollectionsPage.module.css';
 
@@ -18,7 +19,8 @@ interface CollectionsPageProps {
 	limit: number;
 	specialization: string;
 	hasFilters: boolean;
-	currentSpec: Specialization;
+	currentSpecialization: Specialization;
+	initialSpecializations?: GetSpecializationsListResponse | null;
 }
 export const CollectionsPage = ({
 	locale,
@@ -28,24 +30,31 @@ export const CollectionsPage = ({
 	limit,
 	specialization,
 	hasFilters,
-	currentSpec,
+	currentSpecialization,
+	initialSpecializations,
 }: CollectionsPageProps) => {
 	setRequestLocale(locale);
 
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
+				<CollectionsPageHeader
+					currentSpecialization={currentSpecialization}
+					initialSpecializations={initialSpecializations}
+				/>
 				<CollectionsList
 					collections={collections}
 					specialization={specialization}
 					hasFilters={hasFilters}
 				/>
-
 				<CollectionsPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>
 			<Flex gap="20" direction="column" className={styles.filters}>
 				<Card>
-					<CollectionsFilterPanel currentSpec={currentSpec} />
+					<CollectionsFilterPanel
+						currentSpecialization={currentSpecialization}
+						initialSpecializations={initialSpecializations}
+					/>
 				</Card>
 				<InterviewRecordingsBanner />
 			</Flex>

@@ -23,7 +23,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 		},
 		ref,
 	): JSX.Element => {
-		const tagName = getTagName(variant);
+		const tagName = getTagName(variant, !!props.href);
 
 		const Component = tagName as React.ElementType;
 

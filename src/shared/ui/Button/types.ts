@@ -24,7 +24,6 @@ export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
 	badge?: string | number;
 	destructive?: boolean;
 	dataTestId?: string;
-
 	href?: string; // цель для линка
 	target?: React.HTMLAttributeAnchorTarget;
 	rel?: string;

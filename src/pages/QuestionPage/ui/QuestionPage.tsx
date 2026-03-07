@@ -16,15 +16,8 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 		return null;
 	}
 
-	const {
-		rate,
-		keywords,
-		complexity,
-		questionSkills,
-		shortAnswer,
-		longAnswer,
-		questionSpecializations,
-	} = question;
+	const { rate, keywords, complexity, questionSkills, shortAnswer, questionSpecializations } =
+		question;
 
 	return (
 		<Flex direction="column" align="start">
@@ -34,7 +27,7 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 			<Flex gap="20" maxWidth>
 				<Flex gap="20" direction="column" flex={1} maxWidth>
 					<QuestionHeader question={question} />
-					<QuestionBody shortAnswer={shortAnswer} longAnswer={longAnswer} />
+					<QuestionBody shortAnswer={shortAnswer} />
 				</Flex>
 				<Flex direction="column" gap="20" className={styles.additional}>
 					<QuestionAdditionalInfo

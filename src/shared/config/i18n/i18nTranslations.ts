@@ -67,6 +67,7 @@ export enum Questions {
 	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
 	ADDITIONAL_INFO_SKILLS = 'additional.info.skills',
 	ADDITIONAL_INFO_KEYWORDS = 'additional.info.keywords',
+	REGISTER = 'register',
 	QUESTIONS_TITLE = 'questions_title',
 	QUESTIONS_RATE = 'questions.rate',
 	QUESTIONS_COMPLEXITY = 'questions.complexity',
@@ -86,6 +87,7 @@ export enum Questions {
 
 	STUB_EMPTY_TITLE = 'stub.empty.title',
 	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_NOT_AUTH_TITLE = 'stub.not_auth.title',
 }
 
 export enum Media {

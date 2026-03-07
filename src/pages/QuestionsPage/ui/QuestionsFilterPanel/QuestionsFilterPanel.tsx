@@ -19,16 +19,17 @@ import { useQuestionsFilter } from '../../model/api/useQuestionsFilter';
 interface QuestionsFilterPanelProps {
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
-	currentSpec: Specialization;
+	currentSpecialization: Specialization;
 }
 
 export const QuestionsFilterPanel = ({
 	initialSpecializations,
 	initialSkills,
-	currentSpec,
+	currentSpecialization,
 }: QuestionsFilterPanelProps) => {
 	const t = useTranslations(i18Namespace.questions);
-	const { filter, selectedSpecialization, media, handlers } = useQuestionsFilter(currentSpec);
+	const { filter, selectedSpecialization, media, handlers } =
+		useQuestionsFilter(currentSpecialization);
 
 	return (
 		<Flex direction="column" gap="24">
