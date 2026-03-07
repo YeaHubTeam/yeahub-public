@@ -1,3 +1,5 @@
+'use client';
+
 import { ChipSkeleton } from '@/shared/ui/Chip';
 import { Flex } from '@/shared/ui/Flex';
 import { IconSkeleton } from '@/shared/ui/Icon';

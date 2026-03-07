@@ -43,8 +43,7 @@ export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
 					className={styles.button}
 					onClick={onToggle}
 				>
-					{/* Заголовок берите из переводов на сервере и передавайте через props при желании */}
-					Menu
+					Меню
 				</Button>
 			)}
 		</Popover>

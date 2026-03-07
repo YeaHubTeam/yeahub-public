@@ -15,7 +15,7 @@ const ErrorBoundary = ({ error, reset }: ErrorBoundaryProps) => {
 	const handleTryAgain = () => {
 		reset();
 	};
-	console.log(error);
+
 	useEffect(() => {
 		console.error(error);
 	}, [error]);

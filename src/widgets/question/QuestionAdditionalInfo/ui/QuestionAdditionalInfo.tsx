@@ -1,5 +1,3 @@
-'use server';
-
 import classnames from 'classnames';
 import { getTranslations } from 'next-intl/server';
 

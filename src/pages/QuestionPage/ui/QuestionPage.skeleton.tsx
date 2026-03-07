@@ -1,6 +1,3 @@
-'use client';
-
-import { useScreenSize } from '@/shared/libs';
 import { ButtonSkeleton } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { QuestionAdditionalInfoSkeleton } from '@/widgets/question/QuestionAdditionalInfo';
@@ -10,8 +7,6 @@ import { QuestionHeaderSkeleton } from '@/widgets/question/QuestionHeader';
 import styles from './QuestionPage.module.css';
 
 export const QuestionPageSkeleton = () => {
-	const { isMobile, isTablet } = useScreenSize();
-
 	return (
 		<Flex direction="column" align="start">
 			<ButtonSkeleton
@@ -25,11 +20,9 @@ export const QuestionPageSkeleton = () => {
 					<QuestionHeaderSkeleton />
 					<QuestionBodySkeleton />
 				</Flex>
-				{!isMobile && !isTablet && (
-					<Flex direction="column" gap="20" className={styles.additional}>
-						<QuestionAdditionalInfoSkeleton />
-					</Flex>
-				)}
+				<Flex direction="column" gap="20" className={styles.additional}>
+					<QuestionAdditionalInfoSkeleton />
+				</Flex>
 			</Flex>
 		</Flex>
 	);

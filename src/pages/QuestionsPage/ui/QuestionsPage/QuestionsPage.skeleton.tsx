@@ -1,5 +1,3 @@
-'use client';
-
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { TablePaginationSkeleton } from '@/shared/ui/TablePagination';
