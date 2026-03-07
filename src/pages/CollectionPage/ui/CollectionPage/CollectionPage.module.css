@@ -1,5 +1,5 @@
 .additional {
-	width: 392px;
+	width: 360px;
 	height: auto;
 }
 
@@ -13,7 +13,7 @@
 	border: 1px solid transparent;
 }
 
-@media screen and (width <= 1280px) {
+@media screen and (width < 1024px) {
 	.additional {
 		display: none;
 	}

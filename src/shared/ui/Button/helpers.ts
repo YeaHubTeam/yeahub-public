@@ -16,5 +16,7 @@ const tagNameByVariants: Record<VariantType, 'button' | 'a'> = {
 	'primary-inverse': 'button',
 };
 
-export const getTagName = (variant: keyof typeof tagNameByVariants): 'button' | 'a' =>
-	tagNameByVariants[variant];
+export const getTagName = (
+	variant: keyof typeof tagNameByVariants,
+	isLink?: boolean,
+): 'button' | 'a' => (isLink ? 'a' : tagNameByVariants[variant]);

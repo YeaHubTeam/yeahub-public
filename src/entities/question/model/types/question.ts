@@ -62,3 +62,13 @@ export interface QuestionSlug {
 }
 
 export type GetQuestionSlugsResponse = Response<QuestionSlug[]>;
+
+export type SkillQuestion = {
+	skill: string;
+	count: number;
+};
+
+export interface GetQuestionsBySpecializationCountResponse {
+	total: number;
+	skillsQuestions: SkillQuestion[];
+}

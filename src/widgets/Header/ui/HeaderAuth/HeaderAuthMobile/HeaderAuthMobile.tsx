@@ -4,13 +4,12 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { Header, i18Namespace } from '@/shared/config';
-import { Flex } from '@/shared/ui/Flex';
+import { AUTH_LINKS, Header, i18Namespace } from '@/shared/config';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
+import { UserPlusIcon } from '@/widgets/Header/ui/HeaderAuth/UserPlusIcon';
 
-import { AUTH_LINKS } from '../../../model/constants/headerConstants';
 import styles from './HeaderAuthMobile.module.css';
 
 export const HeaderAuthMobile = () => {
@@ -18,22 +17,9 @@ export const HeaderAuthMobile = () => {
 
 	const authMenuLinks: PopoverMenuItem[] = [
 		{
-			renderComponent: (onToggle) => (
-				<Flex onClick={onToggle}>
-					<a href={AUTH_LINKS.login} rel="noopener noreferrer" className={styles.link}>
-						{t(Header.AUTH_SIGN_IN)}
-					</a>
-				</Flex>
-			),
-		},
-		{
-			renderComponent: (onToggle) => (
-				<Flex onClick={onToggle}>
-					<a href={AUTH_LINKS.register} rel="noopener noreferrer" className={styles.link}>
-						{t(Header.AUTH_SIGN_UP)}
-					</a>
-				</Flex>
-			),
+			icon: <UserPlusIcon isCurrentColor />,
+			title: t(Header.AUTH_SIGN_UP),
+			link: AUTH_LINKS.register,
 		},
 	];
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 import { useTranslations } from 'next-intl';
@@ -28,6 +29,8 @@ import styles from './QuizPage.module.css';
 
 export const QuizPage = () => {
 	const t = useTranslations(i18Namespace.interviewQuiz);
+	const searchParams = useSearchParams();
+	const specializationId = searchParams?.get('specializationId');
 	const [activeQuizQuestions, setActiveQuizQuestions] = useState<Answers[]>([]);
 	const [isAnswerVisible, setIsAnswerVisible] = useState(false);
 
@@ -37,7 +40,7 @@ export const QuizPage = () => {
 		const quizFromLS = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
 
 		if (!quizFromLS) {
-			router.replace(ROUTES.quiz.page);
+			router.replace(ROUTES.quiz.new.page);
 		}
 
 		const combinedQuestions =
@@ -90,7 +93,7 @@ export const QuizPage = () => {
 	const onInterruptQuiz = () => {
 		setActiveQuizQuestions([]);
 		removeFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
-		router.push(ROUTES.quiz.page);
+		router.push(ROUTES.quiz.new.page);
 	};
 
 	const onPrevSlide = () => {
@@ -144,7 +147,14 @@ export const QuizPage = () => {
 					/>
 					<Flex direction="row">
 						<Button
-							onClick={isNextButton ? onNextSlide : () => router.replace(ROUTES.quiz.result.page)}
+							onClick={
+								isNextButton
+									? onNextSlide
+									: () =>
+											router.replace(
+												`${ROUTES.quiz.result.page}?specializationId=${specializationId}`,
+											)
+							}
 							disabled={isDisabled}
 						>
 							{isNextButton ? t(InterviewQuiz.NEXT) : t(InterviewQuiz.CHECK)}

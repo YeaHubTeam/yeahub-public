@@ -9,6 +9,7 @@ export { LS_INIT_COLLECTION_ID } from './model/constants/collection';
 export * from './api/getCollections';
 
 export { ChooseCollectionAccess } from './ui/ChooseCollectionAccess/ChooseCollectionAccess';
+export { ChooseCollectionAccessSkeleton } from './ui/ChooseCollectionAccess/ChooseCollectionAccess.skeleton';
 export { CollectionPreview } from './ui/CollectionPreview/CollectionPreview';
 export { CollectionsPreviewSkeleton } from './ui/CollectionPreview/CollectionPreview.skeleton';
 export { CollectionAccessInfo } from './ui/CollectionAccessInfo/CollectionAccessInfo';

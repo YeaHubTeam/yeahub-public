@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import { createPortal } from 'react-dom';
@@ -22,16 +22,15 @@ export interface DrawerProps {
 	onClose: () => void;
 	children: React.ReactNode;
 	className?: string;
-	rootName?: 'mainLayout' | 'body';
 	hasCloseButton?: boolean;
 }
 
-const createPortalRoot = () => {
-	const drawerRoot = document.createElement('div');
-	drawerRoot.setAttribute('id', 'drawer-root');
-
-	return drawerRoot;
-};
+// const createPortalRoot = () => {
+// 	const drawerRoot = document.createElement('div');
+// 	drawerRoot.setAttribute('id', 'drawer-root');
+//
+// 	return drawerRoot;
+// };
 
 export const Drawer = ({
 	isOpen,
@@ -39,13 +38,24 @@ export const Drawer = ({
 	position = 'right',
 	onClose,
 	className,
-	rootName = 'mainLayout',
 	hasCloseButton = false,
 }: DrawerProps) => {
-	const portalRootRef = useRef(document.getElementById('drawer-root') || createPortalRoot());
-	const documentRootName = rootName === 'mainLayout' ? 'main' : 'body';
-	const renderRootRef = useRef(document.querySelector(documentRootName)!);
+	const portalRootRef = useRef<HTMLElement | null>(null);
+	const renderRootRef = useRef<HTMLElement | null>(null);
+	const [isRender, setIsRender] = useState(false);
 	const rootEl = renderRootRef.current;
+
+	useEffect(() => {
+		portalRootRef.current = document.getElementById('drawer-root');
+		renderRootRef.current = document.querySelector('body');
+		setIsRender(true);
+
+		return () => {
+			portalRootRef.current = null;
+			renderRootRef.current = null;
+			setIsRender(false);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (rootEl) {
@@ -58,7 +68,7 @@ export const Drawer = ({
 	}, [isOpen]);
 
 	useEffect(() => {
-		if (isOpen && rootEl) {
+		if (isOpen && rootEl && portalRootRef.current) {
 			rootEl.appendChild(portalRootRef.current);
 			const portal = portalRootRef.current;
 
@@ -74,7 +84,7 @@ export const Drawer = ({
 			onClose();
 		}
 	};
-
+	if (!isRender || !portalRootRef.current) return null;
 	return createPortal(
 		<div
 			aria-hidden={isOpen}
@@ -85,9 +95,7 @@ export const Drawer = ({
 		>
 			<div
 				data-testid={drawerTestIds.drawer}
-				className={classNames(styles['drawer'], styles[position], className, {
-					[styles['absolute']]: rootName === 'mainLayout',
-				})}
+				className={classNames(styles['drawer'], styles[position], className)}
 				role="dialog"
 			>
 				{hasCloseButton && (

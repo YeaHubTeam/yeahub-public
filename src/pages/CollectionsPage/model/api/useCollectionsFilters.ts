@@ -68,15 +68,14 @@ export const useCollectionsFilters = (currentSpec: Specialization) => {
 	);
 
 	const onChangeSpecialization = useCallback(
-		(nextId?: number) => {
+		(nextId?: number, slug?: string) => {
 			if (!nextId) return;
 
-			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			router.push(`/${locale}/collections/${slug}`, { scroll: false });
 		},
-		[locale, router, currentSpec],
+		[locale, router],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

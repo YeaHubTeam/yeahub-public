@@ -3,35 +3,16 @@
   border-radius: 24px;
 }
 
-.image {
-  flex-shrink: 0;
-  border-radius: 12px;
-}
-
 .image-default {
-  width: 149px;
-  height: 157px;
+	width: 150px;
+	height: 150px;
+	border-radius: 12px;
 }
 
-.image-mobile {
-  aspect-ratio: 1.08;
-  width: 100%;
-  height: auto;
-}
-
-.title {
-  margin-bottom: 8px;
-  color: var(--text-color-primary);
-  line-height: 120%;
-  font-weight: var(--font-weight-500);
-  font-size: var(--font-size-h-xs);
-}
-
-.description {
-  color: var(--text-color-light);
-  line-height: 20.8px;
-  font-weight: var(--font-weight-500);
-  font-size: var(--font-size-p-m);
+@media (width < 1024px) {
+	.image-default {
+		display: none;
+	}
 }
 
 @media (width < 768px) {

@@ -47,6 +47,7 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 				<div className={styles['main-content']}>{children}</div>
 			</main>
 			<Footer />
+			<div id="drawer-root" />
 		</NextIntlClientProvider>
 	);
 };

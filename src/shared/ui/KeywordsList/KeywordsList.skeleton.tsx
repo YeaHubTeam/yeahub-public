@@ -1,3 +1,5 @@
+'use client';
+
 import { Flex } from '@/shared/ui/Flex';
 import { TextSkeleton } from '@/shared/ui/Text';
 

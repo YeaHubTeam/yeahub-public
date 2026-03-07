@@ -3,8 +3,17 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { type GetResourcesListParamsRequest, getResourcesList } from '@/entities/resource';
-import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
+import {
+	type GetResourcesListParamsRequest,
+	getResourceTypes,
+	getResourcesList,
+} from '@/entities/resource';
+import { getSkills } from '@/entities/skill';
+import {
+	getSpecializationBySlug,
+	getSpecializationSlugs,
+	getSpecializations,
+} from '@/entities/specialization';
 import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
@@ -71,24 +80,30 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const currentSpec = await getSpecializationBySlug(specialization).catch(() => null);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 
-	if (!currentSpec) notFound();
+	if (!currentSpecialization) notFound();
 
-	const specializationId = currentSpec.id;
+	const specializationId = currentSpecialization.id;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations({ locale, namespace: i18Namespace.resources });
 
-	const response = await getResourcesList({
-		page: pageNum,
-		limit: RESOURCES_PER_PAGE,
-		specializations: specializationId,
-		skills,
-		types,
-		name,
-	});
+	const [resourcesResponse, specializationsResponse, skillsResponse, resourcesTypesResponse] =
+		await Promise.all([
+			getResourcesList({
+				page: pageNum,
+				limit: RESOURCES_PER_PAGE,
+				specializations: specializationId,
+				skills,
+				types,
+				name,
+			}),
+			getSpecializations({ limit: 5 }),
+			getSkills({ limit: 5, specializations: specializationId }),
+			getResourceTypes(),
+		]);
 
 	const hasFilters = !!name || !!types || !!skills;
 
@@ -103,8 +118,9 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 				'@type': 'CollectionPage',
 				'@id': pageUrl,
 				url: pageUrl,
-				name: `${headerTitle} — ${currentSpec.title}`,
-				description: currentSpec.description || `${headerTitle} — ${currentSpec.title}`,
+				name: `${headerTitle} — ${currentSpecialization.title}`,
+				description:
+					currentSpecialization.description || `${headerTitle} — ${currentSpecialization.title}`,
 				isPartOf: {
 					'@type': 'WebSite',
 					url: siteUrl,
@@ -112,8 +128,8 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 				},
 				mainEntity: {
 					'@type': 'ItemList',
-					numberOfItems: response.total,
-					itemListElement: response.data?.map((resource, index) => ({
+					numberOfItems: resourcesResponse.total,
+					itemListElement: resourcesResponse.data?.map((resource, index) => ({
 						'@type': 'ListItem',
 						position: index + 1 + (pageNum - 1) * RESOURCES_PER_PAGE,
 						url: resource.url,
@@ -143,7 +159,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 					{
 						'@type': 'ListItem',
 						position: 2,
-						name: `${headerTitle} — ${currentSpec.title}`,
+						name: `${headerTitle} — ${currentSpecialization.title}`,
 						item: pageUrl,
 					},
 				],
@@ -160,11 +176,14 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 			<ResourcesPage
 				locale={locale}
 				page={pageNum}
-				resources={response?.data || []}
-				total={response?.total || 0}
-				limit={response?.limit || 0}
+				resources={resourcesResponse?.data || []}
+				total={resourcesResponse?.total || 0}
+				limit={resourcesResponse?.limit || 0}
 				hasFilters={hasFilters}
-				currentSpec={currentSpec}
+				currentSpecialization={currentSpecialization}
+				initialSpecializations={specializationsResponse}
+				initialSkills={skillsResponse}
+				resourcesTypes={resourcesTypesResponse}
 			/>
 		</>
 	);

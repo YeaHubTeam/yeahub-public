@@ -11,14 +11,14 @@ import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specializa
 import { parseNumberArray, useDebounce } from '@/shared/libs';
 import type { FilterParams } from '@/widgets/question/QuestionsFilterPanel';
 
-export const useQuestionsFilter = (currentSpec: Specialization) => {
+export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const locale = useLocale();
 
 	const searchParamsString = searchParams?.toString() ?? '';
-	const specializationId = currentSpec.id;
+	const specializationId = currentSpecialization.id;
 
 	const filter: FilterParams = useMemo(
 		() => ({
@@ -61,10 +61,8 @@ export const useQuestionsFilter = (currentSpec: Specialization) => {
 	const onChangeRate = useCallback((rate: number[]) => setParam('rate', rate), [setParam]);
 
 	const onChangeSpecialization = useCallback(
-		(nextId?: number) => {
+		(nextId?: number, slug?: string) => {
 			if (!nextId) return;
-
-			const slug = currentSpec.slug;
 			if (!slug) return;
 
 			const params = new URLSearchParams(searchParamsString);
@@ -73,7 +71,7 @@ export const useQuestionsFilter = (currentSpec: Specialization) => {
 
 			router.push(`/${locale}/questions/${slug}?${params.toString()}`, { scroll: false });
 		},
-		[locale, router, searchParamsString, currentSpec],
+		[locale, router, searchParamsString, currentSpecialization],
 	);
 
 	const debouncedSearch = useDebounce(onChangeSearch, 500);

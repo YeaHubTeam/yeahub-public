@@ -48,7 +48,7 @@ export const generateStaticParams = async () => {
 		for (const spec of specializations) {
 			try {
 				const firstPage = await getCollectionsList({
-					specialization: spec.id,
+					specializations: spec.id,
 					page: 1,
 					limit: BATCH_SIZE,
 				});
@@ -61,7 +61,7 @@ export const generateStaticParams = async () => {
 				if (totalPages > 1) {
 					for (let page = 2; page <= totalPages; page++) {
 						const response = await getCollectionsList({
-							specialization: spec.id,
+							specializations: spec.id,
 							page,
 							limit: BATCH_SIZE,
 						});

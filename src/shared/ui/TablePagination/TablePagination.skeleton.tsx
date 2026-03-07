@@ -1,3 +1,5 @@
+'use client';
+
 import { PaginationSkeleton } from '@/shared/ui/Pagination';
 
 import styles from './TablePagination.module.css';

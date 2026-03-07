@@ -3,7 +3,11 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { GetCollectionsListParamsRequest, getCollectionsList } from '@/entities/collection';
-import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
+import {
+	getSpecializationBySlug,
+	getSpecializationSlugs,
+	getSpecializations,
+} from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
 import { i18Namespace, locales } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
@@ -37,11 +41,11 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const currentSpec = await getSpecializationBySlug(specialization).catch(() => null);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 
-	if (!currentSpec) notFound();
+	if (!currentSpecialization) notFound();
 
-	const specializationId = currentSpec.id;
+	const specializationId = currentSpecialization.id;
 
 	setRequestLocale(locale);
 
@@ -54,13 +58,16 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 	if (titleOrDescriptionSearch) qs.set('titleOrDescriptionSearch', titleOrDescriptionSearch);
 	if (isFree) qs.set('isFree', isFree.toString());
 
-	const response = await getCollectionsList({
-		page: pageNum,
-		limit: QUESTIONS_PER_PAGE,
-		specialization: specializationId,
-		titleOrDescriptionSearch,
-		isFree,
-	});
+	const [collectionsResponse, specializationsResponse] = await Promise.all([
+		getCollectionsList({
+			page: pageNum,
+			limit: QUESTIONS_PER_PAGE,
+			specializations: specializationId,
+			titleOrDescriptionSearch,
+			isFree,
+		}),
+		getSpecializations({ limit: 5 }),
+	]);
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch;
 
@@ -75,8 +82,10 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 				'@type': 'CollectionPage',
 				'@id': pageUrl,
 				url: pageUrl,
-				name: `${collectionsTitle} — ${currentSpec.title}`,
-				description: currentSpec.description || `${collectionsTitle} — ${currentSpec.title}`,
+				name: `${collectionsTitle} — ${currentSpecialization.title}`,
+				description:
+					currentSpecialization.description ||
+					`${collectionsTitle} — ${currentSpecialization.title}`,
 				isPartOf: {
 					'@type': 'WebSite',
 					url: siteUrl,
@@ -84,8 +93,8 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 				},
 				mainEntity: {
 					'@type': 'ItemList',
-					numberOfItems: response.total,
-					itemListElement: response.data?.map((c, index) => ({
+					numberOfItems: collectionsResponse.total,
+					itemListElement: collectionsResponse.data?.map((c, index) => ({
 						'@type': 'ListItem',
 						position: index + 1 + (pageNum - 1) * QUESTIONS_PER_PAGE,
 						url: `${siteUrl}/${locale}/collections/${specialization}/${c.slug}`,
@@ -106,7 +115,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 					{
 						'@type': 'ListItem',
 						position: 2,
-						name: `${collectionsTitle} — ${currentSpec.title}`,
+						name: `${collectionsTitle} — ${currentSpecialization.title}`,
 						item: pageUrl,
 					},
 				],
@@ -123,12 +132,13 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 			<CollectionsPage
 				locale={locale}
 				page={pageNum}
-				collections={response?.data || []}
-				total={response?.total || 0}
-				limit={response?.limit || 0}
+				collections={collectionsResponse?.data || []}
+				total={collectionsResponse?.total || 0}
+				limit={collectionsResponse?.limit || 0}
 				specialization={specialization}
+				initialSpecializations={specializationsResponse}
 				hasFilters={hasFilters}
-				currentSpec={currentSpec}
+				currentSpecialization={currentSpecialization}
 			/>
 		</>
 	);

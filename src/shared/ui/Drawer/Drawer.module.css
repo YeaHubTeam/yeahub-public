@@ -7,10 +7,6 @@
   transition: transform var(--drawer-transition-speed) ease;
 }
 
-.absolute {
-  position: absolute;
-}
-
 .left,
 .right {
   width: 360px;

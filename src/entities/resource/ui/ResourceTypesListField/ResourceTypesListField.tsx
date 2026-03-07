@@ -10,17 +10,18 @@ import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 
 import { MAX_SHOW_LIMIT_TYPES } from '../../model/constants/resource';
-import { useTypes } from '../../model/hooks/useTypes';
-import type { ResourceTypeCode } from '../../model/types/resource';
+import { ResourceType, ResourceTypeCode } from '../../model/types/resource';
 
 interface ResourceTypesListFieldProps {
 	selectedTypes?: ResourceTypeCode[];
 	onChangeTypes: (resourceTypes: ResourceTypeCode[] | undefined) => void;
+	resourcesTypes?: ResourceType[] | null;
 }
 
 export const ResourceTypesListField = ({
 	selectedTypes,
 	onChangeTypes,
+	resourcesTypes,
 }: ResourceTypesListFieldProps) => {
 	const t = useTranslations(i18Namespace.resources);
 	const tCommon = useTranslations(i18Namespace.translation);
@@ -28,23 +29,22 @@ export const ResourceTypesListField = ({
 	const [showAll, setShowAll] = useState(false);
 	const [limit, setLimit] = useState(MAX_SHOW_LIMIT_TYPES);
 
-	const { data: resourceTypes } = useTypes();
-
 	useEffect(() => {
 		if (showAll) {
-			const total = resourceTypes?.length || 0;
+			const total = resourcesTypes?.length || 0;
 			setLimit(total);
 		} else {
 			setLimit(MAX_SHOW_LIMIT_TYPES);
 		}
-	}, [showAll, limit, resourceTypes]);
+	}, [showAll, limit, resourcesTypes]);
 
 	const onToggleShowAll = () => {
 		setShowAll(!showAll);
 	};
 
 	const onChooseResourceTypes = (type: ResourceTypeCode) => {
-		const newValues = resourceTypes?.map((item) => item.code).filter((item) => item === type) || [];
+		const newValues =
+			resourcesTypes?.map((item) => item.code).filter((item) => item === type) || [];
 		const isDataExist = selectedTypes?.some((item) => newValues.includes(item));
 		const updates = isDataExist
 			? (selectedTypes || []).filter((item) => !newValues.includes(item))
@@ -54,14 +54,14 @@ export const ResourceTypesListField = ({
 
 	const resourceTypesItems: BaseFilterItem<ResourceTypeCode>[] | undefined = useMemo(
 		() =>
-			resourceTypes
+			resourcesTypes
 				?.map(({ code, description }) => ({
 					id: code,
 					title: description,
 					active: selectedTypes?.includes(code),
 				}))
 				.slice(0, limit),
-		[selectedTypes, limit, resourceTypes],
+		[selectedTypes, limit, resourcesTypes],
 	);
 
 	return (

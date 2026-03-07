@@ -16,5 +16,5 @@ export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
 	size?: 'small' | 'medium' | 'large';
 	icon: React.ReactNode;
 	destructive?: boolean;
-	'aria-label': string;
+	'aria-label'?: string;
 }

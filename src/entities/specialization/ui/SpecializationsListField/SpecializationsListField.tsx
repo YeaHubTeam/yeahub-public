@@ -18,7 +18,7 @@ import { GetSpecializationsListResponse } from '../../model/types/specialization
 
 interface SpecializationsListFieldProps {
 	selectedSpecialization?: number;
-	onChangeSpecialization: (specialization: number | undefined) => void;
+	onChangeSpecialization: (specialization: number | undefined, slug?: string) => void;
 	initialData?: GetSpecializationsListResponse | null;
 }
 
@@ -50,7 +50,8 @@ export const SpecializationsListField = ({
 	};
 
 	const onChooseSpecialization = (id: number) => {
-		onChangeSpecialization(id);
+		const slug = specializations?.data?.find((specialization) => specialization.id === id)?.slug;
+		onChangeSpecialization(id, slug);
 	};
 
 	const specializationsItems: BaseFilterItem<number>[] | undefined = useMemo(

@@ -67,6 +67,7 @@ export enum Questions {
 	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
 	ADDITIONAL_INFO_SKILLS = 'additional.info.skills',
 	ADDITIONAL_INFO_KEYWORDS = 'additional.info.keywords',
+	REGISTER = 'register',
 	QUESTIONS_TITLE = 'questions_title',
 	QUESTIONS_RATE = 'questions.rate',
 	QUESTIONS_COMPLEXITY = 'questions.complexity',
@@ -86,6 +87,7 @@ export enum Questions {
 
 	STUB_EMPTY_TITLE = 'stub.empty.title',
 	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_NOT_AUTH_TITLE = 'stub.not_auth.title',
 }
 
 export enum Media {
@@ -237,6 +239,39 @@ export enum InterviewQuizCreate {
 	MODE_SELECT_TOOLTIP_UNAUTHORIZED = 'mode.select.tooltip.unauthorized',
 }
 
+export enum InterviewQuizResult {
+	TITLE_QUESTIONS_ANSWERS = 'title.questions.answers',
+	TITLE_STAT = 'title.stat',
+	TITLE_QUESTIONS_LIST = 'title.questionsList',
+	PASSED_QUESTION = 'passed.question',
+	TIME = 'time',
+	DATE = 'date',
+	DURATION = 'duration',
+	CLONE_BUTTON = 'clone.button',
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_EMPTY_BUTTON = 'stub.empty.button',
+	JOIN_COMMUNITY_TITLE = 'join.community.title',
+	JOIN_COMMUNITY_DESCRIPTION = 'join.community.description',
+	INTERVIEW_SIMULATOR = 'join.community.interview.simulator',
+	MEMORY_MODE = 'join.community.memory.mode',
+	STATS_HISTORY = 'join.community.stats.history',
+	FULL_ACCESS = 'join.community.full.access',
+	BECOME_MEMBER = 'join.community.become.member',
+	INTERVIEW_STATISTIC_TITLE = 'statistics.title',
+	INTERVIEW_STATISTIC_QUESTION = 'statistics.question',
+	INTERVIEW_STATISTIC_SCHEDULE = 'statistics.schedule',
+	INTERVIEW_STATISTIC_LINK = 'statistics.link',
+	MODAL_TITLE = 'modal.title',
+	MODAL_DESCRIPTION = 'modal.description',
+	MODAL_BENEFITS_FULL_ACCESS = 'modal.benefits.full.access',
+	MODAL_BENEFITS_SMART_MODE = 'modal.benefits.smart.mode',
+	MODAL_BENEFITS_STATISTICS = 'modal.benefits.statistics',
+	MODAL_BENEFITS_INTERVIEWS = 'modal.benefits.interviews',
+	MODAL_BUTTON_TEXT = 'modal.button.text',
+	MODAL_BUTTON_TIP = 'modal.button.tip',
+}
+
 export enum Analytics {
 	HH_ANALYTICS_TITLE_SKILLS = 'hhAnalytics.title.skills',
 	HH_ANALYTICS_TITLE_KEYWORDS = 'hhAnalytics.title.keywords',
@@ -314,4 +349,16 @@ export enum Landing {
 	COLLECTION_CARD_SBER = 'collections.cards.sber',
 	COLLECTION_CARD_TBANK = 'collections.cards.tbank',
 	COLLECTION_CARD_VK = 'collections.cards.vk',
+}
+
+export enum InterviewStatistics {
+	QUESTION_STATS_TITLE_SHORT = 'questionStats.titleShort',
+	QUESTION_STATS_TITLE = 'questionStats.title',
+	LINK = 'link',
+	PASSED = 'passed',
+	SOON = 'soon',
+	QUESTION_STATS_ALL = 'questionStats.all',
+	QUESTION_STATS_NEW = 'questionStats.new',
+	QUESTION_STATS_IN_PROCESS = 'questionStats.inProcess',
+	QUESTION_STATS_LEARNED = 'questionStats.learned',
 }
