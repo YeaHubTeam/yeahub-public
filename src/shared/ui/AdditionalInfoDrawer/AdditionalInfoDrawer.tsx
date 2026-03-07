@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 import classNames from 'classnames';
 
-import PopoverIcon from '@/shared/assets/icons/diplomaVerified.svg';
+import PopoverIcon from '@/shared/assets/icons/diplomVerified.svg';
 import { useModal, useScreenSize } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Drawer } from '@/shared/ui/Drawer';
