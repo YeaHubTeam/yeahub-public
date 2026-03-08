@@ -65,19 +65,19 @@ export const Drawer = ({
 				rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen]);
+	}, [isOpen, isRender, rootEl]);
 
 	useEffect(() => {
 		if (isOpen && rootEl && portalRootRef.current) {
 			rootEl.appendChild(portalRootRef.current);
-			const portal = portalRootRef.current;
+			// const portal = portalRootRef.current;
 
 			return () => {
-				portal.remove();
+				// portal.remove();
 				rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen]);
+	}, [isOpen, rootEl]);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
 		if (event.key === 'Escape') {
@@ -85,6 +85,7 @@ export const Drawer = ({
 		}
 	};
 	if (!isRender || !portalRootRef.current) return null;
+
 	return createPortal(
 		<div
 			aria-hidden={isOpen}
