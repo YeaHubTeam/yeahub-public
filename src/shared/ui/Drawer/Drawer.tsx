@@ -44,11 +44,8 @@ export const Drawer = ({
 	const renderRootRef = useRef<HTMLElement | null>(null);
 	const [isRender, setIsRender] = useState(false);
 	const rootEl = renderRootRef.current;
-	console.log(isRender);
-	console.log('portalRootRef', portalRootRef);
-	console.log('renderRootRef', renderRootRef);
+
 	useEffect(() => {
-		console.log('doc', document.getElementById('drawer-root'));
 		portalRootRef.current = document.getElementById('drawer-root');
 		renderRootRef.current = document.querySelector('body');
 		setIsRender(true);
