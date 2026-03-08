@@ -44,8 +44,11 @@ export const Drawer = ({
 	const renderRootRef = useRef<HTMLElement | null>(null);
 	const [isRender, setIsRender] = useState(false);
 	const rootEl = renderRootRef.current;
-
+	console.log(isRender);
+	console.log('portalRootRef', portalRootRef);
+	console.log('renderRootRef', renderRootRef);
 	useEffect(() => {
+		console.log('doc', document.getElementById('drawer-root'));
 		portalRootRef.current = document.getElementById('drawer-root');
 		renderRootRef.current = document.querySelector('body');
 		setIsRender(true);
@@ -65,19 +68,19 @@ export const Drawer = ({
 				rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen]);
+	}, [isOpen, isRender, rootEl]);
 
 	useEffect(() => {
 		if (isOpen && rootEl && portalRootRef.current) {
 			rootEl.appendChild(portalRootRef.current);
-			const portal = portalRootRef.current;
+			// const portal = portalRootRef.current;
 
 			return () => {
-				portal.remove();
+				// portal.remove();
 				rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen]);
+	}, [isOpen, rootEl]);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
 		if (event.key === 'Escape') {
@@ -85,6 +88,7 @@ export const Drawer = ({
 		}
 	};
 	if (!isRender || !portalRootRef.current) return null;
+
 	return createPortal(
 		<div
 			aria-hidden={isOpen}
