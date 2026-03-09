@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
-import { Guru as GuruTranslation, Media, i18Namespace } from '@/shared/config';
+import { Media, i18Namespace } from '@/shared/config';
 
 import { Guru } from '../../model/types/guru';
 import { GurusItem } from '../GurusItem/GurusItem';
@@ -15,7 +15,7 @@ interface GurusListProps {
 }
 
 export const GurusList = ({ variant, gurus, layout = 'row' }: GurusListProps) => {
-	const t = useTranslations(i18Namespace.guru);
+	const t = useTranslations(i18Namespace.media);
 
 	const avatarSize: Record<GuruListViewVariant, number> = {
 		single: 45,
@@ -24,9 +24,9 @@ export const GurusList = ({ variant, gurus, layout = 'row' }: GurusListProps) =>
 	};
 
 	const description: Record<GuruListViewVariant, string | undefined> = {
-		single: t(GuruTranslation.BANNER_DESCRIPTION),
+		single: t(Media.BANNER_DESCRIPTION),
 		list: undefined,
-		'list-with-borders': t(Media.GURU_DESCRIPTION, { ns: i18Namespace.media }),
+		'list-with-borders': t(Media.GURU_DESCRIPTION),
 	};
 
 	return (

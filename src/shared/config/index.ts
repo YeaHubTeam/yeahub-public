@@ -9,7 +9,6 @@ export {
 	Media,
 	Specializations,
 	Skills,
-	Guru,
 	Avos,
 	Collections,
 	InterviewQuiz,
@@ -20,6 +19,7 @@ export {
 	Resources,
 	Landing,
 	InterviewStatistics,
+	Docs,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

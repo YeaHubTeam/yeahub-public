@@ -1,0 +1,15 @@
+.page {
+	gap: 60px;
+}
+
+@media (width < 1024px) {
+	.page {
+		gap: 40px;
+	}
+}
+
+@media (width < 768px) {
+	.page {
+		gap: 20px;
+	}
+}

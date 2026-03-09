@@ -42,6 +42,17 @@ export enum Header {
 	MENU = 'menu',
 }
 
+export enum Docs {
+	TITLE = 'title',
+	LINK = 'link',
+	DOC1 = 'doc1',
+	DOC2 = 'doc2',
+	DOC3 = 'doc3',
+	DOC4 = 'doc4',
+	DOC5 = 'doc5',
+	DOC6 = 'doc6',
+}
+
 export enum Main {
 	PROJECT_TITLE = 'project.title',
 	PROJECT_DESCRIPTION = 'project.description',
@@ -89,9 +100,17 @@ export enum Questions {
 }
 
 export enum Media {
-	MEDIA_LINK_START = 'label.start',
-	MEDIA_LINK_END = 'label.end',
-	GURU_DESCRIPTION = 'banner.description',
+	BANNER_DESCRIPTION = 'banner.description',
+	LABEL_START = 'label.start',
+	LABEL_END = 'label.end',
+	INTRODUCTION_TITLE = 'introduction.title',
+	INTRODUCTION_DESCRIPTION = 'introduction.description',
+	EXPERTS_TITLE = 'experts.title',
+	EXPERTS_DESCRIPTION = 'experts.description',
+	CHANNELS_TITLE = 'channels.title',
+	CHANNELS_DESCRIPTION = 'channels.description',
+	FACT = 'fact',
+	GURU_DESCRIPTION = 'guru.description',
 	TELEGRAM_SUBSCRIBE = 'telegram.subscribe',
 	TELEGRAM_DESCRIPTION = 'telegram.description',
 }
@@ -105,10 +124,6 @@ export enum Specializations {
 
 export enum Skills {
 	SELECT_CHOOSE = 'select.choose',
-}
-
-export enum Guru {
-	BANNER_DESCRIPTION = 'banner.description',
 }
 
 export enum Avos {
