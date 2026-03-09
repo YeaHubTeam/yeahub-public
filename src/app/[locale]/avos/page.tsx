@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { AvosPage as AvosPageComponent } from '@/pages/AvosPage';
 import { Avos, i18Namespace } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 import { avosAndYeahubLogo } from '@/widgets/Avos';
 
 interface PageProps {
@@ -45,7 +46,7 @@ const AvosPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.avos });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/avos`;
 
 	const jsonLd = {

@@ -10,6 +10,7 @@ import { getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
 interface PageProps {
@@ -105,7 +106,7 @@ const CollectionPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}/${slug}`;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();

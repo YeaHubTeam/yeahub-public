@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { CreateQuizPage } from '@/pages/CreateQuizPage';
 import { InterviewQuiz, InterviewQuizCreate, i18Namespace } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string }>;
@@ -46,7 +47,7 @@ const MainCreateQuizPage = async ({ params }: PageProps) => {
 	const tCreate = await getTranslations({ locale, namespace: i18Namespace.interviewQuizCreate });
 	const tQuiz = await getTranslations({ locale, namespace: i18Namespace.interviewQuiz });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/quiz/new`;
 	const quizUrl = `${siteUrl}/${locale}/quiz`;
 

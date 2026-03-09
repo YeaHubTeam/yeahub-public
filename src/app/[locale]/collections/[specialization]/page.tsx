@@ -10,6 +10,7 @@ import {
 } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
 import { i18Namespace, locales } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -71,7 +72,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch;
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
 	const collectionsTitle = t('collections.title');
 
