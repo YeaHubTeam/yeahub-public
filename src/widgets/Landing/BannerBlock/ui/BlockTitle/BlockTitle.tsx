@@ -9,7 +9,7 @@ export const BlockTitle = () => {
 	const t = useTranslations(i18Namespace.landing);
 
 	return (
-		<Text variant="head3" className={styles.title}>
+		<Text variant="head3" color="white-900" className={styles.title}>
 			{t(Landing.BANNER_TITLE)}
 		</Text>
 	);
