@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { LearningPage as LearningPageComponent } from '@/pages/LearningPage';
 import { Learning, i18Namespace } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;
@@ -46,7 +47,7 @@ const LearningPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.learning });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/learning`;
 
 	const jsonLd = {

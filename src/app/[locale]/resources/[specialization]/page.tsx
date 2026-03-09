@@ -17,6 +17,7 @@ import {
 import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 import { RESOURCES_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -107,7 +108,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!name || !!types || !!skills;
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/resources/${specialization}`;
 	const headerTitle = t(Resources.HEADER_TITLE);
 

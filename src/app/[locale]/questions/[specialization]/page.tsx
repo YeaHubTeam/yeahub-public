@@ -11,6 +11,7 @@ import {
 } from '@/entities/specialization';
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { locales } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -69,7 +70,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const specializationTitle = currentSpecialization.title;
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}`;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();

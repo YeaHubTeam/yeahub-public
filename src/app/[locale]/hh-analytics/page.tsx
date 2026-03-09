@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { HhAnalyticsPage as HhAnalyticsPageComponent } from '@/pages/HhAnalyticsPage';
 import { Analytics, i18Namespace } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
 	searchParams?: Promise<{
@@ -53,7 +54,7 @@ const HhAnalyticsPage = async ({ searchParams, params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.analytics });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yeatwork.ru';
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/hh-analytics`;
 
 	const titleSkills = t(Analytics.HH_ANALYTICS_TITLE_SKILLS);
