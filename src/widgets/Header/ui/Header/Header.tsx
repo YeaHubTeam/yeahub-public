@@ -1,4 +1,4 @@
-import { LanguageSwitcher } from '@/features/switch-language';
+// import { LanguageSwitcher } from '@/features/switch-language';
 import { AppLogo } from '@/shared/ui/AppLogo';
 import { Flex } from '@/shared/ui/Flex';
 
@@ -15,7 +15,7 @@ export const Header = () => {
 					<HeaderNav />
 				</Flex>
 				<Flex align="center" gap="16">
-					<LanguageSwitcher />
+					{/*<LanguageSwitcher />*/}
 					<HeaderAuth />
 				</Flex>
 			</Flex>
