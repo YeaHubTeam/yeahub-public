@@ -1,0 +1,39 @@
+.filter {
+  display: none;
+}
+
+button.filter-button {
+	display: none;
+  border: 1px solid var(--color-black-50);
+
+  &:focus {
+    border: none;
+  }
+	
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.drawer {
+  width: 360px;
+  overflow-x: hidden;
+
+  &.drawer-mobile {
+    top: calc(var(--header-height) - 12px);
+    width: 100%;
+  }
+}
+
+@media (width < 1024px) {
+	.filter {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 24px;
+	}
+
+	button.filter-button {
+		display: flex;
+	}
+}

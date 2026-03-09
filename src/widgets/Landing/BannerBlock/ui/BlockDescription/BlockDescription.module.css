@@ -1,0 +1,24 @@
+.description {
+  margin-top: 3px;
+  margin-bottom: 6px;
+  max-width: 600px;
+  line-height: 120%;
+  font-weight: var(--font-weight-500);
+}
+
+@media screen and (width < 1024px) {
+  .description {
+    margin-top: 0;
+    max-width: none;
+    text-align: center;
+  }
+}
+
+@media screen and (width < 768px) {
+  .description {
+    margin-bottom: 2px;
+    width: 92%;
+    font-size: var(--font-size-p-m);
+  }
+}
+

@@ -1,0 +1,10 @@
+{
+	"title": {
+		"main": "Specialization"
+	},
+	"select": {
+		"choose": "Select specialization from the list",
+		"empty": "No options available",
+		"selected": "Selected specializations"
+	}
+}

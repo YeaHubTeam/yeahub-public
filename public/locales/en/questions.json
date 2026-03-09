@@ -1,0 +1,54 @@
+{
+	"title": "Questions",
+	"questions_title": "Questions {specialization}",
+	"questions": {
+		"rate_title": "Questions rate",
+		"rate": "Rate",
+		"complexity": "Complexity",
+		"link": "More"
+	},
+	"register": "Register",
+	"search": {
+		"placeholder": "Enter question..."
+	},
+	"short": {
+		"answer": {
+			"title": "Short answer"
+		}
+	},
+	"long": {
+		"answer": {
+			"title": "Long answer"
+		}
+	},
+	"additional": {
+		"info": {
+			"level": "Level",
+			"skills": "Skills",
+			"keywords": "Keywords"
+		}
+	},
+	"preview": {
+		"title": "Questions list",
+		"empty": {
+			"specialization": "Questions for the selected specialization will appear soon",
+			"collection": "The questions for this collection will appear soon"
+		},
+		"locked": {
+			"collection": "The questions list will appear for community members"
+		}
+	},
+	"community": {
+		"join": "Become a community member"
+	},
+	"count": "Questions count",
+	"stub": {
+		"not_auth": {
+			"title": "The detailed answer is available only to registered users."
+		},
+		"empty": {
+			"title": "No questions found yet",
+			"subtitle": "Questions are added periodically, just wait a bit"
+		}
+	}
+}

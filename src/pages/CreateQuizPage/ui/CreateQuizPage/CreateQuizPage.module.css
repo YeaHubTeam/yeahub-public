@@ -1,0 +1,15 @@
+.container {
+	height: 100%;
+}
+
+.title {
+	margin-bottom: 24px;
+}
+
+@media (width <=480px) {
+	.title {
+		margin-bottom: 16px;
+		font-weight: var(--font-weight-500);
+		font-size: var(--font-size-h-xs);
+	}
+}

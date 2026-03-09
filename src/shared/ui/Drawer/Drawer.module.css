@@ -1,0 +1,92 @@
+.drawer {
+  position: fixed;
+  z-index: 1000;
+  overflow: auto;
+  box-shadow: var(--main-shadow);
+  background: var(--background-block);
+  transition: transform var(--drawer-transition-speed) ease;
+}
+
+.left,
+.right {
+  width: 360px;
+  height: 100%;
+}
+
+.bottom {
+  width: 100%;
+  height: 360px;
+}
+
+.drawer.left {
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.drawer-container.open .left {
+  transform: translateX(0);
+}
+
+.drawer.right {
+  right: 0;
+  bottom: 0;
+  transform: translateX(100%);
+}
+
+.drawer-container.open .right {
+  transform: translateX(0);
+}
+
+.drawer.bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateY(100%) translateX(-50%);
+}
+
+.drawer-container.open .bottom {
+  transform: translateY(0) translateX(-50%);
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border-width: 0;
+  background: rgb(0 0 0 / 0%);
+  transition:
+    opacity var(--drawer-transition-speed) ease,
+    visibility var(--drawer-transition-speed) ease;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.drawer-container.open .drawer {
+  box-shadow: var(--main-shadow);
+}
+
+.drawer-container.open .backdrop {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 999;
+}
+
+.drawer-header{ 
+  display: flex;
+}
+
+.close-icon {
+  margin: 16px 16px 0 auto;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.close-icon path {
+  fill: var(--icon-color-red);
+}

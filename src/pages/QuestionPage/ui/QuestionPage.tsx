@@ -1,0 +1,44 @@
+import { Question } from '@/entities/question';
+import { BackButton } from '@/shared/ui/BackButton';
+import { Flex } from '@/shared/ui/Flex';
+import { QuestionAdditionalInfo } from '@/widgets/question/QuestionAdditionalInfo';
+import { QuestionBody } from '@/widgets/question/QuestionBody';
+import { QuestionHeader } from '@/widgets/question/QuestionHeader';
+
+import styles from './QuestionPage.module.css';
+
+interface QuestionPageProps {
+	question: Question;
+}
+
+export const QuestionPage = ({ question }: QuestionPageProps) => {
+	if (!question) {
+		return null;
+	}
+
+	const { rate, keywords, complexity, questionSkills, shortAnswer, questionSpecializations } =
+		question;
+
+	return (
+		<Flex direction="column" align="start">
+			<Flex>
+				<BackButton />
+			</Flex>
+			<Flex gap="20" maxWidth>
+				<Flex gap="20" direction="column" flex={1} maxWidth>
+					<QuestionHeader question={question} />
+					<QuestionBody shortAnswer={shortAnswer} />
+				</Flex>
+				<Flex direction="column" gap="20" className={styles.additional}>
+					<QuestionAdditionalInfo
+						rate={rate}
+						keywords={keywords}
+						complexity={complexity}
+						questionSkills={questionSkills}
+						questionSpecializations={questionSpecializations}
+					/>
+				</Flex>
+			</Flex>
+		</Flex>
+	);
+};

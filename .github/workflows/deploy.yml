@@ -1,0 +1,107 @@
+name: Deploy Public (Next.js)
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+env:
+  SERVICE_NAME_PRODUCTION: public
+  REGISTRY: cr.selcloud.ru/yeahub-registry
+  IMAGE_NAME: yeahub-public
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.ref == 'refs/heads/develop' && 'deploy-develop' || github.run_id }}
+      cancel-in-progress: ${{ github.ref == 'refs/heads/develop' && true || false }}
+
+    steps:
+      # ================== Checkout code ==================
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # ================== Set Docker tags ==================
+      - name: Set IMAGE_TAGS (Develop)
+        if: github.ref == 'refs/heads/develop'
+        id: docker_tag_dev
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]' '[:lower:]')
+          BRANCH_SAFE=$(echo "$BRANCH_NAME" | sed 's/[\/]/-/g' | sed 's/[^a-z0-9_:-]/-/g')
+          SHORT_SHA=${GITHUB_SHA::7}
+          IMAGE_TAG="${BRANCH_SAFE}-${SHORT_SHA}"
+          echo "Docker tag for dev: $IMAGE_TAG"
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Set IMAGE_TAGS (Production)
+        if: github.ref == 'refs/heads/main'
+        id: docker_tag_prod
+        run: |
+          PROD_TAG=$(jq -r .version package.json)
+          echo "Docker tag for prod: $PROD_TAG"
+          echo "IMAGE_TAG=$PROD_TAG" >> $GITHUB_OUTPUT
+
+      # ================== Docker login ==================
+      - name: Docker login
+        run: |
+          echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+      # ================== Build and push Docker image ==================
+      - name: Build and push Docker image
+        run: |
+          if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
+            IMAGE_TAG=${{ steps.docker_tag_dev.outputs.IMAGE_TAG }}
+            NODE_ENV_ARG=production
+            NEXT_PUBLIC_API_URL_ARG=https://api.yeatwork.ru/
+            NEXT_PUBLIC_SITE_URL_ARG=https://app.yeatwork.ru/
+            NEXT_PUBLIC_IS_PROD_ARG=development
+          else
+            IMAGE_TAG=${{ steps.docker_tag_prod.outputs.IMAGE_TAG }}
+            NODE_ENV_ARG=production
+            NEXT_PUBLIC_API_URL_ARG=https://api.yeahub.ru/
+            NEXT_PUBLIC_SITE_URL_ARG=https://app.yeahub.ru/
+            NEXT_PUBLIC_IS_PROD_ARG=production
+          fi
+
+          docker build \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG \
+            --build-arg NODE_ENV=$NODE_ENV_ARG \
+            --build-arg NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_ARG \
+            --build-arg NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL_ARG \
+            --build-arg NEXT_PUBLIC_IS_PROD=$NEXT_PUBLIC_IS_PROD_ARG \
+            .
+
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG
+
+      # ================== Checkout Helm repo ==================
+      - name: Checkout Helm repo
+        uses: actions/checkout@v3
+        with:
+          repository: YeaHubTeam/yeahub-helm
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || 'develop' }}
+          token: ${{ secrets.HELM_REPO_TOKEN || secrets.GITHUB_TOKEN }}
+          path: helm
+
+      # ================== Update Helm values and push ==================
+      - name: Update Helm values and push
+        run: |
+          if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
+            HELM_FILE="values-test.yaml"
+            IMAGE_TAG=${{ steps.docker_tag_dev.outputs.IMAGE_TAG }}
+          else
+            HELM_FILE="values-prod.yaml"
+            IMAGE_TAG=${{ steps.docker_tag_prod.outputs.IMAGE_TAG }}
+          fi
+
+          echo "Updating Helm values in $HELM_FILE with tag: $IMAGE_TAG"
+
+          cd helm
+          yq eval ".public.tag = \"$IMAGE_TAG\"" -i $HELM_FILE
+
+          git config --global user.email "ci@github.com"
+          git config --global user.name "github-actions"
+          git add $HELM_FILE
+          git commit -m "Update public tag to $IMAGE_TAG" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.HELM_REPO_TOKEN }}@github.com/YeaHubTeam/yeahub-helm.git ${{ github.ref == 'refs/heads/main' && 'main' || 'develop' }}

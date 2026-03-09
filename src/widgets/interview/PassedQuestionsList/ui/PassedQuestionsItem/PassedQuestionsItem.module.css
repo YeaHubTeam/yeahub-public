@@ -1,0 +1,39 @@
+.item {
+  display: flex;
+  gap: 20px;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+}
+
+.link {
+  color: inherit;
+}
+
+.answer {
+  border: none;
+}
+
+.answer p {
+  color: var(--color-black-700);
+}
+
+.answer-known p {
+  color: var(--color-purple-700)
+}
+
+@media (width < 768px) {
+  .item {
+    gap: 16px;
+    padding: 0 0 8px;
+  }
+
+  .img {
+    border-radius: 8px;
+  }
+}

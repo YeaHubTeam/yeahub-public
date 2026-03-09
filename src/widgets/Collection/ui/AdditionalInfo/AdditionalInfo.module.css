@@ -1,0 +1,19 @@
+.title {
+  margin-bottom: 8px;
+}
+
+.keywords-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.keywords-wrapper a {
+  color: var(--text-color-link-active);
+}
+
+@media (width < 1024px) {
+  .wrapper {
+    padding: 16px;
+  }
+}

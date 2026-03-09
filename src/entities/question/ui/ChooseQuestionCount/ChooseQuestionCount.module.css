@@ -1,0 +1,7 @@
+.title {
+  margin-bottom: 8px;
+  color: var(--text-color-light) !important;
+  line-height: 120%;
+  font-weight: var(--font-weight-400) !important;
+  font-size: var(--font-size-p-s) !important;
+}

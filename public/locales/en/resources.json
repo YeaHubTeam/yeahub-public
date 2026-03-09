@@ -1,0 +1,35 @@
+{
+	"stub": {
+		"empty": {
+			"resources": {
+				"title": "It seems that there are no resources here yet",
+				"subtitle": "Create your first useful resource and start adding content to the knowledge base"
+			}
+		}
+	},
+	"header": {
+		"title": "Useful IT resources"
+	},
+	"type": {
+		"video": "Video",
+		"podcast": "Podcast",
+		"channel": "Channel",
+		"course": "Course",
+		"article": "Article",
+		"book": "Book",
+		"guide": "Guide",
+		"roadmap": "Roadmap",
+		"trainer": "Trainer",
+		"game": "Game",
+		"repository": "Repository",
+		"chat": "Chat",
+		"tool": "Tool",
+		"documentation": "Documentation"
+	},
+	"search": {
+		"placeholder": "Enter a query…"
+	},
+	"resources": {
+		"title": "Resource types"
+	}
+}

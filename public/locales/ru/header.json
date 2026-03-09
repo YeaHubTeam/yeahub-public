@@ -1,0 +1,18 @@
+{
+	"nav": {
+		"questions": "База вопросов",
+		"resources": "База ресурсов",
+		"quiz": "Тренажёр",
+		"collections": "Собеседования",
+		"trainer": "Тренажёр",
+		"hhAnalytics": "Навыки",
+		"learning": "Обучение"
+	},
+	"auth": {
+		"signIn": "Войти",
+		"signUp": "Регистрация",
+		"menuAria": "Меню авторизации"
+	},
+	"logoAlt": "Логотип YeaHub",
+	"menu": "Меню"
+}

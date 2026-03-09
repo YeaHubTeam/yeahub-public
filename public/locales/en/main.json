@@ -1,0 +1,15 @@
+{
+	"project": {
+		"title": "YeaHub — Interview Training Platform and Question Database for Successful Preparation",
+		"description": "Prepare for an IT interview with YeaHub using interview training. More than 10,000 questions for Frontend, Backend, DevOps, QA, Data Science and other IT specialties."
+	},
+	"home": {
+		"title": "Get started by editing",
+		"subtitle": "Save and see your changes instantly.",
+		"deployNow": "Deploy now",
+		"readDocs": "Read our docs",
+		"learn": "Learn",
+		"examples": "Examples",
+		"goToNextjs": "Go to nextjs.org →"
+	}
+}
