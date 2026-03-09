@@ -18,8 +18,8 @@ export const HeaderAuthMobile = () => {
 	const authMenuLinks: PopoverMenuItem[] = [
 		{
 			icon: <UserPlusIcon isCurrentColor />,
-			title: t(Header.AUTH_SIGN_UP),
-			link: AUTH_LINKS.register,
+			title: t(Header.AUTH_SIGN_IN),
+			link: AUTH_LINKS.login,
 		},
 	];
 

@@ -4,6 +4,9 @@ import React from 'react';
 
 import { usePathname } from 'next/navigation';
 
+import { useTranslations } from 'next-intl';
+
+import { Header, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
@@ -14,6 +17,7 @@ import type { NavItem } from '../types/headerNavTypes';
 import styles from './HeaderNavMobile.module.css';
 
 export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
+	const t = useTranslations(i18Namespace.header);
 	const pathname = usePathname();
 
 	const menuItems: PopoverMenuItem[] = items.map(({ href, label, path }) => ({
@@ -43,7 +47,7 @@ export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
 					className={styles.button}
 					onClick={onToggle}
 				>
-					Меню
+					{t(Header.MENU)}
 				</Button>
 			)}
 		</Popover>

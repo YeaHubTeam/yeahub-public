@@ -18,11 +18,11 @@ export const HeaderAuthDesktop = async () => {
 				variant="link"
 				size="large"
 				className={styles['register-button']}
-				href={AUTH_LINKS.register}
+				href={AUTH_LINKS.login}
 				rel="noopener noreferrer"
 				target="_blank"
 			>
-				{t(Header.AUTH_SIGN_UP)}
+				{t(Header.AUTH_SIGN_IN)}
 			</Button>
 		</Flex>
 	);

@@ -39,6 +39,7 @@ export enum Header {
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
 	LOGO_ALT = 'logoAlt',
+	MENU = 'menu',
 }
 
 export enum Main {
@@ -48,9 +49,6 @@ export enum Main {
 	HOME_SUBTITLE = 'home.subtitle',
 	HOME_DEPLOY_NOW = 'home.deployNow',
 	HOME_READ_DOCS = 'home.readDocs',
-	HOME_LANGUAGE_LABEL = 'language.label',
-	HOME_LANGUAGE_RUSSIAN = 'language.russian',
-	HOME_LANGUAGE_ENGLISH = 'language.english',
 }
 
 export enum Footer {
