@@ -9,9 +9,10 @@
 		"learning": "Обучение"
 	},
 	"auth": {
-		"signIn": "Вход",
+		"signIn": "Войти",
 		"signUp": "Регистрация",
 		"menuAria": "Меню авторизации"
 	},
-	"logoAlt": "Логотип YeaHub"
+	"logoAlt": "Логотип YeaHub",
+	"menu": "Меню"
 }

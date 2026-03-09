@@ -11,10 +11,5 @@
 		"learn": "Learn",
 		"examples": "Examples",
 		"goToNextjs": "Go to nextjs.org →"
-	},
-	"language": {
-		"label": "Language:",
-		"russian": "Русский",
-		"english": "English"
 	}
 }
