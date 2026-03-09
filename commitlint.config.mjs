@@ -1,19 +1,31 @@
-// eslint-disable-next-line import/no-anonymous-default-export
+const matchOptionalTicketNumberWithSpaceAfter = /^YH-\d+: .+$/;
+
 export default {
-	extends: ['@commitlint/config-conventional'],
+	parserPreset: {
+		parserOpts: {
+			headerPattern: new RegExp('^' + matchOptionalTicketNumberWithSpaceAfter.source + '$'),
+			headerCorrespondence: ['header'],
+		},
+	},
+	plugins: [
+		{
+			rules: {
+				'header-match-team-pattern': (parsed) => {
+					const { header } = parsed;
+
+					if (header.includes('Release')) {
+						return [true, ''];
+					}
+
+					if (!matchOptionalTicketNumberWithSpaceAfter.test(header)) {
+						return [false, 'Коммит должен начинаться с YH-XXX: '];
+					}
+					return [true, ''];
+				},
+			},
+		},
+	],
 	rules: {
-		// допустимые типы
-		'type-enum': [
-			2,
-			'always',
-			['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore', 'revert'],
-		],
-		'header-max-length': [2, 'always', 100],
-		// subject без заглавных/точки в конце
-		'subject-case': [2, 'always', ['sentence-case', 'lower-case']],
-		'subject-full-stop': [2, 'never', '.'],
-		// Разрешим номер задачи как scope, если хочешь:
-		// пример: feat(YH-1249): configure linters
-		'scope-case': [2, 'always', ['kebab-case', 'upper-case', 'pascal-case']],
+		'header-match-team-pattern': [2, 'always'],
 	},
 };
