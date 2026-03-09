@@ -4,6 +4,7 @@ import { getRequestConfig } from 'next-intl/server';
 import { routing } from '../routing';
 
 export const i18Namespace = {
+	docs: 'docs',
 	header: 'header',
 	footer: 'footer',
 	main: 'main',
@@ -12,7 +13,6 @@ export const i18Namespace = {
 	specialization: 'specialization',
 	translation: 'translation',
 	skill: 'skill',
-	guru: 'guru',
 	avos: 'avos',
 	learning: 'learning',
 	collection: 'collection',

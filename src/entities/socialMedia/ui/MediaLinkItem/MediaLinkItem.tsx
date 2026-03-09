@@ -18,7 +18,7 @@ export const MediaLinkItem = ({ channel }: MediaLinkItemProps) => {
 	const t = useTranslations(i18Namespace.media);
 
 	return (
-		<Flex justify="between" className={styles['item']} align="center" componentType="li">
+		<Flex justify="between" className={styles['item']} componentType="li">
 			<Flex gap="12" align="start">
 				{channel.image && <div className={styles['svg-wrapper']}>{<channel.image />}</div>}
 				<Flex direction="column" gap="6">
@@ -34,7 +34,9 @@ export const MediaLinkItem = ({ channel }: MediaLinkItemProps) => {
 				className={styles['link']}
 			>
 				<Button variant="outline" className={styles['button']} size="medium">
-					<Text variant="body3-strong">{t(MediaTranslation.TELEGRAM_SUBSCRIBE)}</Text>
+					<Text variant="body3-strong" color="purple-700">
+						{t(MediaTranslation.TELEGRAM_SUBSCRIBE)}
+					</Text>
 				</Button>
 			</Link>
 		</Flex>

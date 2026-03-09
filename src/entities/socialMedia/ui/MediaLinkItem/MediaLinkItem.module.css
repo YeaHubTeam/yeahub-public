@@ -1,4 +1,5 @@
 .item {
+	align-items: center;
   padding: 20px;
   min-width: 340px;
   border-radius: 8px;
@@ -40,6 +41,7 @@
 
 @media (width < 1024px) {
   .link {
+		align-items: start;
     align-self: self-end;
   }
 
