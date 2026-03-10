@@ -7,7 +7,7 @@ import LandingPage from './landing/page';
 export const dynamic = 'force-static';
 
 export function generateStaticParams() {
-	return ['ru', 'en'].map((locale) => ({ locale }));
+	return ['ru'].map((locale) => ({ locale }));
 }
 
 interface HomePageProps {

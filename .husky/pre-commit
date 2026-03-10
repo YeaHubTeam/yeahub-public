@@ -1,7 +1,9 @@
 branch_name=$(git rev-parse --abbrev-ref HEAD)
 # проверка имени ветки
-echo "$branch_name" | grep -qE "^(((feature|fix|feat|chore|hotfix)\/YH-[0-9]+(-[0-9]+)?)|(release\/[0-9]+\.[0-9]+\.[0-9]+))$" \
-  || { echo "❌ Неверное имя ветки: $branch_name"; exit 1; }
+if ! echo "$branch_name" | grep -qE "^(((feature|fix)/YH-[0-9]+(-[0-9]+)?)|(release/[0-9]+\.[0-9]+\.[0-9]+))+$"; then
+  echo "Ошибка: Название ветки должно быть в формате 'feature/YH-XXX', 'fix/YH-XXX' или 'release/X.X.X'"
+  exit 1
+fi
 
 echo '🔍🎨 Formatting & linting staged files...'
 npx lint-staged || { echo '💀❌ lint-staged failed'; exit 1; }

@@ -21,11 +21,11 @@ export const MediaLinkSimpleItem = ({ mediaLink }: MediaLinkSimpleItemProps) => 
 			variant="big"
 			label={
 				<span className={styles['container-text']}>
-					{t(Media.MEDIA_LINK_START)}
+					{t(Media.LABEL_START)}
 					<a href={mediaLink.link} color="purple-700" target="_blank" rel="noopener noreferrer">
 						{mediaLink.title}
 					</a>
-					{t(Media.MEDIA_LINK_END)}
+					{t(Media.LABEL_END)}
 				</span>
 			}
 			prefix={<Icon icon="telegramWithBackground" color="purple-700" />}
