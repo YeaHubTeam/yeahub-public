@@ -43,7 +43,7 @@ export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
 							className={`${styles.arrow} ${isOpen ? styles['arrow-open'] : ''}`}
 						/>
 					}
-					variant="link-gray"
+					variant="tertiary-link"
 					className={styles.button}
 					onClick={onToggle}
 				>
