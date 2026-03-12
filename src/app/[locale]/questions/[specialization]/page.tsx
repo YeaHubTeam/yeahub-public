@@ -1,6 +1,7 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { getSkills } from '@/entities/skill';
@@ -10,6 +11,7 @@ import {
 	getSpecializations,
 } from '@/entities/specialization';
 import { QuestionsPage } from '@/pages/QuestionsPage';
+import { Landing, Questions, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
@@ -36,6 +38,40 @@ export const generateStaticParams = async () => {
 		return [];
 	}
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+	const { locale, specialization } = await params;
+	setRequestLocale(locale);
+	const currentSpecialization = await getSpecializationBySlug(specialization);
+	if (!currentSpecialization) {
+		return { title: 'Not Found' };
+	}
+	const [tQuestions, tLanding] = await Promise.all([
+		getTranslations({ locale, namespace: i18Namespace.questions }),
+		getTranslations({ locale, namespace: i18Namespace.landing }),
+	]);
+	const specializationTitle = currentSpecialization.title;
+	const title = tQuestions(Questions.QUESTIONS_TITLE, {
+		specialization: specializationTitle,
+	});
+	const description = tLanding(Landing.QUESTIONS_DESCRIPTION);
+	const keywords = [
+		title,
+		specializationTitle,
+		tQuestions(Questions.COUNT),
+		tLanding(Landing.QUESTIONS_TITLE),
+	];
+	return {
+		title,
+		description,
+		keywords,
+		openGraph: {
+			title,
+			description,
+			type: 'website',
+		},
+	};
+}
 
 const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
