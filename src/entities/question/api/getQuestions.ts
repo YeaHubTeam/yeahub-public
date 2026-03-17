@@ -37,6 +37,7 @@ export async function getQuestionSlugs(params?: GetQuestionsSlugsParamsRequest) 
 		searchParams: {
 			page: params?.page ?? 1,
 			limit: params?.limit ?? 100,
+			specializationSlug: params?.specializationSlug,
 		},
 	});
 }

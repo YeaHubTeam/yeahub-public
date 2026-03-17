@@ -50,6 +50,7 @@ export type GetCollectionByIdParamsRequest = {
 export interface GetCollectionsSlugsParamsRequest {
 	page?: number;
 	limit?: number;
+	specializationSlug?: string;
 }
 
 export interface CollectionSlug {
