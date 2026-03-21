@@ -15,7 +15,7 @@ export const HeaderNavDesktop = ({ items }: { items: NavItem[] }) => {
 	return (
 		<Flex dataTestId="HeaderNavDesktop_Wrapper" gap="6">
 			{items.map(({ href, path, label }) => (
-				<HeaderNavLink key={href} link={href} path={path} isActive={pathname?.includes(href)}>
+				<HeaderNavLink key={href} link={href} path={path} isActive={pathname?.includes(path)}>
 					{label}
 				</HeaderNavLink>
 			))}

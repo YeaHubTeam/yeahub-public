@@ -54,6 +54,7 @@ export type GetQuestionsListResponse = Response<Question[]>;
 export interface GetQuestionsSlugsParamsRequest {
 	page?: number;
 	limit?: number;
+	specializationSlug?: string;
 }
 
 export interface QuestionSlug {

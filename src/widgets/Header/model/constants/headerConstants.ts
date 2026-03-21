@@ -1,15 +1,18 @@
 import { Header, ROUTES } from '@/shared/config';
+import { route } from '@/shared/libs';
 
 import { HeaderNavLinks } from '../types/headerTypes';
 
+const initialSpecialization = 'react-frontend-developer';
+
 export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 	{
-		link: ROUTES.questions.page,
+		link: route(ROUTES.questions.page, initialSpecialization),
 		path: '/questions',
 		title: Header.NAV_QUESTIONS,
 	},
 	{
-		link: ROUTES.collections.page,
+		link: route(ROUTES.collections.page, initialSpecialization),
 		path: '/collections',
 		title: Header.NAV_COLLECTIONS,
 	},
@@ -19,7 +22,7 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		title: Header.NAV_TRAINER,
 	},
 	{
-		link: ROUTES.resources.page,
+		link: route(ROUTES.resources.page, initialSpecialization),
 		path: '/resources',
 		title: Header.NAV_RESOURCES,
 	},

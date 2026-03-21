@@ -1,12 +1,12 @@
 import type { MetadataRoute } from 'next';
 
-import { getCollectionsList } from '@/entities/collection';
-import { getQuestionsList } from '@/entities/question';
+import { getCollectionSlugs } from '@/entities/collection';
+import { getQuestionSlugs } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 50;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE).replace(/\/$/, '');
@@ -24,9 +24,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		'/media',
 		'/hh-analytics',
 		'/avos',
-		'/collections',
-		'/resources',
-		'/questions',
 	];
 
 	for (const locale of locales) {
@@ -68,8 +65,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 		for (const spec of specializations) {
 			try {
-				const firstPage = await getQuestionsList({
-					specializationId: spec.id,
+				const firstPage = await getQuestionSlugs({
+					specializationSlug: spec.slug,
 					page: 1,
 					limit: BATCH_SIZE,
 				});
@@ -77,8 +74,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				const totalPages = Math.ceil(firstPage.total / BATCH_SIZE);
 
 				for (let page = 2; page <= totalPages; page++) {
-					const response = await getQuestionsList({
-						specializationId: spec.id,
+					const response = await getQuestionSlugs({
+						specializationSlug: spec.slug,
 						page,
 						limit: BATCH_SIZE,
 					});
@@ -102,8 +99,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 		for (const spec of specializations) {
 			try {
-				const firstPage = await getCollectionsList({
-					specializations: spec.id,
+				const firstPage = await getCollectionSlugs({
+					specializationSlug: spec.slug,
 					page: 1,
 					limit: BATCH_SIZE,
 				});
@@ -111,8 +108,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				const totalPages = Math.ceil(firstPage.total / BATCH_SIZE);
 
 				for (let page = 2; page <= totalPages; page++) {
-					const response = await getCollectionsList({
-						specializations: spec.id,
+					const response = await getCollectionSlugs({
+						specializationSlug: spec.slug,
 						page,
 						limit: BATCH_SIZE,
 					});
