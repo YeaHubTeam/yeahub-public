@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { GetCompaniesResponse } from '@/entities/company';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import { Collections, i18Namespace } from '@/shared/config';
 import { FiltersDrawer } from '@/shared/ui/FiltersDrawer';
@@ -14,11 +15,13 @@ import styles from './CollectionsPageHeader.module.css';
 interface CollectionsPageHeaderProps {
 	currentSpecialization: Specialization;
 	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialCompanies?: GetCompaniesResponse | null;
 }
 
 export const CollectionsPageHeader = ({
 	currentSpecialization,
 	initialSpecializations,
+	initialCompanies,
 }: CollectionsPageHeaderProps) => {
 	const t = useTranslations(i18Namespace.collection);
 
@@ -32,6 +35,7 @@ export const CollectionsPageHeader = ({
 					<CollectionsFilterPanel
 						currentSpecialization={currentSpecialization}
 						initialSpecializations={initialSpecializations}
+						initialCompanies={initialCompanies}
 					/>
 				</FiltersDrawer>
 			</Flex>

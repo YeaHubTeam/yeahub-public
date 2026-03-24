@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { GetCollectionsListParamsRequest, getCollectionsList } from '@/entities/collection';
+import { getCompanies } from '@/entities/company';
 import {
 	getSpecializationBySlug,
 	getSpecializationSlugs,
@@ -38,7 +39,7 @@ export const generateStaticParams = async () => {
 
 const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
-	const { titleOrDescriptionSearch, isFree, page = '1' } = await searchParams;
+	const { titleOrDescriptionSearch, companies, isFree, page = '1' } = await searchParams;
 
 	const pageNum = Number(page);
 
@@ -56,21 +57,24 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 	qs.set('page', pageNum.toString());
 	qs.set('specialization', specializationId.toString());
 	qs.set('limit', QUESTIONS_PER_PAGE.toString());
+	qs.set('companies', QUESTIONS_PER_PAGE.toString());
 	if (titleOrDescriptionSearch) qs.set('titleOrDescriptionSearch', titleOrDescriptionSearch);
 	if (isFree) qs.set('isFree', isFree.toString());
 
-	const [collectionsResponse, specializationsResponse] = await Promise.all([
+	const [collectionsResponse, specializationsResponse, companiesResponse] = await Promise.all([
 		getCollectionsList({
 			page: pageNum,
 			limit: QUESTIONS_PER_PAGE,
 			specializations: specializationId,
+			companies,
 			titleOrDescriptionSearch,
 			isFree,
 		}),
 		getSpecializations({ limit: 5 }),
+		getCompanies({ limit: 5 }),
 	]);
 
-	const hasFilters = !!isFree || !!titleOrDescriptionSearch;
+	const hasFilters = !!isFree || !!titleOrDescriptionSearch || !!companies;
 
 	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
@@ -138,6 +142,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 				limit={collectionsResponse?.limit || 0}
 				specialization={specialization}
 				initialSpecializations={specializationsResponse}
+				initialCompanies={companiesResponse}
 				hasFilters={hasFilters}
 				currentSpecialization={currentSpecialization}
 			/>

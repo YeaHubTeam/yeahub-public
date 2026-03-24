@@ -44,7 +44,7 @@ export const BaseFilterSection = <T,>({
 			<Text variant="body2" color="black-700">
 				{title}
 			</Text>
-			<Flex wrap="wrap" gap="8">
+			<Flex className={styles.list} wrap="wrap" gap="8">
 				{data &&
 					data.map((item) => (
 						<Tooltip title={item.tooltip} key={item?.id as Key}>

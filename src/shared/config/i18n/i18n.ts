@@ -16,6 +16,7 @@ export const i18Namespace = {
 	avos: 'avos',
 	learning: 'learning',
 	collection: 'collection',
+	company: 'company',
 	interviewQuiz: 'interviewQuiz',
 	interviewQuizCreate: 'interviewQuizCreate',
 	interviewQuizResult: 'interviewQuizResult',

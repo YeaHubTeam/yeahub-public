@@ -23,6 +23,7 @@ export const useCollectionsFilters = (currentSpec: Specialization) => {
 		const params: CollectionsFilterParams = {
 			titleOrDescriptionSearch: searchParams?.get('titleOrDescriptionSearch') ?? '',
 			specialization: specializationId,
+			companies: searchParams?.get('companies') ?? '',
 			page: Number(searchParams?.get('page') ?? 1),
 		};
 
@@ -67,6 +68,17 @@ export const useCollectionsFilters = (currentSpec: Specialization) => {
 		[setParam],
 	);
 
+	const onChangeCompany = useCallback(
+		(company: string | undefined) => {
+			if (company === undefined) {
+				setParam('companies', undefined);
+			} else {
+				setParam('companies', company);
+			}
+		},
+		[setParam],
+	);
+
 	const onChangeSpecialization = useCallback(
 		(nextId?: number, slug?: string) => {
 			if (!nextId) return;
@@ -91,6 +103,7 @@ export const useCollectionsFilters = (currentSpec: Specialization) => {
 			onSearch: debouncedSearch,
 			onChangeIsFree,
 			onChangeSpecialization,
+			onChangeCompany,
 		},
 	};
 };

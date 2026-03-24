@@ -8,7 +8,7 @@ export interface Skill {
 	imageSrc?: string | null;
 	createdAt?: string;
 	updatedAt?: string;
-	specializations?: Specialization[];
+	specializations: Specialization[];
 }
 
 export type GetSkillsListParamsRequest = {

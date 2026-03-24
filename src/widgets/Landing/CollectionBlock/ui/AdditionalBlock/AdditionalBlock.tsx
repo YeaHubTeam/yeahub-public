@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Landing } from '@/shared/config';
+import { Landing, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -9,18 +9,10 @@ import { Text } from '@/shared/ui/Text';
 import styles from './AdditionalBlock.module.css';
 
 export const AdditionalBlock = () => {
-	const t = useTranslations('landing');
+	const t = useTranslations(i18Namespace.landing);
 
 	return (
 		<Flex dataTestId="AdditionalBlock" className={styles['additional-block']}>
-			<Button
-				dataTestId="AdditionalBlock_ExpandButton"
-				className={styles['expand-button']}
-				variant="outline"
-			>
-				{t(Landing.COLLECTION_EXPAND)}
-			</Button>
-
 			<Card
 				dataTestId="AdditionalBlock_First"
 				className={styles['additional-first']}

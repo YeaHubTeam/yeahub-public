@@ -1,17 +1,29 @@
-import { Flex } from '@/shared/ui/Flex';
+import { Company } from '@/entities/company';
+import { ROUTES } from '@/shared/config';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
+import { Slider } from '@/shared/ui/Slider';
+import { skillsTickerSliderSettings } from '@/widgets/Landing/AboutQuestionsBlock/model/constants';
 
-import { filtersList } from '../../model/constants';
 import { FilterChip } from '../FilterChip/FilterChip';
 import styles from './FiltersBlock.module.css';
 
-export const FiltersBlock = () => {
+interface FiltersBlockProps {
+	companies: Company[];
+}
+
+export const FiltersBlock = ({ companies }: FiltersBlockProps) => {
 	return (
 		<div data-testid="FiltersBlock" className={styles.list}>
-			<Flex dataTestId="FiltersBlock_SliderContainer" gap="14">
-				{filtersList.map(({ src, alt }, index) => (
-					<FilterChip key={index} src={src} alt={alt} />
+			<Slider {...skillsTickerSliderSettings} className={styles['slider-container']}>
+				{companies.map(({ id, imageSrc, title }) => (
+					<FilterChip
+						key={title}
+						src={imageSrc}
+						alt={title}
+						url={`${route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}?companies=${id}`}
+					/>
 				))}
-			</Flex>
+			</Slider>
 		</div>
 	);
 };

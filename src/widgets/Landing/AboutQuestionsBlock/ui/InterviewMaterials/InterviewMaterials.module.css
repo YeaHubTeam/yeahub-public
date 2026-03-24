@@ -13,13 +13,14 @@
 }
 
 .cards {
-  padding: 52px;
+  padding: 52px 20px;
   overflow: hidden;
   background-color: var(--color-black-50);
 }
 
 .slider-container {
   cursor: pointer;
+	gap: 20px;
 }
 
 /* stylelint-disable selector-pseudo-class-no-unknown */
@@ -28,7 +29,7 @@
 }
 
 .slider-container :global(.slick-list) {
-  margin-left: -42px;
+  margin-left: -10px;
   overflow: visible;
 }
 

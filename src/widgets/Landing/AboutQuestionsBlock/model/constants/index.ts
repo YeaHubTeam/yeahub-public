@@ -59,7 +59,7 @@ export const blocks: Record<string, ImageItem> = {
 export const interviewMaterialsSliderSettings = {
 	slidesToShow: 2,
 	slidesToScroll: 1,
-	variableWidth: true,
+	dots: true,
 };
 
 export const skillsTickerSliderSettings = {
