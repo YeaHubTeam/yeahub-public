@@ -67,10 +67,6 @@ const LandingPage = async ({ params }: PageProps) => {
 
 	const collections = collectionsResponse.map(({ data }) => getRandomCollection(data));
 
-	console.log(companiesResponse);
-	console.log(skillsResponse);
-	console.log(collectionsResponse);
-	console.log(collections);
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@graph': [
