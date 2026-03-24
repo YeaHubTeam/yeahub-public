@@ -11,16 +11,8 @@
   display: block;
 }
 
-@media screen and (width < 767px) {
-  .mobile-view {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .desktop-view {
-    display: none;
-  }
+.collection {
+	width: 100%;
 }
 
 .slider-container :global(.slick-slide) > div {
@@ -43,4 +35,25 @@
 .slider-container :global(.slick-track) {
   display: flex;
   flex-direction: row;
+}
+
+button.expand-button {
+	display: flex;
+	margin: 20px auto;
+	width: 100%;
+	max-width: 340px;
+	height: 44px;
+}
+
+@media screen and (width < 768px) {
+	.mobile-view {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.desktop-view {
+		display: none;
+	}
+	
 }

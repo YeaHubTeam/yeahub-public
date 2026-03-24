@@ -1,3 +1,4 @@
+import { Skill } from '@/entities/skill';
 import { Flex } from '@/shared/ui/Flex';
 import { Slider } from '@/shared/ui/Slider';
 
@@ -8,14 +9,18 @@ import { SkillsCard } from '../Cards/SkillsCard/SkillsCard';
 import { SpecializationCard } from '../Cards/SpecializationCard/SpecializationCard';
 import styles from './InterviewMaterials.module.css';
 
-export const InterviewMaterials = () => {
+interface InterviewMaterialsProps {
+	skills: Skill[];
+}
+
+export const InterviewMaterials = ({ skills }: InterviewMaterialsProps) => {
 	return (
 		<Flex className={styles.content} dataTestId="InterviewMaterials_content">
 			<About />
 			<div className={styles.cards} data-testid="InterviewMaterials_cards">
 				<Slider {...interviewMaterialsSliderSettings} className={styles['slider-container']}>
 					<SpecializationCard />
-					<SkillsCard />
+					<SkillsCard skills={skills} />
 					<FiltersCard />
 				</Slider>
 			</div>

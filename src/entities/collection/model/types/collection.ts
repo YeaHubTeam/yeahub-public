@@ -32,6 +32,7 @@ export interface GetCollectionsListParamsRequest {
 	limit?: number;
 	isFree?: boolean;
 	specializations?: number;
+	companies?: string;
 	keywords?: string[];
 	titleOrDescriptionSearch?: string;
 	authorId?: string;

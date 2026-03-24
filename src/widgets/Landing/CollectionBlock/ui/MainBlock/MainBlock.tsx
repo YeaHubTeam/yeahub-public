@@ -1,79 +1,53 @@
+import Link from 'next/link';
+
 import { useTranslations } from 'next-intl';
 
-import { CollectionPreview } from '@/entities/collection';
-import { Landing } from '@/shared/config';
-import { Flex } from '@/shared/ui/Flex';
+import { Collection, CollectionPreview } from '@/entities/collection';
+import { Landing, ROUTES, i18Namespace } from '@/shared/config';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
+import { Button } from '@/shared/ui/Button';
 import { Slider } from '@/shared/ui/Slider';
 
-import { sberImg, tbankImg, vkImg } from '../../model/assets';
 import { sliderSettings } from '../../model/constants';
 import styles from './MainBlock.module.css';
 
-export const MainBlock = () => {
-	const t = useTranslations('landing');
+interface MainBlockProps {
+	collections: Collection[];
+}
 
-	const mockCards = [
-		{
-			id: 1,
-			title: t(Landing.COLLECTION_CARD_SBER),
-			description: '',
-			imageSrc: sberImg.src,
-			keywords: ['Frontend'],
-			specializations: [{ id: 1, title: 'Frontend', description: '', slug: 'frontend' }],
-			tariff: 'premium' as const,
-			isFree: false,
-			slug: 'sber',
-		},
-		{
-			id: 2,
-			title: t(Landing.COLLECTION_CARD_TBANK),
-			description: '',
-			imageSrc: tbankImg.src,
-			keywords: ['Frontend'],
-			specializations: [{ id: 2, title: 'Frontend', description: '', slug: 'frontend' }],
-			tariff: 'premium' as const,
-			isFree: false,
-			slug: 'tbank',
-		},
-		{
-			id: 3,
-			title: t(Landing.COLLECTION_CARD_VK),
-			description: '',
-			imageSrc: vkImg.src,
-			keywords: ['Backend'],
-			specializations: [{ id: 3, title: 'Backend', description: '', slug: 'backend' }],
-			tariff: 'premium' as const,
-			isFree: false,
-			slug: 'vk',
-		},
-	];
+export const MainBlock = ({ collections }: MainBlockProps) => {
+	const t = useTranslations(i18Namespace.landing);
 
-	const renderCards = mockCards.map((collection) => (
-		<div key={collection.id} data-testid="MainBlock_Card">
+	const renderCards = collections.map((collection) => (
+		<div className={styles.collection} key={collection.id} data-testid="MainBlock_Card">
 			<CollectionPreview
 				variant="column"
 				collection={collection}
-				specialization={collection.specializations[0]?.slug || 'unknown'}
+				specialization={collection.specializations?.[0]?.slug || DEFAULT_SPECIALIZATION_SLUG}
 			/>
 		</div>
 	));
 
 	return (
 		<div className={styles['main-block']}>
-			<Flex
-				dataTestId="MainBlock_Mobile"
-				gap="20"
-				className={styles['mobile-view']}
-				direction="column"
-			>
+			<div data-testid="MainBlock_Mobile" className={styles['mobile-view']}>
 				{renderCards}
-			</Flex>
+			</div>
 
 			<div data-testid="MainBlock_Desktop" className={styles['desktop-view']}>
 				<Slider {...sliderSettings} className={styles['slider-container']}>
 					{renderCards}
 				</Slider>
 			</div>
+			<Link href={route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}>
+				<Button
+					dataTestId="AdditionalBlock_ExpandButton"
+					className={styles['expand-button']}
+					variant="outline"
+				>
+					{t(Landing.COLLECTION_EXPAND)}
+				</Button>
+			</Link>
 		</div>
 	);
 };

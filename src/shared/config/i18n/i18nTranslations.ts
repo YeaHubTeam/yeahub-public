@@ -122,6 +122,10 @@ export enum Specializations {
 	SELECT_SELECTED = 'select.selected',
 }
 
+export enum Companies {
+	TITLE = 'title',
+}
+
 export enum Skills {
 	SELECT_CHOOSE = 'select.choose',
 }

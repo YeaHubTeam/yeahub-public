@@ -4,6 +4,8 @@ import Script from 'next/script';
 
 import { getLocale } from 'next-intl/server';
 
+import { manrope } from '@/app/styles/font';
+
 import './globals.css';
 
 const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || '98674727';
@@ -12,7 +14,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = async ({ children })
 	const locale = await getLocale();
 
 	return (
-		<html lang={locale}>
+		<html lang={locale} className={manrope.variable}>
 			<body>
 				{children}
 				<Script id="yandex-metrika" strategy="afterInteractive">

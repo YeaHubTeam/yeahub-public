@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { ChooseCollectionAccess } from '@/entities/collection';
+import { CompaniesListField, GetCompaniesResponse } from '@/entities/company';
 import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
 import {
 	DEFAULT_SPECIALIZATION_ID,
@@ -19,11 +20,13 @@ import { useCollectionsFilters } from '../../model/api/useCollectionsFilters';
 interface CollectionsFilterPanelProps {
 	currentSpecialization: Specialization;
 	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialCompanies?: GetCompaniesResponse | null;
 }
 
 export const CollectionsFilterPanel = ({
 	currentSpecialization,
 	initialSpecializations,
+	initialCompanies,
 }: CollectionsFilterPanelProps) => {
 	const { filter, selectedSpecialization, handlers } = useCollectionsFilters(currentSpecialization);
 	const t = useTranslations(i18Namespace.collection);
@@ -41,6 +44,11 @@ export const CollectionsFilterPanel = ({
 				selectedSpecialization={selectedSpecialization}
 				onChangeSpecialization={handlers.onChangeSpecialization}
 				initialData={initialSpecializations}
+			/>
+			<CompaniesListField
+				onChangeCompany={handlers.onChangeCompany}
+				selectedCompany={filter.companies}
+				initialData={initialCompanies}
 			/>
 			<ChooseCollectionAccess isFree={filter.isFree} onChangeIsFree={handlers.onChangeIsFree} />
 

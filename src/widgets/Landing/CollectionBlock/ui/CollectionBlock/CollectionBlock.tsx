@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl';
 
-import { Landing } from '@/shared/config';
+import { Collection } from '@/entities/collection';
+import { Company } from '@/entities/company';
+import { Landing, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
@@ -9,8 +11,13 @@ import { FiltersBlock } from '../FiltersBlock/FiltersBlock';
 import { MainBlock } from '../MainBlock/MainBlock';
 import styles from './CollectionBlock.module.css';
 
-export const CollectionBlock = () => {
-	const t = useTranslations('landing');
+interface CollectionBlockProps {
+	companies: Company[];
+	collections: Collection[];
+}
+
+export const CollectionBlock = ({ companies, collections }: CollectionBlockProps) => {
+	const t = useTranslations(i18Namespace.landing);
 
 	return (
 		<section data-testid="CollectionBlock">
@@ -23,8 +30,8 @@ export const CollectionBlock = () => {
 						{t(Landing.COLLECTION_SUBTITLE)}
 					</Text>
 				</div>
-				<FiltersBlock />
-				<MainBlock />
+				<FiltersBlock companies={companies} />
+				<MainBlock collections={collections} />
 				<AdditionalBlock />
 			</Flex>
 		</section>

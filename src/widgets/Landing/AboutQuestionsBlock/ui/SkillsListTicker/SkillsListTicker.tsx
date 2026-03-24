@@ -1,17 +1,28 @@
-'use client';
-
+import { Skill } from '@/entities/skill';
+import { ROUTES } from '@/shared/config';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 import { Slider } from '@/shared/ui/Slider';
 
-import { skillsList, skillsTickerSliderSettings } from '../../model/constants';
+import { skillsTickerSliderSettings } from '../../model/constants';
 import { SkillChip } from '../SkillChip/SkillChip';
 import styles from './SkillsListTicker.module.css';
 
-export const SkillsListTicker = () => {
+interface SkillsTListTickerProps {
+	skills: Skill[];
+}
+
+export const SkillsListTicker = ({ skills }: SkillsTListTickerProps) => {
 	return (
 		<div className={`${styles.list} padding6`} data-testid="SkillsListTicker_List">
 			<Slider {...skillsTickerSliderSettings} className={styles['slider-container']}>
-				{skillsList.map(({ src, alt }, index) => (
-					<SkillChip key={index} src={src} alt={alt} showLabel />
+				{skills.map(({ id, imageSrc, title, specializations }, index) => (
+					<SkillChip
+						key={index}
+						src={imageSrc}
+						url={`${route(ROUTES.questions.page, specializations[0]?.slug ?? DEFAULT_SPECIALIZATION_SLUG)}?skills=${id}`}
+						alt={title}
+						showLabel
+					/>
 				))}
 			</Slider>
 		</div>

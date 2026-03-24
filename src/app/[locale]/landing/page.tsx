@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { Collection, getCollectionsList } from '@/entities/collection';
+import { getCompanies } from '@/entities/company';
+import { getSkills } from '@/entities/skill';
 import { LandingPage as LandingPageComponent } from '@/pages/LandingPage';
 import { Landing, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
@@ -48,6 +51,21 @@ const LandingPage = async ({ params }: PageProps) => {
 
 	const title = t(Landing.BANNER_TITLE);
 	const description = t(Landing.BANNER_DESCRIPTION);
+
+	const [companiesResponse, skillsResponse, ...collectionsResponse] = await Promise.all([
+		getCompanies({ limit: 100 }),
+		getSkills({ limit: 100 }),
+		getCollectionsList({ limit: 10, specializations: 11 }),
+		getCollectionsList({ limit: 10, specializations: 19 }),
+		getCollectionsList({ limit: 10, specializations: 27 }),
+	]);
+
+	const getRandomCollection = (collections: Collection[]) => {
+		const randomIndex = Math.floor(Math.random() * collections.length);
+		return collections[randomIndex];
+	};
+
+	const collections = collectionsResponse.map(({ data }) => getRandomCollection(data));
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -168,7 +186,11 @@ const LandingPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<LandingPageComponent />
+			<LandingPageComponent
+				skills={skillsResponse.data}
+				companies={companiesResponse.data}
+				collections={collections}
+			/>
 		</>
 	);
 };
