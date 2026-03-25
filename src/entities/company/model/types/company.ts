@@ -1,8 +1,8 @@
-import { Author } from '@/shared/libs';
+import { Author, Response } from '@/shared/libs';
 
 export interface Company {
-	id: string | number;
-	title?: string;
+	id: string;
+	title: string;
 	legalName?: string | null;
 	description?: string | null;
 	imageSrc?: string | null;
@@ -12,3 +12,9 @@ export interface Company {
 	updatedAt?: string;
 	createdBy?: Author;
 }
+
+export type GetCompaniesParamsRequest = {
+	page?: number;
+	limit?: number;
+};
+export type GetCompaniesResponse = Response<Company[]>;

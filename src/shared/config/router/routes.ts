@@ -4,7 +4,7 @@ export const ROUTES = {
 	register: `${process.env.NEXT_PUBLIC_SITE_URL}auth/register`,
 	questions: {
 		route: 'questions',
-		page: '/questions',
+		page: '/questions/:specialization',
 		detail: {
 			route: 'questions/:specialization/:slug',
 			page: '/questions/:specialization/:slug',
@@ -12,7 +12,7 @@ export const ROUTES = {
 	},
 	resources: {
 		route: 'resources',
-		page: '/resources',
+		page: '/resources/:specialization',
 	},
 	interview: {
 		route: 'interview',
@@ -27,7 +27,7 @@ export const ROUTES = {
 	},
 	collections: {
 		route: 'collections',
-		page: '/collections',
+		page: '/collections/:specialization',
 		detail: {
 			route: 'collections/:specialization/:slug',
 			page: '/collections/:specialization/:slug',

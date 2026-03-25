@@ -32,6 +32,7 @@ export interface GetCollectionsListParamsRequest {
 	limit?: number;
 	isFree?: boolean;
 	specializations?: number;
+	companies?: string;
 	keywords?: string[];
 	titleOrDescriptionSearch?: string;
 	authorId?: string;
@@ -50,6 +51,7 @@ export type GetCollectionByIdParamsRequest = {
 export interface GetCollectionsSlugsParamsRequest {
 	page?: number;
 	limit?: number;
+	specializationSlug?: string;
 }
 
 export interface CollectionSlug {

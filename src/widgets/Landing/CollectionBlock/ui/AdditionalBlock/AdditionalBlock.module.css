@@ -34,10 +34,6 @@
 	transform: translateY(50%);
 }
 
-.expand-button {
-	display: none;
-}
-
 @media screen and (width < 1024px) {
 	.additional-block {
 		flex-wrap: wrap;
@@ -66,12 +62,5 @@
 		bottom: auto;
 		height: 44px;
 		transform: none;
-	}
-
-	.expand-button {
-		display: flex;
-		margin: 10px 0 20px;
-		width: 100%;
-		height: 44px;
 	}
 }

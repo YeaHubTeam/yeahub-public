@@ -1,26 +1,30 @@
+import { Skill } from '@/entities/skill';
 import { Flex } from '@/shared/ui/Flex';
-import { skills } from '@/widgets/Landing/AboutQuestionsBlock/model/constants';
 
 import { SkillChip } from '../../../SkillChip/SkillChip';
 import { CardBlockLayout } from '../../CardBlockLayout/CardBlockLayout';
 
-export const SkillsBlock = () => {
+interface SkillsBlockProps {
+	skills: Skill[];
+}
+
+export const SkillsBlock = ({ skills }: SkillsBlockProps) => {
 	return (
 		<CardBlockLayout>
 			<Flex gap="16">
-				<SkillChip src={skills.swift.src} alt={skills.swift.alt} />
-				<SkillChip src={skills.python.src} alt={skills.python.alt} />
+				{skills.slice(0, 2).map(({ imageSrc, title }) => (
+					<SkillChip key={title} src={imageSrc} alt={title} />
+				))}
 			</Flex>
 			<Flex gap="16">
-				<SkillChip src={skills.git.src} alt={skills.git.alt} />
-				<SkillChip src={skills.react.src} alt={skills.react.alt} />
-				<SkillChip src={skills.html.src} alt={skills.html.alt} />
+				{skills.slice(2, 5).map(({ imageSrc, title }) => (
+					<SkillChip key={title} src={imageSrc} alt={title} />
+				))}
 			</Flex>
 			<Flex gap="16">
-				<SkillChip src={skills.java.src} alt={skills.java.alt} />
-				<SkillChip src={skills.docker.src} alt={skills.docker.alt} />
-				<SkillChip src={skills.javascript.src} alt={skills.javascript.alt} />
-				<SkillChip src={skills.typescript.src} alt={skills.typescript.alt} />
+				{skills.slice(5, 9).map(({ imageSrc, title }) => (
+					<SkillChip key={title} src={imageSrc} alt={title} />
+				))}
 			</Flex>
 		</CardBlockLayout>
 	);

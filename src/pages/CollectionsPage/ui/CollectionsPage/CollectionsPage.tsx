@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 
 import { Collection } from '@/entities/collection';
+import { GetCompaniesResponse } from '@/entities/company';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -21,6 +22,7 @@ interface CollectionsPageProps {
 	hasFilters: boolean;
 	currentSpecialization: Specialization;
 	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialCompanies?: GetCompaniesResponse | null;
 }
 export const CollectionsPage = ({
 	locale,
@@ -32,6 +34,7 @@ export const CollectionsPage = ({
 	hasFilters,
 	currentSpecialization,
 	initialSpecializations,
+	initialCompanies,
 }: CollectionsPageProps) => {
 	setRequestLocale(locale);
 
@@ -41,6 +44,7 @@ export const CollectionsPage = ({
 				<CollectionsPageHeader
 					currentSpecialization={currentSpecialization}
 					initialSpecializations={initialSpecializations}
+					initialCompanies={initialCompanies}
 				/>
 				<CollectionsList
 					collections={collections}
@@ -54,6 +58,7 @@ export const CollectionsPage = ({
 					<CollectionsFilterPanel
 						currentSpecialization={currentSpecialization}
 						initialSpecializations={initialSpecializations}
+						initialCompanies={initialCompanies}
 					/>
 				</Card>
 				<InterviewRecordingsBanner />
