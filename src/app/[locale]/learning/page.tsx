@@ -47,7 +47,7 @@ const LearningPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.learning });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/learning`;
 
 	const jsonLd = {

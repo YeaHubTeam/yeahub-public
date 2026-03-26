@@ -3,6 +3,8 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
+import { GetSkillsListResponse } from '@/entities/skill';
+import { GetSpecializationsListResponse } from '@/entities/specialization';
 import { InterviewQuizCreate, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Text } from '@/shared/ui/Text';
@@ -12,6 +14,8 @@ import styles from './CreateQuizPage.module.css';
 
 interface CreateQuizPageProps {
 	locale: string;
+	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialSkills?: GetSkillsListResponse | null;
 }
 
 export const CreateQuizPage = ({ locale }: CreateQuizPageProps) => {

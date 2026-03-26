@@ -41,7 +41,7 @@
 		"title": "There is already an active interview",
 		"aria-label": "Warning: you cannot create a new interview because there is already an active one"
 	},
-	"search":{
+	"search": {
 		"placeholder": "Enter query..."
 	},
 	"questions": {
@@ -55,7 +55,7 @@
 	"image-alt": "Company image",
 	"numberOfQuestions": "Number of questions",
 	"collections": {
-		"title": "Collections",
+		"title": "Collections for {specialization}}",
 		"detail": "More",
 		"train": "Train"
 	},
