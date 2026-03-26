@@ -23,7 +23,7 @@ export const CollectionBlock = ({ companies, collections }: CollectionBlockProps
 		<section data-testid="CollectionBlock">
 			<Flex gap="20" direction="column" align="center" className={styles['collection-wrapper']}>
 				<div data-testid="CollectionBlock_TitleBlock" className={styles['title-block']}>
-					<Text variant="head3" className={styles.title}>
+					<Text variant="head2" className={styles.title}>
 						{t(Landing.COLLECTION_TITLE).toUpperCase()}
 					</Text>
 					<Text variant="body3" className={styles.subtitle}>

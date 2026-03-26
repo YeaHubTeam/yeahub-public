@@ -2,7 +2,7 @@
   position: relative;
   flex-shrink: 0;
   width: 70px;
-  height: 50px;
+  height: 70px;
   border-radius: 4px;
   background-color: var(--background-nav-item);
 }

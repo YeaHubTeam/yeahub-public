@@ -2,12 +2,16 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { CreateNewMockQuizParamsRequest } from '@/entities/quiz';
+import { getSkills } from '@/entities/skill';
+import { DEFAULT_SPECIALIZATION_ID, getSpecializations } from '@/entities/specialization';
 import { CreateQuizPage } from '@/pages/CreateQuizPage';
 import { InterviewQuiz, InterviewQuizCreate, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string }>;
+	searchParams: Promise<CreateNewMockQuizParamsRequest>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -39,19 +43,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const dynamic = 'auto';
 
-const MainCreateQuizPage = async ({ params }: PageProps) => {
+const MainCreateQuizPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
+	const { specialization = DEFAULT_SPECIALIZATION_ID } = await searchParams;
 
 	setRequestLocale(locale);
 
 	const tCreate = await getTranslations({ locale, namespace: i18Namespace.interviewQuizCreate });
 	const tQuiz = await getTranslations({ locale, namespace: i18Namespace.interviewQuiz });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/quiz/new`;
 	const quizUrl = `${siteUrl}/${locale}/quiz`;
 
 	const title = tCreate(InterviewQuizCreate.TITLE);
+
+	const [specializationsResponse, skillsResponse] = await Promise.all([
+		getSpecializations({ limit: 5 }),
+		getSkills({ limit: 5, specializations: specialization }),
+	]);
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -110,7 +120,11 @@ const MainCreateQuizPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<CreateQuizPage locale={locale} />
+			<CreateQuizPage
+				locale={locale}
+				initialSpecializations={specializationsResponse}
+				initialSkills={skillsResponse}
+			/>
 		</>
 	);
 };
