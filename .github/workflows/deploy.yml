@@ -71,8 +71,8 @@ jobs:
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG \
             --build-arg NODE_ENV=$NODE_ENV_ARG \
             --build-arg NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_ARG \
-            --build-arg APP_SITE_URL=APP_SITE_URL \
-            --build-arg NEXT_PUBLIC_SITE_URL=NEXT_PUBLIC_SITE_URL \
+            --build-arg APP_SITE_URL=$APP_SITE_URL_ARG \
+            --build-arg NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL_ARG \
             --build-arg NEXT_PUBLIC_IS_PROD=$NEXT_PUBLIC_IS_PROD_ARG \
             .
 
