@@ -46,7 +46,7 @@ const LandingPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.landing });
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/landing`;
 
 	const title = t(Landing.BANNER_TITLE);

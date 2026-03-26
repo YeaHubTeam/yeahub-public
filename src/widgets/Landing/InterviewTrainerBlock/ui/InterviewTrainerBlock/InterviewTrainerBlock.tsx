@@ -15,7 +15,7 @@ export const InterviewTrainerBlock = () => {
 	return (
 		<section className={styles['interview-trainer']}>
 			<div className={styles['title-block']}>
-				<Text variant="head3" className={styles.title}>
+				<Text variant="head2" className={styles.title}>
 					{t(Landing.TRAINING_INTERVIEW_TITLE).toUpperCase()}
 				</Text>
 				<Text variant="body3" className={styles.subtitle}>

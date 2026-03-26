@@ -104,7 +104,7 @@ const QuestionPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}/${slug}`;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
