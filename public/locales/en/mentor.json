@@ -1,0 +1,11 @@
+{
+    "stack": {
+      "label": "stack",
+      "title": "Full stack and tools.",
+      "subtitle": "You learn the full set of technologies and tools so you don't get lost on a real project or in a real team.",
+      "description1": "We cover the entire stack of a modern frontend developer: from the basics to advanced tools and architecture.",
+      "description2": "The program adapts to the student — we don't teach everything in order, but focus on what is really needed for employment.",
+      "mainStackTitle": "Core stack",
+      "advancedTitle": "Advanced technologies"
+    }
+  }

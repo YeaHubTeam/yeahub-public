@@ -1,0 +1,36 @@
+.header-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	align-items: start;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+ 
+.header-block {
+	min-width: 0;
+	max-width: 489px;
+}
+ 
+.header-subtitle {
+	white-space: pre-line;
+}
+ 
+@media (width <= 768px) {
+	.header-wrapper {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+ 
+	.header-title {
+		line-height: 120%;
+		font-size: 24px;
+	}
+}
+ 
+@media (width <= 375px) {
+	.header-subtitle {
+		max-width: 300px;
+		white-space: normal;
+	}
+}
+ 

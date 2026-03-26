@@ -1,0 +1,25 @@
+.columns-wrapper {
+	flex: 1;
+	min-width: 0;
+}
+
+@media (width <= 1024px) {
+	.columns-wrapper {
+		flex: 1 1 100%;
+		gap: 30px;
+	}
+}
+
+@media (width <= 768px) {
+	.columns-wrapper {
+		/* flex: 1 1 100%; */
+		gap: 60px;
+	}
+}
+
+@media (width <= 375px) {
+	.columns-wrapper {
+		flex-direction: column;
+		gap: 0;
+	}
+}

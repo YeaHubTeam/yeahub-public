@@ -1,0 +1,33 @@
+.description-wrapper {
+	flex: 0 0 auto;
+	min-width: 0;
+	max-width: 372px;
+}
+
+.description2 {
+	max-width: 300px;
+}
+
+@media (width <= 1024px) {
+	.description-wrapper {
+		flex: 1 1 100%;
+		flex-direction: row;
+		max-width: 100%;	
+	}
+ 
+	.description1 {
+		max-width: 324px;
+	}
+ 
+	.description2 {
+		max-width: 322px;
+	}
+}
+
+@media (width <= 767px) {
+	.description-wrapper {
+		flex: unset;
+		flex-direction: column;
+		gap: 12px;
+	}
+}
