@@ -1,0 +1,30 @@
+.wrapper {
+	display: grid;
+	grid-template-columns: 412px 804px;
+	align-items: start;
+}
+
+.media01 {
+	top: 37px;
+	right: 24px;
+}
+
+.media03 {
+	top: 40px;
+	right: 80px;
+}
+
+.media05 {
+	top: 28px;
+	right: 85px;
+}
+
+.media07 {
+	top: 10px;
+	right: 84px;
+}
+
+.media09 {
+	top: 23px;
+	right: 90px;
+}
