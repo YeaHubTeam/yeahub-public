@@ -1,0 +1,51 @@
+.advantages {
+	padding: 0 6px;
+	width: 100%;
+}
+
+.card {
+	flex: 1;
+	min-width: 240px;
+	background: var(--color-white-900);
+}
+
+.card-content {
+	width: 100%;
+}
+
+.icon-wrapper {
+	flex-shrink: 0;
+	width: 24px;
+	height: 24px;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
+	border: 1px solid rgb(243 22 78 / 7%);
+	border-radius: 50%;
+	background: #fff;
+}
+
+.icon {
+	display: block;
+	width: 6.897px;
+	height: 13.103px;
+	color: var(--color-red-600);
+}
+
+.card-text {
+	line-height: 120%;
+}
+
+@media screen and (width < 768px) {
+	.advantages {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		align-self: stretch;
+		gap: 10px;
+		width: 340px;
+	}
+
+	.card {
+		width: 100%;
+	}
+}

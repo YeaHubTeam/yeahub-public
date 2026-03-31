@@ -1,0 +1,13 @@
+.description {
+  margin-top: 10px;
+  margin-bottom: 24px;
+  width: 600px;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+@media screen and (width < 768px) {
+  .description {
+		max-width: 320px;
+  }
+}

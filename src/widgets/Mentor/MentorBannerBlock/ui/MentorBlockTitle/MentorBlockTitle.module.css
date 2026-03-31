@@ -1,0 +1,13 @@
+.title {
+  width: 785px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: pre-wrap;
+}
+
+@media screen and (width < 768px) {
+  .title {
+		line-height: 120%;
+    font-size: 24px;
+  }
+}

@@ -1,0 +1,59 @@
+.wrapper {
+	width: 100%;
+}
+
+.banner-block {
+	position: relative;
+	padding: 48px 24px;
+	min-height: 637px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
+	border-radius: 20px;
+	background-image:
+		radial-gradient(44.82% 30.72% at 24.05% -7.14%, rgb(110 85 255 / 60%) 0%, rgb(142 123 255 / 0%) 68.94%),
+		radial-gradient(50% 50% at 50% 50%, rgb(255 255 255 / 24%) 0%, rgb(255 255 255 / 0%) 100%),
+		radial-gradient(50% 50% at 50% 50%, rgb(255 255 255 / 24%) 0%, rgb(255 255 255 / 0%) 100%),
+		linear-gradient(180deg, #fff 0%, #eae6ff 22.6%, #8e78ff 54.33%, #1e1454 100%);
+	isolation: isolate;
+}
+
+.banner-block::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	opacity: 0.4;
+	mix-blend-mode: multiply;
+	pointer-events: none;
+}
+
+.banner-block::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	opacity: 0.4;
+	mix-blend-mode: screen;
+	pointer-events: none;
+}
+
+.banner-block > * {
+	position: relative;
+	z-index: 1;
+}
+
+.shape-container {
+	position: absolute;
+	top: 50%;
+	right: -140px;
+	z-index: 1;
+	width: 584.119px;
+	height: 507.272px;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+.shape-svg {
+	width: 100%;
+	height: 100%;
+}
