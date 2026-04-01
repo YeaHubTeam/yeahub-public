@@ -1,1 +1,1 @@
-export { FullPath } from './ui/FullPath';
+export { FullPath } from './ui/FullPath/FullPath';

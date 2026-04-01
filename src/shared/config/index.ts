@@ -7,6 +7,7 @@ export {
 	Footer,
 	Questions,
 	Media,
+	Mentor,
 	Specializations,
 	Skills,
 	Avos,

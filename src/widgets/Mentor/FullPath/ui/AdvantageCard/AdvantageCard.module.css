@@ -1,0 +1,33 @@
+.card {
+	padding: 20px;
+	width: 100%;
+}
+
+.card div {
+	justify-content: space-between;
+	align-items: end;
+	height: 100%;
+}
+
+.title {
+	margin-bottom: 8px;
+}
+
+.description {
+	margin-bottom: 20px;
+}
+
+.image {
+	display: block;
+	margin-top: auto;
+	width: 100%;
+	max-width: 352px;
+	max-height: 258px;
+}
+
+@media (width <= 767px) {
+	.image {
+		max-width: 320px;
+		max-height: 240px;
+	}
+}
