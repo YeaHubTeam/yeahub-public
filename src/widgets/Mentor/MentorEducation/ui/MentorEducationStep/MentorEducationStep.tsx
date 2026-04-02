@@ -28,6 +28,7 @@ export const MentorEducationStep = ({
 				media={image && <Image src={image} alt={title} />}
 				mediaClassName={mediaClassName}
 				moveTitle
+				defaultOpen
 			>
 				<Text variant="body3-accent">{description}</Text>
 			</AccordionMentor>

@@ -14,6 +14,7 @@ export interface AccordionMentor {
 	media?: ReactNode;
 	mediaClassName?: string;
 	moveTitle?: boolean;
+	defaultOpen?: boolean;
 }
 
 export const AccordionMentor = ({
@@ -24,6 +25,7 @@ export const AccordionMentor = ({
 	media,
 	mediaClassName,
 	moveTitle = false,
+	defaultOpen = false,
 }: AccordionMentor) => {
 	return (
 		<details
@@ -33,6 +35,7 @@ export const AccordionMentor = ({
 				(!!media || moveTitle) && styles['with-media'],
 				className,
 			)}
+			open={defaultOpen}
 		>
 			<summary className={styles.heading}>
 				{number && <span className={styles.number}>{number}</span>}
