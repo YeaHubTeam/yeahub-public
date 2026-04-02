@@ -1,0 +1,17 @@
+.lightning-circle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 29px;
+	height: 29px;
+	box-shadow: var(--main-shadow);
+	border: 1px solid var(--color-circle-border);
+	border-radius: 50%;
+}
+
+.lightning {
+	width: 10px;
+	height: 19px;
+	clip-path: polygon(9% 56%, 98% 1%, 69% 49%, 100% 53%, 8% 106%, 47% 58%);
+	background: #f3164e;
+}
