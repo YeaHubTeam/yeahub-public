@@ -6,19 +6,13 @@
 .head2 {
 	line-height: 115%;
 	font-weight: var(--font-weight-500);
-	font-size: var(--font-size-h-l);
-}
-
-.head2-accent {
-	line-height: 127%;
-	font-weight: var(--font-weight-500);
 	font-size: var(--font-size-large-34);
 }
 
 .head3 {
 	line-height: 115%;
 	font-weight: var(--font-weight-500);
-	font-size: var(--font-size-large-34);
+	font-size: var(--font-size-h-s);
 }
 
 .head4 {

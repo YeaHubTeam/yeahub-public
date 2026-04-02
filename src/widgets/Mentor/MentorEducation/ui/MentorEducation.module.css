@@ -1,3 +1,15 @@
 .section {
 	padding-top: 80px;
 }
+
+@media (width<=768px) {
+	.section {
+		padding-top: 60px;
+	}
+}
+
+@media (width<=768px) {
+	.section {
+		padding-top: 40px;
+	}
+}

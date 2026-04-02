@@ -25,7 +25,6 @@ export interface TextProps {
 export const variantToTagMapping: Record<TextVariant, keyof JSX.IntrinsicElements> = {
 	head1: 'h1',
 	head2: 'h2',
-	'head2-accent': 'h2',
 	head3: 'h3',
 	head4: 'h4',
 	head5: 'h5',

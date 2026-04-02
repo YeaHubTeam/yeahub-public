@@ -1,4 +1,5 @@
 import { Flex } from '../Flex';
+import { Text } from '../Text';
 import styles from './SectionLabel.module.css';
 
 interface SectionLabel {
@@ -9,7 +10,9 @@ export const SectionLabel = ({ text }: SectionLabel) => {
 	return (
 		<Flex align="center" gap="16">
 			<span className={styles.dot} />
-			<h4 className={styles.label}>{text}</h4>
+			<Text className={styles.label} variant="body3" color="black-900">
+				{text}
+			</Text>
 		</Flex>
 	);
 };

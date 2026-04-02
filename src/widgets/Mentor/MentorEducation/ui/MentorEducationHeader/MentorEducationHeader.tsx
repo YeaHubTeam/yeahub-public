@@ -1,3 +1,7 @@
+import { useTranslations } from 'next-intl';
+
+import { i18Namespace } from '@/shared/config';
+import { Mentor } from '@/shared/config/i18n/i18nTranslations';
 import { Flex } from '@/shared/ui/Flex';
 import { SectionLabel } from '@/shared/ui/SectionLabel';
 import { Text } from '@/shared/ui/Text';
@@ -5,16 +9,17 @@ import { Text } from '@/shared/ui/Text';
 import styles from './MentorEducationHeader.module.css';
 
 export const MentorEducationHeader = () => {
+	const t = useTranslations(i18Namespace.mentor);
+
 	return (
 		<div className={styles.wrapper}>
-			<SectionLabel text="образование" />
-			<Flex direction="column" gap="10">
-				<Text variant="head2-accent" color="black-1100">
-					Ол-инклюзив в сфере образования.
+			<SectionLabel text={t(Mentor.EDUCATION_LABEL)} />
+			<Flex className={styles.block} direction="column" gap="10">
+				<Text className={styles.title} variant="head2" color="black-900">
+					{t(Mentor.EDUCATION_TITLE)}
 				</Text>
-				<Text variant="body3-accent" color="black-1100" width={487}>
-					Ты приходишь, и всё решается за тебя: от первых шагов до поиска работы. Погружаешься в
-					среду, где всё заточено на результат. Я веду тебя на каждом этапе.
+				<Text variant="body3-accent" color="black-900">
+					{t(Mentor.EDUCATION_DESCRIPTION)}
 				</Text>
 			</Flex>
 		</div>

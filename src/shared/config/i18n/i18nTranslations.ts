@@ -379,3 +379,10 @@ export enum InterviewStatistics {
 	QUESTION_STATS_IN_PROCESS = 'questionStats.inProcess',
 	QUESTION_STATS_LEARNED = 'questionStats.learned',
 }
+export enum Mentor {
+	EDUCATION_LABEL = 'education.label',
+	EDUCATION_TITLE = 'education.title',
+	EDUCATION_SUBTITLE = 'education.subtitle',
+	EDUCATION_DESCRIPTION = 'education.description',
+	EDUCATION_STEPS = 'education.steps',
+}

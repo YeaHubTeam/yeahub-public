@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from 'next/image';
 
-import { Accordion } from '@/shared/ui/Accordion';
+import { AccordionMentor } from '@/shared/ui/AccordionMentor';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './MentorEducationStep.module.css';
@@ -22,20 +22,15 @@ export const MentorEducationStep = ({
 }: MentorEducationStepProps) => {
 	return (
 		<div className={styles.step}>
-			<Accordion
-				title={title}
-				moveTitle
-				titleVariant="body6"
-				variant="mentor"
+			<AccordionMentor
 				number={id}
-				fixedHeight
-				limitContent
-				defaultOpen
+				title={title}
 				media={image && <Image src={image} alt={title} />}
 				mediaClassName={mediaClassName}
+				moveTitle
 			>
 				<Text variant="body3-accent">{description}</Text>
-			</Accordion>
+			</AccordionMentor>
 		</div>
 	);
 };

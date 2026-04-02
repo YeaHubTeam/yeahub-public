@@ -1,8 +1,5 @@
 .label {
-	color: var(--color-black-900);
 	line-height: 130%;
-	font-weight: var(--font-weight-400);
-	font-size: var(--font-size-p-m);
 }
 
 .dot {

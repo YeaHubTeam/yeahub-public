@@ -1,7 +1,6 @@
 export type TextVariant =
 	| 'head1'
 	| 'head2'
-	| 'head2-accent'
 	| 'head3'
 	| 'head4'
 	| 'head5'

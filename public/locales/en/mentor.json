@@ -1,0 +1,46 @@
+{
+	"education": {
+		"label": "education",
+		"title": "All-inclusive in education.",
+		"subtitle": "Path to the offer",
+		"description": "You come, and everything is taken care of for you: from the first steps to finding a job. You immerse yourself in an environment focused on results. I guide you at every stage.",
+		"steps": [
+			{
+				"title": "Onboarding and first mock interview",
+				"description": "We determine your starting level, get acquainted with the platform and tools. We conduct the first trial interview to understand the learning path and immediately identify key areas for growth."
+			},
+			{
+				"title": "Learning materials",
+				"description": "Each module contains theory, a checklist of questions and practical tasks. Step by step you master HTML, JS, React, TypeScript, CI/CD, Docker and other technologies."
+			},
+			{
+				"title": "Support and community",
+				"description": "All doubts and questions are resolved in the chat with students and with me personally. You get help at any stage, you don't get stuck, you move forward."
+			},
+			{
+				"title": "Exams and feedback",
+				"description": "After each block you pass theory and tasks to the mentor. You get a detailed analysis of mistakes and advice on how to improve the result."
+			},
+			{
+				"title": "Progress control",
+				"description": "I monitor performance, timely adjust training and help overcome difficulties. Your growth is always under my supervision."
+			},
+			{
+				"title": "Practice and group activities",
+				"description": "4 times a week: joint task reviews, mock interviews, code reviews and workshops. Constant engagement, calls and communication."
+			},
+			{
+				"title": "Final project",
+				"description": "You build your application step by step after each technology. Not an online store or Weather app, but a real system with API and layouts, just like in a real job."
+			},
+			{
+				"title": "Internship on a real production project",
+				"description": "You work in a team of 100+ people: Frontend, Backend, QA, design, analytics. Full development cycle, releases, code reviews, agile processes."
+			},
+			{
+				"title": "Preparation for the offer",
+				"description": "We create a strong resume, conduct mock interviews, job search strategy. You are ready for any interview and can immediately show your competencies."
+			}
+		]
+	}
+}

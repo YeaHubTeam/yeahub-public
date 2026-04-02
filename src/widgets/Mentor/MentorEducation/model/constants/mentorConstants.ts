@@ -1,10 +1,10 @@
-import call from '@/shared/assets/images/call.png';
-import chart from '@/shared/assets/images/chart.png';
-import offer from '@/shared/assets/images/offerMessage.png';
-import platform from '@/shared/assets/images/platform.png';
-import resume from '@/shared/assets/images/resume.png';
+import call from '@/shared/assets/images/call.webp';
+import chart from '@/shared/assets/images/chart.webp';
+import offer from '@/shared/assets/images/offerMessage.webp';
+import platform from '@/shared/assets/images/platform.webp';
+import resume from '@/shared/assets/images/resume.webp';
 
-export const MENTOR_STEPS = [
+export const EDUCATION_STEPS = [
 	{
 		id: '01',
 		title: 'Онбординг и первый мок-собес',
