@@ -4,7 +4,6 @@ export type TextVariant =
 	| 'head3'
 	| 'head4'
 	| 'head5'
-	| 'head6'
 	| 'body1'
 	| 'body1-accent'
 	| 'body2'

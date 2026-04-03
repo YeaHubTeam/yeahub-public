@@ -1,6 +1,7 @@
 .head1 {
   line-height:115%;
-  font-size: var(--font-size-h-xxl);
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-h-xxl);
 }
 
 .head2 {
@@ -24,12 +25,6 @@
   line-height:127%;
   font-weight: var(--font-weight-500);
   font-size: var(--font-size-p-l);
-}
-
-.head6 {
-  line-height:109%;
-  font-weight: var(--font-weight-500);
-  font-size: var(--font-size-h-xl);
 }
 
 .body1 {

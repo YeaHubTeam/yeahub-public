@@ -115,6 +115,20 @@ export enum Media {
 	TELEGRAM_DESCRIPTION = 'telegram.description',
 }
 
+export enum Mentor {
+	FULLPATH_TITLE = 'fullpath.title',
+	FULLPATH_INDICATOR = 'fullpath.indicator',
+	FULLPATH_LEVELS_TITLE = 'fullpath.levels.title',
+	FULLPATH_LEVELS_EVEN_HERE = 'fullpath.levels.even_here',
+	FULLPATH_LEVELS_SUBTITLE = 'fullpath.levels.subtitle',
+	FULLPATH_CARDS_MATERIAL_TITLE = 'fullpath.cards.material.title',
+	FULLPATH_CARDS_MATERIAL_DESCRIPTION = 'fullpath.cards.material.description',
+	FULLPATH_CARDS_COMMUNITY_TITLE = 'fullpath.cards.community.title',
+	FULLPATH_CARDS_COMMUNITY_DESCRIPTION = 'fullpath.cards.community.description',
+	FULLPATH_CARDS_STRUCTURE_TITLE = 'fullpath.cards.structure.title',
+	FULLPATH_CARDS_STRUCTURE_DESCRIPTION = 'fullpath.cards.structure.description',
+}
+
 export enum Specializations {
 	TITLE_MAIN = 'title.main',
 	SELECT_CHOOSE = 'select.choose',
