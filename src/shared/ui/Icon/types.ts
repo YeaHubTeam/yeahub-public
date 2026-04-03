@@ -73,6 +73,7 @@ export type IconName =
 	| 'thumbsDown'
 	| 'thumbsUp'
 	| 'watch'
-	| 'tickWithBackground';
+	| 'tickWithBackground'
+	| 'lightning';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

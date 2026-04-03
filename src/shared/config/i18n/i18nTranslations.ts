@@ -379,3 +379,14 @@ export enum InterviewStatistics {
 	QUESTION_STATS_IN_PROCESS = 'questionStats.inProcess',
 	QUESTION_STATS_LEARNED = 'questionStats.learned',
 }
+
+export enum Mentor {
+	BANNER_STICKER = 'banner.sticker',
+	BANNER_TITLE = 'banner.title',
+	BANNER_DESCRIPTION = 'banner.description',
+	BANNER_BUTTON = 'banner.button',
+	BANNER_ADVANTAGE_FIRST = 'banner.advantages.first',
+	BANNER_ADVANTAGE_SECOND = 'banner.advantages.second',
+	BANNER_ADVANTAGE_THIRD = 'banner.advantages.third',
+	BANNER_ADVANTAGE_FOURTH = 'banner.advantages.fourth',
+}

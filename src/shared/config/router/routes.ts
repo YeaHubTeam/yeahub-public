@@ -61,6 +61,10 @@ export const ROUTES = {
 		route: 'learning',
 		page: '/learning',
 	},
+	mentor: {
+		route: 'mentor',
+		page: '/mentor',
+	},
 	wiki: {
 		questions: {
 			page: process.env.APP_SITE_URL + 'wiki/questions/:questionId',

@@ -1,0 +1,21 @@
+.title {
+	margin-top: 20px;
+  max-width: 785px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: pre-wrap;
+}
+
+@media screen and (width < 1280px) {
+	.title {
+		line-height: 115%;
+		font-size: 40px;
+	}
+}
+
+@media screen and (width < 768px) {
+  .title {
+		line-height: 120%;
+    font-size: 24px;
+  }
+}

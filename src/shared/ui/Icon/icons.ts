@@ -42,6 +42,7 @@ import ImageEdit from '@/shared/assets/icons/imageEdit.svg';
 import Info from '@/shared/assets/icons/info.svg';
 import Instagram from '@/shared/assets/icons/instagram.svg';
 import KeySquare from '@/shared/assets/icons/keySquare.svg';
+import Lightning from '@/shared/assets/icons/lightning.svg';
 import Like from '@/shared/assets/icons/like.svg';
 import Linkedin from '@/shared/assets/icons/linkedin.svg';
 import ListWithBackground from '@/shared/assets/icons/listWithBackground.svg';
@@ -148,4 +149,5 @@ export const icons: Record<IconName, IconComponent> = {
 	thumbsUp: ThumbsUp,
 	watch: Watch,
 	tickWithBackground: TickWithBackground,
+	lightning: Lightning,
 };
