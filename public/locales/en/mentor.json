@@ -1,4 +1,14 @@
 {
+	"banner": {
+		"sticker": "Preparing for real offers",
+		"title": "Frontend Development Mentoring",
+		"description": "I don't just prepare for interviews—my students go to work and confidently handle all tasks. The real result is when support is no longer needed.",
+		"button": "Contact me",
+		"advantages": {
+			"first": "Basic payment only after employment.",
+			"second": "Students work at BigTech (Sber, Yandex, etc.)",
+			"third": "Real commercial experience in the team.",
+			"fourth": "Full support until employment."
 	"fullpath": {
 		"title": "Any level. Full path to the result.",
 		"indicator": "full path",

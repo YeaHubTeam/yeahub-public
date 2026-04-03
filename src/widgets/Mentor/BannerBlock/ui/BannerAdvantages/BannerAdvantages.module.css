@@ -1,0 +1,31 @@
+.card {
+	padding: 20px;
+	width: calc(25% - 15px);
+}
+
+.card-content {
+	width: 100%;
+}
+
+.icon-wrapper {
+	width: 24px;
+	height: 24px;
+}
+
+@media screen and (width < 1280px) {
+	.card {
+		width: calc(50% - 10px);
+	}
+}
+
+@media screen and (width < 768px) {
+	.card {
+		padding: 10px;
+		width: 100%;
+	}
+	
+	.list {
+		gap: 10px;
+	}
+}
+

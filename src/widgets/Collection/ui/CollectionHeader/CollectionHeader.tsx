@@ -24,7 +24,7 @@ export const CollectionHeader = ({ collection }: CollectionHeaderProps) => {
 		createdBy,
 		description,
 	} = collection;
-	const collectionImageSrc = imageSrc && company?.imageSrc;
+	const collectionImageSrc = imageSrc || company?.imageSrc;
 
 	return (
 		<Card className={styles.wrapper} withOutsideShadow>
