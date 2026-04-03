@@ -106,7 +106,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const specializationTitle = currentSpecialization.title;
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}`;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();

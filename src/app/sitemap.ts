@@ -4,12 +4,11 @@ import { getCollectionSlugs } from '@/entities/collection';
 import { getQuestionSlugs } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
 
 const BATCH_SIZE = 50;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE).replace(/\/$/, '');
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
 
 	const urls: MetadataRoute.Sitemap = [];
 
@@ -18,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		'/landing',
 		'/docs',
 		'/learning',
+		'/mentor',
 		'/quiz',
 		'/quiz/new',
 		'/quiz/result',

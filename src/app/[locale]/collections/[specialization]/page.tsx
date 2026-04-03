@@ -76,9 +76,9 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch || !!companies;
 
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
-	const collectionsTitle = t('collections.title');
+	const collectionsTitle = t('collections.title', { specialization: currentSpecialization.title });
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -87,10 +87,8 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 				'@type': 'CollectionPage',
 				'@id': pageUrl,
 				url: pageUrl,
-				name: `${collectionsTitle} — ${currentSpecialization.title}`,
-				description:
-					currentSpecialization.description ||
-					`${collectionsTitle} — ${currentSpecialization.title}`,
+				name: collectionsTitle,
+				description: currentSpecialization.description || collectionsTitle,
 				isPartOf: {
 					'@type': 'WebSite',
 					url: siteUrl,
@@ -120,7 +118,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 					{
 						'@type': 'ListItem',
 						position: 2,
-						name: `${collectionsTitle} — ${currentSpecialization.title}`,
+						name: collectionsTitle,
 						item: pageUrl,
 					},
 				],

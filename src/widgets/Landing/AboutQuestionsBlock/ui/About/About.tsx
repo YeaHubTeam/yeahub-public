@@ -14,7 +14,7 @@ export const About = () => {
 
 	return (
 		<div className={styles.about} data-testid="About">
-			<Text variant={isMobile ? 'body5-accent' : 'head3'} className={styles.title}>
+			<Text variant={isMobile ? 'body5-accent' : 'head2'} className={styles.title}>
 				{t(Landing.QUESTIONS_TITLE)}
 			</Text>
 			<Text variant="body3" className={styles.description}>

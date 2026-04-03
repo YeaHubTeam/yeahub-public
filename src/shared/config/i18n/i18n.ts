@@ -10,6 +10,7 @@ export const i18Namespace = {
 	main: 'main',
 	questions: 'questions',
 	media: 'media',
+	mentor: 'mentor',
 	specialization: 'specialization',
 	translation: 'translation',
 	skill: 'skill',
@@ -23,6 +24,7 @@ export const i18Namespace = {
 	analytics: 'analytics',
 	resources: 'resources',
 	landing: 'landing',
+	mentor: 'mentor',
 	interviewStatistics: 'interviewStatistics',
 	mentor: 'mentor',
 } as const;

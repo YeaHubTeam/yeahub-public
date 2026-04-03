@@ -14,7 +14,7 @@ export const SpecializationBlock = () => {
 
 	return (
 		<Flex direction="column" className={styles.container} dataTestId="SpecializationBlock">
-			<Text variant="head3" className={styles.title}>
+			<Text variant="head2" className={styles.title}>
 				{t(Landing.SPECIALIZATION_NEW_TITLE)}
 			</Text>
 			<ul className={styles['cards-list']} data-testid="SpecializationsCardList">

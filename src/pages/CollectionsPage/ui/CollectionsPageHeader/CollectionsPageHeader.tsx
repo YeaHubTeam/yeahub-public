@@ -25,11 +25,15 @@ export const CollectionsPageHeader = ({
 }: CollectionsPageHeaderProps) => {
 	const t = useTranslations(i18Namespace.collection);
 
+	const title = t(Collections.COLLECTIONS_TITLE, {
+		specialization: currentSpecialization.title,
+	});
+
 	return (
 		<>
 			<Flex className={styles.header} direction="row" justify="between">
 				<Text variant="body6" isMainTitle>
-					{t(Collections.COLLECTIONS_TITLE)}
+					{title}
 				</Text>
 				<FiltersDrawer>
 					<CollectionsFilterPanel

@@ -1,7 +1,7 @@
 export const ROUTES = {
 	appRoute: '/',
-	login: `${process.env.NEXT_PUBLIC_SITE_URL}auth/login`,
-	register: `${process.env.NEXT_PUBLIC_SITE_URL}auth/register`,
+	login: `${process.env.APP_SITE_URL}auth/login`,
+	register: `${process.env.APP_SITE_URL}auth/register`,
 	questions: {
 		route: 'questions',
 		page: '/questions/:specialization',
@@ -19,11 +19,11 @@ export const ROUTES = {
 		page: '/interview',
 		questions: {
 			route: 'questions',
-			page: process.env.NEXT_PUBLIC_SITE_URL + 'interview/questions',
+			page: process.env.APP_SITE_URL + 'interview/questions',
 		},
 	},
 	users: {
-		page: process.env.NEXT_PUBLIC_SITE_URL + 'users/',
+		page: process.env.APP_SITE_URL + 'users/',
 	},
 	collections: {
 		route: 'collections',
@@ -39,7 +39,7 @@ export const ROUTES = {
 	},
 	settings: {
 		route: 'settings',
-		page: process.env.NEXT_PUBLIC_SITE_URL + 'settings',
+		page: process.env.APP_SITE_URL + 'settings',
 	},
 	avos: {
 		route: 'avos',
@@ -61,9 +61,13 @@ export const ROUTES = {
 		route: 'learning',
 		page: '/learning',
 	},
+	mentor: {
+		route: 'mentor',
+		page: '/mentor',
+	},
 	wiki: {
 		questions: {
-			page: process.env.NEXT_PUBLIC_SITE_URL + 'wiki/questions/:questionId',
+			page: process.env.APP_SITE_URL + 'wiki/questions/:questionId',
 		},
 	},
 } as const;
