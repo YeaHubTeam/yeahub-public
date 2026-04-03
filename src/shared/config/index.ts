@@ -20,8 +20,10 @@ export {
 	Landing,
 	Mentor,
 	InterviewStatistics,
+	Tasks,
 	Docs,
 } from './i18n/i18nTranslations';
+export { API_VERSION } from './query/apiConstants';
 
 export { ROUTES } from './router/routes';
 export { AUTH_LINKS } from './router/constants';

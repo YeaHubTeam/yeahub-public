@@ -28,7 +28,6 @@ export const variantToTagMapping: Record<TextVariant, keyof JSX.IntrinsicElement
 	head3: 'h3',
 	head4: 'h4',
 	head5: 'h5',
-	head6: 'h1',
 	body1: 'p',
 	'body1-accent': 'p',
 	body2: 'p',
