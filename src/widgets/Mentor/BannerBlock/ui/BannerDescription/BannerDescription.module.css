@@ -1,7 +1,6 @@
 .description {
   margin-top: 10px;
-  margin-bottom: 24px;
-  width: 600px;
+  max-width: 600px;
   text-align: center;
   white-space: pre-wrap;
 }

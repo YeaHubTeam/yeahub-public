@@ -1,16 +1,14 @@
-'use client';
-
 import { useTranslations } from 'next-intl';
 
 import { Mentor, i18Namespace } from '@/shared/config';
+import { Badge } from '@/shared/ui/Badge';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { IconBadge } from '@/shared/ui/IconBadge';
 import { Text } from '@/shared/ui/Text';
 
-import styles from './MentorBannerAdvantages.module.css';
+import styles from './BannerAdvantages.module.css';
 
-export const MentorBannerAdvantages = () => {
+export const BannerAdvantages = () => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	const advantages = [
@@ -21,14 +19,14 @@ export const MentorBannerAdvantages = () => {
 	];
 
 	return (
-		<Flex gap="20" wrap="nowrap" className={styles.advantages} componentType="section">
+		<Flex gap="20" wrap="wrap" componentType="section" className={styles.list}>
 			{advantages.map((item) => (
 				<Card key={item.id} size="small" className={styles.card}>
-					<Flex gap="9" align="center" className={styles['card-content']}>
-						<IconBadge
+					<Flex gap="9" align="start" className={styles['card-content']}>
+						<Badge
 							icon="lightning"
-							className={styles['icon-wrapper']}
-							iconClassName={styles.icon}
+							wrapperClassName={styles['icon-wrapper']}
+							className={styles.icon}
 						/>
 						<Text variant="body3-accent" className={styles['card-text']}>
 							{item.text}

@@ -1,11 +1,7 @@
-.wrapper {
-	width: 100%;
-}
-
 .banner-block {
 	position: relative;
-	padding: 48px 24px;
-	min-height: 637px;
+	padding-top: 165px;
+	height: 637px;
 	overflow: hidden;
 	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
 	border-radius: 20px;
@@ -46,7 +42,7 @@
 	position: absolute;
 	top: 50%;
 	right: -140px;
-	z-index: 1;
+	z-index: 0;
 	width: 584.119px;
 	height: 507.272px;
 	transform: translateY(-50%);
@@ -56,4 +52,16 @@
 .shape-svg {
 	width: 100%;
 	height: 100%;
+}
+
+@media screen and (width < 1280px) {
+	.banner-block {
+		padding-top: 150px;
+	}
+}
+
+@media screen and (width < 768px) {
+	.banner-block {
+		padding-top: 135px;
+	}
 }

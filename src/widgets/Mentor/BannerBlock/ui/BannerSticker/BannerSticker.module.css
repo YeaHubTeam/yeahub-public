@@ -2,8 +2,6 @@
 	position: relative;
 	display: inline-flex;
 	align-items: center;
-  margin-top: 165px;
-  margin-bottom: 20px;
 	padding: 6px 12px 6px 6px;
 	width: fit-content;
 	overflow: hidden;
@@ -11,7 +9,7 @@
 	border: 1px solid rgb(255 255 255 / 16%);
 	border-radius: 47px;
 	background: rgb(255 255 255 / 24%);
-	backdrop-filter: blur(20.1px);
+	backdrop-filter: blur(10.1px);
 }
 
 .sticker::before {
@@ -27,28 +25,16 @@
 	position: relative;
 	z-index: 1;
 	display: block;
-	width: 6.897px;
-	height: 13.103px;
-	color: var(--color-red-600);
 }
 
 .icon-wrapper {
 	position: relative;
 	z-index: 1;
-	display: flex;
-	flex-shrink: 0;
-	justify-content: center;
-	align-items: center;
 	width: 20px;
 	height: 20px;
-	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
-	border: 1px solid rgb(243 22 78 / 7%);
-	border-radius: 50%;
-	background: #fff;
 }
 
 .text {
 	position: relative;
 	z-index: 1;
-	line-height: 120%;
 }
