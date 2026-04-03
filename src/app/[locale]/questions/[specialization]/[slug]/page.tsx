@@ -99,8 +99,7 @@ const QuestionPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 
 	const question = await getQuestionBySlug(slug);
-	// const aa = localStorage.getItem('ddd');
-	// console.log(aa);
+
 	if (!question) {
 		notFound();
 	}
