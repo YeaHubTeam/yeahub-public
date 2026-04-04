@@ -108,7 +108,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!name || !!types || !!skills;
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/resources/${specialization}`;
 	const headerTitle = t(Resources.HEADER_TITLE);
 

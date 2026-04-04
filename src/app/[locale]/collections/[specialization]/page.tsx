@@ -76,7 +76,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch || !!companies;
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
 	const collectionsTitle = t('collections.title', { specialization: currentSpecialization.title });
 
