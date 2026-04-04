@@ -24,7 +24,6 @@ export const i18Namespace = {
 	analytics: 'analytics',
 	resources: 'resources',
 	landing: 'landing',
-	mentor: 'mentor',
 	interviewStatistics: 'interviewStatistics',
 } as const;
 
