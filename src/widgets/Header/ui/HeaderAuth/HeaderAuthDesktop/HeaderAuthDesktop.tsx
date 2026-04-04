@@ -10,7 +10,7 @@ import styles from './HeaderAuthDesktop.module.css';
 
 export const HeaderAuthDesktop = async () => {
 	const t = await getTranslations(i18Namespace.header);
-
+	console.log(AUTH_LINKS);
 	return (
 		<Flex dataTestId="HeaderAuthDesktop_Wrapper" justify="between" align="center" gap="26">
 			<Button

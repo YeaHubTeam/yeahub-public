@@ -54,7 +54,7 @@ const HhAnalyticsPage = async ({ searchParams, params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.analytics });
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/hh-analytics`;
 
 	const titleSkills = t(Analytics.HH_ANALYTICS_TITLE_SKILLS);

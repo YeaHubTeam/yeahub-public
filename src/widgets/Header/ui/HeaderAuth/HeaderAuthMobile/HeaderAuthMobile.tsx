@@ -22,7 +22,12 @@ export const HeaderAuthMobile = () => {
 			link: AUTH_LINKS.login,
 		},
 	];
-
+	console.log(authMenuLinks);
+	console.log(process.env.NEXT_PUBLIC_SITE_URL);
+	console.log(process.env.NEXT_PUBLIC_APP_SITE_URL);
+	console.log(process.env.NEXT_PUBLIC_API_URL);
+	console.log(process.env.NEXT_PUBLIC_APP_ENV);
+	console.log(AUTH_LINKS);
 	return (
 		<Popover menuItems={authMenuLinks} className={styles['auth-popover']}>
 			{({ onToggle }) => (
