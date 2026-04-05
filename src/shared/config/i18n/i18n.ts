@@ -10,6 +10,7 @@ export const i18Namespace = {
 	main: 'main',
 	questions: 'questions',
 	media: 'media',
+	mentor: 'mentor',
 	specialization: 'specialization',
 	translation: 'translation',
 	skill: 'skill',

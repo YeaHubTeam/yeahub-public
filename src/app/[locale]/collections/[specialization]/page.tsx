@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -10,7 +11,7 @@ import {
 	getSpecializations,
 } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
-import { i18Namespace, locales } from '@/shared/config';
+import { Translation, i18Namespace, locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
@@ -35,6 +36,31 @@ export const generateStaticParams = async () => {
 		console.error(error);
 		return [];
 	}
+};
+
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
+	const { locale, specialization } = await params;
+	const t = await getTranslations({ locale, namespace: i18Namespace.collection });
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
+	if (!currentSpecialization) {
+		return { title: t(Translation.ERROR_404_TITLE) };
+	}
+
+	const collectionsTitle = t('collections.title', { specialization: currentSpecialization.title });
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
+	const canonical = `${baseUrl}/${locale}/collections/${specialization}`;
+
+	return {
+		title: collectionsTitle,
+		description: currentSpecialization.description || collectionsTitle,
+		alternates: {
+			canonical,
+		},
+		openGraph: {
+			type: 'website',
+			url: canonical,
+		},
+	};
 };
 
 const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
@@ -76,7 +102,7 @@ const MainCollectionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!isFree || !!titleOrDescriptionSearch || !!companies;
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}`;
 	const collectionsTitle = t('collections.title', { specialization: currentSpecialization.title });
 

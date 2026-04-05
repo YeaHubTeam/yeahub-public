@@ -1,6 +1,7 @@
 .head1 {
   line-height:115%;
-  font-size: var(--font-size-h-xxl);
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-h-xxl);
 }
 
 .head2 {
@@ -73,7 +74,7 @@
   font-weight: var(--font-weight-600);
   font-size: var(--font-size-p-m);
 }
-	
+
 .body4 {
   line-height:120%;
   font-weight: var(--font-weight-600);
@@ -86,7 +87,7 @@
   font-size: var(--font-size-h-xs);
 }
 
-.body5-accent { 
+.body5-accent {
   line-height:120%;
   font-weight: var(--font-weight-500);
   font-size: var(--font-size-h-xs);
@@ -167,7 +168,7 @@
   color:var(--color-red-300);
 }
 
-.text-red-400 { 
+.text-red-400 {
   color:var(--color-red-400);
 }
 

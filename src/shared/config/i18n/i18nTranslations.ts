@@ -71,6 +71,7 @@ export enum Footer {
 }
 
 export enum Questions {
+	IMAGE_ALT = 'image-alt',
 	SHORT_ANSWER_TITLE = 'short.answer.title',
 	LONG_ANSWER_TITLE = 'long.answer.title',
 	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
@@ -113,6 +114,20 @@ export enum Media {
 	GURU_DESCRIPTION = 'guru.description',
 	TELEGRAM_SUBSCRIBE = 'telegram.subscribe',
 	TELEGRAM_DESCRIPTION = 'telegram.description',
+}
+
+export enum Mentor {
+	FULLPATH_TITLE = 'fullpath.title',
+	FULLPATH_INDICATOR = 'fullpath.indicator',
+	FULLPATH_LEVELS_TITLE = 'fullpath.levels.title',
+	FULLPATH_LEVELS_EVEN_HERE = 'fullpath.levels.even_here',
+	FULLPATH_LEVELS_SUBTITLE = 'fullpath.levels.subtitle',
+	FULLPATH_CARDS_MATERIAL_TITLE = 'fullpath.cards.material.title',
+	FULLPATH_CARDS_MATERIAL_DESCRIPTION = 'fullpath.cards.material.description',
+	FULLPATH_CARDS_COMMUNITY_TITLE = 'fullpath.cards.community.title',
+	FULLPATH_CARDS_COMMUNITY_DESCRIPTION = 'fullpath.cards.community.description',
+	FULLPATH_CARDS_STRUCTURE_TITLE = 'fullpath.cards.structure.title',
+	FULLPATH_CARDS_STRUCTURE_DESCRIPTION = 'fullpath.cards.structure.description',
 }
 
 export enum Specializations {
@@ -231,6 +246,8 @@ export enum Collections {
 	BANNER_INTERVIEW_LINK = 'banner-interview.link',
 	BANNER_INTERVIEW_WATCH_BUTTON = 'banner-interview.watch-button',
 	SORT_AUTHOR_TITLE = 'sort.author.title',
+
+	COLLECTION_TITLE = 'collection-title',
 }
 
 export enum InterviewQuiz {
@@ -378,4 +395,15 @@ export enum InterviewStatistics {
 	QUESTION_STATS_NEW = 'questionStats.new',
 	QUESTION_STATS_IN_PROCESS = 'questionStats.inProcess',
 	QUESTION_STATS_LEARNED = 'questionStats.learned',
+}
+
+export enum Mentor {
+	BANNER_STICKER = 'banner.sticker',
+	BANNER_TITLE = 'banner.title',
+	BANNER_DESCRIPTION = 'banner.description',
+	BANNER_BUTTON = 'banner.button',
+	BANNER_ADVANTAGE_FIRST = 'banner.advantages.first',
+	BANNER_ADVANTAGE_SECOND = 'banner.advantages.second',
+	BANNER_ADVANTAGE_THIRD = 'banner.advantages.third',
+	BANNER_ADVANTAGE_FOURTH = 'banner.advantages.fourth',
 }

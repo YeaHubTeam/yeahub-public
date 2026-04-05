@@ -27,6 +27,7 @@ export interface CardProps {
 	dataTestId?: string;
 	size?: CardSize;
 	headerAction?: ReactNode;
+	titleComponent?: ReactNode;
 }
 
 /**
@@ -50,6 +51,7 @@ export const Card = ({
 	dataTestId = 'Card',
 	size = 'medium',
 	headerAction,
+	titleComponent,
 }: CardProps) => {
 	return (
 		<Flex
@@ -61,7 +63,7 @@ export const Card = ({
 				[styles.border]: withBorder,
 			})}
 		>
-			{(title || actionRoute) && (
+			{(title || actionRoute || titleComponent) && (
 				<div
 					className={classNames(styles['card-header'], {
 						[styles['card-header-title-center']]: isTitleCenter,
@@ -69,6 +71,7 @@ export const Card = ({
 					data-testid="Card_Header"
 				>
 					{title && <Text variant="body5-accent">{title}</Text>}
+					{titleComponent ? titleComponent : null}
 					{actionRoute ? (
 						<Link
 							href={actionRoute}

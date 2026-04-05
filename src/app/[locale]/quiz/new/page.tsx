@@ -52,7 +52,7 @@ const MainCreateQuizPage = async ({ params, searchParams }: PageProps) => {
 	const tCreate = await getTranslations({ locale, namespace: i18Namespace.interviewQuizCreate });
 	const tQuiz = await getTranslations({ locale, namespace: i18Namespace.interviewQuiz });
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/quiz/new`;
 	const quizUrl = `${siteUrl}/${locale}/quiz`;
 
