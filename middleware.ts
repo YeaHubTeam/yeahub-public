@@ -1,5 +1,4 @@
 import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
 
 import createMiddleware from 'next-intl/middleware';
 
@@ -20,7 +19,7 @@ export default function middleware(request: NextRequest) {
 		// Формируем правильный URL
 		const newUrl = `${protocol}://${cleanHost}${request.nextUrl.pathname}${request.nextUrl.search}`;
 
-		return NextResponse.redirect(newUrl, 301);
+		return Response.redirect(newUrl, 301);
 	}
 
 	return intlMiddleware(request);
