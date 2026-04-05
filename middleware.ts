@@ -7,7 +7,7 @@ import { routing } from './src/shared/config';
 
 const intlMiddleware = createMiddleware(routing);
 
-export function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
 	const host = request.headers.get('host');
 	const proto = request.headers.get('x-forwarded-proto') || 'https';
 
