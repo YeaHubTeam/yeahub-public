@@ -71,6 +71,7 @@ export enum Footer {
 }
 
 export enum Questions {
+	IMAGE_ALT = 'image-alt',
 	SHORT_ANSWER_TITLE = 'short.answer.title',
 	LONG_ANSWER_TITLE = 'long.answer.title',
 	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
@@ -245,6 +246,8 @@ export enum Collections {
 	BANNER_INTERVIEW_LINK = 'banner-interview.link',
 	BANNER_INTERVIEW_WATCH_BUTTON = 'banner-interview.watch-button',
 	SORT_AUTHOR_TITLE = 'sort.author.title',
+
+	COLLECTION_TITLE = 'collection-title',
 }
 
 export enum InterviewQuiz {

@@ -7,7 +7,7 @@ export const ROUTES = {
 		page: '/questions/:specialization',
 		detail: {
 			route: 'questions/:specialization/:slug',
-			page: '/questions/:specialization/:slug',
+			page: '/:locale/questions/:specialization/:slug',
 		},
 	},
 	resources: {
@@ -30,7 +30,7 @@ export const ROUTES = {
 		page: '/collections/:specialization',
 		detail: {
 			route: 'collections/:specialization/:slug',
-			page: '/collections/:specialization/:slug',
+			page: '/:locale/collections/:specialization/:slug',
 		},
 	},
 	hhAnalytics: {

@@ -11,6 +11,7 @@
 	"search": {
 		"placeholder": "Enter question..."
 	},
+	"image-alt": "Question about {skill}: {keywords}",
 	"short": {
 		"answer": {
 			"title": "Short answer"

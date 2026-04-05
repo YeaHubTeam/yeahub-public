@@ -26,14 +26,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		return { title: t(Translation.ERROR_404_TITLE) };
 	}
 
+	const title =
+		locale === 'en'
+			? `${collection.title} interview, questions and answers`
+			: `Собеседование ${collection.title} - вопросы и ответы`;
+
 	const description = collection.description?.slice(0, 160) || collection.title || '';
 
 	return {
-		title: collection.title,
+		title,
 		description,
 		keywords: collection.keywords,
 		openGraph: {
-			title: collection.title,
+			title,
 			description,
 			type: 'article',
 			images: collection.imageSrc ? [collection.imageSrc] : [],
@@ -177,6 +182,7 @@ const CollectionPage = async ({ params }: PageProps) => {
 			<CollectionPageComponent
 				collection={collection}
 				specialization={specialization ?? DEFAULT_SPECIALIZATION_SLUG}
+				locale={locale}
 			/>
 		</>
 	);
