@@ -128,6 +128,18 @@ export enum Mentor {
 	FULLPATH_CARDS_COMMUNITY_DESCRIPTION = 'fullpath.cards.community.description',
 	FULLPATH_CARDS_STRUCTURE_TITLE = 'fullpath.cards.structure.title',
 	FULLPATH_CARDS_STRUCTURE_DESCRIPTION = 'fullpath.cards.structure.description',
+	ABOUT_INDICATOR = 'about.indicator',
+	ABOUT_TITLE = 'about.title',
+	ABOUT_DESCRIPTION = 'about.description',
+	ABOUT_PROFILE_NAME = 'about.profile.name',
+	ABOUT_PROFILE_ROLE = 'about.profile.role',
+	ABOUT_ACHIEVEMENTS_FIRST = 'about.achievements.first',
+	ABOUT_ACHIEVEMENTS_SECOND = 'about.achievements.second',
+	ABOUT_ACHIEVEMENTS_THIRD = 'about.achievements.third',
+	ABOUT_ACHIEVEMENTS_FOURTH = 'about.achievements.fourth',
+	ABOUT_ACHIEVEMENTS_FIFTH = 'about.achievements.fifth',
+	ABOUT_ACHIEVEMENTS_SIXTH = 'about.achievements.sixth',
+	ABOUT_LINK = 'about.link',
 }
 
 export enum Specializations {
