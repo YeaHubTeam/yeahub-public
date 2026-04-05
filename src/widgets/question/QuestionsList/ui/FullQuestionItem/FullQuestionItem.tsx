@@ -15,12 +15,17 @@ import styles from './FullQuestionItem.module.css';
 interface FullQuestionItemProps {
 	question: Question;
 	specialization: string;
+	locale: string;
 }
 
-export const FullQuestionItem = async ({ question, specialization }: FullQuestionItemProps) => {
+export const FullQuestionItem = async ({
+	question,
+	specialization,
+	locale,
+}: FullQuestionItemProps) => {
 	const t = await getTranslations(i18Namespace.questions);
 	const { slug, imageSrc, complexity = 0, rate, shortAnswer } = question;
-	const detailRoute = route(ROUTES.questions.detail.page, specialization, slug);
+	const detailRoute = route(ROUTES.questions.detail.page, locale, specialization, slug);
 
 	return (
 		<Flex direction="column" gap="24" className={styles.item}>

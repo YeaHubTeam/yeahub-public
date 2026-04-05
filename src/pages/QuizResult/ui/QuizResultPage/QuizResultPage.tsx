@@ -21,9 +21,10 @@ import styles from './QuizResultPage.module.css';
 
 export interface QuizResultPageProps {
 	quizResults: GetQuestionsBySpecializationCountResponse | undefined;
+	locale: string;
 }
 
-export const QuizResultPage = ({ quizResults }: QuizResultPageProps) => {
+export const QuizResultPage = ({ quizResults, locale }: QuizResultPageProps) => {
 	const router = useRouter();
 	const t = useTranslations(i18Namespace.interviewQuizResult);
 
@@ -52,7 +53,11 @@ export const QuizResultPage = ({ quizResults }: QuizResultPageProps) => {
 					/>
 				</Flex>
 			</Card>
-			<PassedQuestionsList className={styles['questions-list']} questions={quizAnswers || []} />
+			<PassedQuestionsList
+				className={styles['questions-list']}
+				questions={quizAnswers || []}
+				locale={locale}
+			/>
 		</Flex>
 	);
 };

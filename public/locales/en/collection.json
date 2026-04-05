@@ -52,7 +52,7 @@
 	},
 	"image-src": "Image link",
 	"create-page-title": "Collection",
-	"image-alt": "Company image",
+	"image-alt": "Questions from the {title} interview on the topics {keywords}",
 	"numberOfQuestions": "Number of questions",
 	"collections": {
 		"title": "Collections for {specialization}}",
@@ -88,5 +88,6 @@
 	},
 	"company": {
 		"title": "Company"
-	}
+	},
+	"collection-title": "{title} interview, questions and answers"
 }

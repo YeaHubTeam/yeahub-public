@@ -1,6 +1,9 @@
 import React from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { Question, getQuestionImage } from '@/entities/question';
+import { Questions, i18Namespace } from '@/shared/config';
 import { AdditionalInfoDrawer } from '@/shared/ui/AdditionalInfoDrawer';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -15,6 +18,7 @@ interface QuestionHeaderProps {
 }
 
 export const QuestionHeader = ({ question }: QuestionHeaderProps) => {
+	const t = useTranslations(i18Namespace.questions);
 	const { title, description } = question;
 	const imagePriorityToShow = getQuestionImage(question);
 	const { rate, keywords, complexity, questionSkills, questionSpecializations } = question;
@@ -22,7 +26,14 @@ export const QuestionHeader = ({ question }: QuestionHeaderProps) => {
 	return (
 		<Card withOutsideShadow className={styles.header}>
 			<Flex gap="10" direction="row">
-				<ImageWithWrapper className={styles['image-default']} src={imagePriorityToShow} />
+				<ImageWithWrapper
+					className={styles['image-default']}
+					src={imagePriorityToShow}
+					alt={t(Questions.IMAGE_ALT, {
+						skill: questionSkills[0]?.title || '',
+						keywords: keywords.join(', '),
+					})}
+				/>
 				<Flex direction="column" gap="8" maxWidth>
 					<Flex justify="between" align="start" gap="8" maxWidth>
 						<Text variant="body6" color="black-800" isMainTitle className={styles.title}>

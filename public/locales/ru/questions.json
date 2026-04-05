@@ -11,6 +11,7 @@
 	"search": {
 		"placeholder": "Введите вопрос..."
 	},
+	"image-alt": "Вопрос про {skill}: {keywords}",
 	"short": {
 		"answer": {
 			"title": "Короткий ответ"

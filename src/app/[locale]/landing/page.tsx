@@ -190,6 +190,7 @@ const LandingPage = async ({ params }: PageProps) => {
 				skills={skillsResponse.data}
 				companies={companiesResponse.data}
 				collections={collections}
+				locale={locale}
 			/>
 		</>
 	);

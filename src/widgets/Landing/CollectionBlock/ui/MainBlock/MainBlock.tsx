@@ -13,9 +13,10 @@ import styles from './MainBlock.module.css';
 
 interface MainBlockProps {
 	collections: Collection[];
+	locale: string;
 }
 
-export const MainBlock = ({ collections }: MainBlockProps) => {
+export const MainBlock = ({ collections, locale }: MainBlockProps) => {
 	const t = useTranslations(i18Namespace.landing);
 
 	const renderCards = collections.map((collection) => (
@@ -24,6 +25,7 @@ export const MainBlock = ({ collections }: MainBlockProps) => {
 				variant="column"
 				collection={collection}
 				specialization={collection.specializations?.[0]?.slug || DEFAULT_SPECIALIZATION_SLUG}
+				locale={locale}
 			/>
 		</div>
 	));

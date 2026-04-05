@@ -22,12 +22,14 @@ type CollectionProps = {
 	collection: Collection;
 	specialization: string;
 	variant?: 'row' | 'column';
+	locale: string;
 };
 
 export const CollectionPreview = ({
 	collection,
 	specialization,
 	variant = 'row',
+	locale,
 }: CollectionProps) => {
 	const { title, isFree, imageSrc, questionsCount, keywords, specializations, company, slug } =
 		collection;
@@ -39,7 +41,7 @@ export const CollectionPreview = ({
 		paid: t(Collections.TARIFF_PAID, { ns: i18Namespace.collection }),
 	};
 
-	const collectionPath = route(ROUTES.collections.detail.page, specialization, slug);
+	const collectionPath = route(ROUTES.collections.detail.page, locale, specialization, slug);
 
 	return (
 		<Link href={collectionPath}>
@@ -47,7 +49,7 @@ export const CollectionPreview = ({
 				<div className={classnames(styles.wrapper, styles[variant])}>
 					<ImageWithWrapper
 						src={imageSrc || company?.imageSrc}
-						alt={t(Collections.IMAGE_ALT)}
+						alt={t(Collections.IMAGE_ALT, { title, keywords: keywords?.join(', ') || '' })}
 						className={classnames(styles['image-wrapper'], styles[variant])}
 					/>
 					<Flex direction="column" gap="16">
