@@ -50,6 +50,7 @@ export const CollectionsPage = ({
 					collections={collections}
 					specialization={specialization}
 					hasFilters={hasFilters}
+					locale={locale}
 				/>
 				<CollectionsPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>

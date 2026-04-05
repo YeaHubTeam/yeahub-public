@@ -53,6 +53,7 @@ export const QuestionsPage = ({
 					questions={questions}
 					specialization={specialization}
 					hasFilters={hasFilters}
+					locale={locale}
 				/>
 				<QuestionPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>

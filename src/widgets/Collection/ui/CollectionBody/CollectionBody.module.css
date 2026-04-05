@@ -19,6 +19,12 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+.title-preview {
+  line-height:120%;
+  font-weight: var(--font-weight-500);
+  font-size: var(--font-size-h-s);
+}
+
 .text {
   color: var(--text-color-light);
   line-height: 20.8px;

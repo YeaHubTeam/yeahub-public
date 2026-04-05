@@ -52,7 +52,7 @@
 	},
 	"image-src": "Ссылка на картинку",
 	"create-page-title": "Коллекция",
-	"image-alt": "Изображение компании",
+	"image-alt": "Вопросы с собеседования {title} по темам {keywords}",
 	"numberOfQuestions": "Количество вопросов",
 	"collections": {
 		"title": "Коллекции на {specialization}",
@@ -88,5 +88,6 @@
 	},
 	"company": {
 		"title": "Компания"
-	}
+	},
+	"collection-title": "Собеседование {title} - вопросы и ответы"
 }

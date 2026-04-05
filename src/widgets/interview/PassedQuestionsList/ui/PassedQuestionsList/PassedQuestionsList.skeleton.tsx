@@ -4,7 +4,9 @@ import { PassedQuestionsItemSkeleton } from '../PassedQuestionsItem/PassedQuesti
 import { PassedQuestionsListProps } from './PassedQuestionsList';
 import styles from './PassedQuestionsList.module.css';
 
-export const PassedQuestionsListSkeleton = ({ className }: PassedQuestionsListProps) => {
+type PassedQuestionsListSkeletonProps = Omit<PassedQuestionsListProps, 'locale'>;
+
+export const PassedQuestionsListSkeleton = ({ className }: PassedQuestionsListSkeletonProps) => {
 	return (
 		<CardSkeleton className={className} isTitleCenter title="title">
 			<ul className={styles.list}>
