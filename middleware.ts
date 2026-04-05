@@ -9,10 +9,18 @@ const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
 	const host = request.headers.get('host');
+
 	if (host?.startsWith('www.')) {
-		const url = request.nextUrl.clone();
-		url.host = host.replace(/^www\./, '');
-		return NextResponse.redirect(url, 301);
+		// Берем чистый домен без www и порта
+		const cleanHost = host.replace(/^www\./, '').split(':')[0];
+
+		// Определяем протокол
+		const protocol = request.headers.get('x-forwarded-proto') || 'https';
+
+		// Формируем правильный URL
+		const newUrl = `${protocol}://${cleanHost}${request.nextUrl.pathname}${request.nextUrl.search}`;
+
+		return NextResponse.redirect(newUrl, 301);
 	}
 
 	return intlMiddleware(request);
