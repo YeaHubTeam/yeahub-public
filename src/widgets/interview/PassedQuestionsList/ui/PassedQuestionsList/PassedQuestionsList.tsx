@@ -15,14 +15,15 @@ import styles from './PassedQuestionsList.module.css';
 export interface PassedQuestionsListProps {
 	questions: Answers[];
 	className?: string;
+	locale: string;
 }
 
-export const PassedQuestionsList = ({ questions, className }: PassedQuestionsListProps) => {
+export const PassedQuestionsList = ({ questions, className, locale }: PassedQuestionsListProps) => {
 	const t = useTranslations(i18Namespace.interviewQuizResult);
 	const searchParams = useSearchParams();
 	const specializationId = Number(searchParams?.get('specializationId'));
 
-	const questionLinks = getQuestionLinks(specializationId);
+	const questionLinks = getQuestionLinks({ locale, specializationId });
 
 	return (
 		<Card className={className} isTitleCenter title={t(InterviewQuizResult.TITLE_QUESTIONS_LIST)}>

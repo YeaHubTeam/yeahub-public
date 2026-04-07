@@ -1,1 +1,1 @@
-export { MentorPage } from './ui/MentorPage';
+export { MentorPage } from './ui/MentorPage/MentorPage';

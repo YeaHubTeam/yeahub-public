@@ -1,18 +1,19 @@
 .head1 {
 	line-height: 115%;
+	font-weight: var(--font-weight-500);
 	font-size: var(--font-size-h-xxl);
 }
 
 .head2 {
 	line-height: 115%;
 	font-weight: var(--font-weight-500);
-	font-size: var(--font-size-h-l);
+	font-size: var(--font-size-large-34);
 }
 
 .head3 {
 	line-height: 115%;
 	font-weight: var(--font-weight-500);
-	font-size: var(--font-size-large-34);
+	font-size: var(--font-size-h-s);
 }
 
 .head4 {
@@ -289,6 +290,10 @@
 
 .text-black-900 {
 	color: var(--color-black-900);
+}
+
+.text-black-1100 {
+	color: var(--color-black-1100);
 }
 
 .text-white-900 {

@@ -14,12 +14,14 @@ interface FullQuestionsListProps {
 	questions: Question[];
 	specialization: string;
 	hasFilters: boolean;
+	locale: string;
 }
 
 export const FullQuestionsList = ({
 	questions,
 	specialization,
 	hasFilters,
+	locale,
 }: FullQuestionsListProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
@@ -41,7 +43,7 @@ export const FullQuestionsList = ({
 		<Flex direction="column" gap="20">
 			{questions.map((question) => (
 				<Accordion key={question.id} title={question.title}>
-					<FullQuestionItem question={question} specialization={specialization} />
+					<FullQuestionItem question={question} specialization={specialization} locale={locale} />
 				</Accordion>
 			))}
 		</Flex>

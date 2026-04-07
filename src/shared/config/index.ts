@@ -18,6 +18,7 @@ export {
 	Learning,
 	Resources,
 	Landing,
+	Mentor,
 	InterviewStatistics,
 	Docs,
 } from './i18n/i18nTranslations';
