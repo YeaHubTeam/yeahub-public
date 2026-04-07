@@ -9,9 +9,11 @@ const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
 	const host = request.headers.get('host');
+	const proto = request.headers.get('x-forwarded-proto') || 'https';
+
 	if (host?.startsWith('www.')) {
-		const url = request.nextUrl.clone();
-		url.host = host.replace(/^www\./, '');
+		const cleanHost = host.replace(/^www\./, '').split(':')[0];
+		const url = `${proto}://${cleanHost}${request.nextUrl.pathname}${request.nextUrl.search}`;
 		return NextResponse.redirect(url, 301);
 	}
 
