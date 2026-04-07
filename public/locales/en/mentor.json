@@ -33,5 +33,32 @@
 				"description": "Theory + livecoding: preparation for interviews begins with the first lessons. After each section there is a knowledge control - without passing the exam we do not move on."
 			}
 		}
+	},
+	"community": {
+		"indicator": "community",
+		"title": "Free materials and community.",
+		"description": "You can learn development for free — I already have the environment, materials, and an active community.",
+		"cards": {
+			"frontend": {
+				"title": "Frontend Community",
+				"description": "Frontend Elite — a free chat with mentoring materials. Feel free to join, introduce yourself, and chat.",
+				"link": "Join the community"
+			},
+			"news": {
+				"title": "News",
+				"description": "News, announcements, and student results. Offers, reviews, mentoring insights, and internships.",
+				"link": "Results and news"
+			},
+			"youtube": {
+				"title": "YouTube",
+				"description": "YouTube — videos about architecture, React, interview preparation, and the IT market.",
+				"link": "Go to YouTube"
+			},
+			"telegram": {
+				"title": "Telegram channel",
+				"description": "Personal blog: thoughts on the market, IT career growth, insights, and useful materials.",
+				"link": "Read Telegram"
+			}
+		}
 	}
 }
