@@ -24,14 +24,8 @@
 }
 
 .number {
-	flex-shrink: 0;
-	padding: 5.5px 7px;
-	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
-	border: 1px solid rgb(243 22 78 / 7%);
-	border-radius: 50%;
-	color: var(--color-red-600);
-	font-weight: var(--font-weight-600);
-	font-size: var(--font-size-p-m);
+	width: 32px;
+	height: 32px;
 }
 
 .title {
@@ -51,6 +45,11 @@
 	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
 	border: 1px solid rgb(243 22 78 / 7%);
 	border-radius: 50px;
+}
+
+.icon1 {
+	width: 60px;
+	height: 30px;
 }
 
 .icon::before {
@@ -120,14 +119,14 @@
 	pointer-events: none;
 }
 
-@media (width<=768px) {
+@media (width < 1280px) {
 	.title,
 	.content-title {
 		font-size: 20px;
 	}
 }
 
-@media (width <= 680px) {
+@media (width < 768px) {
 	.accordion {
 		padding: 10px;
 	}

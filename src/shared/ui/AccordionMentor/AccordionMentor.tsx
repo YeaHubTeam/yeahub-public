@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import classNames from 'classnames';
 
+import { Badge } from '@/shared/ui/Badge';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './AccordionMentor.module.css';
@@ -38,7 +39,7 @@ export const AccordionMentor = ({
 			open={defaultOpen}
 		>
 			<summary className={styles.heading}>
-				{number && <span className={styles.number}>{number}</span>}
+				{number && <Badge text={number} wrapperClassName={styles.number} />}
 				<Text variant="head3" className={styles.title}>
 					{title}
 				</Text>

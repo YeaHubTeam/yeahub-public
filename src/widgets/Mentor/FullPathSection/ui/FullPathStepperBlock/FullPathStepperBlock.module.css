@@ -1,0 +1,22 @@
+.level-content {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	align-items: end;
+	gap: 20px;
+}
+
+.level-right {
+	gap: 18px;
+	padding-right: 36px;
+	padding-bottom: 22px;
+}
+
+@media (width < 1280px) {
+	.level-content {
+		grid-template-columns: 1fr;
+	}
+
+	.level-title {
+		max-width: 372px;
+	}
+}
