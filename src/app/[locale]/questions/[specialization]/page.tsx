@@ -61,14 +61,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		tQuestions(Questions.COUNT),
 		tLanding(Landing.QUESTIONS_TITLE),
 	];
+
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
+	const canonical = `${baseUrl}/${locale}/questions/${specialization}`;
+
 	return {
 		title,
 		description,
 		keywords,
+		alternates: {
+			canonical,
+		},
 		openGraph: {
 			title,
 			description,
 			type: 'website',
+			url: canonical,
 		},
 	};
 }
@@ -106,7 +114,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const specializationTitle = currentSpecialization.title;
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}`;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();

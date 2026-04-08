@@ -34,7 +34,7 @@ const MainResultQuizPage = async ({ params, searchParams }: PageProps) => {
 		? await getQuestionsSpecializationByIdCount(Number(specializationId))
 		: undefined;
 
-	return <QuizResultPage quizResults={quizResults} />;
+	return <QuizResultPage quizResults={quizResults} locale={locale} />;
 };
 
 export default MainResultQuizPage;

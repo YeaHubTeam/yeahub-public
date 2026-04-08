@@ -74,6 +74,10 @@
   gap: 8px;
 }
 
+.gap9 {
+  gap: 9px;
+}
+
 .gap10 {
   gap: 10px;
 }
@@ -102,6 +106,9 @@
   gap: 26px;
 }
 
+.gap30 {
+  gap: 30px;
+}
 
 .gap28 {
   gap: 28px;

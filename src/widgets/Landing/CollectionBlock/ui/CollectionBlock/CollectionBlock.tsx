@@ -14,9 +14,10 @@ import styles from './CollectionBlock.module.css';
 interface CollectionBlockProps {
 	companies: Company[];
 	collections: Collection[];
+	locale: string;
 }
 
-export const CollectionBlock = ({ companies, collections }: CollectionBlockProps) => {
+export const CollectionBlock = ({ companies, collections, locale }: CollectionBlockProps) => {
 	const t = useTranslations(i18Namespace.landing);
 
 	return (
@@ -31,7 +32,7 @@ export const CollectionBlock = ({ companies, collections }: CollectionBlockProps
 					</Text>
 				</div>
 				<FiltersBlock companies={companies} />
-				<MainBlock collections={collections} />
+				<MainBlock collections={collections} locale={locale} />
 				<AdditionalBlock />
 			</Flex>
 		</section>

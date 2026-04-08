@@ -7,6 +7,7 @@ import { ROUTES } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { SimpleStub } from '@/shared/ui/SimpleStub';
+import { Text } from '@/shared/ui/Text';
 
 import { RegistrationBanner } from '../RegistrationBanner/RegistrationBanner';
 import styles from './CollectionBody.module.css';
@@ -17,6 +18,7 @@ interface CollectionBodyProps extends Pick<Collection, 'isFree'> {
 	questions: Question[];
 	questionsCount: number;
 	specialization: string;
+	locale: string;
 }
 
 export const CollectionBody = ({
@@ -24,6 +26,7 @@ export const CollectionBody = ({
 	isFree,
 	specialization,
 	questionsCount,
+	locale,
 }: CollectionBodyProps) => {
 	const t = useTranslations(i18Namespace.questions);
 
@@ -37,7 +40,11 @@ export const CollectionBody = ({
 		return (
 			<Card
 				className={styles.wrapper}
-				title={t(Questions.PREVIEW_TITLE)}
+				titleComponent={
+					<Text variant="head2" className={styles['title-preview']}>
+						{t(Questions.PREVIEW_TITLE)}
+					</Text>
+				}
 				actionRoute={link}
 				actionTitle={t(Questions.COMMUNITY_JOIN)}
 				withOutsideShadow
@@ -49,7 +56,11 @@ export const CollectionBody = ({
 	return (
 		<Card
 			className={styles.wrapper}
-			title={t(Questions.PREVIEW_TITLE)}
+			titleComponent={
+				<Text variant="head2" className={styles['title-preview']}>
+					{t(Questions.PREVIEW_TITLE)}
+				</Text>
+			}
 			headerAction={<CollectionWarningInfo />}
 			withOutsideShadow
 		>
@@ -64,6 +75,7 @@ export const CollectionBody = ({
 							imageSrc={question.questionSkills[0]?.imageSrc ?? undefined}
 							specialization={specialization}
 							slug={question.slug}
+							locale={locale}
 						/>
 					))}
 					{showRegistrationBanner && <RegistrationBanner questionsCount={hiddenQuestionsCount} />}

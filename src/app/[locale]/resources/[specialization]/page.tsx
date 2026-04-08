@@ -26,7 +26,7 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-	const { locale } = await params;
+	const { locale, specialization } = await params;
 
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.resources });
@@ -35,14 +35,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const description = t(Resources.HEADER_TITLE);
 	const keywords = [t(Resources.HEADER_TITLE), t(Resources.RESOURCES_TITLE)];
 
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
+	const canonical = `${baseUrl}/${locale}/resources/${specialization}`;
+
 	return {
 		title,
 		description,
 		keywords,
+		alternates: {
+			canonical,
+		},
 		openGraph: {
 			title,
 			description,
 			type: 'website',
+			url: canonical,
 		},
 	};
 }
@@ -108,7 +115,7 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const hasFilters = !!name || !!types || !!skills;
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/resources/${specialization}`;
 	const headerTitle = t(Resources.HEADER_TITLE);
 

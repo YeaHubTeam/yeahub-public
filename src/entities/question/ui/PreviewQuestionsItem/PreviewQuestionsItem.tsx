@@ -17,6 +17,7 @@ interface PreviewQuestionsItemProps {
 	complexity?: number;
 	imageSrc?: string;
 	slug: string;
+	locale: string;
 }
 
 export const PreviewQuestionsItem = ({
@@ -26,8 +27,9 @@ export const PreviewQuestionsItem = ({
 	complexity,
 	imageSrc,
 	slug,
+	locale,
 }: PreviewQuestionsItemProps) => {
-	const detailRoute = route(ROUTES.questions.detail.page, specialization, slug);
+	const detailRoute = route(ROUTES.questions.detail.page, locale, specialization, slug);
 	return (
 		<li>
 			<Card withOutsideShadow size="small">

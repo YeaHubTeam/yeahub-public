@@ -18,6 +18,7 @@ export {
 	Learning,
 	Resources,
 	Landing,
+	Mentor,
 	InterviewStatistics,
 	Docs,
 	Mentor,

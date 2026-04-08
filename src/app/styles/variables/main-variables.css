@@ -2,7 +2,7 @@
   /* widths */
   --container-width: 1216px;
   --container-width-xl: 1080px;
-  --container-width-lg: 960px; 
+  --container-width-lg: 960px;
   --container-width-md: 708px;
   --container-width-sm: 540px;
   --container-width-xs: 340px;
@@ -28,10 +28,10 @@
   --container-m-b-mobile: 40px;
   --container-m-b-tablet: 80px;
   --container-m-b-desktop: 130px;
-  
+
   /* transitions */
   --drawer-transition-speed: 0.3s;
-  
+
   /* dimensions */
   --font-size-none: 0;
   --font-size-p-xxxs: 6px;
@@ -48,12 +48,13 @@
   --font-size-large-34: 34px;
   --font-size-h-m: 36px;
   --font-size-h-l: 40px;
+  --font-size-h-xl: 50px;
   --font-size-h-xxl: 60px;
   --font-family: "Manrope", sans-serif;
   --font-weight-400: 400;
   --font-weight-500: 500;
   --font-weight-600: 600;
-  
+
   /* shadows */
   --main-shadow: 0px 4px 10px rgb(106 99 118 / 10%);
   --main-shadow-15: 0px 4px 10px rgb(106 99 118 / 15%);
