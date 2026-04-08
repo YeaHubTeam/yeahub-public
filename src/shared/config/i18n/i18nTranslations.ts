@@ -457,4 +457,11 @@ export enum Mentor {
 	ABOUT_ACHIEVEMENTS_FIFTH = 'about.achievements.fifth',
 	ABOUT_ACHIEVEMENTS_SIXTH = 'about.achievements.sixth',
 	ABOUT_LINK = 'about.link',
+	STACK_LABEL = 'stack.label',
+	STACK_TITLE = 'stack.title',
+	STACK_SUBTITLE = 'stack.subtitle',
+	STACK_DESCRIPTION_1 = 'stack.description1',
+	STACK_DESCRIPTION_2 = 'stack.description2',
+	STACK_MAIN_TITLE = 'stack.mainStackTitle',
+	STACK_ADVANCED_TITLE = 'stack.advancedTitle',
 }
