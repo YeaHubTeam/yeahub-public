@@ -15,6 +15,7 @@ type CardSize = 'small' | 'medium';
 export interface CardProps {
 	children?: ReactNode;
 	className?: string;
+	contentClassName?: string;
 	title?: string;
 	actionRoute?: string;
 	actionTitle?: string;
@@ -39,6 +40,7 @@ export interface CardProps {
 export const Card = ({
 	children,
 	className = '',
+	contentClassName = '',
 	withShadow = false,
 	withOutsideShadow = false,
 	withBorder = false,
@@ -100,7 +102,7 @@ export const Card = ({
 			)}
 
 			<div
-				className={classNames(styles.content, {
+				className={classNames(styles.content, contentClassName, {
 					[styles['content-shadow']]: withShadow,
 					[styles['content-bottom']]: isActionPositionBottom,
 					[styles['content-height']]: !actionRoute,
