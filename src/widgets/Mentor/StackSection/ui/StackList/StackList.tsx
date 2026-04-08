@@ -4,17 +4,17 @@ import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
 import { TechItem } from '../../model/costants/mentorStackConstants';
-import styles from './MentorStackColumn.module.css';
+import styles from './StackList.module.css';
 
 interface MentorStackColumnProps {
 	title: string;
 	rows: TechItem[][];
 }
 
-export const MentorStackColumn = ({ title, rows }: MentorStackColumnProps) => {
+export const StackList = ({ title, rows }: MentorStackColumnProps) => {
 	return (
 		<Flex direction="column" gap="16" className={styles['column-wrapper']}>
-			<Text variant="body6" color="black-900" className={styles['column-title']}>
+			<Text variant="head3" className={styles['column-title']}>
 				{title}
 			</Text>
 			<Flex direction="column" gap="20">

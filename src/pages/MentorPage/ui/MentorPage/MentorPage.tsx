@@ -3,6 +3,7 @@ import { AboutSection } from '@/widgets/Mentor/AboutSection';
 import { BannerSection } from '@/widgets/Mentor/BannerSection';
 import { EducationSection } from '@/widgets/Mentor/EducationSection';
 import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
+import { StackSection } from '@/widgets/Mentor/StackSection';
 import { StrategySection } from '@/widgets/Mentor/StrategySection';
 
 import styles from './MentorPage.module.css';
@@ -15,6 +16,7 @@ export const MentorPage = () => {
 			<FullPathSection />
 			<EducationSection />
 			<AboutSection />
+			<StackSection />
 		</Flex>
 	);
 };
