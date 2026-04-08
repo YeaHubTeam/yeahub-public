@@ -1,0 +1,12 @@
+.dot {
+	flex-shrink: 0;
+	margin-left: 9px;
+	width: 7px;
+	height: 7px;
+	box-shadow:
+		0 0 0 4px rgb(207 207 207 / 38%),
+		0 0 0 8px rgb(207 207 207 / 20%),
+		0 0 0 9px rgb(255 255 255 / 40%);
+	border-radius: 50%;
+	background-color: var(--color-red-600);
+}

@@ -1,67 +1,69 @@
-.accordion {	
-  padding: 16px 24px;
-  overflow: hidden;		
-  box-shadow: 0 4px 10px 0 #6A63761A; 
-  border-radius: 8px; 
-  transition: padding 0.2s ease-in-out;
+.accordion {
+	padding: 16px 24px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border-radius: 8px;
+	transition: padding 0.2s ease-in-out;
 	interpolate-size: allow-keywords;
 }
 
 .accordion summary {
-  list-style: none;
+	list-style: none;
 }
 
 .accordion summary::-webkit-details-marker {
-  display: none;
+	display: none;
 }
 
 .icon {
-  flex-shrink: 0;
-  transition: transform 0.3s ease-in-out;
+	flex-shrink: 0;
+	transition: transform 0.3s ease-in-out;
 }
 
 .accordion[open] .icon {
-  transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  list-style: none;
-  font-size: var(--font-size-h-xs);
-  cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0;
+	list-style: none;
+	font-size: var(--font-size-h-xs);
+	cursor: pointer;
 }
 
 .title {
-  position: relative;
-  display: flex;
-  align-items: normal;
-  padding-left: 16px;
-  text-align: initial;
-  transition: color 0.3s ease-in-out;
+	position: relative;
+	display: flex;
+	align-items: normal;
+	padding-left: 16px;
+	text-align: initial;
+	transition: color 0.3s ease-in-out;
 }
 
 .title::before {
-  position: absolute;
-  top: 7px;
-  left: 0;
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--text-color-link-active);
+	position: absolute;
+	top: 7px;
+	left: 0;
+	content: '';
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--text-color-link-active);
 }
 
 .title.skeleton::before {
-  display: none;
+	display: none;
 }
 
 .accordion::details-content {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.3s ease-in-out, content-visibility 0.3s ease-in-out;
+	height: 0;
+	overflow: hidden;
+	transition:
+		height 0.3s ease-in-out,
+		content-visibility 0.3s ease-in-out;
 	transition-behavior: allow-discrete;
 	will-change: height;
 }
@@ -71,16 +73,16 @@
 }
 
 .content {
-  padding: 20px 0 8px;
-  color: var(--text-color-light);
+	padding: 20px 0 8px;
+	color: var(--text-color-light);
 }
 
-@media (width <= 767px) { 
-  .accordion {
-    padding: 20px 0;
-  }
+@media (width <= 767px) {
+	.accordion {
+		padding: 20px 0;
+	}
 
-  .content {
-    padding-left: 16px;
-  }
+	.content {
+		padding-left: 16px;
+	}
 }
