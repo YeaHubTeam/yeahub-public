@@ -113,5 +113,23 @@
 				"description": "We create a strong resume, conduct mock interviews, job search strategy. You are ready for any interview and can immediately show your competencies."
 			}
 		}
+	},
+	"about": {
+		"indicator": "about me",
+		"title": "About me.",
+		"description": "I'm all about real world skills. I help students become strong developers and get hired",
+		"profile": {
+			"name": "Ruslan Kuyanets",
+			"role": "IT-Founder & Tech Lead"
+		},
+		"achievements": {
+			"first": "I build projects from scratch and lead teams of 100+ specialists",
+			"second": "In 5 years in IT, I grew from Junior to Senior",
+			"third": "Built my own products and a developer ecosystem",
+			"fourth": "Expertise: Frontend, Backend, DevOps, product and team management",
+			"fifth": "Founder of Reactify — a large frontend community",
+			"sixth": "I run YouTube and Telegram channels"
+		},
+		"link": "My full journey in IT"
 	}
 }
