@@ -1,11 +1,9 @@
-import Link from 'next/link';
-
 import { useTranslations } from 'next-intl';
 
 import { Mentor, i18Namespace } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
+import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './AboutAchievements.module.css';
@@ -23,26 +21,23 @@ export const AboutAchievements = () => {
 	];
 
 	return (
-		<Flex className={styles['achievements']}>
-			<Flex direction="column" justify="end" gap="20">
-				<Flex direction="column" gap="12">
-					{achievements.map((item) => (
-						<Flex gap="14" key={item.id}>
-							<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
-							<Text variant="body3-accent">{item.text}</Text>
-						</Flex>
-					))}
-				</Flex>
-
-				<Link href={'#'}>
-					<Flex align="center" gap="8" className={styles['link']}>
-						<Text variant="body3-accent" color={'purple-700'}>
-							{t(Mentor.ABOUT_LINK)}
-						</Text>
-						<Icon icon="arrowRight" size={24} color={'purple-700'} className={styles['arrow']} />
+		<Card
+			withOutsideShadow
+			isActionPositionBottom
+			actionTitle={t(Mentor.ABOUT_LINK)}
+			actionRoute="#"
+			actionPositionX="start"
+			className={styles.wrapper}
+			contentClassName={styles['wrapper-content']}
+		>
+			<Flex direction="column" gap="12">
+				{achievements.map((item) => (
+					<Flex gap="14" key={item.id}>
+						<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
+						<Text variant="body3-accent">{item.text}</Text>
 					</Flex>
-				</Link>
+				))}
 			</Flex>
-		</Flex>
+		</Card>
 	);
 };

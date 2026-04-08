@@ -1,5 +1,5 @@
 import { Flex } from '@/shared/ui/Flex';
-import { About } from '@/widgets/Mentor/About';
+import { AboutSection } from '@/widgets/Mentor/AboutSection';
 import { BannerSection } from '@/widgets/Mentor/BannerSection';
 import { EducationSection } from '@/widgets/Mentor/EducationSection';
 import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
@@ -14,7 +14,7 @@ export const MentorPage = () => {
 			<StrategySection />
 			<FullPathSection />
 			<EducationSection />
-			<About />
+			<AboutSection />
 		</Flex>
 	);
 };

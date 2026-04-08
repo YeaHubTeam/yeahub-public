@@ -1,7 +1,6 @@
 import { Flex } from '@/shared/ui/Flex';
+import { Indicator } from '@/shared/ui/Indicator';
 import { Text } from '@/shared/ui/Text';
-
-import styles from './SectionHeaderLabel.module.css';
 
 interface SectionHeaderLabelProps {
 	text: string;
@@ -10,7 +9,7 @@ interface SectionHeaderLabelProps {
 export const SectionHeaderLabel = ({ text }: SectionHeaderLabelProps) => {
 	return (
 		<Flex align="center" gap="16">
-			<span className={styles.dot} />
+			<Indicator />
 			<Text variant="body3">{text}</Text>
 		</Flex>
 	);
