@@ -1,0 +1,46 @@
+.stack-content {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: "description main advanced";
+	gap: 20px;
+}
+
+.stack-content div:nth-child(1) {
+	grid-area: description;
+}
+
+.stack-content div:nth-child(2) {
+	grid-area: main;
+}
+
+.stack-content div:nth-child(3) {
+	grid-area: advanced;
+}
+
+.stack-card {
+	padding: 20px;
+}
+
+@media (width < 1280px) {
+	.stack-content {
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas: 
+			"description description"
+		  "main advanced";
+	}
+}
+
+@media (width < 768px) {
+	.stack-content {
+		grid-template-columns: 1fr;
+		grid-template-areas: 
+			"description"
+		  "main"
+		  "advanced";
+		gap: 10px;
+	}
+	
+	.stack-card {
+		padding: 10px;
+	}
+}

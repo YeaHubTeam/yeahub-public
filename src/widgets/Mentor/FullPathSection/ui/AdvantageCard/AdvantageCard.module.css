@@ -1,0 +1,39 @@
+.card {
+	padding: 20px;
+	width: 100%;
+}
+
+.card > div {
+	flex: 1;
+	justify-content: space-between;
+	align-items: end;
+}
+
+.title {
+	margin-bottom: 8px;
+}
+
+.description {
+	margin-bottom: 20px;
+}
+
+.image {
+	display: block;
+	margin-top: auto;
+	width: 100%;
+	max-width: 352px;
+	max-height: 258px;
+}
+
+@media (width < 1280px) {
+	.title {
+		font-size: var(--font-size-h-xs);
+	}
+}
+
+@media (width < 768px) {
+	.image {
+		max-width: 320px;
+		max-height: 240px;
+	}
+}

@@ -1,0 +1,16 @@
+.description {
+	flex: 1;
+}
+
+@media (width < 1280px) {
+	.description-wrapper {
+		flex-direction: row;
+	}
+}
+
+@media (width < 768px) {
+	.description-wrapper {
+		flex-direction: column;
+		gap: 12px;
+	}
+}
