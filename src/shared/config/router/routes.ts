@@ -65,6 +65,14 @@ export const ROUTES = {
 		route: 'mentor',
 		page: '/mentor',
 	},
+	tasks: {
+		route: 'tasks',
+		page: '/tasks',
+		detail: {
+			route: 'tasks/:taskId',
+			page: '/tasks/:taskId',
+		},
+	},
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',
