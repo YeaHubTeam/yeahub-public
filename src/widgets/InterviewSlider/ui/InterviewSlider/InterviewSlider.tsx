@@ -5,7 +5,7 @@ import { MockQuizQuestionAnswerType, ResponseButtons } from '@/entities/quiz';
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
-import { Text } from '@/shared/ui/Text';
+import { TextHtmlClientSide } from '@/shared/ui/TextHtmlClientSide';
 
 import styles from './InterviewSlider.module.css';
 
@@ -52,7 +52,7 @@ export const InterviewSlider = ({
 					</button>
 				) : (
 					<Flex direction="column" gap="16" className={styles['answer-wrapper']}>
-						<Text variant="body3">{shortAnswer}</Text>
+						<TextHtmlClientSide html={shortAnswer} />
 						<button className={styles.answer} onClick={onToggleAnswerVisibility}>
 							{t(InterviewQuiz.ANSWER_HIDE)}
 						</button>

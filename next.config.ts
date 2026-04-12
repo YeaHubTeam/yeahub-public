@@ -39,7 +39,6 @@ const nextConfig: NextConfig = {
 			config.externals = config.externals || [];
 			config.externals.push({
 				jsdom: 'commonjs jsdom',
-				dompurify: 'commonjs dompurify',
 			});
 		}
 		return config;
