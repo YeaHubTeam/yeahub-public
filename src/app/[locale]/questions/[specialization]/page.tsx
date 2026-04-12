@@ -61,14 +61,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		tQuestions(Questions.COUNT),
 		tLanding(Landing.QUESTIONS_TITLE),
 	];
+
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
+	const canonical = `${baseUrl}/${locale}/questions/${specialization}`;
+
 	return {
 		title,
 		description,
 		keywords,
+		alternates: {
+			canonical,
+		},
 		openGraph: {
 			title,
 			description,
 			type: 'website',
+			url: canonical,
 		},
 	};
 }

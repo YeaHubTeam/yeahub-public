@@ -1,4 +1,5 @@
-import { Mentor } from '@/shared/config';
+import { Mentor, ROUTES } from '@/shared/config';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 
 import { interviews, questions } from '../assets';
 import { FeatureItem } from '../types/FeatureItem';
@@ -11,7 +12,7 @@ export const featuresCards: FeatureItem[] = [
 		description: Mentor.FEATURES_CARD_QUESTIONS_DESCRIPTION,
 		imageSrc: questions,
 		link: Mentor.FEATURES_CARD_QUESTIONS_LINK,
-		to: '/questions',
+		to: route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG),
 		isHighlighted: true,
 	},
 	{
@@ -21,7 +22,7 @@ export const featuresCards: FeatureItem[] = [
 		description: Mentor.FEATURES_CARD_INTERVIEWS_DESCRIPTION,
 		imageSrc: interviews,
 		link: Mentor.FEATURES_CARD_INTERVIEWS_LINK,
-		to: '/collections',
+		to: route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG),
 		isHighlighted: true,
 	},
 	{
@@ -30,7 +31,7 @@ export const featuresCards: FeatureItem[] = [
 		title: Mentor.FEATURES_CARD_SIMULATOR_TITLE,
 		description: Mentor.FEATURES_CARD_SIMULATOR_DESCRIPTION,
 		link: Mentor.FEATURES_CARD_SIMULATOR_LINK,
-		to: '/quiz/new',
+		to: route(ROUTES.quiz.new.page),
 	},
 	{
 		id: 'livecoding',

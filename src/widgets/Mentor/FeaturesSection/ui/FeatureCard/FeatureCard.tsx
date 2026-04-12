@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import classNames from 'classnames';
 
+import { Link } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
