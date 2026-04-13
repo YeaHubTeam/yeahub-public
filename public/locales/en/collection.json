@@ -55,7 +55,7 @@
 	"image-alt": "Questions from the {title} interview on the topics {keywords}",
 	"numberOfQuestions": "Number of questions",
 	"collections": {
-		"title": "Collections for {specialization}}",
+		"title": "Interviews for {specialization}}",
 		"detail": "More",
 		"train": "Train"
 	},

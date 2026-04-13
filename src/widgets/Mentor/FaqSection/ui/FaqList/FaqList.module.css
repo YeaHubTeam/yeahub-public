@@ -1,0 +1,22 @@
+.wrapper {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-template-areas: '. list';
+}
+
+.wrapper div:nth-child(1) {
+	grid-area: list;
+}
+
+@media (width < 1280px) {
+	.wrapper {
+		grid-template-columns: 1fr;
+		grid-template-areas: 'list';
+	}
+}
+
+@media (width < 1280px) {
+	.content {
+		gap: 10px;
+	}
+}

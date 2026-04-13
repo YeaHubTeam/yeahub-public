@@ -141,6 +141,80 @@
 		"mainStackTitle": "Core stack",
 		"advancedTitle": "Advanced technologies"
 	},
+	"community": {
+		"indicator": "community",
+		"title": "Free materials and community.",
+		"description": "You can learn development for free — I already have the environment, materials, and an active community.",
+		"cards": {
+			"frontend": {
+				"title": "Frontend Community",
+				"description": "Frontend Elite — a free chat with mentoring materials. Feel free to join, introduce yourself, and chat.",
+				"link": "Join the community"
+			},
+			"news": {
+				"title": "News",
+				"description": "News, announcements, and student results. Offers, reviews, mentoring insights, and internships.",
+				"link": "Results and news"
+			},
+			"youtube": {
+				"title": "YouTube",
+				"description": "YouTube — videos about architecture, React, interview preparation, and the IT market.",
+				"link": "Go to YouTube"
+			},
+			"telegram": {
+				"title": "Telegram channel",
+				"description": "Personal blog: thoughts on the market, IT career growth, insights, and useful materials.",
+				"link": "Read Telegram"
+			}
+		}
+	},
+	"faq": {
+		"indicator": "faq",
+		"title": "Frequently Asked Questions.",
+		"description": "Answers to the most common questions about the learning format, post-payment, and the program process.",
+		"steps": {
+			"01": {
+				"title": "Is there support during the trial period?",
+				"description": "Yes. My task is to ensure that you successfully complete your probationary period and secure your position. If for any reason you fail the probation, the remaining portion of your post-payment will be due only after you start your new job."
+			},
+			"02": {
+				"title": "Is there a mentorship term?",
+				"description": "If the student is actively learning and progressing in the program, I will guide them to an offer, even if it takes 1-1.5 years. My goal is to find employment for the student. The prepayment is only part of the payment. At the same time, similar courses and bootcamps often cost hundreds of thousands of rubles and put students in debt for 300,000 ₽ or more. We provide more practice and real experience for less money and without debt."
+			},
+			"03": {
+				"title": "If I completed the training, but did not get to the internship and job search, do I need to pay something?",
+				"description": "No — if the student completed the training, but did not move on to the final stage (preparation for the market and internship), he he does not owe anything in excess of the postpaid amount, even if he has studied for a long time; payment occurs only if the student has received the full amount of services, after which he is expected to start looking for a job in good faith, and if after several months of attempts to find a job failed, there are no additional obligations either — such a model is needed to protect mentor's work and eliminate situations where the format is used as a way to get the most out of training at a reduced cost, despite the fact that the main goal of the program and the mentor's key motivation is to bring the student to employment."
+			},
+			"04": {
+				"title": "Do you personally lead the students or are there curators?",
+				"description": "I personally lead the training, without curators. I accompany the student at all stages: training, practice, knowledge testing, preparation for the market and job search. At the internship stage, a full-fledged team appears in the YeaHub project, and the student begins to work in the real development process. Knowledge checks and exams are conducted by experts from the YeaHub team, which helps you prepare for technical interviews and teamwork in advance."
+			},
+			"05": {
+				"title": "Do you provide answers during real interviews?",
+				"description": "No. I strongly oppose such practices. An interview is a test of your skills. My goal is to prepare you so that you can complete the course on your own. We focus on real knowledge and practice, rather than on hacks."
+			},
+			"06": {
+				"title": "How long does it take to complete the course?",
+				"description": "The speed depends on the individual student. Everyone has a different pace, amount of free time, and level of preparation. There were cases when students from scratch went all the way to the offer in 5 months, and someone moved more calmly and came to the result in about a year. I always help and accompany, but it is impossible to force students to learn — the result directly depends on the student's involvement."
+			},
+			"07": {
+				"title": "If I get a job before the program is completed, do I have to pay?",
+				"description": "Yes. Our goal is to provide employment. If an offer is received before the program is completed, the payment terms remain the same."
+			},
+			"08": {
+				"title": "If I haven't attended group classes, can I pay less?",
+				"description": "No. The mentor provides a full package of opportunities: classes, activities, and calls. It's up to the student to decide whether to attend or not, but the cost of the program remains the same."
+			},
+			"09": {
+				"title": "How long does the training take?",
+				"description": "There is no strict training period. I deliberately do not limit the program by time, because students are different. I do not divide students by level of knowledge, but by the degree of interaction required. The student regulates the pace of learning, and my task is to help maintain direction and progress."
+			},
+			"10": {
+				"title": "Do I need to know programming before I start?",
+				"description": "No. You can start from scratch.\u2028But a sequential or deep rate is better for such students."
+			}
+		}
+	},
 	"features": {
 		"indicator": "YeaHub",
 		"title": "We develop YeaHub together with our students.",

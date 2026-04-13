@@ -47,9 +47,11 @@ export const AccordionMentor = ({
 			</summary>
 			<div className={styles['content-wrapper']}>
 				<div className={styles.content}>
-					<Text variant="head3" className={styles['content-title']}>
-						{title}
-					</Text>
+					{moveTitle ? (
+						<Text variant="head3" className={styles['content-title']}>
+							{title}
+						</Text>
+					) : null}
 					{children}
 				</div>
 				{media && <div className={classNames(styles.media, mediaClassName)}>{media}</div>}
