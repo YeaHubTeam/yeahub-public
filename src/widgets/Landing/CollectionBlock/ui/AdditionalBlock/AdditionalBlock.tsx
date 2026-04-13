@@ -1,11 +1,11 @@
 import { useTranslations } from 'next-intl';
 
 import { Landing, i18Namespace } from '@/shared/config';
-import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
+import { CollectionButton } from '../CollectionButton/CollectionButton';
 import styles from './AdditionalBlock.module.css';
 
 export const AdditionalBlock = () => {
@@ -41,10 +41,7 @@ export const AdditionalBlock = () => {
 				</Text>
 			</Card>
 
-			<Button dataTestId="AdditionalBlock_LinkButton" className={styles.button}>
-				{t(Landing.COLLECTION_LINK)}
-				{/* {t('collections.link')} */}
-			</Button>
+			<CollectionButton className={styles.button}>{t(Landing.COLLECTION_LINK)}</CollectionButton>
 		</Flex>
 	);
 };
