@@ -34,7 +34,7 @@ export const QuestionNavPanel = ({
 		<Flex justify="between">
 			<Flex className={styles['button-wrapper']}>
 				<Button
-					className={styles.button}
+					className={styles['nav-button']}
 					onClick={goToPrevSlide}
 					aria-label={t(InterviewQuiz.A11Y_PREV)}
 					fullWidth
@@ -46,7 +46,7 @@ export const QuestionNavPanel = ({
 			{showResponseButtons && <ResponseButtons answer={answer} changeAnswer={changeAnswer} />}
 			<Flex className={styles['button-wrapper']}>
 				<Button
-					className={styles.button}
+					className={styles['nav-button']}
 					onClick={goToNextSlide}
 					preffix={<Icon color="purple-700" icon="altArrowRight" size={20} />}
 					fullWidth

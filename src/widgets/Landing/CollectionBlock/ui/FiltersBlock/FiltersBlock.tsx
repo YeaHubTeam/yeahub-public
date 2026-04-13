@@ -1,3 +1,5 @@
+import { useLocale } from 'next-intl';
+
 import { Company } from '@/entities/company';
 import { ROUTES } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
@@ -12,6 +14,7 @@ interface FiltersBlockProps {
 }
 
 export const FiltersBlock = ({ companies }: FiltersBlockProps) => {
+	const locale = useLocale();
 	return (
 		<div data-testid="FiltersBlock" className={styles.list}>
 			<Slider {...skillsTickerSliderSettings} className={styles['slider-container']}>
@@ -20,7 +23,7 @@ export const FiltersBlock = ({ companies }: FiltersBlockProps) => {
 						key={title}
 						src={imageSrc}
 						alt={title}
-						url={`${route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}?companies=${id}`}
+						url={`${locale}${route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}?companies=${id}`}
 					/>
 				))}
 			</Slider>
