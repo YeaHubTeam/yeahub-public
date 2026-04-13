@@ -1,14 +1,21 @@
-import { Flex } from '@/shared/ui/Flex';
+import { useTranslations } from 'next-intl';
 
-import { FeaturesHeader } from '../FeaturesHeader/FeaturesHeader';
+import { Mentor, i18Namespace } from '@/shared/config';
+import { SectionHeader } from '@/widgets/Mentor/SectionHeader';
+
 import { FeaturesList } from '../FeaturesList/FeaturesList';
-import styles from './FeaturesSection.module.css';
 
 export const FeaturesSection = () => {
+	const t = useTranslations(i18Namespace.mentor);
+
 	return (
-		<Flex componentType="section" direction="column" gap="30" className={styles.block}>
-			<FeaturesHeader />
+		<section>
+			<SectionHeader
+				label={t(Mentor.FEATURES_INDICATOR)}
+				title={t(Mentor.FEATURES_TITLE)}
+				description={t(Mentor.FEATURES_DESCRIPTION)}
+			/>
 			<FeaturesList />
-		</Flex>
+		</section>
 	);
 };
