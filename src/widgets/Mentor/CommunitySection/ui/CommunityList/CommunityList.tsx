@@ -10,6 +10,7 @@ interface CommunityItem {
 	title: string;
 	description: string;
 	linkText: string;
+	linkUrl: string;
 }
 
 export const CommunityList = () => {
@@ -20,21 +21,25 @@ export const CommunityList = () => {
 			title: t(Mentor.COMMUNITY_CARD_FRONTEND_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_FRONTEND_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_FRONTEND_LINK),
+			linkUrl: '#',
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_NEWS_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_NEWS_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_NEWS_LINK),
+			linkUrl: '#',
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_YOUTUBE_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_YOUTUBE_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_YOUTUBE_LINK),
+			linkUrl: '#',
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_TELEGRAM_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_TELEGRAM_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_TELEGRAM_LINK),
+			linkUrl: '#',
 		},
 	];
 
@@ -46,6 +51,7 @@ export const CommunityList = () => {
 					title={item.title}
 					description={item.description}
 					linkText={item.linkText}
+					linkUrl={item.linkUrl}
 				/>
 			))}
 		</Flex>
