@@ -1,0 +1,107 @@
+import { Response, SortOrder } from '@/shared/libs';
+
+export type TaskStatus = 'SOLVED' | 'UNSOLVED' | 'IN_PROGRESS';
+export type TaskDifficulty = 1 | 2 | 3 | 4 | 5;
+
+export interface TaskListItem {
+	id: string;
+	name: string;
+	slug: string;
+	difficulty: TaskDifficulty;
+	supportedLanguages: { id: number; name: string }[];
+	status: TaskStatus;
+	mainCategory: string;
+	categoryId?: number;
+	canSolve: boolean;
+}
+
+export interface TestCase {
+	input: Record<string, unknown>;
+	expected_output: unknown;
+	is_hidden: boolean;
+}
+
+export interface TaskStructure {
+	languageId: number;
+	solutionTemplate: string;
+	testFixture: string;
+}
+
+export interface Task {
+	id: string;
+	name: string;
+	slug: string;
+	description: string;
+	difficulty: TaskDifficulty;
+	langIds: number[];
+	categoryId: number;
+	constraints: string[];
+	testCases: TestCase[];
+	taskStructures: TaskStructure[];
+	solutionSignature: string;
+}
+
+export interface TaskCategory {
+	id: number;
+	name: string;
+}
+
+export interface TasksFilterParams {
+	page?: number;
+	title?: string;
+	difficulty?: TaskDifficulty;
+	langIds?: number[];
+	category?: string;
+}
+
+export interface GetTasksListParams {
+	page?: number;
+	limit?: number;
+	id?: string;
+	title?: string;
+	slug?: string;
+	difficulty?: TaskDifficulty;
+	category?: string;
+	langIds?: number[];
+	isActive?: boolean;
+	search?: string;
+	sortBy?: 'name' | 'difficulty' | 'createdAt' | 'updatedAt';
+	sortOrder?: SortOrder;
+}
+
+export type GetTasksListResponse = Response<TaskListItem[]>;
+
+export type GetTaskCategoriesResponse = TaskCategory[];
+
+export type GetTaskByIdResponse = Task;
+
+export interface ExecuteCodeRequest {
+	taskId: string;
+	sourceCode: string;
+	languageId: number;
+	profileId?: string;
+}
+
+export interface ExecuteCodeResponse {
+	overall_status: string;
+	passed_tests: number;
+	total_tests: number;
+	success_rate: number;
+	total_execution_time: number;
+	average_memory_usage: number;
+	test_cases: {
+		status: string;
+		input: unknown;
+		expected_output: unknown;
+		actual_output: string;
+		error_message: string;
+		execution_time: number;
+		memory_usage: number;
+		is_hidden: boolean;
+	}[];
+	compilation_error: string;
+	runtime_output: string;
+	task_id: string;
+	language_id: number;
+	executed_at: string;
+}

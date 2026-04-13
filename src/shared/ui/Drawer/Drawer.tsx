@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import { createPortal } from 'react-dom';
@@ -23,6 +23,7 @@ export interface DrawerProps {
 	children: React.ReactNode;
 	className?: string;
 	hasCloseButton?: boolean;
+	withBackdrop?: boolean;
 }
 
 // const createPortalRoot = () => {
@@ -39,9 +40,11 @@ export const Drawer = ({
 	onClose,
 	className,
 	hasCloseButton = false,
+	withBackdrop = true,
 }: DrawerProps) => {
 	const portalRootRef = useRef<HTMLElement | null>(null);
 	const renderRootRef = useRef<HTMLElement | null>(null);
+	const drawerRef = useRef<HTMLDivElement>(null);
 	const [isRender, setIsRender] = useState(false);
 	const rootEl = renderRootRef.current;
 
@@ -58,14 +61,14 @@ export const Drawer = ({
 	}, []);
 
 	useEffect(() => {
-		if (rootEl) {
+		if (rootEl && withBackdrop) {
 			rootEl.style.overflow = isOpen ? 'hidden' : '';
 
 			return () => {
 				rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen, isRender, rootEl]);
+	}, [isOpen, isRender, rootEl, withBackdrop]);
 
 	useEffect(() => {
 		if (isOpen && rootEl && portalRootRef.current) {
@@ -74,16 +77,32 @@ export const Drawer = ({
 
 			return () => {
 				// portal.remove();
-				rootEl.style.overflow = '';
+				if (withBackdrop) rootEl.style.overflow = '';
 			};
 		}
-	}, [isOpen, rootEl]);
+	}, [isOpen, rootEl, withBackdrop]);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
 		if (event.key === 'Escape') {
 			onClose();
 		}
 	};
+
+	const handleClickOutside = useCallback(
+		(event: MouseEvent) => {
+			if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
+				onClose();
+			}
+		},
+		[onClose],
+	);
+
+	useEffect(() => {
+		if (!isOpen || withBackdrop) return;
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, [isOpen, withBackdrop, handleClickOutside]);
 	if (!isRender || !portalRootRef.current) return null;
 
 	return createPortal(
@@ -95,6 +114,7 @@ export const Drawer = ({
 			})}
 		>
 			<div
+				ref={drawerRef}
 				data-testid={drawerTestIds.drawer}
 				className={classNames(styles['drawer'], styles[position], className)}
 				role="dialog"
@@ -106,12 +126,14 @@ export const Drawer = ({
 				)}
 				{children}
 			</div>
-			<button
-				data-testid={drawerTestIds.closeBtnBackdrop}
-				className={styles['backdrop']}
-				onClick={onClose}
-				onKeyDown={handleKeyDown}
-			/>
+			{withBackdrop && (
+				<button
+					data-testid={drawerTestIds.closeBtnBackdrop}
+					className={styles['backdrop']}
+					onClick={onClose}
+					onKeyDown={handleKeyDown}
+				/>
+			)}
 		</div>,
 		portalRootRef.current,
 	);

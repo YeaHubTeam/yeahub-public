@@ -1,0 +1,19 @@
+.layout {
+  width: 100%;
+}
+
+.description {
+  flex: 1;
+  min-width: 0;
+}
+
+.editor {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (width < 1024px) {
+  .layout {
+    flex-direction: column;
+  }
+}

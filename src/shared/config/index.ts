@@ -21,6 +21,7 @@ export {
 	Mentor,
 	InterviewStatistics,
 	Docs,
+	Task,
 } from './i18n/i18nTranslations';
 
 export { ROUTES } from './router/routes';

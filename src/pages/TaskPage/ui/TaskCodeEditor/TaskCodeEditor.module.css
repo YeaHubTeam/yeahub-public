@@ -1,0 +1,48 @@
+.wrapper {
+  height: 100%;
+}
+
+.editor {
+  padding: 12px 16px;
+  width: 100%;
+  min-height: 320px;
+  outline: none;
+  border: 1px solid var(--color-black-100);
+  border-radius: 8px;
+  background: var(--color-black-20);
+  color: var(--color-black-900);
+  line-height: 1.6;
+  font-size: 14px;
+  font-family: 'Courier New', Courier, monospace;
+  resize: vertical;
+  tab-size: 2;
+}
+
+.editor:focus {
+  border-color: var(--color-primary-500);
+}
+
+.output {
+  padding: 12px 16px;
+  border: 1px solid var(--color-black-100);
+  border-radius: 8px;
+  background: var(--color-black-20);
+}
+
+.error {
+  color: var(--color-error-500);
+}
+
+.test-passed {
+  padding: 8px 12px;
+  border: 1px solid var(--color-success-200);
+  border-radius: 6px;
+  background: var(--color-success-50);
+}
+
+.test-failed {
+  padding: 8px 12px;
+  border: 1px solid var(--color-error-200);
+  border-radius: 6px;
+  background: var(--color-error-50);
+}

@@ -1,0 +1,14 @@
+.show-all-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-purple-700);
+  text-align: left;
+  line-height: 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.show-all-btn:hover {
+  text-decoration: underline;
+}

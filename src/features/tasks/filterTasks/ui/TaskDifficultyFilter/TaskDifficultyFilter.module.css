@@ -1,0 +1,60 @@
+.item {
+  display: inline-flex;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  transition: border-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.item:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.active.item-1 {
+  border-color: var(--color-green-750);
+}
+
+.active.item-2 {
+  border-color: var(--color-green-700);
+}
+
+.active.item-3 {
+  border-color: var(--color-yellow-600);
+}
+
+.active.item-4 {
+  border-color: var(--color-yellow-800);
+}
+
+.active.item-5 {
+  border-color: var(--color-red-600);
+}
+
+.chip {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.difficulty-1 {
+  background-color: var(--color-green-750);
+}
+
+.difficulty-2 {
+  background-color: var(--color-green-700);
+}
+
+.difficulty-3 {
+  background-color: var(--color-yellow-600);
+}
+
+.difficulty-4 {
+  background-color: var(--color-yellow-800);
+}
+
+.difficulty-5 {
+  background-color: var(--color-red-600);
+}

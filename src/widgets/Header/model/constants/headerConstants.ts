@@ -36,4 +36,9 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		path: '/hh-analytics',
 		title: Header.NAV_HH_ANALYTICS,
 	},
+	{
+		link: ROUTES.tasks.page,
+		path: '/tasks',
+		title: Header.NAV_TASKS,
+	},
 ];
