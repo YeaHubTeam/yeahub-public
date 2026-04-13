@@ -1,3 +1,5 @@
+import { useLocale } from 'next-intl';
+
 import { Flex } from '@/shared/ui/Flex';
 
 import { quizImage2, trainerInterview } from '../../model/assets';
@@ -10,10 +12,12 @@ interface AdditionalBlockProps {
 }
 
 export const AdditionalBlock = ({ textFirst, textSecond }: AdditionalBlockProps) => {
+	const locale = useLocale();
+
 	return (
 		<Flex direction="column" className={styles['additional-block']}>
-			<InterviewCard iconType="student" img={quizImage2} text={textFirst} />
-			<InterviewCard iconType="settings" img={trainerInterview} text={textSecond} />
+			<InterviewCard iconType="student" img={quizImage2} text={textFirst} locale={locale} />
+			<InterviewCard iconType="settings" img={trainerInterview} text={textSecond} locale={locale} />
 		</Flex>
 	);
 };

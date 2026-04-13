@@ -3,7 +3,7 @@
   height: 28px;
 }
 
-.button {
+.button-wrapper .nav-button {
   padding: 0;
   height: 100%;
   border-radius: 50%;

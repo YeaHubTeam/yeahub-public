@@ -9,7 +9,11 @@ import { SpecializationCard } from '../SpecializationCard/SpecializationCard';
 import styles from './SpecializationBlock.module.css';
 import { mockSpecialization } from './mockSpecialization';
 
-export const SpecializationBlock = () => {
+interface SpecializationBlockProps {
+	locale: string;
+}
+
+export const SpecializationBlock = ({ locale }: SpecializationBlockProps) => {
 	const t = useTranslations(i18Namespace.landing);
 
 	return (
@@ -25,7 +29,7 @@ export const SpecializationBlock = () => {
 							description={t(item.description)}
 							image={item.image}
 							alt={item.alt}
-							link={item.link}
+							link={`${locale}${item.link}`}
 						/>
 					</li>
 				))}

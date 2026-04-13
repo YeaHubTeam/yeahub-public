@@ -26,6 +26,7 @@
 /* stylelint-disable selector-pseudo-class-no-unknown */
 .slider-container :global(.slick-slide) > div {
   margin: 0 10px;
+	cursor: default;
 }
 
 .slider-container :global(.slick-list) {

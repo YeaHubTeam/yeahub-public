@@ -86,4 +86,10 @@
     background-color: var(--color-purple-700);
     color: var(--color-white-900);
   }
+
+  .chip-wrapper:hover:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+  .chip-wrapper:focus-visible:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+  .chip-wrapper:active:where(.chip-clickable:not(.chip-disabled)) .chip-label {
+    color: var(--color-white-900);
+  }
 }

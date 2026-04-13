@@ -11,6 +11,10 @@
 	list-style: none;
 }
 
+.hidden {
+	display: none;
+}
+
 .accordion summary::-webkit-details-marker {
 	display: none;
 }
@@ -88,7 +92,7 @@
 }
 
 .content {
-	padding: 17px 0 20px;
+	padding: 17px 0 0;
 	color: var(--text-color-light);
 }
 
@@ -144,5 +148,16 @@
 
 	.with-media .content p:last-child {
 		max-width: 100%;
+	}
+	
+	.heading {
+		flex-wrap: wrap;
+	}
+	
+	.title {
+		order: 3;
+		margin-top: 10px;
+		margin-left: 0;
+		width: 100%;
 	}
 }
