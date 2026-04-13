@@ -4,6 +4,7 @@ import { BannerSection } from '@/widgets/Mentor/BannerSection';
 import { CommunitySection } from '@/widgets/Mentor/CommunitySection';
 import { EducationSection } from '@/widgets/Mentor/EducationSection';
 import { FaqSection } from '@/widgets/Mentor/FaqSection';
+import { FeaturesSection } from '@/widgets/Mentor/FeaturesSection';
 import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
 import { StackSection } from '@/widgets/Mentor/StackSection';
 import { StrategySection } from '@/widgets/Mentor/StrategySection';
@@ -21,6 +22,7 @@ export const MentorPage = () => {
 			<StackSection />
 			<CommunitySection />
 			<FaqSection />
+			<FeaturesSection />
 		</Flex>
 	);
 };

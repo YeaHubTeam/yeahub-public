@@ -214,5 +214,42 @@
 				"description": "No. You can start from scratch.\u2028But a sequential or deep rate is better for such students."
 			}
 		}
+	},
+	"features": {
+		"indicator": "YeaHub",
+		"title": "We develop YeaHub together with our students.",
+		"description": "This is a real production project: mentoring students work on platform features in teams and follow Scrum.",
+		"cards": {
+			"questions": {
+				"badge": "1500+ Frontend questions",
+				"title": "Questions",
+				"description": "React, JavaScript, TypeScript, HTML, CSS, Git, Next.js, Docker, and other technologies. Real questions that come up in interviews.",
+				"link": "Questions"
+			},
+			"interviews": {
+				"badge": "100+ real interviews",
+				"title": "Interviews",
+				"description": "Breakdowns of interviews at different companies: what questions are asked and how the stages go.",
+				"link": "Interviews"
+			},
+			"simulator": {
+				"badge": "Technical interview simulation",
+				"title": "Interview simulator",
+				"description": "Go through interviews in a realistic format and track your progress.",
+				"link": "Interview simulator"
+			},
+			"livecoding": {
+				"badge": "Live coding practice",
+				"title": "Live сoding",
+				"description": "Solve tasks from real interviews in the browser in an interview-style format.",
+				"link": "Live сoding"
+			},
+			"analytics": {
+				"badge": "Job market analytics",
+				"title": "Resume analytics",
+				"description": "HH data analysis helps optimize your resume and technology stack.",
+				"link": "Resume analytics"
+			}
+		}
 	}
 }
