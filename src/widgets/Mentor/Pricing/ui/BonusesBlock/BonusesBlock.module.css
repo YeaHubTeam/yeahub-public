@@ -1,0 +1,28 @@
+.bonus-blocks {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.bonus-block {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 14px;
+	width: 100%;
+	max-width: 598px;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
+	border-radius: 20px;
+	background: #fff;
+}
+
+.bonus-block-text {
+	margin: 0;
+}
+
+.icon-wrapper {
+	width: 20px;
+	height: 20px;
+}

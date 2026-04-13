@@ -1,0 +1,43 @@
+.info-card-postpay {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	width: 100%;
+	max-width: 392px;
+	height: auto;
+	min-height: 357px;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border-radius: 20px;
+	background: var(--white-100, #fff);
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 98px;
+	padding: 6px 12px;
+	width: fit-content;
+	height: 30px;
+	border-radius: 21px;
+	background: #edf7ef;
+}
+
+.title {
+	margin-bottom: 8px;
+	max-width: 304px;
+	font-weight: 500;
+	font-size: 24px;
+}
+
+.description {
+	margin-bottom: 20px;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.button {
+	height: 48px;
+	font-weight: 500;
+	font-size: 18px;
+}
