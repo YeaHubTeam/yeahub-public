@@ -251,5 +251,27 @@
 				"link": "Resume analytics"
 			}
 		}
+	},
+	"internship": {
+		"indicator": "internship",
+		"title": "Internship on a real project.",
+		"description": "At YeaHub, we believe that the best learning is through practice. By the way, you're on it right now.",
+		"advantages": {
+			"processes": {
+				"title": "IT-company-like processes",
+				"description": "We work with Scrum: two-week sprints, daily scrum, planning and common syncs between teams."
+			},
+			"team": {
+				"title": "Teamwork",
+				"description": "The project features all roles: Frontend, Backend, Design, QA, Mobile, SA/BA. This is a full-fledged product team of more than 100 specialists.",
+				"link": "Our Yeahub project"
+			},
+			"experience": {
+				"title": "Real experience",
+				"description": "You work with a real codebase, participate in real releases, and do tasks that solve real problems.",
+				"link": "Our code on GitHub",
+				"badge": "Project audience 32k+"
+			}
+		}
 	}
 }
