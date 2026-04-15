@@ -18,8 +18,8 @@ export const LandingPage = ({ skills, companies, collections, locale }: LandingP
 	return (
 		<>
 			<BannerBlock />
-			<SpecializationBlock />
-			<AboutQuestionsBlock skills={skills} />
+			<SpecializationBlock locale={locale} />
+			<AboutQuestionsBlock skills={skills} locale={locale} />
 			<InterviewTrainerBlock />
 			<CollectionBlock companies={companies} collections={collections} locale={locale} />
 		</>

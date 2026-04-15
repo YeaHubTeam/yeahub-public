@@ -11,11 +11,47 @@
 			"fourth": "Full support until employment."
 		}
 	},
+	"strategy": {
+		"indicator": "strategy",
+		"title": "We don't wait for a good market. We win in any market.",
+		"description": "Job search is a separate skill that requires active actions.",
+		"advantages": {
+			"pack": {
+				"title": "Packaging experience",
+				"description": "Any experience can be sold as strong - we will show you how."
+			},
+			"ats": {
+				"title": "ATS and auto-filters",
+				"description": "Pass the selection and stand out among hundreds of candidates."
+			},
+			"search": {
+				"title": "Search strategy",
+				"description": "How to search for a job correctly and act in the market."
+			},
+			"preparation": {
+				"title": "Preparation for interviews",
+				"description": "Practice with people, complete mocks, and watch real interviews."
+			},
+			"experience": {
+				"title": "Real experience",
+				"description": "No one needs pet projects. Work on a real production."
+			},
+			"motivation": {
+				"title": "Motivation",
+				"description": "Be surrounded by people with the same goal - the offer."
+			}
+		}
+	},
 	"fullpath": {
 		"title": "Any level. Full path to the result.",
 		"indicator": "full path",
 		"levels": {
 			"title": "My goal is to make the student a strong developer, even without experience. Complete immersion in technology and real projects.",
+			"junior": "Junior",
+			"junior_plus": "Junior +",
+			"middle": "Middle",
+			"middle_plus": "Middle +",
+			"senior": "Senior",
 			"even_here": "Even here",
 			"subtitle": "I help you get into work at any level"
 		},
@@ -31,6 +67,210 @@
 			"structure": {
 				"title": "Structure and plan",
 				"description": "Theory + livecoding: preparation for interviews begins with the first lessons. After each section there is a knowledge control - without passing the exam we do not move on."
+			}
+		}
+	},
+	"education": {
+		"label": "education",
+		"title": "All-inclusive in education.",
+		"subtitle": "Path to the offer",
+		"description": "You come, and everything is taken care of for you: from the first steps to finding a job. You immerse yourself in an environment focused on results. I guide you at every stage.",
+		"steps": {
+			"01": {
+				"title": "Onboarding and first mock interview",
+				"description": "We determine your starting level, get acquainted with the platform and tools. We conduct the first trial interview to understand the learning path and immediately identify key areas for growth."
+			},
+			"02": {
+				"title": "Learning materials",
+				"description": "Each module contains theory, a checklist of questions and practical tasks. Step by step you master HTML, JS, React, TypeScript, CI/CD, Docker and other technologies."
+			},
+			"03": {
+				"title": "Support and community",
+				"description": "All doubts and questions are resolved in the chat with students and with me personally. You get help at any stage, you don't get stuck, you move forward."
+			},
+			"04": {
+				"title": "Exams and feedback",
+				"description": "After each block you pass theory and tasks to the mentor. You get a detailed analysis of mistakes and advice on how to improve the result."
+			},
+			"05": {
+				"title": "Progress control",
+				"description": "I monitor performance, timely adjust training and help overcome difficulties. Your growth is always under my supervision."
+			},
+			"06": {
+				"title": "Practice and group activities",
+				"description": "4 times a week: joint task reviews, mock interviews, code reviews and workshops. Constant engagement, calls and communication."
+			},
+			"07": {
+				"title": "Final project",
+				"description": "You build your application step by step after each technology. Not an online store or Weather app, but a real system with API and layouts, just like in a real job."
+			},
+			"08": {
+				"title": "Internship on a real production project",
+				"description": "You work in a team of 100+ people: Frontend, Backend, QA, design, analytics. Full development cycle, releases, code reviews, agile processes."
+			},
+			"09": {
+				"title": "Preparation for the offer",
+				"description": "We create a strong resume, conduct mock interviews, job search strategy. You are ready for any interview and can immediately show your competencies."
+			}
+		}
+	},
+	"about": {
+		"indicator": "about me",
+		"title": "About me.",
+		"description": "I'm all about real world skills. I help students become strong developers and get hired",
+		"profile": {
+			"name": "Ruslan Kuyanets",
+			"role": "IT-Founder & Tech Lead"
+		},
+		"achievements": {
+			"first": "I build projects from scratch and lead teams of 100+ specialists",
+			"second": "In 5 years in IT, I grew from Junior to Senior",
+			"third": "Built my own products and a developer ecosystem",
+			"fourth": "Expertise: Frontend, Backend, DevOps, product and team management",
+			"fifth": "Founder of Reactify — a large frontend community",
+			"sixth": "I run YouTube and Telegram channels"
+		},
+		"link": "My full journey in IT"
+	},
+	"stack": {
+		"label": "stack",
+		"title": "Full stack and tools.",
+		"subtitle": "You learn the full set of technologies and tools so you don't get lost on a real project or in a real team.",
+		"description1": "We cover the entire stack of a modern frontend developer: from the basics to advanced tools and architecture.",
+		"description2": "The program adapts to the student — we don't teach everything in order, but focus on what is really needed for employment.",
+		"mainStackTitle": "Core stack",
+		"advancedTitle": "Advanced technologies"
+	},
+	"community": {
+		"indicator": "community",
+		"title": "Free materials and community.",
+		"description": "You can learn development for free — I already have the environment, materials, and an active community.",
+		"cards": {
+			"frontend": {
+				"title": "Frontend Community",
+				"description": "Frontend Elite — a free chat with mentoring materials. Feel free to join, introduce yourself, and chat.",
+				"link": "Join the community"
+			},
+			"news": {
+				"title": "News",
+				"description": "News, announcements, and student results. Offers, reviews, mentoring insights, and internships.",
+				"link": "Results and news"
+			},
+			"youtube": {
+				"title": "YouTube",
+				"description": "YouTube — videos about architecture, React, interview preparation, and the IT market.",
+				"link": "Go to YouTube"
+			},
+			"telegram": {
+				"title": "Telegram channel",
+				"description": "Personal blog: thoughts on the market, IT career growth, insights, and useful materials.",
+				"link": "Read Telegram"
+			}
+		}
+	},
+	"faq": {
+		"indicator": "faq",
+		"title": "Frequently Asked Questions.",
+		"description": "Answers to the most common questions about the learning format, post-payment, and the program process.",
+		"steps": {
+			"01": {
+				"title": "Is there support during the trial period?",
+				"description": "Yes. My task is to ensure that you successfully complete your probationary period and secure your position. If for any reason you fail the probation, the remaining portion of your post-payment will be due only after you start your new job."
+			},
+			"02": {
+				"title": "Is there a mentorship term?",
+				"description": "If the student is actively learning and progressing in the program, I will guide them to an offer, even if it takes 1-1.5 years. My goal is to find employment for the student. The prepayment is only part of the payment. At the same time, similar courses and bootcamps often cost hundreds of thousands of rubles and put students in debt for 300,000 ₽ or more. We provide more practice and real experience for less money and without debt."
+			},
+			"03": {
+				"title": "If I completed the training, but did not get to the internship and job search, do I need to pay something?",
+				"description": "No — if the student completed the training, but did not move on to the final stage (preparation for the market and internship), he he does not owe anything in excess of the postpaid amount, even if he has studied for a long time; payment occurs only if the student has received the full amount of services, after which he is expected to start looking for a job in good faith, and if after several months of attempts to find a job failed, there are no additional obligations either — such a model is needed to protect mentor's work and eliminate situations where the format is used as a way to get the most out of training at a reduced cost, despite the fact that the main goal of the program and the mentor's key motivation is to bring the student to employment."
+			},
+			"04": {
+				"title": "Do you personally lead the students or are there curators?",
+				"description": "I personally lead the training, without curators. I accompany the student at all stages: training, practice, knowledge testing, preparation for the market and job search. At the internship stage, a full-fledged team appears in the YeaHub project, and the student begins to work in the real development process. Knowledge checks and exams are conducted by experts from the YeaHub team, which helps you prepare for technical interviews and teamwork in advance."
+			},
+			"05": {
+				"title": "Do you provide answers during real interviews?",
+				"description": "No. I strongly oppose such practices. An interview is a test of your skills. My goal is to prepare you so that you can complete the course on your own. We focus on real knowledge and practice, rather than on hacks."
+			},
+			"06": {
+				"title": "How long does it take to complete the course?",
+				"description": "The speed depends on the individual student. Everyone has a different pace, amount of free time, and level of preparation. There were cases when students from scratch went all the way to the offer in 5 months, and someone moved more calmly and came to the result in about a year. I always help and accompany, but it is impossible to force students to learn — the result directly depends on the student's involvement."
+			},
+			"07": {
+				"title": "If I get a job before the program is completed, do I have to pay?",
+				"description": "Yes. Our goal is to provide employment. If an offer is received before the program is completed, the payment terms remain the same."
+			},
+			"08": {
+				"title": "If I haven't attended group classes, can I pay less?",
+				"description": "No. The mentor provides a full package of opportunities: classes, activities, and calls. It's up to the student to decide whether to attend or not, but the cost of the program remains the same."
+			},
+			"09": {
+				"title": "How long does the training take?",
+				"description": "There is no strict training period. I deliberately do not limit the program by time, because students are different. I do not divide students by level of knowledge, but by the degree of interaction required. The student regulates the pace of learning, and my task is to help maintain direction and progress."
+			},
+			"10": {
+				"title": "Do I need to know programming before I start?",
+				"description": "No. You can start from scratch.\u2028But a sequential or deep rate is better for such students."
+			}
+		}
+	},
+	"features": {
+		"indicator": "YeaHub",
+		"title": "We develop YeaHub together with our students.",
+		"description": "This is a real production project: mentoring students work on platform features in teams and follow Scrum.",
+		"cards": {
+			"questions": {
+				"badge": "1500+ Frontend questions",
+				"title": "Questions",
+				"description": "React, JavaScript, TypeScript, HTML, CSS, Git, Next.js, Docker, and other technologies. Real questions that come up in interviews.",
+				"link": "Questions"
+			},
+			"interviews": {
+				"badge": "100+ real interviews",
+				"title": "Interviews",
+				"description": "Breakdowns of interviews at different companies: what questions are asked and how the stages go.",
+				"link": "Interviews"
+			},
+			"simulator": {
+				"badge": "Technical interview simulation",
+				"title": "Interview simulator",
+				"description": "Go through interviews in a realistic format and track your progress.",
+				"link": "Interview simulator"
+			},
+			"livecoding": {
+				"badge": "Live coding practice",
+				"title": "Live сoding",
+				"description": "Solve tasks from real interviews in the browser in an interview-style format.",
+				"link": "Live сoding"
+			},
+			"analytics": {
+				"badge": "Job market analytics",
+				"title": "Resume analytics",
+				"description": "HH data analysis helps optimize your resume and technology stack.",
+				"link": "Resume analytics"
+			}
+		}
+	},
+	"internship": {
+		"indicator": "internship",
+		"title": "Internship on a real project.",
+		"description": "At YeaHub, we believe that the best learning is through practice. By the way, you're on it right now.",
+		"advantages": {
+			"processes": {
+				"title": "IT-company-like processes",
+				"description": "We work with Scrum: two-week sprints, daily scrum, planning and common syncs between teams."
+			},
+			"team": {
+				"title": "Teamwork",
+				"description": "The project features all roles: Frontend, Backend, Design, QA, Mobile, SA/BA. This is a full-fledged product team of more than 100 specialists.",
+				"link": "Our Yeahub project"
+			},
+			"experience": {
+				"title": "Real experience",
+				"description": "You work with a real codebase, participate in real releases, and do tasks that solve real problems.",
+				"link": "Our code on GitHub",
+				"badge": "Project audience 32k+"
 			}
 		}
 	},

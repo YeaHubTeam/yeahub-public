@@ -41,7 +41,7 @@ export const MainBlock = ({ collections, locale }: MainBlockProps) => {
 					{renderCards}
 				</Slider>
 			</div>
-			<Link href={route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}>
+			<Link href={`${locale}${route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}`}>
 				<Button
 					dataTestId="AdditionalBlock_ExpandButton"
 					className={styles['expand-button']}

@@ -19,12 +19,17 @@ interface InterviewCardProps {
 	iconType: 'settings' | 'student';
 	img: StaticImageData;
 	text: string;
+	locale: string;
 }
 
-export const InterviewCard = ({ img, text, iconType }: InterviewCardProps) => {
+export const InterviewCard = ({ img, text, iconType, locale }: InterviewCardProps) => {
 	const t = useTranslations(i18Namespace.landing);
 	const router = useRouter();
 	const { isMobile } = useScreenSize();
+
+	const handleClickNavigation = () => {
+		router.push(`${locale}${ROUTES.quiz.new.page}`);
+	};
 
 	return (
 		<Flex
@@ -41,9 +46,7 @@ export const InterviewCard = ({ img, text, iconType }: InterviewCardProps) => {
 					<Icon color={iconType === 'settings' ? 'yellow-900' : 'green-900'} icon={iconType} />
 				</div>
 				<Text variant="body3">{text}</Text>
-				<Button onClick={() => router.push(ROUTES.quiz.page)}>
-					{t(Landing.TRAINING_INTERVIEW_LINK)}
-				</Button>
+				<Button onClick={handleClickNavigation}>{t(Landing.TRAINING_INTERVIEW_LINK)}</Button>
 			</Flex>
 		</Flex>
 	);

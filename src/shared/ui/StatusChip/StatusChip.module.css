@@ -1,7 +1,5 @@
 .wrapper {
-  padding: 2px 8px;
   width: fit-content;
-  height: 20px;
   border-radius: 30px;
 }
 
@@ -23,4 +21,14 @@
 .variant-purple {
   background-color: var(--color-purple-100);
   color: var(--color-purple-800);
+}
+
+.size-small {
+	padding: 2px 8px;
+	height: 20px;
+}
+
+.size-medium {
+	padding: 6px 12px;
+	height: 30px;
 }
