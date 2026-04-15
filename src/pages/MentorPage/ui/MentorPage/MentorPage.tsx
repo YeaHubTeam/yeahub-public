@@ -6,6 +6,7 @@ import { EducationSection } from '@/widgets/Mentor/EducationSection';
 import { FaqSection } from '@/widgets/Mentor/FaqSection';
 import { FeaturesSection } from '@/widgets/Mentor/FeaturesSection';
 import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
+import { InternshipSection } from '@/widgets/Mentor/InternshipSection';
 import { StackSection } from '@/widgets/Mentor/StackSection';
 import { StrategySection } from '@/widgets/Mentor/StrategySection';
 
@@ -17,6 +18,7 @@ export const MentorPage = () => {
 			<BannerSection />
 			<StrategySection />
 			<FullPathSection />
+			<InternshipSection />
 			<EducationSection />
 			<AboutSection />
 			<StackSection />
