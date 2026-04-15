@@ -1,6 +1,7 @@
 // import { LanguageSwitcher } from '@/features/switch-language';
 import { AppLogo } from '@/shared/ui/AppLogo';
 import { Flex } from '@/shared/ui/Flex';
+import { HeaderTariffs } from '@/widgets/Header/ui/HeaderTariffs/HeaderTariffs';
 
 import { HeaderAuth } from '../HeaderAuth/HeaderAuth';
 import { HeaderNav } from '../HeaderNav/HeaderNav';
@@ -16,6 +17,7 @@ export const Header = () => {
 				</Flex>
 				<Flex align="center" gap="16">
 					{/*<LanguageSwitcher />*/}
+					<HeaderTariffs />
 					<HeaderAuth />
 				</Flex>
 			</Flex>

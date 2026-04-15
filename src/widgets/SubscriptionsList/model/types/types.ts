@@ -1,0 +1,20 @@
+import { ReactNode } from 'react';
+
+import { SubscriptionCode } from '@/entities/subscription';
+import { Pallete } from '@/shared/libs';
+
+import { SubscriptionInfoBenefit } from '../../libs/constants/benefitsConstants';
+
+export interface SubscriptionInfo {
+	id: number;
+	code: SubscriptionCode;
+	finalPrice: string;
+	fullPrice: string;
+	pricePerMonth: string;
+	benefits: SubscriptionInfoBenefit[];
+	badge: string;
+	color: Pallete;
+	title: string;
+	subtitle: string;
+	action: ReactNode;
+}
