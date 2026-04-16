@@ -1,14 +1,28 @@
 import { Flex } from '@/shared/ui/Flex';
-import { BannerBlock } from '@/widgets/Mentor/BannerBlock';
-import { FullPath } from '@/widgets/Mentor/FullPath';
+import { AboutSection } from '@/widgets/Mentor/AboutSection';
+import { BannerSection } from '@/widgets/Mentor/BannerSection';
+import { CommunitySection } from '@/widgets/Mentor/CommunitySection';
+import { EducationSection } from '@/widgets/Mentor/EducationSection';
+import { FaqSection } from '@/widgets/Mentor/FaqSection';
+import { FeaturesSection } from '@/widgets/Mentor/FeaturesSection';
+import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
+import { StackSection } from '@/widgets/Mentor/StackSection';
+import { StrategySection } from '@/widgets/Mentor/StrategySection';
 
 import styles from './MentorPage.module.css';
 
 export const MentorPage = () => {
 	return (
 		<Flex direction="column" className={styles.page}>
-			<BannerBlock />
-			<FullPath />
+			<BannerSection />
+			<StrategySection />
+			<FullPathSection />
+			<EducationSection />
+			<AboutSection />
+			<StackSection />
+			<CommunitySection />
+			<FaqSection />
+			<FeaturesSection />
 		</Flex>
 	);
 };

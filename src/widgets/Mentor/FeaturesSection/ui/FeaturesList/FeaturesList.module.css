@@ -1,0 +1,40 @@
+.list {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 20px;
+}
+
+.list > * {
+	grid-column: span 3;
+}
+
+.list > *:nth-child(n + 3) {
+	grid-column: span 2;
+}
+
+@media screen and (width < 1280px) {
+	.list {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.list > * {
+		grid-column: span 2;
+	}
+
+	.list > *:nth-last-child(-n + 2) {
+		grid-column: span 1;
+	}
+}
+
+@media screen and (width < 768px) {
+	.list {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.list > *,
+	.list > *:nth-child(n + 3),
+	.list > *:nth-last-child(-n + 2) {
+		grid-column: unset;
+	}
+}

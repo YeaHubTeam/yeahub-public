@@ -11,16 +11,17 @@ interface LandingPageProps {
 	skills: Skill[];
 	companies: Company[];
 	collections: Collection[];
+	locale: string;
 }
 
-export const LandingPage = ({ skills, companies, collections }: LandingPageProps) => {
+export const LandingPage = ({ skills, companies, collections, locale }: LandingPageProps) => {
 	return (
 		<>
 			<BannerBlock />
-			<SpecializationBlock />
-			<AboutQuestionsBlock skills={skills} />
+			<SpecializationBlock locale={locale} />
+			<AboutQuestionsBlock skills={skills} locale={locale} />
 			<InterviewTrainerBlock />
-			<CollectionBlock companies={companies} collections={collections} />
+			<CollectionBlock companies={companies} collections={collections} locale={locale} />
 		</>
 	);
 };

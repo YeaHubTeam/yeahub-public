@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Flex } from '@/shared/ui/Flex';
 import { statusChipTestIds, statusChipVariants } from '@/shared/ui/StatusChip/constants';
 import { Text } from '@/shared/ui/Text';
+import { TextVariant } from '@/shared/ui/Text/types';
 
 import styles from './StatusChip.module.css';
 
@@ -13,6 +14,7 @@ export interface StatusChipItem {
 	text: string;
 	variant: StatusChipVariant;
 }
+
 export interface StatusChipProps {
 	status: StatusChipItem;
 	size?: StatusChipSize;
@@ -20,6 +22,11 @@ export interface StatusChipProps {
 
 export const StatusChip = ({ status, size = 'small' }: StatusChipProps) => {
 	const { variant, text } = status;
+
+	const textSize: Record<StatusChipSize, TextVariant> = {
+		medium: 'body3-strong',
+		small: 'body1-accent',
+	};
 
 	return (
 		<Flex
@@ -30,7 +37,7 @@ export const StatusChip = ({ status, size = 'small' }: StatusChipProps) => {
 		>
 			<Text
 				dataTestId={statusChipTestIds.statusChipText}
-				variant="body1-accent"
+				variant={textSize[size]}
 				color={statusChipVariants[variant]}
 			>
 				{text}

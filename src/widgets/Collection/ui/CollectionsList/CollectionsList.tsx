@@ -9,12 +9,14 @@ interface CollectionsListProps {
 	collections: Collection[];
 	hasFilters: boolean;
 	specialization: string;
+	locale: string;
 }
 
 export const CollectionsList = ({
 	collections,
 	specialization,
 	hasFilters,
+	locale,
 }: CollectionsListProps) => {
 	const t = useTranslations(i18Namespace.collection);
 
@@ -39,6 +41,7 @@ export const CollectionsList = ({
 					key={collection.id}
 					collection={collection}
 					specialization={specialization}
+					locale={locale}
 				/>
 			))}
 		</Flex>

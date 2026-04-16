@@ -34,14 +34,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		t(Analytics.HH_ANALYTICS_TAB_KEYWORDS),
 	];
 
+	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
+	const canonical = `${baseUrl}/${locale}/hh-analytics`;
+
 	return {
 		title,
 		description,
 		keywords,
+		alternates: {
+			canonical,
+		},
 		openGraph: {
 			title,
 			description,
 			type: 'website',
+			url: canonical,
 		},
 	};
 }
@@ -54,7 +61,7 @@ const HhAnalyticsPage = async ({ searchParams, params }: PageProps) => {
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.analytics });
 
-	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/hh-analytics`;
 
 	const titleSkills = t(Analytics.HH_ANALYTICS_TITLE_SKILLS);

@@ -1,0 +1,163 @@
+.accordion {
+	position: relative;
+	padding: 20px;
+	overflow: hidden;
+	border-radius: 20px;
+	background-color: var(--color-white-900);
+	interpolate-size: allow-keywords;
+}
+
+.accordion summary {
+	list-style: none;
+}
+
+.hidden {
+	display: none;
+}
+
+.accordion summary::-webkit-details-marker {
+	display: none;
+}
+
+.heading {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0;
+	cursor: pointer;
+}
+
+.number {
+	width: 32px;
+	height: 32px;
+}
+
+.title {
+	margin-left: 16px;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.icon {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	align-items: center;
+	margin-left: auto;
+	width: 60px;
+	height: 29px;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
+	border: 1px solid rgb(243 22 78 / 7%);
+	border-radius: 50px;
+}
+
+.icon1 {
+	width: 60px;
+	height: 30px;
+}
+
+.icon::before {
+	content: '';
+	position: absolute;
+	width: 15px;
+	height: 2px;
+	background-color: var(--color-red-600);
+}
+
+.icon::after {
+	content: '';
+	position: absolute;
+	width: 2px;
+	height: 15px;
+	background-color: var(--color-red-600);
+	transition: opacity 0.2s ease-in-out;
+}
+
+.accordion[open] .icon::after {
+	opacity: 0;
+}
+
+.accordion::details-content {
+	height: 0;
+	overflow: hidden;
+	transition:
+		height 0.3s ease-in-out,
+		content-visibility 0.3s ease-in-out;
+	transition-behavior: allow-discrete;
+	will-change: height;
+}
+
+.accordion[open]::details-content {
+	height: auto;
+}
+
+.content {
+	padding: 17px 0 0;
+	color: var(--text-color-light);
+}
+
+.content-title {
+	margin-bottom: 8px;
+}
+
+.content-wrapper {
+	display: flex;
+}
+
+.media {
+	position: absolute;
+	z-index: 1;
+	flex-shrink: 0;
+}
+
+.with-media.accordion[open]::details-content {
+	height: calc(210px - 20px - 20px - 35px);
+}
+
+.with-media .content p:last-child {
+	max-width: 426px;
+}
+
+.move-title.accordion[open] .title {
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media (width < 1280px) {
+	.title,
+	.content-title {
+		font-size: 20px;
+	}
+}
+
+@media (width < 768px) {
+	.accordion {
+		padding: 10px;
+	}
+
+	.media {
+		display: none;
+	}
+
+	.with-media.accordion[open]::details-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		height: calc(250px - 10px - 10px - 35px);
+	}
+
+	.with-media .content p:last-child {
+		max-width: 100%;
+	}
+	
+	.heading {
+		flex-wrap: wrap;
+	}
+	
+	.title {
+		order: 3;
+		margin-top: 10px;
+		margin-left: 0;
+		width: 100%;
+	}
+}

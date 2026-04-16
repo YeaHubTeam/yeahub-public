@@ -29,7 +29,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_FRONTEND,
 		image: frontend,
 		alt: Landing.SPECIALIZATION_CARD_IMG_FRONTEND,
-		link: '/questions?page=1&status=all&specialization=11&skills=6',
+		link: '/questions/react-frontend-developer',
 	},
 	{
 		id: 2,
@@ -37,7 +37,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_BACKEND,
 		image: backend,
 		alt: Landing.SPECIALIZATION_CARD_IMG_BACKEND,
-		link: '/questions?page=1&status=all&specialization=19&skills=33',
+		link: '/questions/nodejs-backend-developer',
 	},
 	{
 		id: 3,
@@ -45,7 +45,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_DATA,
 		image: dataScience,
 		alt: Landing.SPECIALIZATION_CARD_IMG_DATA,
-		link: '/questions?page=1&status=all&specialization=34&skills=64',
+		link: '/questions/data-scientist',
 	},
 	{
 		id: 4,
@@ -53,7 +53,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_MACHINE,
 		image: machineLearning,
 		alt: Landing.SPECIALIZATION_CARD_IMG_MACHINE,
-		link: '/questions?page=1&status=all&specialization=37&skills=33',
+		link: '/questions/machine-learning-engineer',
 	},
 	{
 		id: 5,
@@ -61,7 +61,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_TESTING,
 		image: testing,
 		alt: Landing.SPECIALIZATION_CARD_IMG_TESTING,
-		link: '/questions?page=1&status=all&specialization=29&skills=46',
+		link: '/questions/qa-engineer',
 	},
 	{
 		id: 6,
@@ -69,7 +69,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_IOS,
 		image: iosDev,
 		alt: Landing.SPECIALIZATION_CARD_IMG_IOS,
-		link: '/questions?page=1&status=all&specialization=26&skills=44',
+		link: '/questions/ios-mobile-developer',
 	},
 	{
 		id: 7,
@@ -77,7 +77,7 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_ANDROID,
 		image: androidDev,
 		alt: Landing.SPECIALIZATION_CARD_IMG_ANDROID,
-		link: '/questions?page=1&status=all&specialization=27&skills=45',
+		link: '/questions/android-mobile-developer',
 	},
 	{
 		id: 8,
@@ -85,6 +85,6 @@ export const mockSpecialization: Array<IMockSpeciality> = [
 		description: Landing.SPECIALIZATION_CARD_DESCRIPTION_GAME,
 		image: gameDev,
 		alt: Landing.SPECIALIZATION_CARD_IMG_GAME,
-		link: '/questions?page=1&status=all&specialization=35&skills=58',
+		link: '/questions/game-developer',
 	},
 ];
