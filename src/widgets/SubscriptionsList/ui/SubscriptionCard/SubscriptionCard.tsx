@@ -1,3 +1,9 @@
+import Link from 'next/link';
+
+import { useTranslations } from 'next-intl';
+
+import { Subscription, i18Namespace } from '@/shared/config';
+import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
@@ -11,7 +17,11 @@ interface SubscriptionCardProps {
 	subscription: SubscriptionInfo;
 }
 
+const DASHBOARD_URL = 'https://app.yeatwork.ru/settings#select-tariff';
+
 export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
+	const t = useTranslations(i18Namespace.subscription);
+
 	return (
 		<Flex direction="column" flex={1}>
 			<Flex
@@ -25,7 +35,7 @@ export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
 					{subscription.badge}
 				</Text>
 			</Flex>
-			<Card withOutsideShadow className={styles.card} classNameContent={styles['card-content']}>
+			<Card withOutsideShadow className={styles.card} contentClassName={styles['card-content']}>
 				<Flex direction="column" justify="between" gap="20" className={styles.content}>
 					<Flex direction="column" gap="14">
 						<Flex gap="10" align="center">
@@ -33,6 +43,7 @@ export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
 							<Text variant="body6">{subscription.title}</Text>
 						</Flex>
 						<Text variant="body2">{subscription.subtitle}</Text>
+						<Text variant="body2">{subscription.trialInfo}</Text>
 						<Flex direction="column" gap="4">
 							<Flex align="center" gap="10">
 								<Text variant="body5-strong" color="purple-900">
@@ -52,7 +63,11 @@ export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
 						</Flex>
 					</Flex>
 					<Flex direction="column" gap="24">
-						{subscription.action}
+						<Link href={DASHBOARD_URL}>
+							<Button fullWidth variant="primary">
+								{t(Subscription.CARD_SUBSCRIBE)}
+							</Button>
+						</Link>
 						<Flex direction="column" gap="14">
 							{subscription.benefits.map((benefit) => (
 								<SubscriptionBenefit key={benefit.title} benefit={benefit} />

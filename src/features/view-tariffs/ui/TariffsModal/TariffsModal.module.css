@@ -1,0 +1,13 @@
+.modal {
+	padding: 24px 24px 0;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+@media screen and (width < 768px) {
+	.modal {
+		margin: 0 8px;
+		max-height: 90dvh;
+		border-radius: 16px;
+	}
+}

@@ -11,16 +11,20 @@ export const freeBenefits: SubscriptionInfoBenefit[] = [
 		isActive: true,
 	},
 	{
-		title: Subscription.CARD_BENEFITS_FOURTH_FREE,
+		title: Subscription.CARD_BENEFITS_SECOND,
 		isActive: true,
 	},
 	{
-		title: Subscription.CARD_BENEFITS_SECOND,
-		isActive: false,
+		title: Subscription.CARD_BENEFITS_THIRD,
+		isActive: true,
 	},
 	{
-		title: Subscription.CARD_BENEFITS_THIRD,
-		isActive: false,
+		title: Subscription.CARD_BENEFITS_FIFTH,
+		isActive: true,
+	},
+	{
+		title: Subscription.CARD_BENEFITS_FOURTH,
+		isActive: true,
 	},
 ];
 
@@ -38,7 +42,11 @@ export const premiumBenefits: SubscriptionInfoBenefit[] = [
 		isActive: true,
 	},
 	{
-		title: Subscription.CARD_BENEFITS_FOURTH_PAID,
+		title: Subscription.CARD_BENEFITS_FIFTH,
+		isActive: true,
+	},
+	{
+		title: Subscription.CARD_BENEFITS_FOURTH,
 		isActive: true,
 	},
 ];

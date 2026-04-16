@@ -1,5 +1,6 @@
 {
 	"title": "Membership",
+	"tariffs": "Tariffs",
 	"description": "Become a member of the YeaHub community and get access to all the features of the platform. The membership fee helps develop the platform, add new functions and support members",
 	"subscribeAction": "Subscribe",
 	"unsubscribe": {
@@ -72,13 +73,11 @@
 		},
 		"subscribe": "Subscribe",
 		"benefits": {
-			"first": "All questions",
-			"second": "Advanced simulator",
-			"third": "Training statistics",
-			"fourth": {
-				"free": "Free collections",
-				"paid": "All collections"
-			}
+			"first": "List of all questions",
+			"second": "List of all tasks",
+			"third": "Interview mode",
+			"fourth": "Progress statistics",
+			"fifth": "Private chat"
 		}
 	},
 	"banner": {

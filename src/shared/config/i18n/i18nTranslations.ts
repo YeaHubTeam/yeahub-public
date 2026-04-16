@@ -529,6 +529,7 @@ export enum Mentor {
 
 export enum Subscription {
 	TITLE = 'title',
+	TARIFFS = 'tariffs',
 	DESCRIPTION = 'description',
 	SUBSCRIBE_ACTION = 'subscribeAction',
 	UNSUBSCRIBE_MODAL_TITLE = 'unsubscribe.modal.title',
@@ -571,8 +572,8 @@ export enum Subscription {
 	CARD_BENEFITS_FIRST = 'card.benefits.first',
 	CARD_BENEFITS_SECOND = 'card.benefits.second',
 	CARD_BENEFITS_THIRD = 'card.benefits.third',
-	CARD_BENEFITS_FOURTH_FREE = 'card.benefits.fourth.free',
-	CARD_BENEFITS_FOURTH_PAID = 'card.benefits.fourth.paid',
+	CARD_BENEFITS_FOURTH = 'card.benefits.fourth',
+	CARD_BENEFITS_FIFTH = 'card.benefits.fifth',
 	BANNER_TITLE = 'banner.title',
 	BANNER_LIST_TITLE = 'banner.list.title',
 	BANNER_LIST_FIRST = 'banner.list.first',
