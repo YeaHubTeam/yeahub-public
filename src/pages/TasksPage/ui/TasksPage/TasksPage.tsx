@@ -32,6 +32,7 @@ export const TasksPage = ({
 	page,
 	total,
 	limit,
+	hasFilters,
 	categories,
 	languages,
 }: TasksPageProps) => {
@@ -40,7 +41,7 @@ export const TasksPage = ({
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
-				<TasksPageHeader categories={categories} languages={languages} />
+				<TasksPageHeader categories={categories} languages={languages} hasFilters={hasFilters} />
 				<TasksTable tasks={tasks} />
 				<TasksPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>

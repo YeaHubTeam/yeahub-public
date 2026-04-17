@@ -1,11 +1,8 @@
 import { apiFetch } from '@/shared/api';
-import { route } from '@/shared/libs';
 
 import { taskApiUrls } from '../model/constants/task';
 import type {
-	ExecuteCodeRequest,
-	ExecuteCodeResponse,
-	GetTaskByIdResponse,
+	GetLanguagesResponse,
 	GetTaskCategoriesResponse,
 	GetTasksListParams,
 	GetTasksListResponse,
@@ -31,28 +28,14 @@ export async function getTasksList(params: GetTasksListParams) {
 	});
 }
 
-export async function getTaskById(taskId: string) {
-	return apiFetch<GetTaskByIdResponse>(route(taskApiUrls.getTaskById, taskId), {
-		cacheStrategy: 'no-store',
-	});
-}
-
-export async function executeCode(request: ExecuteCodeRequest) {
-	return apiFetch<ExecuteCodeResponse>(taskApiUrls.executeCode, {
-		method: 'POST',
-		body: JSON.stringify(request),
-	});
-}
-
-export async function testCode(request: ExecuteCodeRequest) {
-	return apiFetch<ExecuteCodeResponse>(taskApiUrls.testCode, {
-		method: 'POST',
-		body: JSON.stringify(request),
-	});
-}
-
 export async function getTaskCategories() {
 	return apiFetch<GetTaskCategoriesResponse>(taskApiUrls.getTaskCategories, {
 		searchParams: { isActive: true },
+	});
+}
+
+export async function getLanguages() {
+	return apiFetch<GetLanguagesResponse>(taskApiUrls.getLanguages, {
+		cacheStrategy: 'no-store',
 	});
 }

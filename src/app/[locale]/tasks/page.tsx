@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getTasksList } from '@/entities/task';
+import { getLanguages, getTaskCategories, getTasksList } from '@/entities/task';
 import type { TaskDifficulty } from '@/entities/task';
 import { TasksPage as TasksPageComponent } from '@/pages/TasksPage';
 import { Task, i18Namespace } from '@/shared/config';
@@ -63,28 +63,30 @@ const TasksPage = async ({ searchParams, params }: PageProps) => {
 		: undefined;
 	const category = resolvedSearchParams?.category || undefined;
 
-	const [tasksResponse, allTasksForCategories] = await Promise.all([
+	const [tasksResponse, categoriesResponse, languagesResponse] = await Promise.all([
 		getTasksList({ page, title, difficulty, langIds, category, isActive: true }).catch(() => ({
 			data: [] as Awaited<ReturnType<typeof getTasksList>>['data'],
 			total: 0,
 			limit: 10,
 			page: 1,
 		})),
-		getTasksList({ isActive: true, limit: 1000 }).catch(() => ({
-			data: [] as Awaited<ReturnType<typeof getTasksList>>['data'],
-			total: 0,
-			limit: 10,
-			page: 1,
-		})),
+		getTaskCategories().catch(() => []),
+		getLanguages().catch(() => []),
 	]);
 
-	const allTasks = allTasksForCategories.data ?? [];
-
-	const categories = Array.from(new Set(allTasks.map((t) => t.mainCategory).filter(Boolean)));
-
-	const languagesMap = new Map<number, string>();
-	allTasks.forEach((t) => t.supportedLanguages?.forEach((l) => languagesMap.set(l.id, l.name)));
-	const languages = Array.from(languagesMap, ([id, name]) => ({ id, name }));
+	const categoriesFromApi = (categoriesResponse ?? []).map((c) => c.name);
+	let categories: string[];
+	if (categoriesFromApi.length > 0) {
+		categories = categoriesFromApi;
+	} else {
+		const unfilteredTasks = await getTasksList({ isActive: true, limit: 100 }).catch(() => ({
+			data: [] as Awaited<ReturnType<typeof getTasksList>>['data'],
+		}));
+		categories = Array.from(
+			new Set((unfilteredTasks.data ?? []).map((t) => t.mainCategory).filter(Boolean)),
+		);
+	}
+	const languages = languagesResponse ?? [];
 
 	const hasFilters = !!title || !!difficulty || (langIds?.length ?? 0) > 0 || !!category;
 

@@ -11,9 +11,10 @@ import styles from './TasksPageHeader.module.css';
 interface TasksPageHeaderProps {
 	categories: string[];
 	languages: { id: number; name: string }[];
+	hasFilters?: boolean;
 }
 
-export const TasksPageHeader = ({ categories, languages }: TasksPageHeaderProps) => {
+export const TasksPageHeader = ({ categories, languages, hasFilters }: TasksPageHeaderProps) => {
 	const t = useTranslations(i18Namespace.task);
 
 	return (
@@ -22,7 +23,7 @@ export const TasksPageHeader = ({ categories, languages }: TasksPageHeaderProps)
 				<Text variant="body6" isMainTitle maxRows={1}>
 					{t(Task.TITLE_SHORT)}
 				</Text>
-				<FiltersDrawer>
+				<FiltersDrawer hasFilters={hasFilters}>
 					<TasksFiltersPanel categories={categories} languages={languages} />
 				</FiltersDrawer>
 			</Flex>

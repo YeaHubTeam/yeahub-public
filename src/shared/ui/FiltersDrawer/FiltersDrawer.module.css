@@ -66,6 +66,7 @@ button.filter-button {
 
 @media (width < 1200px) {
 	.filter {
+		position: relative;
 		top: 70px;
 		display: flex;
 		flex-direction: column;

@@ -68,10 +68,6 @@ export const ROUTES = {
 	tasks: {
 		route: 'tasks',
 		page: '/tasks',
-		detail: {
-			route: 'tasks/:taskId',
-			page: '/tasks/:taskId',
-		},
 	},
 	wiki: {
 		questions: {
