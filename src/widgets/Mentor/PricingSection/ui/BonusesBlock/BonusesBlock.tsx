@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 
 import { Mentor, i18Namespace } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
+import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
@@ -16,23 +17,19 @@ export const BonusesBlock = () => {
 	];
 
 	return (
-		<div className={styles['bonus-blocks']}>
+		<Flex gap="20" className={styles['bonus-blocks']}>
 			{bonusesBlock.map((block, index) => (
-				<div key={index} className={styles['bonus-block']}>
-					{block.map((line, lineIndex) => (
-						<Flex key={lineIndex} gap="9" align="start" className={styles['bonus-block-text']}>
-							<Badge
-								icon="lightning"
-								wrapperClassName={styles['icon-wrapper']}
-								className={styles.icon}
-							/>
-							<Text variant="body3-accent" className={styles['bonus-text']}>
-								{line}
-							</Text>
-						</Flex>
-					))}
-				</div>
+				<Card withOutsideShadow key={index} className={styles['bonus-block']}>
+					<Flex direction="column" gap="10" className={styles['bonus-block-content']}>
+						{block.map((line, lineIndex) => (
+							<Flex key={lineIndex} gap="9" align="start">
+								<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
+								<Text variant="body3-accent">{line}</Text>
+							</Flex>
+						))}
+					</Flex>
+				</Card>
 			))}
-		</div>
+		</Flex>
 	);
 };

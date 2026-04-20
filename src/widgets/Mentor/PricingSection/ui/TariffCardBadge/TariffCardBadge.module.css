@@ -1,0 +1,16 @@
+.label {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 4px 20px;
+	width: fit-content;
+	height: 30px;
+	border-radius: 47px;
+	background: linear-gradient(92.04deg, #eae6ff 15.59%, #8e78ff 47.22%, #1e1454 111.13%);
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.inverted {
+	background: #fff;
+}

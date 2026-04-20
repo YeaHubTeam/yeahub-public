@@ -3,10 +3,11 @@ import { useTranslations } from 'next-intl';
 import { Mentor, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 
-import { RateCard } from '../RateCard/RateCard';
-import styles from './RateList.module.css';
+import { BonusesBlock } from '../BonusesBlock/BonusesBlock';
+import { TariffCard } from '../TariffCard/TariffCard';
+import styles from './TariffList.module.css';
 
-export const RateList = () => {
+export const TariffList = () => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	const rateCards = [
@@ -22,6 +23,7 @@ export const RateList = () => {
 				t(Mentor.PRICING_INTENSIVE_STOPS),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
+			isInverted: false,
 		},
 		{
 			label: t(Mentor.PRICING_SEQUENTIAL_LABEL),
@@ -35,7 +37,7 @@ export const RateList = () => {
 				t(Mentor.PRICING_SEQUENTIAL_COMFORT),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
-			featured: true,
+			isInverted: true,
 		},
 		{
 			label: t(Mentor.PRICING_DEEP_LABEL),
@@ -49,14 +51,16 @@ export const RateList = () => {
 				t(Mentor.PRICING_DEEP_SUPPORT),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
+			isInverted: false,
 		},
 	];
 
 	return (
-		<Flex justify="center" wrap="wrap" gap="20" className={styles.list}>
+		<Flex wrap="wrap" gap="20" className={styles.list}>
 			{rateCards.map((card) => (
-				<RateCard key={card.label} {...card} />
+				<TariffCard key={card.label} {...card} />
 			))}
+			<BonusesBlock />
 		</Flex>
 	);
 };
