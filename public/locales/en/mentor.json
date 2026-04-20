@@ -273,5 +273,71 @@
 				"badge": "Project audience 32k+"
 			}
 		}
+	},
+	"pricing": {
+		"title": "Tariffs and Programs",
+		"indicator": "tariffs",
+		"description": "All programs lead to the offer.\nThe difference lies in the pace of learning and depth of study.",
+		"consultation": {
+			"button": "Book a consultation"
+		},
+		"info": {
+			"postpay": {
+				"title": "What is post-payment?",
+				"description": "You get a job with a salary, for example 150 000 ₽, and pay for the course in installments — 50% (75 000 ₽) over 3 months."
+			},
+			"experienced": {
+				"title": "For experienced developers",
+				"description": "If you have relevant experience of 1+ year, you can choose any program. We'll adapt it to your goals so you close gaps faster, and post-payment will be 100% instead of 150%."
+			},
+			"badge": {
+				"instead": "instead",
+				"postpay": "post-payment"
+			}
+		},
+		"bonuses": {
+			"all_programs": "All programs lead to an offer and include a sufficient number of calls and feedback.",
+			"intensive_note": "Intensive — a fast-paced review format: fewer exams,\n checks and homework, harder for beginners due to longer micro-goals.",
+			"mentor_involvement": "Any program accounts for mentor involvement, as the main reward is post-payment after the offer.",
+			"mentor_interest": "The mentor is invested in your offer: additional calls after the main program — at no extra cost."
+		},
+		"rates": {
+			"intensive": {
+				"label": "Intensive",
+				"price": "50 000 ₽",
+				"note": "+ 150% after offer",
+				"details": "5 modules and knowledge checks",
+				"features": {
+					"for_whom": "For those who already have a base",
+					"pace": "Fast pace",
+					"format": "Block exams",
+					"stops": "Minimal stops"
+				}
+			},
+			"sequential": {
+				"label": "Sequential",
+				"price": "65 000 ₽",
+				"note": "+ 150% after offer",
+				"details": "8 modules with practice and exams",
+				"features": {
+					"for_whom": "Suitable for most students",
+					"pace": "Step-by-step learning",
+					"format": "Gradual topic coverage",
+					"comfort": "Comfortable pace"
+				}
+			},
+			"deep": {
+				"label": "Deep dive",
+				"price": "80 000 ₽",
+				"note": "+ 150% after offer",
+				"details": "12 modules with practice and checks",
+				"features": {
+					"depth": "Maximum learning depth",
+					"coverage": "Detailed coverage",
+					"checks": "Regular knowledge checks",
+					"support": "High level of support"
+				}
+			}
+		}
 	}
 }

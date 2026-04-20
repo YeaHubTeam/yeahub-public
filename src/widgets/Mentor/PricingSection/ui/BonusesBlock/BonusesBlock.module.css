@@ -1,0 +1,36 @@
+.bonus-block {
+	padding: 14px;
+	width: calc(50% - 10px);
+}
+
+.icon-wrapper {
+	width: 20px;
+	height: 20px;
+}
+
+@media (width < 1280px) {
+	.bonus-blocks {
+		flex-direction: column;
+		width: calc(50% - 10px);
+	}
+
+	.bonus-block {
+		flex: 1;
+		width: 100%;
+	}
+	
+	.bonus-block-content {
+		gap: 20px;
+	}
+}
+
+@media (width < 768px) {
+	.bonus-blocks {
+		gap: 10px;
+		width: 100%;
+	}
+
+	.bonus-block {
+		padding: 10px;
+	}
+}

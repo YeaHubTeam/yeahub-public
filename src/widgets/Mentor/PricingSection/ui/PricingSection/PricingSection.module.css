@@ -1,0 +1,16 @@
+.content {
+	flex-direction: column;
+	gap: 20px;
+}
+
+@media (width < 1280px) {
+	.content {
+		flex-direction: row;
+	}
+}
+
+@media (width < 768px) {
+	.content {
+		gap: 10px;
+	}
+}
