@@ -20,16 +20,28 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: i18Namespace.main });
 
+	const isProd = process.env.NEXT_PUBLIC_IS_PROD === 'production';
+
 	return {
 		title: {
 			template: '%s | Yeahub',
 			default: t(Main.PROJECT_TITLE),
 		},
 		description: t(Main.PROJECT_DESCRIPTION),
-		robots: {
-			index: process.env.NEXT_PUBLIC_IS_PROD === 'production',
-			follow: process.env.NEXT_PUBLIC_IS_PROD === 'production',
-		},
+		robots: isProd
+			? {
+					index: true,
+					follow: true,
+					googleBot: {
+						index: true,
+						follow: true,
+						'max-snippet': -1,
+					},
+				}
+			: {
+					index: false,
+					follow: false,
+				},
 	};
 }
 
@@ -39,6 +51,13 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 	setRequestLocale(locale);
 
 	const messages = await getMessages({ locale });
+	const t = await getTranslations({ locale, namespace: i18Namespace.main });
+
+	const jsonLd = {
+		'@context': 'http://schema.org/',
+		'@type': 'WPHeader',
+		headline: t(Main.PROJECT_TITLE),
+	};
 
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
@@ -48,6 +67,10 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 			</main>
 			<Footer />
 			<div id="drawer-root" />
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			></script>
 		</NextIntlClientProvider>
 	);
 };

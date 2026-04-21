@@ -1,8 +1,14 @@
-import { featuresCards } from '../../model/constants/featuresCards';
+import { createFeaturesCards } from '../../model/constants/featuresCards';
 import { FeatureCard } from '../FeatureCard/FeatureCard';
 import styles from './FeaturesList.module.css';
 
-export const FeaturesList = () => {
+interface FeaturesListProps {
+	locale: string;
+}
+
+export const FeaturesList = ({ locale }: FeaturesListProps) => {
+	const featuresCards = createFeaturesCards(locale);
+
 	return (
 		<div className={styles.list}>
 			{featuresCards.map((item) => (

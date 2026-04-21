@@ -14,7 +14,7 @@ export const BannerButton = () => {
 			size="large"
 			variant="primary"
 			className={styles['banner-button']}
-			href={ROUTES.telegram}
+			href={ROUTES.mentor.telegram}
 			target="_blank"
 			rel="noopener noreferrer"
 		>

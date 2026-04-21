@@ -13,20 +13,24 @@ import { StrategySection } from '@/widgets/Mentor/StrategySection';
 
 import styles from './MentorPage.module.css';
 
-export const MentorPage = () => {
+interface MentorPageProps {
+	locale: string;
+}
+
+export const MentorPage = ({ locale }: MentorPageProps) => {
 	return (
 		<Flex direction="column" className={styles.page}>
 			<BannerSection />
 			<StrategySection />
 			<FullPathSection />
-			<InternshipSection />
+			<InternshipSection locale={locale} />
 			<EducationSection />
 			<AboutSection />
 			<StackSection />
 			<PricingSection />
 			<CommunitySection />
 			<FaqSection />
-			<FeaturesSection />
+			<FeaturesSection locale={locale} />
 		</Flex>
 	);
 };

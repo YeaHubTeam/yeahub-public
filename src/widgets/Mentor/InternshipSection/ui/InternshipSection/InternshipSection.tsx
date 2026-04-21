@@ -5,7 +5,11 @@ import { Mentor, i18Namespace } from '@/shared/config';
 import { SectionHeader } from '../../../SectionHeader';
 import { AdvantagesList } from '../AdvantagesList/AdvantagesList';
 
-export const InternshipSection = () => {
+interface InternshipSectionProps {
+	locale: string;
+}
+
+export const InternshipSection = ({ locale }: InternshipSectionProps) => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
@@ -15,7 +19,7 @@ export const InternshipSection = () => {
 				title={t(Mentor.INTERNSHIP_TITLE)}
 				description={t(Mentor.INTERNSHIP_DESCRIPTION)}
 			/>
-			<AdvantagesList />
+			<AdvantagesList locale={locale} />
 		</section>
 	);
 };

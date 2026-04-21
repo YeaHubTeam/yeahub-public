@@ -16,6 +16,7 @@ export interface RateCardProps {
 	features: string[];
 	buttonText: string;
 	isInverted: boolean;
+	link: string;
 }
 
 export const TariffCard = ({
@@ -26,6 +27,7 @@ export const TariffCard = ({
 	features,
 	buttonText,
 	isInverted,
+	link,
 }: RateCardProps) => {
 	return (
 		<Card className={classNames(styles.card, { [styles.inverted]: isInverted })} withOutsideShadow>
@@ -40,7 +42,15 @@ export const TariffCard = ({
 				{details}
 			</Text>
 			<TariffCardAdvantages advantages={features} isInverted={isInverted} />
-			<Button variant="primary" size="large" fullWidth className={styles.button}>
+			<Button
+				variant="primary"
+				size="large"
+				fullWidth
+				className={styles.button}
+				href={link}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				{buttonText}
 			</Button>
 		</Card>
