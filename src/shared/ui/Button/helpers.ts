@@ -16,7 +16,16 @@ const tagNameByVariants: Record<VariantType, 'button' | 'a'> = {
 	'primary-inverse': 'button',
 };
 
-export const getTagName = (
-	variant: keyof typeof tagNameByVariants,
-	isLink?: boolean,
-): 'button' | 'a' => (isLink ? 'a' : tagNameByVariants[variant]);
+const LINK_TEXT_VARIANTS = new Set<VariantType>(['link', 'link-gray', 'link-purple']);
+
+export const isLinkTextVariant = (variant: VariantType): boolean => LINK_TEXT_VARIANTS.has(variant);
+
+export const getTagName = (variant: VariantType, hasHref?: boolean): 'button' | 'a' => {
+	if (hasHref) {
+		return 'a';
+	}
+	return tagNameByVariants[variant];
+};
+
+export const getStylePrefix = (variant: VariantType): 'button' | 'a' =>
+	isLinkTextVariant(variant) ? 'a' : 'button';

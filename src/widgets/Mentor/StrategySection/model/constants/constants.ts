@@ -12,6 +12,7 @@ export const strategyList = [
 		title: Mentor.STRATEGY_ADVANTAGES_ATS_TITLE,
 		description: Mentor.STRATEGY_ADVANTAGES_ATS_DESCRIPTION,
 		imgSrc: mentorPhone,
+		imgAlt: Mentor.STRATEGY_ADVANTAGES_ATS_IMAGE_ALT,
 	},
 	{
 		id: 'search',
@@ -23,6 +24,7 @@ export const strategyList = [
 		title: Mentor.STRATEGY_ADVANTAGES_PREPARATION_TITLE,
 		description: Mentor.STRATEGY_ADVANTAGES_PREPARATION_DESCRIPTION,
 		imgSrc: mentorQuestions,
+		imgAlt: Mentor.STRATEGY_ADVANTAGES_PREPARATION_IMAGE_ALT,
 	},
 	{
 		id: 'experience',
@@ -34,5 +36,6 @@ export const strategyList = [
 		title: Mentor.STRATEGY_ADVANTAGES_MOTIVATION_TITLE,
 		description: Mentor.STRATEGY_ADVANTAGES_MOTIVATION_DESCRIPTION,
 		imgSrc: mentors,
+		imgAlt: Mentor.STRATEGY_ADVANTAGES_MOTIVATION_IMAGE_ALT,
 	},
 ];

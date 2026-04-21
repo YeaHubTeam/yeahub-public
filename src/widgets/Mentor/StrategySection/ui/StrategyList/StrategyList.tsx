@@ -30,7 +30,7 @@ export const StrategyList = () => {
 					{strategy.imgSrc && (
 						<Image
 							src={strategy.imgSrc}
-							alt={strategy.title}
+							alt={t(strategy.imgAlt) ?? ''}
 							className={classNames(styles.img, styles[`img-${strategy.id}`])}
 						/>
 					)}

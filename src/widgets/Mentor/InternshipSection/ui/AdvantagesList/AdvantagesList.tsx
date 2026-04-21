@@ -22,6 +22,7 @@ export const AdvantagesList = () => {
 			description: Mentor.INTERNSHIP_ADVANTAGES_PROCESSES_DESCRIPTION,
 			img: processes,
 			additionalImage: processesTablet,
+			imgAlt: Mentor.INTERNSHIP_ADVANTAGES_PROCESSES_IMAGE_ALT,
 		},
 		{
 			title: Mentor.INTERNSHIP_ADVANTAGES_TEAM_TITLE,
@@ -29,6 +30,7 @@ export const AdvantagesList = () => {
 			link: Mentor.INTERNSHIP_ADVANTAGES_TEAM_LINK,
 			route: '#',
 			img: team,
+			imgAlt: Mentor.INTERNSHIP_ADVANTAGES_TEAM_IMAGE_ALT,
 		},
 		{
 			title: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_TITLE,
@@ -37,6 +39,7 @@ export const AdvantagesList = () => {
 			route: '#',
 			badge: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_BADGE,
 			img: experience,
+			imgAlt: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_IMAGE_ALT,
 		},
 	];
 
@@ -45,7 +48,7 @@ export const AdvantagesList = () => {
 			{advantages.map((advantage) => (
 				<Card
 					key={advantage.title}
-					actionTitle={t(advantage.link ?? '')}
+					actionTitle={advantage?.link ? t(advantage.link) : ''}
 					actionRoute={advantage.route}
 					actionPositionX="start"
 					withOutsideShadow
@@ -62,7 +65,7 @@ export const AdvantagesList = () => {
 						{!advantage.additionalImage ? (
 							<Image
 								src={advantage.img}
-								alt={advantage.title}
+								alt={t(advantage.imgAlt)}
 								className={styles.image}
 								loading="lazy"
 							/>
@@ -70,13 +73,13 @@ export const AdvantagesList = () => {
 							<>
 								<Image
 									src={advantage.img}
-									alt={advantage.title}
+									alt={t(advantage.imgAlt)}
 									className={classNames(styles.image, styles['main-image'])}
 									loading="lazy"
 								/>
 								<Image
 									src={advantage.additionalImage}
-									alt={advantage.title}
+									alt={t(advantage.imgAlt)}
 									className={classNames(styles.image, styles['additional-image'])}
 									loading="lazy"
 								/>
