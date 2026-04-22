@@ -72,6 +72,7 @@ export const ROUTES = {
 		news: 'https://t.me/mentor_reactify',
 		youtube: 'https://www.youtube.com/@reactify-it',
 		telegramChannel: 'https://t.me/reactify_IT',
+		hhAnalytics: process.env.NEXT_PUBLIC_APP_SITE_URL + '',
 	},
 	wiki: {
 		questions: {

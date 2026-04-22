@@ -49,6 +49,6 @@ export const createFeaturesCards = (locale: string): FeatureItem[] => [
 		title: Mentor.FEATURES_CARD_ANALYTICS_TITLE,
 		description: Mentor.FEATURES_CARD_ANALYTICS_DESCRIPTION,
 		link: Mentor.FEATURES_CARD_ANALYTICS_LINK,
-		to: `/${locale}${route(ROUTES.hhAnalytics.page)}`,
+		to: ROUTES.mentor.hhAnalytics,
 	},
 ];
