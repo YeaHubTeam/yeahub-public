@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Mentor, i18Namespace } from '@/shared/config';
+import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 
 import { CommunityCard } from '../CommunityCard/CommunityCard';
@@ -21,25 +21,25 @@ export const CommunityList = () => {
 			title: t(Mentor.COMMUNITY_CARD_FRONTEND_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_FRONTEND_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_FRONTEND_LINK),
-			linkUrl: '#',
+			linkUrl: ROUTES.mentor.community,
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_NEWS_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_NEWS_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_NEWS_LINK),
-			linkUrl: '#',
+			linkUrl: ROUTES.mentor.news,
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_YOUTUBE_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_YOUTUBE_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_YOUTUBE_LINK),
-			linkUrl: '#',
+			linkUrl: ROUTES.mentor.youtube,
 		},
 		{
 			title: t(Mentor.COMMUNITY_CARD_TELEGRAM_TITLE),
 			description: t(Mentor.COMMUNITY_CARD_TELEGRAM_DESC),
 			linkText: t(Mentor.COMMUNITY_CARD_TELEGRAM_LINK),
-			linkUrl: '#',
+			linkUrl: ROUTES.mentor.telegramChannel,
 		},
 	];
 

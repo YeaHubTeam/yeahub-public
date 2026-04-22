@@ -4,15 +4,16 @@ import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 import { interviews, questions } from '../assets';
 import { FeatureItem } from '../types/FeatureItem';
 
-export const featuresCards: FeatureItem[] = [
+export const createFeaturesCards = (locale: string): FeatureItem[] => [
 	{
 		id: 'questions',
 		badge: Mentor.FEATURES_CARD_QUESTIONS_BADGE,
 		title: Mentor.FEATURES_CARD_QUESTIONS_TITLE,
 		description: Mentor.FEATURES_CARD_QUESTIONS_DESCRIPTION,
 		imageSrc: questions,
+		imgAlt: Mentor.FEATURES_CARD_QUESTIONS_IMAGE_ALT,
 		link: Mentor.FEATURES_CARD_QUESTIONS_LINK,
-		to: route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG),
+		to: `/${locale}${route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG)}`,
 		isHighlighted: true,
 	},
 	{
@@ -21,8 +22,9 @@ export const featuresCards: FeatureItem[] = [
 		title: Mentor.FEATURES_CARD_INTERVIEWS_TITLE,
 		description: Mentor.FEATURES_CARD_INTERVIEWS_DESCRIPTION,
 		imageSrc: interviews,
+		imgAlt: Mentor.FEATURES_CARD_INTERVIEWS_IMAGE_ALT,
 		link: Mentor.FEATURES_CARD_INTERVIEWS_LINK,
-		to: route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG),
+		to: `/${locale}${route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG)}`,
 		isHighlighted: true,
 	},
 	{
@@ -31,7 +33,7 @@ export const featuresCards: FeatureItem[] = [
 		title: Mentor.FEATURES_CARD_SIMULATOR_TITLE,
 		description: Mentor.FEATURES_CARD_SIMULATOR_DESCRIPTION,
 		link: Mentor.FEATURES_CARD_SIMULATOR_LINK,
-		to: route(ROUTES.quiz.new.page),
+		to: `/${locale}${route(ROUTES.quiz.new.page)}`,
 	},
 	{
 		id: 'livecoding',
@@ -39,7 +41,7 @@ export const featuresCards: FeatureItem[] = [
 		title: Mentor.FEATURES_CARD_LIVECODING_TITLE,
 		description: Mentor.FEATURES_CARD_LIVECODING_DESCRIPTION,
 		link: Mentor.FEATURES_CARD_LIVECODING_LINK,
-		to: '/',
+		to: ROUTES.tasks.external.page,
 	},
 	{
 		id: 'analytics',
@@ -47,6 +49,6 @@ export const featuresCards: FeatureItem[] = [
 		title: Mentor.FEATURES_CARD_ANALYTICS_TITLE,
 		description: Mentor.FEATURES_CARD_ANALYTICS_DESCRIPTION,
 		link: Mentor.FEATURES_CARD_ANALYTICS_LINK,
-		to: '/',
+		to: `/${locale}${route(ROUTES.hhAnalytics.page)}`,
 	},
 ];

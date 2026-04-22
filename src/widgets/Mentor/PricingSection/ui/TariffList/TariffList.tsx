@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Mentor, i18Namespace } from '@/shared/config';
+import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 
 import { BonusesBlock } from '../BonusesBlock/BonusesBlock';
@@ -23,6 +23,7 @@ export const TariffList = () => {
 				t(Mentor.PRICING_INTENSIVE_STOPS),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
+			link: ROUTES.mentor.telegram,
 			isInverted: false,
 		},
 		{
@@ -37,6 +38,7 @@ export const TariffList = () => {
 				t(Mentor.PRICING_SEQUENTIAL_COMFORT),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
+			link: ROUTES.mentor.telegram,
 			isInverted: true,
 		},
 		{
@@ -51,6 +53,7 @@ export const TariffList = () => {
 				t(Mentor.PRICING_DEEP_SUPPORT),
 			],
 			buttonText: t(Mentor.PRISING_CONSULTATION_BUTTON),
+			link: ROUTES.mentor.telegram,
 			isInverted: false,
 		},
 	];

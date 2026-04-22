@@ -11,6 +11,7 @@ export const EDUCATION_STEPS = [
 		title: Mentor.EDUCATION_STEPS_01_TITLE,
 		description: Mentor.EDUCATION_STEPS_01_DESCRIPTION,
 		image: call,
+		imgAlt: Mentor.EDUCATION_STEPS_01_IMAGE_ALT,
 	},
 	{
 		id: '02',
@@ -22,6 +23,7 @@ export const EDUCATION_STEPS = [
 		title: Mentor.EDUCATION_STEPS_03_TITLE,
 		description: Mentor.EDUCATION_STEPS_03_DESCRIPTION,
 		image: offer,
+		imgAlt: Mentor.EDUCATION_STEPS_03_IMAGE_ALT,
 	},
 	{
 		id: '04',
@@ -33,6 +35,7 @@ export const EDUCATION_STEPS = [
 		title: Mentor.EDUCATION_STEPS_05_TITLE,
 		description: Mentor.EDUCATION_STEPS_05_DESCRIPTION,
 		image: chart,
+		imgAlt: Mentor.EDUCATION_STEPS_05_IMAGE_ALT,
 	},
 	{
 		id: '06',
@@ -44,6 +47,7 @@ export const EDUCATION_STEPS = [
 		title: Mentor.EDUCATION_STEPS_07_TITLE,
 		description: Mentor.EDUCATION_STEPS_07_DESCRIPTION,
 		image: platform,
+		imgAlt: Mentor.EDUCATION_STEPS_07_IMAGE_ALT,
 	},
 	{
 		id: '08',
@@ -55,5 +59,6 @@ export const EDUCATION_STEPS = [
 		title: Mentor.EDUCATION_STEPS_09_TITLE,
 		description: Mentor.EDUCATION_STEPS_09_DESCRIPTION,
 		image: resume,
+		imgAlt: Mentor.EDUCATION_STEPS_09_IMAGE_ALT,
 	},
 ];

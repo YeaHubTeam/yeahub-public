@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import styles from '@/shared/ui/Button/Button.module.css';
 import { Skeleton } from '@/shared/ui/Skeleton';
 
-import { getTagName } from './helpers';
+import { getStylePrefix } from './helpers';
 import { ButtonProps } from './types';
 
 export const ButtonSkeleton = ({
@@ -15,7 +15,7 @@ export const ButtonSkeleton = ({
 	destructive,
 	width,
 }: ButtonProps & { width?: number }) => {
-	const tagName = getTagName(variant);
+	const stylePrefix = getStylePrefix(variant);
 
 	return (
 		<Skeleton
@@ -23,12 +23,12 @@ export const ButtonSkeleton = ({
 			borderRadius={12}
 			width={width}
 			className={classnames(
-				styles[tagName],
-				styles[`${tagName}-${size}`],
-				fullWidth && styles[`${tagName}-full`],
-				destructive && tagName === 'a'
+				styles[stylePrefix],
+				styles[`${stylePrefix}-${size}`],
+				fullWidth && styles[`${stylePrefix}-full`],
+				destructive && stylePrefix === 'a'
 					? styles['a-link-destructive']
-					: styles[`${tagName}-${variant}`],
+					: styles[`${stylePrefix}-${variant}`],
 				className,
 			)}
 		/>

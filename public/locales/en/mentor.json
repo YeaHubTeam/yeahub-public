@@ -22,7 +22,8 @@
 			},
 			"ats": {
 				"title": "ATS and auto-filters",
-				"description": "Pass the selection and stand out among hundreds of candidates."
+				"description": "Pass the selection and stand out among hundreds of candidates.",
+				"image": "How to make a resume for a frontend developer"
 			},
 			"search": {
 				"title": "Search strategy",
@@ -30,7 +31,8 @@
 			},
 			"preparation": {
 				"title": "Preparation for interviews",
-				"description": "Practice with people, complete mocks, and watch real interviews."
+				"description": "Practice with people, complete mocks, and watch real interviews.",
+				"image": "Preparation for interviews for frontend"
 			},
 			"experience": {
 				"title": "Real experience",
@@ -38,7 +40,8 @@
 			},
 			"motivation": {
 				"title": "Motivation",
-				"description": "Be surrounded by people with the same goal - the offer."
+				"description": "Be surrounded by people with the same goal - the offer.",
+				"image": "Frontend developers community"
 			}
 		}
 	},
@@ -58,15 +61,18 @@
 		"cards": {
 			"material": {
 				"title": "Completely your own materials",
-				"description": "200+ entries, checklists, guides, real interviews. Author's courses from HTML, JS and React to CI/CD, Docker and System Design. Everything is created by me - no other people's courses."
+				"description": "200+ entries, checklists, guides, real interviews. Author's courses from HTML, JS and React to CI/CD, Docker and System Design. Everything is created by me - no other people's courses.",
+				"image": "Frontend development courses"
 			},
 			"community": {
 				"title": "Community ",
-				"description": "250+ active students, collaborative mocks, online coworking and group classes. Seeing the success of others, you join the race and move towards the offer."
+				"description": "250+ active students, collaborative mocks, online coworking and group classes. Seeing the success of others, you join the race and move towards the offer.",
+				"image": "Frontend community"
 			},
 			"structure": {
 				"title": "Structure and plan",
-				"description": "Theory + livecoding: preparation for interviews begins with the first lessons. After each section there is a knowledge control - without passing the exam we do not move on."
+				"description": "Theory + livecoding: preparation for interviews begins with the first lessons. After each section there is a knowledge control - without passing the exam we do not move on.",
+				"image": "Mentoring for frontend"
 			}
 		}
 	},
@@ -78,7 +84,8 @@
 		"steps": {
 			"01": {
 				"title": "Onboarding and first mock interview",
-				"description": "We determine your starting level, get acquainted with the platform and tools. We conduct the first trial interview to understand the learning path and immediately identify key areas for growth."
+				"description": "We determine your starting level, get acquainted with the platform and tools. We conduct the first trial interview to understand the learning path and immediately identify key areas for growth.",
+				"image": "Learning plan for frontend developer"
 			},
 			"02": {
 				"title": "Learning materials",
@@ -86,7 +93,8 @@
 			},
 			"03": {
 				"title": "Support and community",
-				"description": "All doubts and questions are resolved in the chat with students and with me personally. You get help at any stage, you don't get stuck, you move forward."
+				"description": "All doubts and questions are resolved in the chat with students and with me personally. You get help at any stage, you don't get stuck, you move forward.",
+				"image": "Mentor's help"
 			},
 			"04": {
 				"title": "Exams and feedback",
@@ -94,7 +102,8 @@
 			},
 			"05": {
 				"title": "Progress control",
-				"description": "I monitor performance, timely adjust training and help overcome difficulties. Your growth is always under my supervision."
+				"description": "I monitor performance, timely adjust training and help overcome difficulties. Your growth is always under my supervision.",
+				"image": "Training under the mentor's supervision"
 			},
 			"06": {
 				"title": "Practice and group activities",
@@ -102,7 +111,8 @@
 			},
 			"07": {
 				"title": "Final project",
-				"description": "You build your application step by step after each technology. Not an online store or Weather app, but a real system with API and layouts, just like in a real job."
+				"description": "You build your application step by step after each technology. Not an online store or Weather app, but a real system with API and layouts, just like in a real job.",
+				"image": "Frontend development practice, pet project"
 			},
 			"08": {
 				"title": "Internship on a real production project",
@@ -110,14 +120,16 @@
 			},
 			"09": {
 				"title": "Preparation for the offer",
-				"description": "We create a strong resume, conduct mock interviews, job search strategy. You are ready for any interview and can immediately show your competencies."
+				"description": "We create a strong resume, conduct mock interviews, job search strategy. You are ready for any interview and can immediately show your competencies.",
+				"image": "How to get a job in frontend"
 			}
 		}
 	},
 	"about": {
 		"indicator": "about me",
-		"title": "About me.",
+		"title": "About mentor.",
 		"description": "I'm all about real world skills. I help students become strong developers and get hired",
+		"image": "Mentor for frontend development",
 		"profile": {
 			"name": "Ruslan Kuyanets",
 			"role": "IT-Founder & Tech Lead"
@@ -139,7 +151,24 @@
 		"description1": "We cover the entire stack of a modern frontend developer: from the basics to advanced tools and architecture.",
 		"description2": "The program adapts to the student — we don't teach everything in order, but focus on what is really needed for employment.",
 		"mainStackTitle": "Core stack",
-		"advancedTitle": "Advanced technologies"
+		"advancedTitle": "Advanced technologies",
+		"image": {
+			"html": "Skill HTML",
+			"css": "Skill CSS",
+			"js": "Skill JavaScript",
+			"react": "Skill React",
+			"redux": "Skill Redux",
+			"ts": "Skill TypeScript",
+			"n8n": "Skill n8n",
+			"fsd": "Skill FSD",
+			"github": "Skill GitHub",
+			"docker": "Skill Docker",
+			"kubernetes": "Skill Kubernetes",
+			"ciCd": "Skill CI/CD",
+			"webpack": "Skill Webpack",
+			"storybook": "Skill Storybook",
+			"next": "Skill Next.js"
+		}
 	},
 	"community": {
 		"indicator": "community",
@@ -224,13 +253,15 @@
 				"badge": "1500+ Frontend questions",
 				"title": "Questions",
 				"description": "React, JavaScript, TypeScript, HTML, CSS, Git, Next.js, Docker, and other technologies. Real questions that come up in interviews.",
-				"link": "Questions"
+				"link": "Questions",
+				"image": "Preparing for an interview on the questions base"
 			},
 			"interviews": {
 				"badge": "100+ real interviews",
 				"title": "Interviews",
 				"description": "Breakdowns of interviews at different companies: what questions are asked and how the stages go.",
-				"link": "Interviews"
+				"link": "Interviews",
+				"image": "Interviews for frontend"
 			},
 			"simulator": {
 				"badge": "Technical interview simulation",
@@ -259,18 +290,21 @@
 		"advantages": {
 			"processes": {
 				"title": "IT-company-like processes",
-				"description": "We work with Scrum: two-week sprints, daily scrum, planning and common syncs between teams."
+				"description": "We work with Scrum: two-week sprints, daily scrum, planning and common syncs between teams.",
+				"image": "Working in a team by processes"
 			},
 			"team": {
 				"title": "Teamwork",
 				"description": "The project features all roles: Frontend, Backend, Design, QA, Mobile, SA/BA. This is a full-fledged product team of more than 100 specialists.",
-				"link": "Our Yeahub project"
+				"link": "Our Yeahub project",
+				"image": "Scrum processes for frontend developer"
 			},
 			"experience": {
 				"title": "Real experience",
 				"description": "You work with a real codebase, participate in real releases, and do tasks that solve real problems.",
 				"link": "Our code on GitHub",
-				"badge": "Project audience 32k+"
+				"badge": "Project audience 32k+",
+				"image": "Frontend architecture, fsd, react, webpack"
 			}
 		}
 	},

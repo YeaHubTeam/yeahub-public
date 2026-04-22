@@ -5,7 +5,11 @@ import { SectionHeader } from '@/widgets/Mentor/SectionHeader';
 
 import { FeaturesList } from '../FeaturesList/FeaturesList';
 
-export const FeaturesSection = () => {
+interface FeaturesSectionProps {
+	locale: string;
+}
+
+export const FeaturesSection = ({ locale }: FeaturesSectionProps) => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
@@ -15,7 +19,7 @@ export const FeaturesSection = () => {
 				title={t(Mentor.FEATURES_TITLE)}
 				description={t(Mentor.FEATURES_DESCRIPTION)}
 			/>
-			<FeaturesList />
+			<FeaturesList locale={locale} />
 		</section>
 	);
 };

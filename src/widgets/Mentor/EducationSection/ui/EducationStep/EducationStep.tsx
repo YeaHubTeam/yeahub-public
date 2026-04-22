@@ -10,6 +10,7 @@ interface EducationStepProps {
 	title: string;
 	description: string;
 	image?: StaticImageData;
+	imgAlt: string;
 	mediaClassName?: string;
 }
 
@@ -19,13 +20,14 @@ export const EducationStep = ({
 	description,
 	image,
 	mediaClassName,
+	imgAlt,
 }: EducationStepProps) => {
 	return (
 		<div className={styles.step}>
 			<AccordionMentor
 				number={id}
 				title={title}
-				media={image && <Image src={image} alt={title} />}
+				media={image && <Image src={image} alt={imgAlt} />}
 				mediaClassName={mediaClassName}
 				moveTitle
 				defaultOpen

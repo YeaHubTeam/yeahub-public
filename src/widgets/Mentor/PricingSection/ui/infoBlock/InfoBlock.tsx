@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
-import { Mentor, i18Namespace } from '@/shared/config';
+import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
@@ -31,7 +31,14 @@ export const InfoBlock = () => {
 				<Text variant="body3-accent" className={styles.description}>
 					{t(Mentor.PRICING_INFO_POSTPAY_DESCRIPTION)}
 				</Text>
-				<Button size="large" fullWidth className={styles.button}>
+				<Button
+					size="large"
+					fullWidth
+					className={styles.button}
+					href={ROUTES.mentor.telegram}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					{t(Mentor.PRISING_CONSULTATION_BUTTON)}
 				</Button>
 			</Card>
@@ -49,7 +56,14 @@ export const InfoBlock = () => {
 						<Text variant="body3-accent" className={styles.description}>
 							{t(Mentor.PRICING_INFO_EXPERIENCED_DESCRIPTION)}
 						</Text>
-						<Button size="large" fullWidth className={styles.button}>
+						<Button
+							size="large"
+							fullWidth
+							className={styles.button}
+							href={ROUTES.mentor.telegram}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							{t(Mentor.PRISING_CONSULTATION_BUTTON)}
 						</Button>
 					</Flex>

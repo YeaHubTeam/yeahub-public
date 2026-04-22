@@ -4,4 +4,5 @@ export interface AdvantageItem {
 	title: string;
 	description: string;
 	imageSrc: string | StaticImageData;
+	imgAlt: string;
 }
