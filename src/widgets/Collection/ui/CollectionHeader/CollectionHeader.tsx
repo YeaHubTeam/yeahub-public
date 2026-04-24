@@ -25,7 +25,6 @@ export const CollectionHeader = ({ collection }: CollectionHeaderProps) => {
 		keywords,
 		isFree,
 		questionsCount,
-		createdBy,
 		description,
 	} = collection;
 	const collectionImageSrc = imageSrc || company?.imageSrc;
@@ -49,7 +48,6 @@ export const CollectionHeader = ({ collection }: CollectionHeaderProps) => {
 								isFree={isFree}
 								company={company}
 								questionsCount={questionsCount}
-								createdBy={createdBy}
 								keywords={keywords}
 							/>
 						</AdditionalInfoDrawer>

@@ -9,7 +9,6 @@ import {
 	CollectionCompanyInfo,
 	CollectionQuestionsCount,
 } from '@/entities/collection';
-import { GurusBanner, getGuruWithMatchingSpecialization } from '@/entities/guru';
 import {
 	MediaLinksBanner,
 	SocialMedia,
@@ -17,8 +16,6 @@ import {
 } from '@/entities/socialMedia';
 import { SpecializationsList } from '@/entities/specialization';
 import { Collections, i18Namespace } from '@/shared/config';
-import { useScreenSize } from '@/shared/libs';
-import { AuthorInfo } from '@/shared/ui/AuthorInfo';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { StatusChip } from '@/shared/ui/StatusChip';
@@ -29,7 +26,7 @@ import styles from './AdditionalInfo.module.css';
 interface AdditionalInfoProps
 	extends Pick<
 		Collection,
-		'specializations' | 'isFree' | 'company' | 'questionsCount' | 'createdBy' | 'keywords'
+		'specializations' | 'isFree' | 'company' | 'questionsCount' | 'keywords'
 	> {
 	className?: string;
 	media?: SocialMedia;
@@ -40,16 +37,12 @@ export const AdditionalInfo = ({
 	isFree,
 	company,
 	questionsCount,
-	createdBy,
 	keywords,
 	className,
 }: AdditionalInfoProps) => {
 	const t = useTranslations(i18Namespace.collection);
-	const { isLargeScreen, isSmallScreen } = useScreenSize();
 
 	const media = getChannelsForSpecialization(specializations);
-	const guru = getGuruWithMatchingSpecialization(specializations || []);
-	const showAuthor = guru ? false : true;
 
 	return (
 		<>
@@ -69,12 +62,9 @@ export const AdditionalInfo = ({
 					<CollectionCompanyInfo company={company} />
 					<CollectionAccessInfo isFree={isFree} />
 					<CollectionQuestionsCount questionsCount={questionsCount} />
-					{isSmallScreen && showAuthor && createdBy && <AuthorInfo createdBy={createdBy} />}
 					{media && <MediaLinksBanner mediaLink={media} />}
 				</Flex>
 			</Card>
-			{isLargeScreen && showAuthor && createdBy && <AuthorInfo createdBy={createdBy} isCenter />}
-			{guru && <GurusBanner gurus={[guru]} />}
 		</>
 	);
 };

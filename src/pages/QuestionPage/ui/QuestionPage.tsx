@@ -1,6 +1,11 @@
+import {
+	getGuruWithMatchingSpecialization,
+	getNewGuruWithMatchingSpecialization,
+} from '@/entities/guru';
 import { Question } from '@/entities/question';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
+import { SidebarBanner } from '@/widgets/Media';
 import { QuestionAdditionalInfo } from '@/widgets/question/QuestionAdditionalInfo';
 import { QuestionBody } from '@/widgets/question/QuestionBody';
 import { QuestionHeader } from '@/widgets/question/QuestionHeader';
@@ -26,6 +31,9 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 		questionSpecializations,
 	} = question;
 
+	const guru = getGuruWithMatchingSpecialization(questionSpecializations || []);
+	const newGuru = getNewGuruWithMatchingSpecialization(questionSpecializations);
+
 	return (
 		<Flex direction="column" align="start">
 			<Flex>
@@ -35,6 +43,9 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 				<Flex gap="20" direction="column" flex={1} maxWidth>
 					<QuestionHeader question={question} />
 					<QuestionBody shortAnswer={shortAnswer} longAnswer={longAnswer} />
+					<div className={styles.banner}>
+						<SidebarBanner guru={guru} newGuru={newGuru} />
+					</div>
 				</Flex>
 				<Flex direction="column" gap="20" className={styles.additional}>
 					<QuestionAdditionalInfo
@@ -44,6 +55,7 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 						questionSkills={questionSkills}
 						questionSpecializations={questionSpecializations}
 					/>
+					<SidebarBanner guru={guru} newGuru={newGuru} />
 				</Flex>
 			</Flex>
 		</Flex>

@@ -383,6 +383,7 @@ export enum InterviewStatistics {
 	QUESTION_STATS_LEARNED = 'questionStats.learned',
 }
 export enum Mentor {
+	MENTOR_BANNER_BUTTON = 'mentor_banner.button',
 	BANNER_STICKER = 'banner.sticker',
 	BANNER_TITLE = 'banner.title',
 	BANNER_DESCRIPTION = 'banner.description',

@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 export interface Guru {
 	title: string;
 	name: string;
@@ -14,3 +16,11 @@ export type GuruSocials = {
 	profileId: string;
 	landing?: string;
 };
+
+export interface NewGuru {
+	specializationTitle: string;
+	title: string;
+	description: string;
+	specializations: number[];
+	icons: Array<StaticImageData | null>[];
+}
