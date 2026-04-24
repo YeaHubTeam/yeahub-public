@@ -1,12 +1,12 @@
 import { Specialization } from '@/entities/specialization/@x/guru';
 
-import { gurus } from '../constants/gurus';
-import { Guru } from '../types/guru';
+import { newGurus } from '../constants/gurus';
+import { NewGuru } from '../types/guru';
 
-export const getGuruWithMatchingSpecialization = (
+export const getNewGuruWithMatchingSpecialization = (
 	specializations?: Specialization[],
-): Guru | undefined => {
-	if (!gurus || gurus.length === 0) {
+): NewGuru | undefined => {
+	if (!newGurus || newGurus.length === 0) {
 		return undefined;
 	}
 
@@ -14,7 +14,7 @@ export const getGuruWithMatchingSpecialization = (
 		return undefined;
 	}
 
-	for (const guru of gurus) {
+	for (const guru of newGurus) {
 		for (const specialization of specializations) {
 			if (guru.specializations.includes(specialization.id)) {
 				return guru;
