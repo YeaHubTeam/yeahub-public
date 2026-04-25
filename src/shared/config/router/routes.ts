@@ -37,6 +37,10 @@ export const ROUTES = {
 		route: 'hh-analytics',
 		page: '/hh-analytics',
 	},
+	tasks: {
+		route: 'tasks',
+		page: '/tasks',
+	},
 	settings: {
 		route: 'settings',
 		page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'settings',

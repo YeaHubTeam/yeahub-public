@@ -1,4 +1,10 @@
+import { ReactNode } from 'react';
+
+import classNames from 'classnames';
+
 import styles from './Skeleton.module.css';
+
+type SkeletonVariant = 'default' | 'blur';
 
 interface SkeletonBlockProps {
 	width?: string | number;
@@ -7,6 +13,8 @@ interface SkeletonBlockProps {
 	style?: React.CSSProperties;
 	className?: string;
 	dataTestId?: string;
+	variant?: SkeletonVariant;
+	text?: ReactNode;
 }
 
 export const Skeleton = ({
@@ -15,13 +23,17 @@ export const Skeleton = ({
 	height,
 	borderRadius = '8px',
 	style = {},
+	variant = 'default',
 	className = '',
+	text = '',
 }: SkeletonBlockProps) => {
 	return (
 		<div
 			data-testid={dataTestId}
-			className={`${styles.skeleton} ${className}`}
+			className={classNames(styles.skeleton, styles[variant], className)}
 			style={{ width, height, borderRadius, ...style }}
-		/>
+		>
+			{text}
+		</div>
 	);
 };
