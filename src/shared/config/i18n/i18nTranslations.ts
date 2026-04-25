@@ -35,6 +35,7 @@ export enum Header {
 	NAV_TRAINER = 'nav.trainer',
 	NAV_HH_ANALYTICS = 'nav.hhAnalytics',
 	NAV_LEARNING = 'nav.learning',
+	NAV_TASKS = 'nav.tasks',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
@@ -614,4 +615,15 @@ export enum Mentor {
 	PRICING_BONUSES_INTENSIVE_NOTE = 'pricing.bonuses.intensive_note',
 	PRICING_BONUSES_MENTOR_INVOLVEMENT = 'pricing.bonuses.mentor_involvement',
 	PRICING_BONUSES_MENTOR_INTEREST = 'pricing.bonuses.mentor_interest',
+}
+
+export enum Task {
+	TITLE_SHORT = 'title.short',
+	SEARCH_PLACEHOLDER = 'search.placeholder',
+	DIFFICULTY_TITLE_SHORT = 'difficulty.titleShort',
+	LANGUAGES_TITLE = 'languages.title',
+	DESCRIPTION_TAB_TITLE = 'description.tab.title',
+	CATEGORIES_TITLE = 'categories.title',
+	CATEGORIES_SHOW_ALL = 'categories.showAll',
+	CATEGORIES_HIDE = 'categories.hide',
 }

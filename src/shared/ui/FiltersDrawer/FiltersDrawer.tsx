@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import classNames from 'classnames';
 
+import CloseIcon from '@/shared/assets/icons/closeCircle.svg';
 import { useModal, useScreenSize } from '@/shared/libs';
 import { Drawer } from '@/shared/ui/Drawer';
 import { Icon } from '@/shared/ui/Icon';
@@ -29,6 +30,7 @@ export const FiltersDrawer = ({ children, hasFilters, className }: FiltersDrawer
 				size="medium"
 				variant="tertiary"
 				onClick={onToggle}
+				onMouseDown={(e) => e.stopPropagation()}
 				isActive={hasFilters}
 				className={classNames(styles['filter-button'], className)}
 			/>
@@ -38,12 +40,18 @@ export const FiltersDrawer = ({ children, hasFilters, className }: FiltersDrawer
 					className={classNames(styles.drawer, {
 						[styles['drawer-mobile']]: isMobileS,
 					})}
-					hasCloseButton
+					hasCloseButton={false}
+					withBackdrop={false}
 					isOpen={isOpen}
 					onClose={onClose}
 					position="right"
 				>
-					<section className={styles['filter']}>{children}</section>
+					<section className={styles['filter']}>
+						<button aria-label="close filters" className={styles['close-btn']} onClick={onClose}>
+							<CloseIcon />
+						</button>
+						{children}
+					</section>
 				</Drawer>
 			)}
 		</>

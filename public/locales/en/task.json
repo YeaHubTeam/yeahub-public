@@ -1,0 +1,120 @@
+{
+	"title": {
+		"short": "Coding Tasks"
+	},
+	"description": {
+		"tab": {
+			"title": "Description"
+		},
+		"constraints": {
+			"title": "Constraints"
+		}
+	},
+	"search": {
+		"placeholder": "Enter task..."
+	},
+	"difficulty": {
+		"title": "Question difficulty",
+		"titleShort": "Difficulty"
+	},
+	"languages": {
+		"title": "Programming languages"
+	},
+	"categories": {
+		"title": "Category",
+		"showAll": "Show all",
+		"hide": "Hide"
+	},
+	"status": {
+		"solved": "Solved",
+		"inProgress": "In progress"
+	},
+	"add": {
+		"button": "Add"
+	},
+	"stub": {
+		"empty": {
+			"tasks": {
+				"public": {
+					"title": "No tasks yet.",
+					"subtitle": "Tasks are added periodically, just wait a little.",
+					"filters": {
+						"subtitle": "Try changing the name or search conditions."
+					}
+				}
+			}
+		}
+	},
+	"solutions": {
+		"tab": {
+			"title": "My solutions",
+			"subtitle": "Your solutions will appear here"
+		}
+	},
+	"editor": {
+		"actions": {
+			"run": "Run",
+			"submit": "Submit"
+		}
+	},
+	"output": {
+		"result": {
+			"tab": {
+				"title": "Code result"
+			},
+			"stub": {
+				"title": "The result of code execution will appear here",
+				"subtitle": "To get the result, run your code"
+			},
+			"compilation": {
+				"error": "Compilation error"
+			},
+			"runtime": {
+				"output": "Runtime output"
+			},
+			"tests": {
+				"passed": "Tests passed"
+			},
+			"success": {
+				"rate": "Success rate"
+			},
+			"execution": {
+				"time": "Execution time"
+			},
+			"memory": {
+				"usage": "Memory usage"
+			}
+		},
+		"tests": {
+			"tab": {
+				"title": "Test cases"
+			},
+			"test": {
+				"case": {
+					"title": "Test {index}",
+					"status": "Status",
+					"passed": "Passed",
+					"failed": "Failed",
+					"hidden": "Hidden test",
+					"input": "Input",
+					"expected": {
+						"output": "Expected output"
+					},
+					"actual": {
+						"output": "Actual output"
+					},
+					"error": {
+						"message": "Error"
+					},
+					"execution": {
+						"time": "Execution time"
+					},
+					"memory": {
+						"usage": "Memory usage"
+					},
+					"empty": "No test cases available"
+				}
+			}
+		}
+	}
+}

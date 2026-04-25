@@ -6,7 +6,8 @@
 		"collections": "Collections",
 		"trainer": "Trainer",
 		"hhAnalytics": "Skills",
-		"learning": "Learning"
+		"learning": "Learning",
+		"tasks": "Tasks"
 	},
 	"auth": {
 		"signIn": "Sign in",

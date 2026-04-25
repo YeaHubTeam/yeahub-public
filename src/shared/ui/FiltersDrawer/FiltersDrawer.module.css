@@ -2,6 +2,27 @@
   display: none;
 }
 
+.close-btn {
+  position: absolute;
+  top: -16px;
+  right: 16px;
+  display: none;
+  padding: 0;
+  border: none;
+  background: transparent;
+  line-height: 0;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  svg path {
+    fill: var(--icon-color-red);
+  }
+}
+
 button.filter-button {
 	display: none;
   border: 1px solid var(--color-black-50);
@@ -25,15 +46,46 @@ button.filter-button {
   }
 }
 
+@media (width < 1200px) {
+	.drawer {
+		top: 80px;
+	}
+}
+
 @media (width < 1024px) {
+	.drawer {
+		top: 71px;
+	}
+}
+
+@media (width < 768px) {
+	.drawer {
+		top: 61px;
+	}
+}
+
+@media (width < 1200px) {
 	.filter {
+		position: relative;
+		top: 70px;
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
 		padding: 24px;
 	}
-
+	
 	button.filter-button {
 		display: flex;
+	}
+}
+
+@media (width < 480px) {
+	.filter {
+		position: absolute;
+		top: 40px;
+	}
+
+	.close-btn {
+		display: block;
 	}
 }

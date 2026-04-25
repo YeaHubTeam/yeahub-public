@@ -73,6 +73,10 @@ export const ROUTES = {
 		youtube: 'https://www.youtube.com/@reactify-it',
 		telegramChannel: 'https://t.me/reactify_IT',
 	},
+	tasks: {
+		route: 'tasks',
+		page: '/tasks',
+	},
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',

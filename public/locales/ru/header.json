@@ -6,7 +6,8 @@
 		"collections": "Собеседования",
 		"trainer": "Тренажёр",
 		"hhAnalytics": "Навыки",
-		"learning": "Обучение"
+		"learning": "Обучение",
+		"tasks": "Задачи"
 	},
 	"auth": {
 		"signIn": "Войти",
