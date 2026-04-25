@@ -57,6 +57,7 @@ export type IconName =
 	| 'filter'
 	| 'settings'
 	| 'sealCheck'
+	| 'sealCheckOutlined'
 	| 'userCheckWithBackground'
 	| 'userSwitch'
 	| 'trendUp'

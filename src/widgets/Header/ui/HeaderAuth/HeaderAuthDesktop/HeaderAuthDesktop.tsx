@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getTranslations } from 'next-intl/server';
 
 import { AUTH_LINKS, Header, i18Namespace } from '@/shared/config';

@@ -1,0 +1,106 @@
+{
+	"title": "Membership",
+	"tariffs": "Tariffs",
+	"description": "Become a member of the YeaHub community and get access to all the features of the platform. The membership fee helps develop the platform, add new functions and support members",
+	"subscribeAction": "Subscribe",
+	"unsubscribe": {
+		"modal": {
+			"title": "Unsubscribe",
+			"button": {
+				"yes": "Yes",
+				"no": "No"
+			},
+			"description": "Are you sure? This action <b>cannot be undone.</b>\nYour subscription will be canceled."
+		}
+	},
+	"changeTariffPlan": "Change tariff plan",
+	"cancelSubscription": "Cancel subscription",
+	"payHistory": "Pay History",
+	"tariff": {
+		"free": "Free",
+		"base": "Base",
+		"premium": "Premium"
+	},
+	"button": {
+		"trial": "Test drive 7 days"
+	},
+	"daysLeft_one": " {{count}} Day Left",
+	"daysLeft_other": " {{count}} Days Left",
+	"greeting": "Excellent choice, now you have access to all the functions of the service",
+	"renewal": "Payment will be renewed automatically on {{Date}}",
+	"canceled": "You have canceled your subscription. Full access will be available until {{Date}}.",
+	"accessWarning": "Renew your subscription for full access",
+	"faq": {
+		"title": "Frequently Asked Questions",
+		"first": {
+			"question": "How much does membership cost?",
+			"answer": "The membership fee is {{price}} rubles per month. This allows you to use all the features of the platform, including premium content and participation in closed events."
+		},
+		"second": {
+			"question": "What are the advantages of membership?",
+			"answer": "Membership opens up a wide range of materials, exclusive collections and activities, as well as gives you the opportunity to support the development of the community and platform."
+		},
+		"third": {
+			"question": "How can I cancel my subscription?",
+			"answer": "You can cancel your subscription at any time from your account on the platform. Access to paid materials will be suspended at the end of the current month."
+		},
+		"fourth": {
+			"question": "Can I pause my subscription for some time?",
+			"answer": "At the moment, subscription pause is not provided. You can cancel your subscription at any time and resubscribe later."
+		}
+	},
+	"card": {
+		"badge": {
+			"basic": "Basic rate",
+			"discount": "Savings {{count}}%"
+		},
+		"price": {
+			"all": "{{count}}₽",
+			"month": "{{count}}₽/month"
+		},
+		"title": {
+			"free": "Free",
+			"month_one": "{{count}} month",
+			"month_other": "{{count}} months",
+			"year_one": "{{count}} year",
+			"year_other": "{{count}} years"
+		},
+		"subtitle": {
+			"free": "Try 7 days PRO",
+			"month": "Simple tariff",
+			"quarter": "Optimal tariff",
+			"year": "All Inclusive tariff"
+		},
+		"subscribe": "Subscribe",
+		"benefits": {
+			"first": "List of all questions",
+			"second": "List of all tasks",
+			"third": "Interview mode",
+			"fourth": "Progress statistics",
+			"fifth": "Private chat"
+		}
+	},
+	"banner": {
+		"title": "Your subscription supports the development of the platform!",
+		"list.title": "Membership fees help us:",
+		"list.first": "Buy new interviews and add them to the database.",
+		"list.second": "Develop new features — task simulators, tests, HH analytics.",
+		"list.third": "Create mobile applications (iOS/Android is already in the works!).",
+		"list.fourth": "Expand the team — hire developers to accelerate growth.",
+		"list.fifth": "Improve content — we are constantly editing, formatting questions.",
+		"list.thanks": "Thank you for being a part of the community!"
+	},
+	"subscribe.modal": {
+		"title": "Subscription",
+		"email": {
+			"description": "We use e-mail for billing and access",
+			"input.value": "Specify e-mail to receive the receipt"
+		},
+		"privacy": {
+			"title": "By checking the box («✔») and clicking Subscribe «Subscribe»:",
+			"offer.agreement": "I confirm that I have read and agree to the <processingLink>Offer Agreement</processingLink> and <processingLink>Subscription Agreement</processingLink>.",
+			"consent": "I allow  <processingLink>to save credentials</processingLink>"
+		},
+		"button": "Subscribe"
+	}
+}
