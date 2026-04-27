@@ -50,7 +50,7 @@ export const generateStaticParams = async () => {
 	try {
 		const { data: specializations } = await getSpecializationSlugs();
 		const allParams: { locale: string; specialization: string; slug: string }[] = [];
-		const BATCH_SIZE = 50;
+		const BATCH_SIZE = 25;
 
 		for (const spec of specializations) {
 			try {

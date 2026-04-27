@@ -66,6 +66,8 @@ export enum Footer {
 	HOME_TITLE = 'title',
 	HOME_DESCRIPTION = 'description',
 	HOME_DOCS = 'docs',
+	HOME_SITE_MAP = 'siteMap',
+	HOME_LLM = 'llm',
 	HOME_MEDIA = 'media',
 	HOME_LINKS_LINK_ARIA = 'links.link.aria-label',
 }
