@@ -48,6 +48,46 @@ export default function robots(): MetadataRoute.Robots {
 				disallow: ['/api/', '/_next/'],
 			},
 			{
+				userAgent: 'GPTBot',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'ChatGPT-User',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'Google-Extended',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'Claude-Web',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'CCBot',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'PerplexityBot',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'YouBot',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
+				userAgent: 'OAI-Search',
+				allow: '/',
+				disallow: ['/api/', '/_next/'],
+			},
+			{
 				userAgent: 'Yandex',
 				allow: '/',
 				disallow: buildYandexCleanParamDisallow(),

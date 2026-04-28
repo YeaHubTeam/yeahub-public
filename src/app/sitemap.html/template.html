@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта сайта __SITE_HOSTNAME__</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .status {
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .sitemap-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 30px;
+        }
+        li {
+            margin: 6px 0;
+            position: relative;
+        }
+        li::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -20px;
+            border-left: 2px solid #bdc3c7;
+            border-bottom: 2px solid #bdc3c7;
+            width: 15px;
+            height: 14px;
+        }
+        li::after {
+            content: "";
+            position: absolute;
+            top: 14px;
+            left: -20px;
+            border-left: 2px solid #bdc3c7;
+            height: 100%;
+        }
+        li:last-child::after {
+            display: none;
+        }
+        ul.root {
+            padding-left: 0;
+        }
+        ul.root > li::before, ul.root > li::after {
+            display: none;
+        }
+        a {
+            text-decoration: none;
+            color: #2980b9;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #e74c3c;
+        }
+        .folder {
+            font-weight: 600;
+            color: #34495e;
+            font-size: 16px;
+        }
+        .icon {
+            margin-right: 6px;
+        }
+        .new-badge {
+            background-color: #e74c3c;
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Карта сайта __SITE_HOSTNAME__</h1>
+    <div class="status" id="status">Загрузка данных из sitemap.xml...</div>
+
+    <div class="sitemap-container">
+        <ul class="root" id="sitemap-root"></ul>
+    </div>
+
+    <script>
+        const SITEMAP_URL = __SITEMAP_XML_JSON__;
+
+        let knownUrls = new Set();
+        let isFirstLoad = true;
+
+        async function fetchAndRenderSitemap() {
+            try {
+                const response = await fetch(SITEMAP_URL);
+                if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
+
+                const xmlText = await response.text();
+
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+                const parseError = xmlDoc.getElementsByTagName("parsererror");
+                if (parseError.length > 0) {
+                    throw new Error("Ошибка структуры XML");
+                }
+
+                const urls = [];
+                let newPagesFound = 0;
+
+                const locElements = xmlDoc.getElementsByTagName("loc");
+
+                for (let i = 0; i < locElements.length; i++) {
+                    const url = locElements[i].textContent.trim();
+                    if (url.endsWith('.xml')) continue;
+
+                    urls.push(url);
+
+                    if (!knownUrls.has(url)) {
+                        knownUrls.add(url);
+                        if (!isFirstLoad) {
+                            newPagesFound++;
+                        }
+                    }
+                }
+
+                if (urls.length === 0) {
+                    document.getElementById('status').innerHTML = "<span class='error'>Ссылки не найдены. Возможно, файл пуст или имеет неверный формат.</span>";
+                    return;
+                }
+
+                document.getElementById('status').innerText =
+                    `Отсканировано страниц: ${knownUrls.size}. Автообновление активно (каждые 30 сек).`;
+
+                if (isFirstLoad || newPagesFound > 0) {
+                    buildSitemapTree(urls);
+                    isFirstLoad = false;
+                }
+
+            } catch (error) {
+                console.error("Ошибка отслеживания sitemap:", error);
+                document.getElementById('status').innerHTML =
+                    `<span class="error">Ошибка загрузки файла (${error.message}). <br>Убедитесь, что страница размещена на домене __SITE_HOSTNAME__ для избежания блокировки CORS.</span>`;
+            }
+        }
+
+        function buildSitemapTree(urls) {
+            const root = {};
+
+            urls.forEach(url => {
+                try {
+                    const urlObj = new URL(url);
+                    const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
+
+                    if (pathParts.length === 0) {
+                        root['/ (Главная)'] = { _url: url, _isNew: !isFirstLoad && !knownUrls.has(url) };
+                        return;
+                    }
+
+                    let current = root;
+                    for (let i = 0; i < pathParts.length; i++) {
+                        const part = pathParts[i];
+
+                        if (!current[part]) {
+                            current[part] = {};
+                        }
+
+                        if (i === pathParts.length - 1) {
+                            current[part]._url = url;
+                            current[part]._isNew = !isFirstLoad && !knownUrls.has(url);
+                        }
+
+                        current = current[part];
+                    }
+                } catch (e) {
+                    console.warn('Пропущена некорректная ссылка:', url);
+                }
+            });
+
+            const rootElement = document.getElementById('sitemap-root');
+            rootElement.innerHTML = '';
+            renderTree(root, rootElement);
+        }
+
+        function renderTree(node, container) {
+            for (const key in node) {
+                if (key.startsWith('_')) continue;
+
+                const li = document.createElement('li');
+                const hasChildren = Object.keys(node[key]).filter(k => !k.startsWith('_')).length > 0;
+                const nodeUrl = node[key]._url;
+                const isNew = node[key]._isNew;
+
+                let htmlContent = '';
+
+                if (nodeUrl) {
+                    htmlContent += `<span class="icon">📄</span><a href="${nodeUrl}" target="_blank">${decodeURIComponent(key)}</a>`;
+                    if (isNew) {
+                        htmlContent += `<span class="new-badge">NEW</span>`;
+                    }
+                } else {
+                    htmlContent += `<span class="icon">📁</span><span class="folder">${decodeURIComponent(key)}</span>`;
+                }
+
+                li.innerHTML = htmlContent;
+
+                if (hasChildren) {
+                    const ul = document.createElement('ul');
+                    renderTree(node[key], ul);
+                    li.appendChild(ul);
+                }
+
+                container.appendChild(li);
+            }
+        }
+
+        fetchAndRenderSitemap();
+        setInterval(fetchAndRenderSitemap, 30000);
+
+    </script>
+</body>
+</html>
