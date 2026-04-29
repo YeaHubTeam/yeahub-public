@@ -119,7 +119,7 @@
 }
 
 .move-title.accordion[open] .title {
-	opacity: 0;
+	display: none;
 	pointer-events: none;
 }
 
@@ -133,6 +133,7 @@
 @media (width < 768px) {
 	.accordion {
 		padding: 10px;
+		
 	}
 
 	.media {
