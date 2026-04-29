@@ -1,4 +1,3 @@
-// eslint-disable-next-line @conarti/feature-sliced/layers-slices
 import { Specialization } from '@/entities/specialization/@x/guru';
 
 import { gurus } from '../constants/gurus';

@@ -15,16 +15,19 @@ export const AdvantagesList = () => {
 			title: Mentor.FULLPATH_CARDS_MATERIAL_TITLE,
 			description: Mentor.FULLPATH_CARDS_MATERIAL_DESCRIPTION,
 			imageSrc: material,
+			imgAlt: Mentor.FULLPATH_CARDS_MATERIAL_IMAGE_ALT,
 		},
 		{
 			title: Mentor.FULLPATH_CARDS_COMMUNITY_TITLE,
 			description: Mentor.FULLPATH_CARDS_COMMUNITY_DESCRIPTION,
 			imageSrc: community,
+			imgAlt: Mentor.FULLPATH_CARDS_COMMUNITY_IMAGE_ALT,
 		},
 		{
 			title: Mentor.FULLPATH_CARDS_STRUCTURE_TITLE,
 			description: Mentor.FULLPATH_CARDS_STRUCTURE_DESCRIPTION,
 			imageSrc: structure,
+			imgAlt: Mentor.FULLPATH_CARDS_STRUCTURE_IMAGE_ALT,
 		},
 	];
 	return (
@@ -35,6 +38,7 @@ export const AdvantagesList = () => {
 					title={t(card.title)}
 					description={t(card.description)}
 					imageSrc={card.imageSrc}
+					imgAlt={t(card.imgAlt)}
 				/>
 			))}
 		</div>

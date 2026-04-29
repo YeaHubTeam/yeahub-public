@@ -16,12 +16,7 @@ export const AboutProfile = () => {
 	return (
 		<Flex direction="column" gap="20" className={styles['profile']}>
 			<div className={styles['wrapper']}>
-				<Image
-					src={profileImage}
-					alt={t(Mentor.ABOUT_PROFILE_NAME)}
-					className={styles['img']}
-					fill
-				/>
+				<Image src={profileImage} alt={t(Mentor.ABOUT_IMAGE)} className={styles['img']} fill />
 			</div>
 			<Flex direction="column" gap="8" className={styles['info']}>
 				<Flex gap="16" align="center">

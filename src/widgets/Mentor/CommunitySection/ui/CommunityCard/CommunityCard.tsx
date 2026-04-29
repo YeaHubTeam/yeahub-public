@@ -20,6 +20,10 @@ export const CommunityCard = ({ title, description, linkText, linkUrl }: Communi
 			actionRoute={linkUrl}
 			actionPositionX="start"
 			isActionPositionBottom
+			actionOptions={{
+				target: '_blank',
+				rel: 'noopener noreferrer',
+			}}
 		>
 			<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} className={styles.icon} />
 			<Text variant="head3" className={styles.title}>

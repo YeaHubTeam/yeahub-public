@@ -64,10 +64,23 @@ export const ROUTES = {
 	mentor: {
 		route: 'mentor',
 		page: '/mentor',
+		telegram: 'https://t.me/ruslan_kuyanets',
+		yeaHubSite: 'https://yeahub.ru',
+		yeaHubGithub: 'https://github.com/YeaHubTeam',
+		experience: 'https://t.me/reactify_IT/1489',
+		community: 'https://t.me/+R_GawEiT-sMzNjYy',
+		news: 'https://t.me/mentor_reactify',
+		youtube: 'https://www.youtube.com/@reactify-it',
+		telegramChannel: 'https://t.me/reactify_IT',
 	},
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',
+		},
+	},
+	tasks: {
+		external: {
+			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'tasks?page=1',
 		},
 	},
 } as const;

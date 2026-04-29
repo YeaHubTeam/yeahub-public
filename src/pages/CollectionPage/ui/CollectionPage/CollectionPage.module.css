@@ -25,8 +25,16 @@
 	border: 1px solid transparent;
 }
 
+.banner {
+	display: none;
+}
+
 @media screen and (width < 1024px) {
 	.additional {
 		display: none;
+	}
+	
+	.banner {
+		display: block;
 	}
 }
