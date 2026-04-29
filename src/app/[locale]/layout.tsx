@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { Main, i18Namespace } from '@/shared/config';
+import { Main, i18Namespace, routing } from '@/shared/config';
 import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
 
@@ -47,6 +48,10 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
 
 const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 	const { locale } = await params;
+
+	if (!hasLocale(routing.locales, locale)) {
+		notFound();
+	}
 
 	setRequestLocale(locale);
 

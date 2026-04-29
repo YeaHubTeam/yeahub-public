@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
+		"build:debug": "next build --debug-prerender",
 		"start": "next start",
 		"lint": "eslint . --max-warnings=0",
 		"lint:ts": "eslint \"**/*.{ts,tsx}\"",
