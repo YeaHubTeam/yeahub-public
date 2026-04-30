@@ -38,7 +38,7 @@ export const AdvantagesList = ({ locale }: AdvantagesListProps) => {
 		},
 		{
 			title: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_TITLE,
-			description: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_LINK,
+			description: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_DESCRIPTION,
 			link: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_LINK,
 			route: ROUTES.mentor.yeaHubGithub,
 			badge: Mentor.INTERNSHIP_ADVANTAGES_EXPERIENCE_BADGE,
