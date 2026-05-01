@@ -173,6 +173,14 @@
 }
 
 @media screen and (width < 368px) {
+	.card {
+		min-height: auto;
+	}
+
+	.experienced-content {
+		position: relative;
+	}
+
 	.wrapper {
 		gap: 12px;
 	}
@@ -183,5 +191,18 @@
 
 	.description-experienced {
 		line-height: 1.3;
+	}
+
+  .title-consultation {
+    margin-top: 104px;
+  }
+
+	.title-experienced {
+		margin-top: 36px;
+	}
+
+	.badges {
+		top: 9px;
+		right: 20px;
 	}
 }
