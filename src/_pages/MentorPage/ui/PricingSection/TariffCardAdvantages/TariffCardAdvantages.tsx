@@ -22,7 +22,7 @@ export const TariffCardAdvantages = ({ advantages, isInverted }: TariffCardAdvan
 				{advantages.map((advantage) => (
 					<Flex
 						componentType="li"
-						gap="10"
+						gap="16"
 						align="center"
 						key={advantage}
 						className={styles['list-item']}
