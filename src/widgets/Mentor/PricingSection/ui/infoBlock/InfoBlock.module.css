@@ -30,8 +30,7 @@
 
 .background {
 	background:
-		linear-gradient(101.11deg, rgb(246 246 246 / 0%) 73.72%, rgb(142 120 255 / 67%) 95.19%),
-		#fff;
+		linear-gradient(101.11deg, rgb(246 246 246 / 0%) 73.72%, rgb(142 120 255 / 67%) 95.19%), #fff;
 }
 
 .badges {
@@ -64,9 +63,9 @@
 	width: 150%;
 	height: 2px;
 	border-radius: 21px;
-	background: #E84B4B;
+	background: #e84b4b;
 	transform: translate(-50%, -50%) rotate(45deg);
-	content: "";
+	content: '';
 }
 
 .badge-red::after {
@@ -76,9 +75,9 @@
 	width: 150%;
 	height: 2px;
 	border-radius: 21px;
-	background: #E84B4B;
+	background: #e84b4b;
 	transform: translate(-50%, -50%) rotate(-45deg);
-	content: "";
+	content: '';
 }
 
 .badge-outline {
@@ -121,14 +120,14 @@
 	.wrapper {
 		grid-template-columns: 1fr 1fr;
 	}
-	
+
 	.badges {
 		position: absolute;
 		right: 20px;
 		z-index: -1;
 		gap: 16px;
 	}
-	
+
 	.badge-red {
 		margin-top: 8px;
 		width: 64px;
@@ -140,7 +139,7 @@
 		width: 80px;
 		height: 80px;
 	}
-	
+
 	.badge-red-text {
 		font-size: var(--font-size-h-xs);
 	}
@@ -162,13 +161,27 @@
 	.wrapper {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.title {
 		font-size: var(--font-size-h-xs);
 	}
-	
+
 	.card {
 		padding: 10px;
 		min-height: 337px;
+	}
+}
+
+@media screen and (width < 368px) {
+	.wrapper {
+		gap: 12px;
+	}
+
+	.button {
+		padding: 0 30px;
+	}
+
+	.description-experienced {
+		line-height: 1.3;
 	}
 }

@@ -49,3 +49,18 @@
 		min-height: unset;
 	}
 }
+
+@media screen and (width < 368px) {
+	.card {
+		padding: 10px;
+	}
+
+	.title {
+		margin-top: 32px;
+    letter-spacing: -0.05rem;
+	}
+
+	.button {
+    padding: 0 30px;
+	}
+}

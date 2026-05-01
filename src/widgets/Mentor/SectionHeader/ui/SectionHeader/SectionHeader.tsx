@@ -19,7 +19,7 @@ export const SectionHeader = ({ label, title, description }: SectionHeaderProps)
 					{title}
 				</Text>
 				{description ? (
-					<Text variant="body3-accent" color="black-900">
+					<Text variant="body3-accent" color="black-900" className={styles.description}>
 						{description}
 					</Text>
 				) : null}
