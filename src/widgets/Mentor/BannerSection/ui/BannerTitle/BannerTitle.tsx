@@ -9,7 +9,7 @@ export const BannerTitle = () => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
-		<Text variant="head1" className={styles.title}>
+		<Text variant="head1" className={`${styles.title} ${styles['title-text']}`}>
 			{t(Mentor.BANNER_TITLE)}
 		</Text>
 	);
