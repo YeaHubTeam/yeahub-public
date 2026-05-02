@@ -12,7 +12,7 @@
 		gap: 20px;
 	}
 
-	.title {
+	h2.title {
 		line-height: 120%;
 		font-size: 24px;
 	}

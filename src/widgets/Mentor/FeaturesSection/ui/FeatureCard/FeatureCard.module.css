@@ -69,11 +69,11 @@
 }
 
 @media screen and (width < 1280px) {
-	.title {
+	h3.title {
 		font-size: var(--font-size-h-xs);
 	}
 
-	.title.highlighted-title {
+	h3.title.highlighted-title {
 		font-size: var(--font-size-h-s);
 	}
 }
