@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -17,17 +17,9 @@ interface FeatureCardProps {
 }
 
 export const FeatureCard = ({ feature }: FeatureCardProps) => {
-	const { badge, title, description, imageSrc, imgAlt, link, to, isHighlighted } = feature;
+	const { badge, title, description, imageSrc, imgAlt, link, to, isHighlighted, id } = feature;
 	const t = useTranslations(i18Namespace.mentor);
 
-	const getImageType = (imageSrc: string | StaticImageData | undefined) => {
-		if (!imageSrc) return 'default';
-		const src = typeof imageSrc === 'string' ? imageSrc : imageSrc.src;
-		const fileName = src.split('/').pop() || '';
-		if (fileName.includes('questions')) return 'questions';
-		if (fileName.includes('interviews')) return 'interviews';
-		return 'default';
-	};
 	return (
 		<Card
 			withOutsideShadow
@@ -54,12 +46,10 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 				{imageSrc && (
 					<div
 						className={classNames(styles['image-wrapper'], {
-							[styles['image-wrapper-questions']]: getImageType(imageSrc) === 'questions',
-							[styles['image-wrapper-interviews']]: getImageType(imageSrc) === 'interviews',
+							[styles['image-wrapper-questions']]: id === 'questions',
+							[styles['image-wrapper-interviews']]: id === 'interviews',
 						})}
 					>
-						<Image src={imageSrc} alt={title} className={styles.image} />
-					<div className={styles['image-wrapper']}>
 						<Image src={imageSrc} alt={imgAlt ? t(imgAlt) : ''} className={styles.image} />
 					</div>
 				)}
