@@ -18,6 +18,28 @@ export const FooterLinks = async () => {
 
 	return (
 		<Flex dataTestId="FooterLinks" className={styles['footer-resources-links']}>
+			<Link data-testid="Footer_LLM" href={`/llm.txt`}>
+				<Text
+					dataTestId="Footer_LLM"
+					className={styles['docs-link']}
+					variant="body2-accent"
+					color="black-400"
+				>
+					{t(Footer.HOME_LLM)}
+				</Text>
+			</Link>
+
+			<Link data-testid="Footer_NavSiteMap" href={`/sitemap.html`}>
+				<Text
+					dataTestId="Footer_SiteMap"
+					className={styles['docs-link']}
+					variant="body2-accent"
+					color="black-400"
+				>
+					{t(Footer.HOME_SITE_MAP)}
+				</Text>
+			</Link>
+
 			<Link data-testid="Footer_NavDocs" href={`/${locale}/docs`}>
 				<Text
 					dataTestId="Footer_Docs"

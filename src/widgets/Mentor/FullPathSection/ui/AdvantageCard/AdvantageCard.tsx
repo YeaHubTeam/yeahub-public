@@ -9,9 +9,10 @@ interface AdvantageCardProps {
 	title: string;
 	description: string;
 	imageSrc: string | StaticImageData;
+	imgAlt: string;
 }
 
-export const AdvantageCard = ({ title, description, imageSrc }: AdvantageCardProps) => {
+export const AdvantageCard = ({ title, description, imageSrc, imgAlt }: AdvantageCardProps) => {
 	return (
 		<Card className={styles['card']}>
 			<div>
@@ -22,7 +23,7 @@ export const AdvantageCard = ({ title, description, imageSrc }: AdvantageCardPro
 					{description}
 				</Text>
 			</div>
-			<Image src={imageSrc} alt={title} className={styles['image']} />
+			<Image src={imageSrc} alt={imgAlt} className={styles['image']} />
 		</Card>
 	);
 };

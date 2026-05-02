@@ -7,6 +7,21 @@ import { HeaderNav } from '../HeaderNav/HeaderNav';
 import styles from './Header.module.css';
 
 export const Header = () => {
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'SiteNavigationElement',
+		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме'],
+
+		url: [
+			'/ru/questions/react-frontend-developer',
+			'/ru/collections/react-frontend-developer',
+			'/ru/quiz/new',
+			'/ru/resources/react-frontend-developer',
+			'/ru/learning',
+			'/ru/hh-analytics',
+		],
+	};
+
 	return (
 		<header data-testid={'Header'} className={styles.header}>
 			<Flex className={styles['header-content']}>
@@ -19,6 +34,10 @@ export const Header = () => {
 					<HeaderAuth />
 				</Flex>
 			</Flex>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
 		</header>
 	);
 };

@@ -1,22 +1,25 @@
 .title {
 	margin-top: 20px;
-  max-width: 785px;
-  text-align: center;
-  text-transform: uppercase;
-  white-space: pre-wrap;
+	max-width: 785px;
+	text-align: center;
+	text-transform: uppercase;
+	white-space: pre-wrap;
+}
+
+.title.title-text {
 	font-size: 50px;
 }
 
 @media screen and (width < 1280px) {
-	.title {
+	.title.title-text {
 		line-height: 115%;
 		font-size: 40px;
 	}
 }
 
 @media screen and (width < 768px) {
-  .title {
+	.title.title-text {
 		line-height: 120%;
-    font-size: 24px;
-  }
+		font-size: 24px;
+	}
 }
