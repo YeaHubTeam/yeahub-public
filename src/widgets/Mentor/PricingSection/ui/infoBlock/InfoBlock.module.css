@@ -141,19 +141,19 @@
 		height: 80px;
 	}
 	
-	.badge-red-text {
+	h2.badge-red-text {
 		font-size: var(--font-size-h-xs);
 	}
 
-	.badge-outline-text {
+	h2.badge-outline-text {
 		font-size: var(--font-size-h-xs);
 	}
 
-	.badge-red-subtext {
+	p.badge-red-subtext {
 		font-size: var(--font-size-p-xss);
 	}
 
-	.badge-outline-subtext {
+	p.badge-outline-subtext {
 		font-size: var(--font-size-p-xss);
 	}
 }
@@ -163,7 +163,7 @@
 		grid-template-columns: 1fr;
 	}
 	
-	.title {
+	p.title {
 		font-size: var(--font-size-h-xs);
 	}
 	

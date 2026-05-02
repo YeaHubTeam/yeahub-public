@@ -24,7 +24,7 @@
 		height: 278px;
 	}
 	
-	.title {
+	h3.title {
 		font-size: var(--font-size-h-xs);
 	}
 }
