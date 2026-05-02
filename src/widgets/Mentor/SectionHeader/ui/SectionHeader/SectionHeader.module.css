@@ -6,6 +6,11 @@
 	margin-bottom: 30px;
 }
 
+
+.description {
+	max-width: 493px;
+}
+
 @media (width < 1280px) {
 	.wrapper {
 		grid-template-columns: 1fr;

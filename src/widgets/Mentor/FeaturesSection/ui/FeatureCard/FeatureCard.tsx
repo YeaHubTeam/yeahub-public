@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -20,6 +20,14 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 	const { badge, title, description, imageSrc, link, to, isHighlighted } = feature;
 	const t = useTranslations(i18Namespace.mentor);
 
+	const getImageType = (imageSrc: string | StaticImageData | undefined) => {
+		if (!imageSrc) return 'default';
+		const src = typeof imageSrc === 'string' ? imageSrc : imageSrc.src;
+		const fileName = src.split('/').pop() || '';
+		if (fileName.includes('questions')) return 'questions';
+		if (fileName.includes('interviews')) return 'interviews';
+		return 'default';
+	};
 	return (
 		<Card
 			withOutsideShadow
@@ -44,7 +52,12 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 					</Text>
 				</Flex>
 				{imageSrc && (
-					<div className={styles['image-wrapper']}>
+					<div
+						className={classNames(styles['image-wrapper'], {
+							[styles['image-wrapper-questions']]: getImageType(imageSrc) === 'questions',
+							[styles['image-wrapper-interviews']]: getImageType(imageSrc) === 'interviews',
+						})}
+					>
 						<Image src={imageSrc} alt={title} className={styles.image} />
 					</div>
 				)}
