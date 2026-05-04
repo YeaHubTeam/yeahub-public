@@ -18,25 +18,29 @@
   background-color: var(--color-black-50);
 }
 
-.slider-container {
+.slider-container-interview {
   cursor: pointer;
 	gap: 20px;
 }
 
 /* stylelint-disable selector-pseudo-class-no-unknown */
-.slider-container :global(.slick-slide) > div {
+.slider-container-interview :global(.slick-slide) > div {
   margin: 0 10px;
 	cursor: default;
 }
 
-.slider-container :global(.slick-list) {
+.slider-container-interview :global(.slick-list) {
   margin-left: -10px;
   overflow: visible;
 }
 
-.slider-container :global(.slick-track) {
+.slider-container-interview :global(.slick-track) {
   display: flex;
   flex-direction: row;
+}
+
+.slider-container-interview :global(.slick-dots) {
+	display: none !important;
 }
 
 @media screen and (width < 1440px) {

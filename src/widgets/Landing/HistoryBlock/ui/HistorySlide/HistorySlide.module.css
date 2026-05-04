@@ -1,0 +1,25 @@
+.slide-item {
+  height: 100%;
+}
+
+.slide-card {
+  height: 371px;
+}
+
+.slide-image {
+  width: 288px;
+  height: 250px;
+  object-fit: contain;
+}
+
+.slide-text {
+  margin-top: 10px;
+  max-width: 189px;
+  text-align: center;
+}
+
+@media screen and (width < 1200px) {
+  .slide-card {
+    height: 346px;
+  }
+}
