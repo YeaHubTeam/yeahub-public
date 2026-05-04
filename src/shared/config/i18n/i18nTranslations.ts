@@ -371,6 +371,14 @@ export enum Landing {
 	COLLECTION_CARD_SBER = 'collections.cards.sber',
 	COLLECTION_CARD_TBANK = 'collections.cards.tbank',
 	COLLECTION_CARD_VK = 'collections.cards.vk',
+	HISTORY_TITLE = 'history.title',
+	HISTORY_SUBTITLE = 'history.subtitle',
+	HISTORY_SLIDES_FIRST = 'history.slides.first',
+	HISTORY_SLIDES_SECOND = 'history.slides.second',
+	HISTORY_SLIDES_THIRD = 'history.slides.third',
+	HISTORY_IMG_STATISTICS = 'history.img.statistics',
+	HISTORY_IMG_PROGRESS = 'history.img.progress',
+	HISTORY_IMG_DESCRIPTION = 'history.img.description',
 }
 
 export enum InterviewStatistics {
