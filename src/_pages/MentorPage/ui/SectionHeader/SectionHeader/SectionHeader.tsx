@@ -14,12 +14,12 @@ export const SectionHeader = ({ label, title, description }: SectionHeaderProps)
 	return (
 		<div className={styles.wrapper}>
 			<SectionHeaderLabel text={label} />
-			<Flex className={styles.block} direction="column" gap="10">
+			<Flex direction="column" gap="10">
 				<Text className={styles.title} variant="head2" color="black-900">
 					{title}
 				</Text>
 				{description ? (
-					<Text variant="body3-accent" color="black-900" className={styles.description}>
+					<Text className={styles.block} variant="body3-accent" color="black-900">
 						{description}
 					</Text>
 				) : null}
