@@ -18,7 +18,7 @@ export const StackList = ({ title, rows }: MentorStackColumnProps) => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
-		<Flex direction="column" gap="16" className={styles['column-wrapper']}>
+		<Flex direction="column" gap="20" className={styles['column-wrapper']}>
 			<Text variant="head3" className={styles['column-title']}>
 				{title}
 			</Text>
