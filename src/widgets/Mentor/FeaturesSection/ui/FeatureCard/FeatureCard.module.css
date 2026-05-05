@@ -39,7 +39,7 @@ h3.title.highlighted-title {
 
 .description {
 	max-width: 350px;
-	white-space: pre-wrap;
+	white-space: pre-line;
 }
 
 .link {
