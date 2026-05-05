@@ -18,7 +18,10 @@ export const InterviewMaterials = ({ skills }: InterviewMaterialsProps) => {
 		<Flex className={styles.content} dataTestId="InterviewMaterials_content">
 			<About />
 			<div className={styles.cards} data-testid="InterviewMaterials_cards">
-				<Slider {...interviewMaterialsSliderSettings} className={styles['slider-container']}>
+				<Slider
+					{...interviewMaterialsSliderSettings}
+					className={styles['slider-container-interview']}
+				>
 					<SpecializationCard />
 					<SkillsCard skills={skills} />
 					<FiltersCard />

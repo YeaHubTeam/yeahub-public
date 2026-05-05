@@ -17,63 +17,66 @@ export const FooterLinks = async () => {
 	const locale = await getLocale();
 
 	return (
-		<Flex dataTestId="FooterLinks" className={styles['footer-resources-links']}>
-			<Link data-testid="Footer_LLM" href={`/llm.txt`}>
-				<Text
-					dataTestId="Footer_LLM"
-					className={styles['docs-link']}
-					variant="body2-accent"
-					color="black-400"
-				>
-					{t(Footer.HOME_LLM)}
-				</Text>
-			</Link>
+		<Flex dataTestId="FooterLinks" className={styles['footer-resources-links']} wrap="wrap">
+			<Flex wrap="wrap">
+				<Link data-testid="Footer_LLM" href={`/llm.txt`}>
+					<Text
+						dataTestId="Footer_LLM"
+						className={styles['docs-link']}
+						variant="body2-accent"
+						color="black-400"
+					>
+						{t(Footer.HOME_LLM)}
+					</Text>
+				</Link>
 
-			<Link data-testid="Footer_NavSiteMap" href={`/sitemap.html`}>
-				<Text
-					dataTestId="Footer_SiteMap"
-					className={styles['docs-link']}
-					variant="body2-accent"
-					color="black-400"
-				>
-					{t(Footer.HOME_SITE_MAP)}
-				</Text>
-			</Link>
+				<Link data-testid="Footer_NavSiteMap" href={`/sitemap.html`}>
+					<Text
+						dataTestId="Footer_SiteMap"
+						className={styles['docs-link']}
+						variant="body2-accent"
+						color="black-400"
+					>
+						{t(Footer.HOME_SITE_MAP)}
+					</Text>
+				</Link>
 
-			<Link data-testid="Footer_NavDocs" href={`/${locale}/docs`}>
-				<Text
-					dataTestId="Footer_Docs"
-					className={styles['docs-link']}
-					variant="body2-accent"
-					color="black-400"
-				>
-					{t(Footer.HOME_DOCS)}
-				</Text>
-			</Link>
+				<Link data-testid="Footer_NavDocs" href={`/${locale}/docs`}>
+					<Text
+						dataTestId="Footer_Docs"
+						className={styles['docs-link']}
+						variant="body2-accent"
+						color="black-400"
+					>
+						{t(Footer.HOME_DOCS)}
+					</Text>
+				</Link>
 
-			<Link data-testid="Footer_NavMedia" href={`/${locale}/media`}>
-				<Text
-					dataTestId="Footer_Media"
-					className={styles['docs-link']}
-					variant="body2-accent"
-					color="black-400"
-				>
-					{t(Footer.HOME_MEDIA)}
-				</Text>
-			</Link>
-
-			{RESOURCES_LINKS.map(({ url, label, icon, color, className }) => (
-				<a
-					key={url}
-					href={url}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={`${label} ${t(Footer.HOME_LINKS_LINK_ARIA)}`}
-					className={styles[className]}
-				>
-					<Icon icon={icon} color={color} dataTestId={`icon-${label}`} />
-				</a>
-			))}
+				<Link data-testid="Footer_NavMedia" href={`/${locale}/media`}>
+					<Text
+						dataTestId="Footer_Media"
+						className={styles['docs-link']}
+						variant="body2-accent"
+						color="black-400"
+					>
+						{t(Footer.HOME_MEDIA)}
+					</Text>
+				</Link>
+			</Flex>
+			<Flex gap="8">
+				{RESOURCES_LINKS.map(({ url, label, icon, color, className }) => (
+					<a
+						key={url}
+						href={url}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={`${label} ${t(Footer.HOME_LINKS_LINK_ARIA)}`}
+						className={styles[className]}
+					>
+						<Icon icon={icon} color={color} dataTestId={`icon-${label}`} />
+					</a>
+				))}
+			</Flex>
 		</Flex>
 	);
 };

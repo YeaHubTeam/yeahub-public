@@ -16,7 +16,10 @@ export const InterviewMaterialsSkeleton = () => {
 		<Flex className={styles.content}>
 			<AboutSkeleton />
 			<div className={styles.cards}>
-				<Slider {...interviewMaterialsSliderSettings} className={styles['slider-container']}>
+				<Slider
+					{...interviewMaterialsSliderSettings}
+					className={styles['slider-container-interview']}
+				>
 					<SpecializationCardSkeleton />
 					<SkillsCardSkeleton />
 					<FiltersCardSkeleton />

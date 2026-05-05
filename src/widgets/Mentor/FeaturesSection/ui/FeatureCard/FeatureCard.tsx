@@ -17,7 +17,7 @@ interface FeatureCardProps {
 }
 
 export const FeatureCard = ({ feature }: FeatureCardProps) => {
-	const { badge, title, description, imageSrc, imgAlt, link, to, isHighlighted } = feature;
+	const { badge, title, description, imageSrc, imgAlt, link, to, isHighlighted, id } = feature;
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
@@ -44,7 +44,12 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 					</Text>
 				</Flex>
 				{imageSrc && (
-					<div className={styles['image-wrapper']}>
+					<div
+						className={classNames(styles['image-wrapper'], {
+							[styles['image-wrapper-questions']]: id === 'questions',
+							[styles['image-wrapper-interviews']]: id === 'interviews',
+						})}
+					>
 						<Image src={imageSrc} alt={imgAlt ? t(imgAlt) : ''} className={styles.image} />
 					</div>
 				)}
