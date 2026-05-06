@@ -3,7 +3,7 @@ import React, { JSX, forwardRef } from 'react';
 import classnames from 'classnames';
 
 import styles from './Button.module.css';
-import { getTagName } from './helpers';
+import { getStylePrefix, getTagName } from './helpers';
 import { ButtonProps } from './types';
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
@@ -24,6 +24,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 		ref,
 	): JSX.Element => {
 		const tagName = getTagName(variant, !!props.href);
+		const stylePrefix = getStylePrefix(variant);
 
 		const Component = tagName as React.ElementType;
 
@@ -31,12 +32,12 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 			<Component
 				ref={ref}
 				className={classnames(
-					styles[tagName],
-					styles[`${tagName}-${size}`],
-					fullWidth && styles[`${tagName}-full`],
-					destructive && tagName === 'a'
+					styles[stylePrefix],
+					styles[`${stylePrefix}-${size}`],
+					fullWidth && styles[`${stylePrefix}-full`],
+					destructive && stylePrefix === 'a'
 						? styles['a-link-destructive']
-						: styles[`${tagName}-${variant}`],
+						: styles[`${stylePrefix}-${variant}`],
 					className,
 					tagName === 'a' && props.disabled ? styles['disabled'] : '',
 				)}

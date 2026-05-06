@@ -6,13 +6,18 @@
 	margin-bottom: 30px;
 }
 
+
+.description {
+	max-width: 493px;
+}
+
 @media (width < 1280px) {
 	.wrapper {
 		grid-template-columns: 1fr;
 		gap: 20px;
 	}
 
-	.title {
+	h2.title {
 		line-height: 120%;
 		font-size: 24px;
 	}

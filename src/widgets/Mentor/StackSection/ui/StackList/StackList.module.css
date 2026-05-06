@@ -22,7 +22,7 @@
 }
 
 @media (width < 768px) {
-	.column-title {
+	h3.column-title {
 		font-size: var(--font-size-h-xs);
 	}
  

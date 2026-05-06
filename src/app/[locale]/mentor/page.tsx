@@ -89,7 +89,7 @@ const MentorPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<MentorPageComponent />
+			<MentorPageComponent locale={locale} />
 		</>
 	);
 };

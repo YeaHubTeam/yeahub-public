@@ -6,6 +6,7 @@ export interface FeatureItem {
 	title: string;
 	description: string;
 	imageSrc?: string | StaticImageData;
+	imgAlt?: string;
 	link: string;
 	to: string;
 	isHighlighted?: boolean;

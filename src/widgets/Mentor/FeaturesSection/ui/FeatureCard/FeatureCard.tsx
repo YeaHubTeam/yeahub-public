@@ -17,7 +17,7 @@ interface FeatureCardProps {
 }
 
 export const FeatureCard = ({ feature }: FeatureCardProps) => {
-	const { badge, title, description, imageSrc, link, to, isHighlighted } = feature;
+	const { badge, title, description, imageSrc, imgAlt, link, to, isHighlighted, id } = feature;
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
@@ -34,7 +34,7 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 			<Flex gap="20" className={styles.row}>
 				<Flex gap="8" direction="column" className={styles['text-content']}>
 					<Text
-						variant="body6"
+						variant="head3"
 						className={classNames(styles.title, isHighlighted && styles['highlighted-title'])}
 					>
 						{t(title)}
@@ -44,8 +44,13 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 					</Text>
 				</Flex>
 				{imageSrc && (
-					<div className={styles['image-wrapper']}>
-						<Image src={imageSrc} alt={title} className={styles.image} />
+					<div
+						className={classNames(styles['image-wrapper'], {
+							[styles['image-wrapper-questions']]: id === 'questions',
+							[styles['image-wrapper-interviews']]: id === 'interviews',
+						})}
+					>
+						<Image src={imageSrc} alt={imgAlt ? t(imgAlt) : ''} className={styles.image} />
 					</div>
 				)}
 			</Flex>
