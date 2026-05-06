@@ -1,11 +1,17 @@
 .bonus-block {
 	padding: 14px;
+	box-sizing: border-box;
 	width: calc(50% - 10px);
 }
 
 .icon-wrapper {
+	margin-top: 4px;
 	width: 20px;
 	height: 20px;
+}
+
+.description {
+	white-space: pre-line;
 }
 
 @media (width < 1280px) {
@@ -16,10 +22,13 @@
 
 	.bonus-block {
 		flex: 1;
+		justify-content: center;
 		width: 100%;
+		min-height: 226px;
 	}
-	
+
 	.bonus-block-content {
+		align-items: start;
 		gap: 20px;
 	}
 }
@@ -32,5 +41,10 @@
 
 	.bonus-block {
 		padding: 10px;
+		min-height: 0;
+	}
+
+	.description {
+		white-space: normal
 	}
 }
