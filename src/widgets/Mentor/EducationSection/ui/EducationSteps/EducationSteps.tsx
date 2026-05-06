@@ -25,6 +25,7 @@ export const EducationSteps = () => {
 						title={t(step.title)}
 						description={t(step.description)}
 						image={step.image}
+						imgAlt={step?.imgAlt ? t(step.imgAlt) : ''}
 						mediaClassName={styles[`media${step.id}`]}
 					/>
 				))}

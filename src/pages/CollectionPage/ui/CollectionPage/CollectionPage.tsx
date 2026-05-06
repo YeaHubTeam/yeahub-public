@@ -1,6 +1,10 @@
 import { useTranslations } from 'next-intl';
 
 import type { Collection } from '@/entities/collection';
+import {
+	getGuruWithMatchingSpecialization,
+	getNewGuruWithMatchingSpecialization,
+} from '@/entities/guru';
 import { Collections, Link, ROUTES, i18Namespace } from '@/shared/config';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Button } from '@/shared/ui/Button';
@@ -9,6 +13,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 import { AdditionalInfo, CollectionBody, CollectionHeader } from '@/widgets/Collection';
+import { SidebarBanner } from '@/widgets/Media';
 
 import styles from './CollectionPage.module.css';
 
@@ -19,10 +24,12 @@ interface CollectionPageProps {
 }
 
 export const CollectionPage = ({ collection, specialization, locale }: CollectionPageProps) => {
-	const { createdBy, questionsCount, questions, isFree, company, specializations, keywords } =
-		collection;
+	const { questionsCount, questions, isFree, company, specializations, keywords } = collection;
 
 	const t = useTranslations(i18Namespace.collection);
+
+	const guru = getGuruWithMatchingSpecialization(specializations || []);
+	const newGuru = getNewGuruWithMatchingSpecialization(specializations);
 
 	return (
 		<Flex direction="column" align="start">
@@ -54,6 +61,11 @@ export const CollectionPage = ({ collection, specialization, locale }: Collectio
 						specialization={specialization}
 						locale={locale}
 					/>
+					{guru && (
+						<div className={styles.banner}>
+							<SidebarBanner guru={guru} newGuru={newGuru} />
+						</div>
+					)}
 				</Flex>
 				<Flex direction="column" gap="20" className={styles.additional}>
 					<AdditionalInfo
@@ -61,9 +73,9 @@ export const CollectionPage = ({ collection, specialization, locale }: Collectio
 						isFree={isFree}
 						company={company}
 						questionsCount={questionsCount}
-						createdBy={createdBy}
 						keywords={keywords}
 					/>
+					<SidebarBanner guru={guru} newGuru={newGuru} />
 				</Flex>
 			</Flex>
 		</Flex>

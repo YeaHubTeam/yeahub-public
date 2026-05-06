@@ -30,6 +30,10 @@ export interface CardProps {
 	headerAction?: ReactNode;
 	titleComponent?: ReactNode;
 	actionPositionX?: 'start' | 'end';
+	actionOptions?: {
+		target?: '_blank' | '_self' | '_parent' | '_top';
+		rel?: string;
+	};
 }
 
 /**
@@ -56,6 +60,7 @@ export const Card = ({
 	headerAction,
 	titleComponent,
 	actionPositionX = 'end',
+	actionOptions = {},
 }: CardProps) => {
 	return (
 		<Flex
@@ -79,6 +84,7 @@ export const Card = ({
 					{actionRoute ? (
 						<Link
 							href={actionRoute}
+							{...actionOptions}
 							className={classNames(styles.link, styles[`link-${actionPositionX}`], {
 								[styles['link-bottom']]: isActionPositionBottom,
 								[styles['link-disabled']]: actionDisabled,

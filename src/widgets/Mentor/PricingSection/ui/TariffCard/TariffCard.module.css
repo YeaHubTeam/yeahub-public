@@ -1,0 +1,51 @@
+.card {
+	padding: 20px;
+	width: calc(33% - 10px);
+	border-radius: 20px;
+}
+
+.inverted {
+	background: linear-gradient(180deg, #392d7e -1.02%, #8e79ff 16.39%, #e7e6ff 45.94%, #fff 94.66%);
+}
+
+.title {
+	margin-top: 60px;
+	font-weight: 700;
+	font-size: 50px;
+}
+
+.note {
+	margin-top: 24px;
+	font-weight: 700;
+}
+
+.details {
+	margin-top: 8px;
+}
+
+.button {
+	margin-top: 40px;
+	font-weight: 500;
+	font-size: 18px;
+}
+
+@media (width < 1280px) {
+	.card {
+		width: calc(50% - 10px);
+	}
+
+	.title {
+		margin-top: 30px;
+	}
+
+	.button {
+		margin-top: 20px;
+	}
+}
+
+@media (width < 768px) {
+	.card {
+		width: 100%;
+		min-height: unset;
+	}
+}

@@ -21,8 +21,10 @@ export {
 	Skills,
 	Specializations,
 	Subscription,
+	Tasks,
 	Translation,
 } from './i18n/i18nTranslations';
+export { API_VERSION } from './query/apiConstants';
 
 export { Link, redirect, usePathname, useRouter } from './navigation';
 export { AUTH_LINKS } from './router/constants';

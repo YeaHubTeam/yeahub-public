@@ -1,0 +1,21 @@
+.card-panel {
+	margin-top: 20px;
+	padding: 14px;
+	border-radius: 20px;
+	background: #f8f8f8;
+}
+
+.inverted {
+	background: #FFF;
+}
+
+.list-item {
+	height: 23px;
+}
+
+@media (width < 1280px) {
+	.card-panel {
+		padding: 12px;
+	}
+}
+
