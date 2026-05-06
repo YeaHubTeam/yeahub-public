@@ -1,0 +1,76 @@
+{
+	"not_available": "he task is available to the members",
+	"title": {
+		"short": "Coding tasks",
+		"hide": "The task name is only available to users with a subscription"
+	},
+	"search": {
+		"placeholder": "Enter a task..."
+	},
+	"difficulty": {
+		"title": {
+			"long": "Question difficulty",
+			"short": "Difficulty"
+		},
+		"subtitle": "Select a task difficulty"
+	},
+	"languages": {
+		"title": "Programming languages"
+	},
+	"companies": {
+		"title": "Companies"
+	},
+	"category": {
+		"title": "Task category",
+		"data_structures": "Data structures",
+		"algorithms": "Algorithmics",
+		"arrays": "Arrays",
+		"databases": "Databases",
+		"strings": "Strings",
+		"dynamic_programming": "Dynamic programming",
+		"lists": "Lists",
+		"matrices": "Matrices",
+		"objects": "Objects",
+		"dictionaries": "Dictionaries",
+		"stack": "Stack",
+		"queue": "Queue",
+		"linked_lists": "Linked lists",
+		"trees": "Trees",
+		"graphs": "Graphs",
+		"sorting": "Sorting",
+		"search": "Search",
+		"greedy": "Greedy algorithms",
+		"recursion": "Recursion",
+		"conditions": "Conditions",
+		"loops": "Loops",
+		"functions": "Functions",
+		"iterators": "Iterators",
+		"generators": "Generators",
+		"parsing": "Parsing",
+		"filtering": "Filtering",
+		"grouping": "Grouping",
+		"aggregation": "Aggregation",
+		"serialization": "Serialization",
+		"async": "Asynchronous",
+		"caching": "Caching",
+		"pointers": "Pointers",
+		"patterns": "Patterns"
+	},
+	"count": "Tasks count",
+	"stub": {
+		"empty_tasks": {
+			"public": {
+				"title": "No tasks found yet",
+				"subtitle": "Tasks are added periodically, just wait a bit",
+				"filters": {
+					"subtitle": "Try changing the query or conditions to search for a task."
+				}
+			}
+		},
+		"empty.task": {
+			"title": "Failed to load task data",
+			"subtitle": "Try again or refresh the page",
+			"buttonText": "Try again"
+		}
+	}
+}
