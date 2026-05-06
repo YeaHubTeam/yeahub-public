@@ -41,7 +41,7 @@
 
 	.bonus-block {
 		padding: 10px;
-		min-height: 0;
+		min-height: initial;
 	}
 
 	.description {
