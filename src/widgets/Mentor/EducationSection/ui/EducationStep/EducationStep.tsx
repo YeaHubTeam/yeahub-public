@@ -32,7 +32,9 @@ export const EducationStep = ({
 				moveTitle
 				defaultOpen
 			>
-				<Text variant="body3-accent">{description}</Text>
+				<Text variant="body3-accent" className={styles.description}>
+					{description}
+				</Text>
 			</AccordionMentor>
 		</div>
 	);

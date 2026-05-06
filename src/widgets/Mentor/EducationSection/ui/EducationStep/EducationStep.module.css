@@ -4,3 +4,7 @@
 	gap: 4px;
 	border-bottom: 1px solid var(--black-100);
 }
+
+.description {
+	white-space: pre-line;
+}
