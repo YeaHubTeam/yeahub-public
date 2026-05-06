@@ -373,5 +373,22 @@
 				}
 			}
 		}
+	},
+	"tags-cloud": {
+		"title": {
+			"first": "IT mentor",
+			"second": "Frontend mentor",
+			"third": "Frontend training",
+			"fourth": "Web development training",
+			"fifth": "Frontend internship",
+			"sixth": "Interview preparation",
+			"seventh": "Frontend developer employment",
+			"eighth": "Frontend development courses"
+		}
+	},
+	"seo": {
+		"title": "Frontend Training with an IT Mentor — Courses, Internship, and Job Placement from Scratch",
+		"description": "Frontend with an IT mentor: training from scratch, mentor support, internship on a real project, and interview preparation. Courses for beginners and continuing learners.",
+		"keywords": "IT mentor, frontend mentor, frontend training, frontend learning, frontend developer training, web development training, frontend internship, frontend developer internship, frontend interview preparation, frontend developer job placement, frontend development courses"
 	}
 }

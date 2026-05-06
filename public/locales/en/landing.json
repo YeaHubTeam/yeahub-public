@@ -4,7 +4,7 @@
 			"skill": "YeaHub — level up your skills",
 			"candidate": "Candidate"
 		},
-		"title": "Interview Training \nPlatform and question database for successful preparation",
+		"title": "IT Interview Preparation: Questions, Tasks, and Interview Database",
 		"description": "Join the YeaHub community: learn, practice, develop skills, and find a job in IT",
 		"button": "Join the community",
 		"img": {
@@ -102,5 +102,10 @@
 			"description": "Description",
 			"progress": "Progress"
 		}
+	},
+	"seo": {
+		"title": "IT Company Interview: Questions, Tasks, and Interview Preparation",
+		"description": "A database of questions and tasks for IT interviews, an interview simulator, and live coding practice. Preparation for technical interviews and selection processes at IT companies.",
+		"keywords": "IT interview questions, IT interview preparation, programmer interview tasks, technical interview, how to pass an IT interview, IT company interview stages, HR IT questions, interview practice, interview simulator, live coding tasks, developer questions database, junior developer preparation"
 	}
 }

@@ -11,5 +11,10 @@
 		"learn": "Learn",
 		"examples": "Examples",
 		"goToNextjs": "Go to nextjs.org →"
+	},
+	"seo": {
+		"title": "IT Company Interview: Questions, Tasks, and Interview Preparation",
+		"description": "A database of questions and tasks for IT interviews, an interview simulator, and live coding practice. Preparation for technical interviews and selection processes at IT companies.",
+		"keywords": "IT interview questions, IT interview preparation, programmer interview tasks, technical interview, how to pass an IT interview, IT company interview stages, HR IT questions, interview practice, interview simulator, live coding tasks, developer questions database, junior developer preparation"
 	}
 }
