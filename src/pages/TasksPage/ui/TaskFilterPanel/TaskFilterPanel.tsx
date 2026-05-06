@@ -2,15 +2,20 @@
 
 import { useTranslations } from 'next-intl';
 
-import { LanguagesFilterSection } from '@/entities/programmingLanguage';
-import { CategoriesFilterSection, DifficultFilterSection } from '@/entities/tasks';
+import { LanguagesFilterSection, ProgrammingLanguage } from '@/entities/programmingLanguage';
+import { CategoriesFilterSection, DifficultFilterSection, TaskCategory } from '@/entities/tasks';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
 import { useTasksFilter } from '../../model/api/useTasksFilter';
 
-export const TasksFilterPanel = () => {
+interface TasksFilterPanelProps {
+	categories: TaskCategory[];
+	languages: ProgrammingLanguage[];
+}
+
+export const TasksFilterPanel = ({ categories, languages }: TasksFilterPanelProps) => {
 	const t = useTranslations(i18Namespace.tasks);
 	const { filter, handlers } = useTasksFilter();
 
@@ -28,10 +33,12 @@ export const TasksFilterPanel = () => {
 			<LanguagesFilterSection
 				selectedLangIds={filter.langIds || []}
 				onChangeLangIds={handlers.onChangeLangIds}
+				initialData={languages}
 			/>
 			<CategoriesFilterSection
 				selectedCategory={filter.category}
 				onChangeCategory={handlers.onChangeCategory}
+				initialData={categories}
 			/>
 		</Flex>
 	);

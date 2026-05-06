@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 
-import { ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { GetTaskCategoriesResponse, Task, TaskCard } from '@/entities/tasks';
+import { ProgrammingLanguage, ProgrammingLanguageList } from '@/entities/programmingLanguage';
+import { Task, TaskCard, TaskCategory } from '@/entities/tasks';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
@@ -14,17 +14,18 @@ interface TasksPageProps {
 	locale: string;
 	tasks: Task[];
 	hasFilters: boolean;
-	initialCategories?: GetTaskCategoriesResponse;
+	categories: TaskCategory[];
+	languages: ProgrammingLanguage[];
 }
 
-export const TasksPage = ({ locale, tasks, hasFilters }: TasksPageProps) => {
+export const TasksPage = ({ locale, tasks, hasFilters, categories, languages }: TasksPageProps) => {
 	setRequestLocale(locale);
 	const isEmptyWithFilters = tasks.length === 0 && hasFilters;
 
 	return (
 		<Flex gap="20" align="start">
 			<Card className={styles.main}>
-				<TasksPageHeader />
+				<TasksPageHeader categories={categories} languages={languages} />
 				{isEmptyWithFilters ? (
 					<Stub type="filter-empty" />
 				) : (
@@ -46,7 +47,7 @@ export const TasksPage = ({ locale, tasks, hasFilters }: TasksPageProps) => {
 				)}
 			</Card>
 			<Card className={styles.filters}>
-				<TasksFilterPanel />
+				<TasksFilterPanel languages={languages} categories={categories} />
 			</Card>
 		</Flex>
 	);

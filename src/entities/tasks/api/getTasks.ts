@@ -28,12 +28,6 @@ export async function getTaskById(id: number) {
 	return apiFetch<Task>(route(taskApiUrls.getTaskById, id || ''));
 }
 
-export async function getCollectionTasks(id: number, limit: number) {
-	return apiFetch<GetTasksListResponse>(
-		`${taskApiUrls.getTasksList}?skillFilterMode=ANY&collection=${id}&limit=${limit}`,
-	);
-}
-
 export async function getTaskCategories() {
 	return apiFetch<GetTaskCategoriesResponse>(taskApiUrls.getTaskCategories);
 }

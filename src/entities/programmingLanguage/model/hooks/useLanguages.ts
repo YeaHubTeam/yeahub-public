@@ -5,7 +5,7 @@ import type { GetLanguagesResponse } from '../types/programmingLanguage';
 
 export const useLanguages = (initialData?: GetLanguagesResponse | null) => {
 	return useFetchData<GetLanguagesResponse, undefined>({
-		fetcher: () => getLanguages(),
+		fetcher: getLanguages,
 		params: undefined,
 		initialData: initialData ?? null,
 	});

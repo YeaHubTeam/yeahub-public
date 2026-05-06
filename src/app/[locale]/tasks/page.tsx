@@ -2,7 +2,13 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { TaskCategoryCode, TaskDifficulty, getTasksList } from '@/entities/tasks';
+import { getLanguages } from '@/entities/programmingLanguage';
+import {
+	TaskCategoryCode,
+	TaskDifficulty,
+	getTaskCategories,
+	getTasksList,
+} from '@/entities/tasks';
 import { TasksPage } from '@/pages/TasksPage';
 import { i18Namespace, locales } from '@/shared/config';
 import { Tasks } from '@/shared/config/i18n/i18nTranslations';
@@ -48,7 +54,7 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const [tasksResponse] = await Promise.all([
+	const [tasksResponse, categoriesResponse, languagesResponse] = await Promise.all([
 		getTasksList({
 			page: pageNum,
 			title: title as string | undefined,
@@ -56,6 +62,8 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 			langIds: parsedLangIds,
 			category: category as TaskCategoryCode | undefined,
 		}),
+		getTaskCategories(),
+		getLanguages(),
 	]);
 
 	const hasFilters = !!difficulty || !!langIds || !!category || !!title;
@@ -101,7 +109,13 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<TasksPage locale={locale} tasks={tasksResponse.data || []} hasFilters={hasFilters} />
+			<TasksPage
+				locale={locale}
+				tasks={tasksResponse.data || []}
+				hasFilters={hasFilters}
+				languages={languagesResponse}
+				categories={categoriesResponse}
+			/>
 		</>
 	);
 };
