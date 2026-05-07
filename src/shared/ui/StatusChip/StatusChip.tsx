@@ -8,7 +8,7 @@ import { TextVariant } from '@/shared/ui/Text/types';
 import styles from './StatusChip.module.css';
 
 export type StatusChipVariant = 'green' | 'yellow' | 'red' | 'purple';
-export type StatusChipSize = 'medium' | 'small';
+export type StatusChipSize = 'small' | 'medium';
 
 export interface StatusChipItem {
 	text: string;
