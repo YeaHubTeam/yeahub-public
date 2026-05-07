@@ -40,6 +40,9 @@ export const ROUTES = {
 	tasks: {
 		route: 'tasks',
 		page: '/tasks',
+		external: {
+			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'tasks?page=1',
+		},
 	},
 	settings: {
 		route: 'settings',
@@ -80,11 +83,6 @@ export const ROUTES = {
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',
-		},
-	},
-	tasks: {
-		external: {
-			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'tasks?page=1',
 		},
 	},
 } as const;
