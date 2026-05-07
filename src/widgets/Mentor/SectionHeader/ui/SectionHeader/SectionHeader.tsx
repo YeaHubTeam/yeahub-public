@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
@@ -8,11 +10,12 @@ interface SectionHeaderProps {
 	label: string;
 	title: string;
 	description?: string;
+	className?: string;
 }
 
-export const SectionHeader = ({ label, title, description }: SectionHeaderProps) => {
+export const SectionHeader = ({ label, title, description, className }: SectionHeaderProps) => {
 	return (
-		<div className={styles.wrapper}>
+		<div className={classNames(styles.wrapper, className)}>
 			<SectionHeaderLabel text={label} />
 			<Flex className={styles.block} direction="column" gap="10">
 				<Text className={styles.title} variant="head2" color="black-900">
