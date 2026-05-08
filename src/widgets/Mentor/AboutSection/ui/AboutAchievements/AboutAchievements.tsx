@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { Mentor, i18Namespace } from '@/shared/config';
+import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -25,10 +25,14 @@ export const AboutAchievements = () => {
 			withOutsideShadow
 			isActionPositionBottom
 			actionTitle={t(Mentor.ABOUT_LINK)}
-			actionRoute="#"
+			actionRoute={ROUTES.mentor.experience}
 			actionPositionX="start"
 			className={styles.wrapper}
 			contentClassName={styles['wrapper-content']}
+			actionOptions={{
+				target: '_blank',
+				rel: 'noopener noreferrer',
+			}}
 		>
 			<Flex direction="column" gap="12">
 				{achievements.map((item) => (

@@ -9,7 +9,8 @@
 	overflow: hidden;
 }
 
-.title.highlighted-title {
+h3.title.highlighted-title {
+	line-height: 120%;
 	font-size: var(--font-size-h-s);
 }
 
@@ -81,11 +82,13 @@
 }
 
 @media screen and (width < 1280px) {
-	.title {
+	h3.title {
+		line-height: 120%;
 		font-size: var(--font-size-h-xs);
 	}
 
-	.title.highlighted-title {
+	h3.title.highlighted-title {
+		line-height: 120%;
 		font-size: var(--font-size-h-s);
 	}
 }

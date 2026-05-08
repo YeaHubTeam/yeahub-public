@@ -130,6 +130,8 @@
 	
 	.title,
 	.content-title {
+	h3.title,
+	h3.content-title {
 		font-size: 20px;
 	}
 }
@@ -158,7 +160,7 @@
 		flex-wrap: wrap;
 	}
 	
-	.title {
+	h3.title {
 		order: 3;
 		margin-top: 10px;
 		margin-left: 0;
