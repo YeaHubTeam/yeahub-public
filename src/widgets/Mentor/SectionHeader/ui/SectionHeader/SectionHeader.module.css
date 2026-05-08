@@ -3,12 +3,13 @@
 	grid-template-columns: 1fr 2fr;
 	align-items: start;
 	gap: 10px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 
 .description {
-	max-width: 493px;
+	max-width: 708px;
+	white-space: pre-line;
 }
 
 @media (width < 1280px) {
