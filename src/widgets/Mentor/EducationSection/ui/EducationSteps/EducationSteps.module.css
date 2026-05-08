@@ -75,18 +75,30 @@
 	}
 	
 	.media01 {
-		top: 44px;
-		right: -5px;
+		top: 75px;
+		right: 30px;
+		
+		img {
+			max-width: 214px;
+		}
 	}
 
 	.media03 {
-		top: 57px;
-		right: 18px;
+		top: 64px;
+		right: 37px;
+		
+		img{
+			max-width: 211px;
+		}
 	}
 
 	.media05 {
-		top: 50px;
-		right: 20px;
+		top: 64px;
+		right: 30px;
+		
+		img {
+			max-width: 196px;
+		}
 	}
 
 	.media07 {
