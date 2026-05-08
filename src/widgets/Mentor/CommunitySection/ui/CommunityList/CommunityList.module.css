@@ -4,6 +4,10 @@
 	gap: 20px;
 }
 
+.community-list p:first-child {
+	font-weight: var(--font-weight-500);
+}
+
 @media (width < 1280px) {
 	.community-list {
 		grid-template-columns: repeat(2, 1fr);
