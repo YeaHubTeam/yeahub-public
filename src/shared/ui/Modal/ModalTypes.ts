@@ -17,6 +17,7 @@ export type ModalProps = {
 	dataTestId?: string;
 	variant?: ModalVariant;
 	title?: string;
+	contentClassName?: string;
 	className?: string;
 	view?: ModalView;
 };

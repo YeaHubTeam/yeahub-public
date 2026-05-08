@@ -42,6 +42,9 @@ export const ROUTES = {
 		page: '/tasks',
 		external: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'tasks?page=1',
+			detail: {
+				page: process.env.NEXT_PUBLIC_APP_SITE_URL + `tasks/:taskId`,
+			},
 		},
 	},
 	settings: {

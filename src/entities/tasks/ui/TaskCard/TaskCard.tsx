@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 import { useTranslations } from 'next-intl';
 
-import { Tasks, i18Namespace } from '@/shared/config';
+import { ROUTES, Tasks, i18Namespace } from '@/shared/config';
+import { route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Skeleton } from '@/shared/ui/Skeleton';
@@ -34,28 +37,30 @@ export const TaskCard = ({
 
 	return (
 		<Tooltip shouldShowTooltip={!canSolve} title={t(Tasks.NOT_AVAILABLE)} placement="right">
-			<Card key={id} withOutsideShadow className={styles.content}>
-				<Flex direction="column" gap="8">
-					{canSolve ? (
-						<Text variant="body4" maxRows={2}>
-							{name}
-						</Text>
-					) : (
-						<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
-					)}
-					<Flex direction="row" gap="10" align="center">
-						<TaskDifficultyChip key={id} difficulty={difficulty} />
-						{languagesSlot}
-						<StatusChip
-							status={{
-								variant: 'green',
-								text: t(taskCategories[mainCategory]),
-							}}
-							size="medium"
-						/>
+			<Link href={route(ROUTES.tasks.external.detail.page, id)}>
+				<Card key={id} withOutsideShadow className={styles.content}>
+					<Flex direction="column" gap="8">
+						{canSolve ? (
+							<Text variant="body4" maxRows={2}>
+								{name}
+							</Text>
+						) : (
+							<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
+						)}
+						<Flex direction="row" gap="10" align="center">
+							<TaskDifficultyChip key={id} difficulty={difficulty} />
+							{languagesSlot}
+							<StatusChip
+								status={{
+									variant: 'green',
+									text: t(taskCategories[mainCategory]),
+								}}
+								size="medium"
+							/>
+						</Flex>
 					</Flex>
-				</Flex>
-			</Card>
+				</Card>
+			</Link>
 		</Tooltip>
 	);
 };

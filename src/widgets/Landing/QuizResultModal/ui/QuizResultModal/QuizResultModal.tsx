@@ -12,7 +12,7 @@ export const QuizResultModal = ({ isOpen, onClose }: RequiredModalProps) => {
 	const { isMobile } = useScreenSize();
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} className={styles.modal}>
+		<Modal isOpen={isOpen} onClose={onClose} contentClassName={styles.modal}>
 			<Flex gap="20" direction={isMobile ? 'column' : 'row'}>
 				<CallToActionBlock />
 				<ProgressBlock />

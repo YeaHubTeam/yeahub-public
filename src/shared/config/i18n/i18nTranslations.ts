@@ -677,3 +677,26 @@ export enum Tasks {
 	CATEGORY_PATTERNS = 'category.patterns',
 	COUNT = 'count',
 }
+
+export enum Subscription {
+	TITLE = 'title',
+	TARIFFS = 'tariffs',
+	DESCRIPTION = 'description',
+	CARD_BADGE_BASIC = 'card.badge.basic',
+	CARD_BADGE_DISCOUNT = 'card.badge.discount',
+	CARD_PRICE_ALL = 'card.price.all',
+	CARD_PRICE_MONTH = 'card.price.month',
+	CARD_TITLE_FREE = 'card.title.free',
+	CARD_TITLE_MONTH = 'card.title.month',
+	CARD_TITLE_YEAR = 'card.title.year',
+	CARD_SUBTITLE_FREE = 'card.subtitle.free',
+	CARD_SUBTITLE_MONTH = 'card.subtitle.month',
+	CARD_SUBTITLE_QUARTER = 'card.subtitle.quarter',
+	CARD_SUBTITLE_YEAR = 'card.subtitle.year',
+	CARD_SUBSCRIBE = 'card.subscribe',
+	CARD_BENEFITS_FIRST = 'card.benefits.first',
+	CARD_BENEFITS_SECOND = 'card.benefits.second',
+	CARD_BENEFITS_THIRD = 'card.benefits.third',
+	CARD_BENEFITS_FOURTH = 'card.benefits.fourth',
+	CARD_BENEFITS_FIFTH = 'card.benefits.fifth',
+}
