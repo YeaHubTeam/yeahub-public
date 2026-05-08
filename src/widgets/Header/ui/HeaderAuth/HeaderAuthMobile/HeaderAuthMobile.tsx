@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { TariffsModal } from '@/features/view-tariffs';
 import { AUTH_LINKS, Header, Subscription, i18Namespace } from '@/shared/config';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
 import { UserPlusIcon } from '@/widgets/Header/ui/HeaderAuth/UserPlusIcon';
+import { TariffsModal } from '@/widgets/Subscription';
 
 import styles from './HeaderAuthMobile.module.css';
 
@@ -46,7 +46,9 @@ export const HeaderAuthMobile = () => {
 					/>
 				)}
 			</Popover>
-			<TariffsModal isOpen={isTariffsOpen} onClose={() => setIsTariffsOpen(false)} />
+			{isTariffsOpen && (
+				<TariffsModal isOpen={isTariffsOpen} onClose={() => setIsTariffsOpen(false)} />
+			)}
 		</>
 	);
 };

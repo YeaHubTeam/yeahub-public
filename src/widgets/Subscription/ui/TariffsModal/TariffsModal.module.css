@@ -1,11 +1,16 @@
-.modal {
+div.modal {
+	width: 100%;
+	max-width: 846px;
+}
+
+div.modal-content {
 	padding: 24px 24px 0;
 	max-height: 90vh;
 	overflow-y: auto;
 }
 
 @media screen and (width < 768px) {
-	.modal {
+	div.modal {
 		margin: 0 8px;
 		max-height: 90dvh;
 		border-radius: 16px;

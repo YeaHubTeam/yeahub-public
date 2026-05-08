@@ -15,7 +15,6 @@ export const getSubscriptionsInfo = (): SubscriptionInfo[] => {
 			color: 'purple-700',
 			benefits: freeBenefits,
 			badge: 'Базовый тариф',
-			action: null,
 		},
 		{
 			id: 2,
@@ -29,7 +28,6 @@ export const getSubscriptionsInfo = (): SubscriptionInfo[] => {
 			color: 'yellow-800',
 			benefits: premiumBenefits,
 			badge: 'Экономия 16%',
-			action: null,
 		},
 		{
 			id: 3,
@@ -43,7 +41,6 @@ export const getSubscriptionsInfo = (): SubscriptionInfo[] => {
 			color: 'green-750',
 			benefits: premiumBenefits,
 			badge: 'Экономия 25%',
-			action: null,
 		},
 	];
 

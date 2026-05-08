@@ -1,5 +1,5 @@
-import { TariffsButton } from '@/features/view-tariffs';
 import { Flex } from '@/shared/ui/Flex';
+import { TariffsButton } from '@/widgets/Subscription';
 
 import styles from './HeaderAuth.module.css';
 import { HeaderAuthDesktop } from './HeaderAuthDesktop/HeaderAuthDesktop';

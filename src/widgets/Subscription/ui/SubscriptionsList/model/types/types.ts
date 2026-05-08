@@ -1,12 +1,11 @@
-import { ReactNode } from 'react';
-
+import { SubscriptionCode } from '@/entities/subscription';
 import { Pallete } from '@/shared/libs';
 
 import { SubscriptionInfoBenefit } from '../../libs/constants/benefitsConstants';
 
 export interface SubscriptionInfo {
 	id: number;
-	code: 'month' | 'quarter' | 'year';
+	code: SubscriptionCode;
 	finalPrice: string;
 	fullPrice: string;
 	pricePerMonth: string;
@@ -16,5 +15,4 @@ export interface SubscriptionInfo {
 	title: string;
 	trialInfo: string;
 	subtitle: string;
-	action?: ReactNode;
 }

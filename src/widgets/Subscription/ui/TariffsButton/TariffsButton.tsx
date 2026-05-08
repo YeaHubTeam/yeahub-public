@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useTranslations } from 'next-intl';
 
 import { Subscription, i18Namespace } from '@/shared/config';
+import { useModal } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 
 import { TariffsModal } from '../TariffsModal/TariffsModal';
@@ -12,17 +11,14 @@ import { TariffsModal } from '../TariffsModal/TariffsModal';
 export const TariffsButton = () => {
 	const t = useTranslations(i18Namespace.subscription);
 
-	const [isOpen, setIsOpen] = useState(false);
-
-	const handleOpen = () => setIsOpen(true);
-	const handleClose = () => setIsOpen(false);
+	const { isOpen, onOpen, onClose } = useModal();
 
 	return (
 		<>
-			<Button variant="outline" onClick={handleOpen}>
+			<Button variant="outline" onClick={onOpen}>
 				{t(Subscription.TARIFFS)}
 			</Button>
-			<TariffsModal isOpen={isOpen} onClose={handleClose} />
+			{isOpen && <TariffsModal isOpen={isOpen} onClose={onClose} />}
 		</>
 	);
 };
