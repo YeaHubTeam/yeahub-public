@@ -39,6 +39,7 @@ export const Modal = ({
 	dataTestId = 'Modal',
 	children,
 	title,
+	contentClassName = '',
 	className = '',
 	view = 'default',
 }: ModalProps) => {
@@ -102,6 +103,7 @@ export const Modal = ({
 			<div
 				data-testid={dataTestId}
 				className={classNames(
+					className,
 					styles.modal,
 					styles[`variant-${variant}-modal`],
 					styles[`view-${view}-modal`],
@@ -123,7 +125,7 @@ export const Modal = ({
 				)}
 				<div
 					data-testid={modalTestIds.modalContentWrapper}
-					className={classNames(className, { [styles['content-wrapper']]: hasPadding })}
+					className={classNames(contentClassName, { [styles['content-wrapper']]: hasPadding })}
 				>
 					{title && (
 						<Text

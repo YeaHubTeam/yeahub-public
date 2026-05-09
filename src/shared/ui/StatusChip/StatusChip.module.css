@@ -1,6 +1,6 @@
 .wrapper {
+  padding: 2px 8px;
   width: fit-content;
-  border-radius: 30px;
 }
 
 .variant-yellow {
@@ -24,11 +24,11 @@
 }
 
 .size-small {
-	padding: 2px 8px;
-	height: 20px;
+  height: 20px;
+  border-radius: 30px;
 }
 
 .size-medium {
-	padding: 6px 12px;
-	height: 30px;
+  height: 32px;
+  border-radius: 8px;
 }

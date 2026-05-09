@@ -4,6 +4,7 @@ import Magnifer from '@/shared/assets/icons/Magnifer.svg';
 import Megaphone from '@/shared/assets/icons/Megaphone.svg';
 import NotePencil from '@/shared/assets/icons/NotePencil.svg';
 import SealCheck from '@/shared/assets/icons/SealCheck.svg';
+import SealCheckOutlined from '@/shared/assets/icons/SealCheckOutlined.svg';
 import TrendUp from '@/shared/assets/icons/TrendUp.svg';
 import UserSwitch from '@/shared/assets/icons/UserSwitch.svg';
 import YeaHubCommunity from '@/shared/assets/icons/YeaHubCommunity.svg';
@@ -125,6 +126,7 @@ export const icons: Record<IconName, IconComponent> = {
 	filter: Filter,
 	settings: Settings,
 	sealCheck: SealCheck,
+	sealCheckOutlined: SealCheckOutlined,
 	check: Check,
 	checkList: CheckList,
 	question: Question,

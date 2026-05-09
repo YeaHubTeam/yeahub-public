@@ -1,0 +1,34 @@
+{
+	"title": "Membership",
+	"tariffs": "Tariffs",
+	"description": "Become a member of the YeaHub community and get access to all the features of the platform. The membership fee helps develop the platform, add new functions and support members",
+	"card": {
+		"badge": {
+			"basic": "Basic rate",
+			"discount": "Savings {count}%"
+		},
+		"price": {
+			"all": "{count}₽",
+			"month": "{count}₽/month"
+		},
+		"title": {
+			"free": "Free",
+			"month": "{count, plural, one {# month} few {# months} many {# months} other {# month}}",
+			"year": "{count, plural, one {# year} few {# years} many {# years} other {# year}}"
+		},
+		"subtitle": {
+			"free": "Try 7 days PRO",
+			"month": "Simple tariff",
+			"quarter": "Optimal tariff",
+			"year": "All Inclusive tariff"
+		},
+		"subscribe": "Subscribe",
+		"benefits": {
+			"first": "List of all questions",
+			"second": "List of all tasks",
+			"third": "Interview mode",
+			"fourth": "Progress statistics",
+			"fifth": "Private chat"
+		}
+	}
+}
