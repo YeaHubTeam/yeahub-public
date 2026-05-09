@@ -124,6 +124,12 @@
 }
 
 @media (width < 1280px) {
+	.content {
+		padding: 22px 0 0;
+	}
+	
+	.title,
+	.content-title {
 	h3.title,
 	h3.content-title {
 		font-size: 20px;
