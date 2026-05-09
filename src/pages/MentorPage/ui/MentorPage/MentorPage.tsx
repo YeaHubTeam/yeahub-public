@@ -10,6 +10,7 @@ import { InternshipSection } from '@/widgets/Mentor/InternshipSection';
 import { PricingSection } from '@/widgets/Mentor/PricingSection';
 import { StackSection } from '@/widgets/Mentor/StackSection';
 import { StrategySection } from '@/widgets/Mentor/StrategySection';
+import { TagsCloud } from '@/widgets/Mentor/TagsCloud';
 
 import styles from './MentorPage.module.css';
 
@@ -31,6 +32,7 @@ export const MentorPage = ({ locale }: MentorPageProps) => {
 			<CommunitySection />
 			<FaqSection />
 			<FeaturesSection locale={locale} />
+			<TagsCloud />
 		</Flex>
 	);
 };
