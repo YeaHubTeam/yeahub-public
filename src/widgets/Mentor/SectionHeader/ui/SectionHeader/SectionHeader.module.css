@@ -22,3 +22,13 @@
 		font-size: 24px;
 	}
 }
+
+@media screen and (width < 368px) {
+	.wrapper {
+		margin-bottom: 19px;
+	}
+
+	.description {
+		letter-spacing: 0.02rem;
+	}
+}

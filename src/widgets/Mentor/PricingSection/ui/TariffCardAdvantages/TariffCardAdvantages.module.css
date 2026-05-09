@@ -19,3 +19,8 @@
 	}
 }
 
+@media screen and (width < 368px) {
+	.list-item > p {
+		letter-spacing: -0.07rem;
+	}
+}

@@ -25,7 +25,7 @@ export const InfoBlock = () => {
 					size="medium"
 					status={{ text: t(Mentor.PRICING_INFO_BADGE_INSTEAD), variant: 'green' }}
 				/>
-				<Text variant="body6" className={styles.title}>
+				<Text variant="body6" className={classNames(styles.title, styles['title-consultation'])}>
 					{t(Mentor.PRICING_INFO_POSTPAY_TITLE)}
 				</Text>
 				<Text variant="body3-accent" className={styles.description}>
@@ -47,13 +47,16 @@ export const InfoBlock = () => {
 				className={classNames(styles.card, styles.background)}
 				contentClassName={styles['wrapper-content']}
 			>
-				<Flex maxHeight gap="32">
+				<Flex maxHeight gap="32" className={styles['experienced-content']}>
 					<Flex direction="column" maxHeight flex={1}>
 						<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
-						<Text variant="body6" className={styles.title}>
+						<Text variant="body6" className={classNames(styles.title, styles['title-experienced'])}>
 							{t(Mentor.PRICING_INFO_EXPERIENCED_TITLE)}
 						</Text>
-						<Text variant="body3-accent" className={styles.description}>
+						<Text
+							variant="body3-accent"
+							className={classNames(styles.description, styles['description-experienced'])}
+						>
 							{t(Mentor.PRICING_INFO_EXPERIENCED_DESCRIPTION)}
 						</Text>
 						<Button
@@ -74,14 +77,6 @@ export const InfoBlock = () => {
 							</Text>
 							<Text variant="body3" color="white-900" className={styles['badge-red-subtext']}>
 								{t(Mentor.PRICING_INFO_BADGE_OFFER)}
-							</Text>
-						</div>
-						<div className={styles['badge-outline']}>
-							<Text variant="head2" color="purple-900" className={styles['badge-outline-text']}>
-								100%
-							</Text>
-							<Text variant="body3" color="black-700" className={styles['badge-outline-subtext']}>
-								{t(Mentor.PRICING_INFO_BADGE_POSTPAY)}
 							</Text>
 						</div>
 					</Flex>
