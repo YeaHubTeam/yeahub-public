@@ -16,6 +16,7 @@ export interface CardProps {
 	children?: ReactNode;
 	className?: string;
 	contentClassName?: string;
+	linkClassName?: string;
 	title?: string;
 	actionRoute?: string;
 	actionTitle?: string;
@@ -46,6 +47,7 @@ export const Card = ({
 	children,
 	className = '',
 	contentClassName = '',
+	linkClassName = '',
 	withShadow = false,
 	withOutsideShadow = false,
 	withBorder = false,
@@ -85,7 +87,7 @@ export const Card = ({
 						<Link
 							href={actionRoute}
 							{...actionOptions}
-							className={classNames(styles.link, styles[`link-${actionPositionX}`], {
+							className={classNames(styles.link, styles[`link-${actionPositionX}`], linkClassName, {
 								[styles['link-bottom']]: isActionPositionBottom,
 								[styles['link-disabled']]: actionDisabled,
 							})}
