@@ -26,9 +26,10 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
 	return {
 		title: {
 			template: '%s | Yeahub',
-			default: t(Main.PROJECT_TITLE),
+			default: t(Main.SEO_TITLE),
 		},
-		description: t(Main.PROJECT_DESCRIPTION),
+		description: t(Main.SEO_DESCRIPTION),
+		keywords: t(Main.SEO_KEYWORDS),
 		robots: isProd
 			? {
 					index: true,

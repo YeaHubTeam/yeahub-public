@@ -16,16 +16,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.mentor });
 
-	const title = t(Mentor.BANNER_TITLE);
-	const description = t(Mentor.BANNER_DESCRIPTION);
-	const keywords = [
-		title,
-		t(Mentor.BANNER_STICKER),
-		t(Mentor.BANNER_ADVANTAGE_FIRST),
-		t(Mentor.BANNER_ADVANTAGE_SECOND),
-		t(Mentor.BANNER_ADVANTAGE_THIRD),
-		t(Mentor.BANNER_ADVANTAGE_FOURTH),
-	];
+	const title = t(Mentor.SEO_TITLE);
+	const description = t(Mentor.SEO_DESCRIPTION);
+	const keywords = t(Mentor.SEO_KEYWORDS);
 
 	return {
 		title,

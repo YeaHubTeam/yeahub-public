@@ -61,6 +61,10 @@ export enum Main {
 	HOME_SUBTITLE = 'home.subtitle',
 	HOME_DEPLOY_NOW = 'home.deployNow',
 	HOME_READ_DOCS = 'home.readDocs',
+
+	SEO_TITLE = 'seo.title',
+	SEO_DESCRIPTION = 'seo.description',
+	SEO_KEYWORDS = 'seo.keywords',
 }
 
 export enum Footer {
@@ -380,6 +384,11 @@ export enum Landing {
 	HISTORY_IMG_STATISTICS = 'history.img.statistics',
 	HISTORY_IMG_PROGRESS = 'history.img.progress',
 	HISTORY_IMG_DESCRIPTION = 'history.img.description',
+
+	SEO_TITLE = 'seo.title',
+	SEO_DESCRIPTION = 'seo.description',
+	SEO_KEYWORDS = 'seo.keywords',
+
 	TASKS_TITLE = 'tasks.title',
 }
 
@@ -626,6 +635,19 @@ export enum Mentor {
 	PRICING_BONUSES_INTENSIVE_NOTE = 'pricing.bonuses.intensive_note',
 	PRICING_BONUSES_MENTOR_INVOLVEMENT = 'pricing.bonuses.mentor_involvement',
 	PRICING_BONUSES_MENTOR_INTEREST = 'pricing.bonuses.mentor_interest',
+
+	TAGS_CLOUD_TITLE_FIRST = 'tags-cloud.title.first',
+	TAGS_CLOUD_TITLE_SECOND = 'tags-cloud.title.second',
+	TAGS_CLOUD_TITLE_THIRD = 'tags-cloud.title.third',
+	TAGS_CLOUD_TITLE_FOURTH = 'tags-cloud.title.fourth',
+	TAGS_CLOUD_TITLE_FIFTH = 'tags-cloud.title.fifth',
+	TAGS_CLOUD_TITLE_SIXTH = 'tags-cloud.title.sixth',
+	TAGS_CLOUD_TITLE_SEVENTH = 'tags-cloud.title.seventh',
+	TAGS_CLOUD_TITLE_EIGHTH = 'tags-cloud.title.eighth',
+
+	SEO_TITLE = 'seo.title',
+	SEO_DESCRIPTION = 'seo.description',
+	SEO_KEYWORDS = 'seo.keywords',
 }
 
 export enum Tasks {
