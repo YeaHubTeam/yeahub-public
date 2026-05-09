@@ -1,6 +1,6 @@
 .wrapper {
 	display: grid;
-	grid-template-columns: 1fr 2fr;
+	grid-template-columns: 392px 2fr;
 	gap: 20px;
 	width: 100%;
 	min-height: 357px;
@@ -16,10 +16,16 @@
 
 .description {
 	margin-top: 8px;
+	white-space: pre-line;
+}
+
+.description-width {
+	width: 370px;
 }
 
 .button {
 	margin-top: 20px;
+	padding: 0;
 	font-size: var(--font-size-p-l);
 }
 
@@ -121,14 +127,22 @@
 	.wrapper {
 		grid-template-columns: 1fr 1fr;
 	}
-	
+
+	.card {
+		width: auto;
+	}
+
+	.description-width {
+		width: 278px;
+	}
+
 	.badges {
 		position: absolute;
 		right: 20px;
 		z-index: -1;
 		gap: 16px;
 	}
-	
+
 	.badge-red {
 		margin-top: 8px;
 		width: 64px;
@@ -140,7 +154,7 @@
 		width: 80px;
 		height: 80px;
 	}
-	
+
 	h2.badge-red-text {
 		font-size: var(--font-size-h-xs);
 	}
@@ -162,11 +176,11 @@
 	.wrapper {
 		grid-template-columns: 1fr;
 	}
-	
+
 	p.title {
 		font-size: var(--font-size-h-xs);
 	}
-	
+
 	.card {
 		padding: 10px;
 		min-height: 337px;
