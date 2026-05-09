@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 import { Subscription, i18Namespace } from '@/shared/config';
+import { SELECT_TARIFF_SETTINGS_TAB } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -16,8 +17,6 @@ import styles from './SubscriptionCard.module.css';
 interface SubscriptionCardProps {
 	subscription: SubscriptionInfo;
 }
-
-const DASHBOARD_URL = 'https://app.yeatwork.ru/settings#select-tariff';
 
 export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
 	const t = useTranslations(i18Namespace.subscription);
@@ -63,7 +62,7 @@ export const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
 						</Flex>
 					</Flex>
 					<Flex direction="column" gap="24">
-						<Link href={DASHBOARD_URL}>
+						<Link href={SELECT_TARIFF_SETTINGS_TAB}>
 							<Button fullWidth variant="primary">
 								{t(Subscription.CARD_SUBSCRIBE)}
 							</Button>
