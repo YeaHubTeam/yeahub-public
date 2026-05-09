@@ -6,9 +6,10 @@
 	margin-bottom: 30px;
 }
 
-
-.description {
-	max-width: 493px;
+.block {
+	width: 100%;
+	max-width: 496px;
+	white-space: pre-line;
 }
 
 @media (width < 1280px) {

@@ -39,6 +39,7 @@ h3.title.highlighted-title {
 
 .description {
 	max-width: 350px;
+	white-space: pre-line;
 }
 
 .link {
@@ -60,18 +61,21 @@ h3.title.highlighted-title {
 
 .image-wrapper {
 	position: absolute;
-	top: 65px;
-	width: 288px;
-	height: 266px;
+	right: -50px;
+	bottom: -40px;
 	pointer-events: none;
 }
 
 .image-wrapper-questions {
 	right: -27px;
+	width: 288px;
+	height: 268px;
 }
 
 .image-wrapper-interviews {
-	right: -56px;
+	bottom: -75px;
+	width: 282px;
+	height: 278px;
 }
 
 .image {
