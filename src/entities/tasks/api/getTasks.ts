@@ -6,6 +6,7 @@ import {
 	GetTaskCategoriesResponse,
 	GetTasksListParams,
 	GetTasksListResponse,
+	GetTasksSlugsResponse,
 	Task,
 } from '../model/types/task';
 
@@ -30,4 +31,12 @@ export async function getTaskById(id: number) {
 
 export async function getTaskCategories() {
 	return apiFetch<GetTaskCategoriesResponse>(taskApiUrls.getTaskCategories);
+}
+
+export async function getTaskBySlug(slug: string) {
+	return apiFetch<Task>(route(taskApiUrls.getTaskBySlug, slug || ''));
+}
+
+export async function getTasksSlugs() {
+	return apiFetch<GetTasksSlugsResponse>(route(taskApiUrls.getTasksSlugs));
 }

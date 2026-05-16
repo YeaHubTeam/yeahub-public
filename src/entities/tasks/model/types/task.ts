@@ -1,3 +1,4 @@
+import { Company } from '@/entities/company';
 import { ProgrammingLanguage } from '@/entities/programmingLanguage';
 import { Response, SortOrder } from '@/shared/libs';
 
@@ -10,8 +11,20 @@ export interface Task {
 	name: string;
 	difficulty: TaskDifficulty;
 	supportedLanguages: ProgrammingLanguage[];
+	taskStructures: TaskStructure[];
 	mainCategory: TaskCategoryCode;
 	canSolve: boolean;
+	slug: string;
+	description: string;
+	companies: Company[];
+}
+
+export interface TaskStructure {
+	languageId: number;
+	solutionStub: string;
+	testFixture: string;
+	preloadedCode?: string | null;
+	isActive: boolean;
 }
 
 export type TaskCategoryCode =
@@ -82,3 +95,11 @@ export interface GetTasksListParams {
 export type GetTasksListResponse = Response<Task[]>;
 
 export type GetTaskByIdResponse = Task;
+
+export interface TaskSlug {
+	id: number;
+	slug: string;
+	title: string;
+}
+
+export type GetTasksSlugsResponse = Response<TaskSlug[]>;
