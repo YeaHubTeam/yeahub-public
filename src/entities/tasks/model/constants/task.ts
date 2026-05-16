@@ -7,6 +7,8 @@ export const taskApiUrls = {
 	getTaskById: `${API_VERSION.V1}/live-coding/tasks/public-tasks/:taskId`,
 	getProgrammingLanguagesList: `${API_VERSION.V1}/live-coding/languages`,
 	getTaskCategories: `${API_VERSION.V1}/live-coding/category`,
+	getTaskBySlug: `${API_VERSION.V1}/live-coding/tasks/by-slug/:slug`,
+	getTasksSlugs: `${API_VERSION.V1}/live-coding/tasks/slugs`,
 };
 
 export const taskCategories: Record<TaskCategoryCode, string> = {

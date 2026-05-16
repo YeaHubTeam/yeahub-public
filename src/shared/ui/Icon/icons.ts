@@ -54,6 +54,7 @@ import Pen from '@/shared/assets/icons/pen.svg';
 import Plus from '@/shared/assets/icons/plus.svg';
 import PlusCircle from '@/shared/assets/icons/plusCircle.svg';
 import Question from '@/shared/assets/icons/questions.svg';
+import Refresh from '@/shared/assets/icons/refresh.svg';
 import Search from '@/shared/assets/icons/search.svg';
 import Settings from '@/shared/assets/icons/settings.svg';
 import SlidersHorizontal from '@/shared/assets/icons/slidersHorizontal.svg';
@@ -152,4 +153,5 @@ export const icons: Record<IconName, IconComponent> = {
 	watch: Watch,
 	tickWithBackground: TickWithBackground,
 	lightning: Lightning,
+	refresh: Refresh,
 };

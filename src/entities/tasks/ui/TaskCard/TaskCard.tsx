@@ -23,6 +23,7 @@ export interface TasksCardProps {
 	mainCategory: TaskCategoryCode;
 	canSolve: boolean;
 	languagesSlot?: React.ReactNode;
+	slug: string;
 }
 
 export const TaskCard = ({
@@ -32,12 +33,19 @@ export const TaskCard = ({
 	mainCategory,
 	languagesSlot,
 	canSolve,
+	slug,
 }: TasksCardProps) => {
 	const t = useTranslations(i18Namespace.tasks);
 
 	return (
 		<Tooltip shouldShowTooltip={!canSolve} title={t(Tasks.NOT_AVAILABLE)} placement="right">
-			<Link href={route(ROUTES.tasks.external.detail.page, id)}>
+			<Link
+				href={
+					canSolve
+						? route(ROUTES.tasks.external.detail.page, slug)
+						: route(ROUTES.tasks.external.detail.platformPage, id)
+				}
+			>
 				<Card key={id} withOutsideShadow className={styles.content}>
 					<Flex direction="column" gap="8">
 						{canSolve ? (
