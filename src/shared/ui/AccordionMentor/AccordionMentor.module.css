@@ -161,3 +161,9 @@
 		width: 100%;
 	}
 }
+
+@media (width < 360px) {
+	.content {
+		padding: 14px 0 0;
+	}
+}
