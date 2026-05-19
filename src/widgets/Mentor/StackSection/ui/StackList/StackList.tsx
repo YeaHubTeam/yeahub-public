@@ -22,7 +22,7 @@ export const StackList = ({ title, rows }: MentorStackColumnProps) => {
 			<Text variant="head3" className={styles['column-title']}>
 				{title}
 			</Text>
-			<Flex direction="column" gap="20">
+			<Flex direction="column" gap="20" className={styles['column-rows']}>
 				{rows.map((row, rowIndex) => (
 					<Flex key={rowIndex} gap="20" className={styles['column-columns']}>
 						{row.map(({ id, alt, src }) => (
