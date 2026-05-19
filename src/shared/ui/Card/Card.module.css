@@ -31,7 +31,7 @@
 
 .content {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   border-radius: 12px;
 }
 
@@ -131,11 +131,11 @@
 }
 
 .link-start {
-	left: 24px;
+  left: 20px;
 }
 
 .link-end {
-	right: 24px;
+  right: 24px;
 }
 
 @media (width <= 767px) {
@@ -154,20 +154,23 @@
   .link {
     position: absolute;
     right: 10px;
-    bottom: 20px;
-    padding-top: 20px;
+    bottom: 10px;
   }
 
-	.link-start {
-		left: 20px;
-	}
+.link-start {
+    left: 10px;
+  }
 
-	.link-end {
-		right: 20px;
-	}
+  .link-end {
+    right: 10px;
+  }
 
   .content {
     margin-bottom: 44px;
+  }
+
+  .content-bottom {
+    margin-bottom: 48px;
   }
 }
 
@@ -178,7 +181,7 @@
   }
 
   .content {
-    margin-bottom: 40px;
+    margin-bottom: 44px;
   }
 }
 
