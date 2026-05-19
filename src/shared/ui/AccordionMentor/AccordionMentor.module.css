@@ -128,6 +128,9 @@
 	h3.content-title {
 		font-size: 20px;
 	}
+	.content {
+		padding: 14px 0 0;
+	}
 }
 
 @media (width < 768px) {
@@ -159,11 +162,5 @@
 		margin-top: 10px;
 		margin-left: 0;
 		width: 100%;
-	}
-}
-
-@media (width < 360px) {
-	.content {
-		padding: 14px 0 0;
 	}
 }
