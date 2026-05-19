@@ -91,7 +91,7 @@ export const Card = ({
 							})}
 						>
 							<Text
-								variant="body3-strong"
+								variant="body3-accent"
 								color={actionDisabled ? 'purple-300' : 'purple-700'}
 								dataTestId="Card_Link"
 							>
