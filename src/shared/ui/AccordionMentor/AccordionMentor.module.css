@@ -92,7 +92,7 @@
 }
 
 .content {
-	padding: 17px 0 0;
+	padding: 10px 0 0;
 	color: var(--text-color-light);
 }
 
@@ -149,11 +149,11 @@
 	.with-media .content p:last-child {
 		max-width: 100%;
 	}
-	
+
 	.heading {
 		flex-wrap: wrap;
 	}
-	
+
 	h3.title {
 		order: 3;
 		margin-top: 10px;
