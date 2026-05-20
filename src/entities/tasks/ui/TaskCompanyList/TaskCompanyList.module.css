@@ -9,3 +9,16 @@
 	border-radius: 3px;
 	object-fit: contain;
 }
+
+.fallback {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 19px;
+	height: 19px;
+	border-radius: 3px;
+	background: var(--color-black-100);
+	color: var(--color-black-700);
+	font-weight: 600;
+	font-size: 11px;
+}

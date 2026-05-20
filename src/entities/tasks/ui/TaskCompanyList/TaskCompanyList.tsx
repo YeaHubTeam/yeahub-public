@@ -18,16 +18,22 @@ export const TaskCompanyList = ({ companies }: TaskCompanyListProps) => {
 	return (
 		<Tooltip title={companiesTitles}>
 			<Flex align="center" justify="center" gap="10" className={styles.list}>
-				{companies.map((company) => (
-					<Image
-						className={styles.image}
-						key={company.id}
-						src={company.imageSrc}
-						alt={company.title}
-						width={19}
-						height={19}
-					/>
-				))}
+				{companies.map((company) =>
+					company.imageSrc ? (
+						<Image
+							className={styles.image}
+							key={company.id}
+							src={company.imageSrc}
+							alt={company.title}
+							width={19}
+							height={19}
+						/>
+					) : (
+						<span key={company.id} className={styles.fallback}>
+							{company.title.slice(0, 1)}
+						</span>
+					),
+				)}
 			</Flex>
 		</Tooltip>
 	);
