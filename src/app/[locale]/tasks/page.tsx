@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: i18Namespace.tasks });
-	const { title, difficulty, langIds, category, page = '1' } = await searchParams;
+	const { title, difficulty, langIds, category, companyId, page = '1' } = await searchParams;
 
 	const pageNum = Number(page);
 	const parsedDifficulty = difficulty ? (Number(difficulty) as TaskDifficulty) : undefined;
@@ -61,12 +61,13 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 			difficulty: parsedDifficulty,
 			langIds: parsedLangIds,
 			category: category as TaskCategoryCode | undefined,
+			companyId: companyId as string | undefined,
 		}),
 		getTaskCategories(),
 		getLanguages(),
 	]);
 
-	const hasFilters = !!difficulty || !!langIds || !!category || !!title;
+	const hasFilters = !!difficulty || !!langIds || !!category || !!title || !!companyId;
 	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/tasks/`;
 	const titleTasks = t(Tasks.TITLE_SHORT);

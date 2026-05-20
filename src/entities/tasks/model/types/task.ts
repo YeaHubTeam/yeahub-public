@@ -10,6 +10,7 @@ export interface Task {
 	name: string;
 	difficulty: TaskDifficulty;
 	supportedLanguages: ProgrammingLanguage[];
+	companies: TaskCompany[];
 	mainCategory: TaskCategoryCode;
 	canSolve: boolean;
 }
@@ -82,3 +83,9 @@ export interface GetTasksListParams {
 export type GetTasksListResponse = Response<Task[]>;
 
 export type GetTaskByIdResponse = Task;
+
+export interface TaskCompany {
+	id: string;
+	title: string;
+	imageSrc: string;
+}
