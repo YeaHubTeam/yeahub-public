@@ -23,6 +23,7 @@ export const useTasksFilter = () => {
 				: undefined,
 			langIds: langIdsParam ? parseNumberArray(langIdsParam) : [],
 			category: (searchParams?.get('category') as TaskCategoryCode) ?? undefined,
+			companyId: searchParams?.get('companyId') ?? undefined,
 		};
 	}, [searchParams]);
 

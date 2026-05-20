@@ -3,7 +3,12 @@
 import { useTranslations } from 'next-intl';
 
 import { LanguagesFilterSection, ProgrammingLanguage } from '@/entities/programmingLanguage';
-import { CategoriesFilterSection, DifficultFilterSection, TaskCategory } from '@/entities/tasks';
+import {
+	CategoriesFilterSection,
+	CompaniesFilterSection,
+	DifficultFilterSection,
+	TaskCategory,
+} from '@/entities/tasks';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
@@ -39,6 +44,10 @@ export const TasksFilterPanel = ({ categories, languages }: TasksFilterPanelProp
 				selectedCategory={filter.category}
 				onChangeCategory={handlers.onChangeCategory}
 				initialData={categories}
+			/>
+			<CompaniesFilterSection
+				selectedCompany={filter.companyId}
+				onChangeCompany={handlers.onChangeCompany}
 			/>
 		</Flex>
 	);
