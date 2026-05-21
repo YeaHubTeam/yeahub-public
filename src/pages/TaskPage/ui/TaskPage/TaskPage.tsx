@@ -1,4 +1,5 @@
 import { Task } from '@/entities/tasks';
+import { BackButton } from '@/shared/ui/BackButton';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { TaskDescription } from '@/widgets/task/TaskDescription';
@@ -26,18 +27,23 @@ export const TaskPage = ({ task }: TaskPageProps) => {
 	} = task;
 
 	return (
-		<Card withOutsideShadow className={styles.page} contentClassName={styles['content-wrapper']}>
-			<Flex gap="20" direction={'row'} className={styles.content}>
-				<TaskDescription
-					description={description}
-					difficulty={difficulty}
-					mainCategory={mainCategory}
-					name={name}
-					supportedLanguages={supportedLanguages}
-					companies={companies}
-				/>
-				<TaskEditor supportedLanguages={supportedLanguages} taskStructures={taskStructures} />
+		<>
+			<Flex>
+				<BackButton />
 			</Flex>
-		</Card>
+			<Card withOutsideShadow className={styles.page} contentClassName={styles['content-wrapper']}>
+				<Flex gap="20" direction={'row'} className={styles.content}>
+					<TaskDescription
+						description={description}
+						difficulty={difficulty}
+						mainCategory={mainCategory}
+						name={name}
+						supportedLanguages={supportedLanguages}
+						companies={companies}
+					/>
+					<TaskEditor supportedLanguages={supportedLanguages} taskStructures={taskStructures} />
+				</Flex>
+			</Card>
+		</>
 	);
 };
