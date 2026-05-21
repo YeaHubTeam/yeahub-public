@@ -31,7 +31,7 @@ export const CompaniesSelect = ({
 }: CompaniesSelectProps) => {
 	const [searchValue, setSearchValue] = useState('');
 	const t = useTranslations(i18Namespace.company);
-	const { data: companies, loading } = useCompanies({ limit: 100 });
+	const { data: companies } = useCompanies({ limit: 100 });
 
 	const selectedCompanies = useMemo(
 		() => (Array.isArray(value) ? value : value ? [value] : []),
@@ -92,14 +92,6 @@ export const CompaniesSelect = ({
 
 		onChange(selectedCompanies.filter((companyId) => companyId !== id));
 	};
-
-	if (loading) {
-		return (
-			<div className="animate-pulse">
-				<div className="h-10 bg-gray-200 rounded-lg" />
-			</div>
-		);
-	}
 
 	if (!hasMultiple) {
 		return (
