@@ -24,6 +24,7 @@ export interface TasksCardProps {
 	canSolve: boolean;
 	languagesSlot?: React.ReactNode;
 	companiesSlot?: React.ReactNode;
+	slug: string;
 }
 
 export const TaskCard = ({
@@ -34,36 +35,41 @@ export const TaskCard = ({
 	languagesSlot,
 	companiesSlot,
 	canSolve,
+	slug,
 }: TasksCardProps) => {
 	const t = useTranslations(i18Namespace.tasks);
 
-	return (
-		<Tooltip shouldShowTooltip={!canSolve} title={t(Tasks.NOT_AVAILABLE)} placement="right">
-			<Link href={route(ROUTES.tasks.external.detail.page, id)}>
-				<Card key={id} withOutsideShadow className={styles.content}>
-					<Flex direction="column" gap="8">
-						{canSolve ? (
-							<Text variant="body4" maxRows={2}>
-								{name}
-							</Text>
-						) : (
-							<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
-						)}
-						<Flex direction="row" gap="10" align="center">
-							<TaskDifficultyChip key={id} difficulty={difficulty} />
-							{languagesSlot}
-							<StatusChip
-								status={{
-									variant: 'green',
-									text: t(taskCategories[mainCategory]),
-								}}
-								size="medium"
-							/>
-							{companiesSlot}
-						</Flex>
-					</Flex>
-				</Card>
-			</Link>
+	const taskCard = (
+		<Card key={id} withOutsideShadow className={styles.content}>
+			<Flex direction="column" gap="8">
+				{canSolve ? (
+					<Text variant="body4" maxRows={2}>
+						{name}
+					</Text>
+				) : (
+					<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
+				)}
+				<Flex direction="row" gap="10" align="center">
+					<TaskDifficultyChip key={id} difficulty={difficulty} />
+					{languagesSlot}
+					<StatusChip
+						status={{
+							variant: 'green',
+							text: t(taskCategories[mainCategory]),
+						}}
+						size="medium"
+					/>
+					{companiesSlot}
+				</Flex>
+			</Flex>
+		</Card>
+	);
+
+	return canSolve ? (
+		<Link href={route(ROUTES.tasks.external.detail.page, slug)}>{taskCard}</Link>
+	) : (
+		<Tooltip title={t(Tasks.NOT_AVAILABLE)} placement="right">
+			{taskCard}
 		</Tooltip>
 	);
 };

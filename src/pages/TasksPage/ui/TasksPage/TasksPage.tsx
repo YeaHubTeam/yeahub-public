@@ -24,7 +24,7 @@ export const TasksPage = ({ locale, tasks, hasFilters, categories, languages }: 
 
 	return (
 		<Flex gap="20" align="start">
-			<Card className={styles.main}>
+			<Card withOutsideShadow className={styles.main}>
 				<TasksPageHeader categories={categories} languages={languages} />
 				{isEmptyWithFilters ? (
 					<Stub type="filter-empty" />
@@ -32,6 +32,7 @@ export const TasksPage = ({ locale, tasks, hasFilters, categories, languages }: 
 					<Flex direction="column" gap="16">
 						{tasks.map((task) => (
 							<TaskCard
+								slug={task.slug}
 								key={task.id}
 								id={task.id}
 								name={task.name}
