@@ -20,3 +20,5 @@ export { TaskCard } from './ui/TaskCard/TaskCard';
 export { useTaskCategories } from './model/hooks/useTaskCategories';
 export { TaskDifficultyChip } from './ui/TaskDifficultyChip/TaskDifficultyChip';
 export { taskCategories } from './model/constants/task';
+export { CompaniesFilterSection } from './ui/CompaniesFilterSection/CompaniesFilterSection';
+export { TaskCompanyList } from './ui/TaskCompanyList/TaskCompanyList';

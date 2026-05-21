@@ -23,6 +23,7 @@ export interface TasksCardProps {
 	mainCategory: TaskCategoryCode;
 	canSolve: boolean;
 	languagesSlot?: React.ReactNode;
+	companiesSlot?: React.ReactNode;
 	slug: string;
 }
 
@@ -32,6 +33,7 @@ export const TaskCard = ({
 	difficulty,
 	mainCategory,
 	languagesSlot,
+	companiesSlot,
 	canSolve,
 	slug,
 }: TasksCardProps) => {
@@ -57,6 +59,7 @@ export const TaskCard = ({
 						}}
 						size="medium"
 					/>
+					{companiesSlot}
 				</Flex>
 			</Flex>
 		</Card>

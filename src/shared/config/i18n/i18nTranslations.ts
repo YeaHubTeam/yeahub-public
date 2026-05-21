@@ -132,6 +132,8 @@ export enum Specializations {
 
 export enum Companies {
 	TITLE = 'title',
+	SELECT_CHOOSE = 'select.choose',
+	SELECT_SELECTED = 'select.selected',
 }
 
 export enum Skills {
