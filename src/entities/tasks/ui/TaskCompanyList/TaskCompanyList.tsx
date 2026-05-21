@@ -1,12 +1,12 @@
+import { Company } from '@/entities/company';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
 import { Tooltip } from '@/shared/ui/Tooltip';
 
-import { TaskCompany } from '../../model/types/task';
 import styles from './TaskCompanyList.module.css';
 
 interface TaskCompanyListProps {
-	companies: TaskCompany[];
+	companies: Company[];
 }
 
 export const TaskCompanyList = ({ companies }: TaskCompanyListProps) => {

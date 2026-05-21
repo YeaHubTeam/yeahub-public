@@ -25,7 +25,9 @@ export const CompaniesFilterSection = ({
 
 	return (
 		<Flex direction="column" align="start" gap="8">
-			<Text variant="body3-accent">{t(Tasks.COMPANIES_TITLE)}</Text>
+			<Text variant="body2" color="black-700">
+				{t(Tasks.COMPANIES_TITLE)}
+			</Text>
 			<CompaniesSelect value={selectedCompany} onChange={handleChangeCompany} />
 		</Flex>
 	);
