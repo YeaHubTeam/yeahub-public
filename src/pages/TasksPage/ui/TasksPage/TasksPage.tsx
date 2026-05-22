@@ -1,7 +1,8 @@
 import { setRequestLocale } from 'next-intl/server';
 
+import { CompanyCompactList } from '@/entities/company';
 import { ProgrammingLanguage, ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { Task, TaskCard, TaskCategory, TaskCompanyList } from '@/entities/tasks';
+import { Task, TaskCard, TaskCategory } from '@/entities/tasks';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
@@ -42,7 +43,7 @@ export const TasksPage = ({ locale, tasks, hasFilters, categories, languages }: 
 								languagesSlot={
 									<ProgrammingLanguageList supportedLanguages={task.supportedLanguages} />
 								}
-								companiesSlot={<TaskCompanyList companies={task.companies} />}
+								companiesSlot={<CompanyCompactList companies={task.companies} />}
 							/>
 						))}
 					</Flex>
