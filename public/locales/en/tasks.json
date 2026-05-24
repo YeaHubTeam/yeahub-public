@@ -72,5 +72,18 @@
 			"subtitle": "Try again or refresh the page",
 			"buttonText": "Try again"
 		}
+	},
+	"community": {
+		"join": "Join the community"
+	},
+	"preview": {
+		"title": "Task list",
+		"empty": {
+			"specialization": "Tasks for the selected track will appear soon",
+			"collection": "Tasks for this collection will appear soon"
+		},
+		"locked": {
+			"collection": "The task list will become available to community members"
+		}
 	}
 }

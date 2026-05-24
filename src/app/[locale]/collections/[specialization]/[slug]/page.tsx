@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server';
 import { getCollectionBySlug, getCollectionsList } from '@/entities/collection';
 import { getCollectionQuestions } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
+import { getTasksList } from '@/entities/tasks';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
@@ -105,11 +106,12 @@ const CollectionPage = async ({ params }: PageProps) => {
 	setRequestLocale(locale);
 
 	const collection = await getCollectionBySlug(slug);
-	const questions = await getCollectionQuestions(collection.id, 5);
-
 	if (!collection) {
 		notFound();
 	}
+
+	const questions = await getCollectionQuestions(collection.id, 5);
+	const tasks = await getTasksList({ collectionId: collection.id });
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}/${slug}`;
@@ -183,6 +185,7 @@ const CollectionPage = async ({ params }: PageProps) => {
 				collection={collection}
 				specialization={specialization ?? DEFAULT_SPECIALIZATION_SLUG}
 				locale={locale}
+				tasks={tasks.data}
 			/>
 		</>
 	);
