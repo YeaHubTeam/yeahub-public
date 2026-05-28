@@ -8,6 +8,7 @@ import {
 	CollectionAccessInfo,
 	CollectionCompanyInfo,
 	CollectionQuestionsCount,
+	CollectionTasksCount,
 } from '@/entities/collection';
 import {
 	MediaLinksBanner,
@@ -26,7 +27,7 @@ import styles from './AdditionalInfo.module.css';
 interface AdditionalInfoProps
 	extends Pick<
 		Collection,
-		'specializations' | 'isFree' | 'company' | 'questionsCount' | 'keywords'
+		'specializations' | 'isFree' | 'company' | 'questionsCount' | 'tasksCount' | 'keywords'
 	> {
 	className?: string;
 	media?: SocialMedia;
@@ -37,6 +38,7 @@ export const AdditionalInfo = ({
 	isFree,
 	company,
 	questionsCount,
+	tasksCount,
 	keywords,
 	className,
 }: AdditionalInfoProps) => {
@@ -62,6 +64,7 @@ export const AdditionalInfo = ({
 					<CollectionCompanyInfo company={company} />
 					<CollectionAccessInfo isFree={isFree} />
 					<CollectionQuestionsCount questionsCount={questionsCount} />
+					<CollectionTasksCount tasksCount={tasksCount} />
 					{media && <MediaLinksBanner mediaLink={media} />}
 				</Flex>
 			</Card>

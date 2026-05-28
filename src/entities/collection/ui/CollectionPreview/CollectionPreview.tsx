@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import Question from '@/shared/assets/icons/collectionsQuestion.svg';
+import TasksIcon from '@/shared/assets/icons/cursorSquare.svg';
 import Star from '@/shared/assets/icons/starsMinimalistic.svg';
 import { Collections, ROUTES, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
@@ -31,8 +32,17 @@ export const CollectionPreview = ({
 	variant = 'row',
 	locale,
 }: CollectionProps) => {
-	const { title, isFree, imageSrc, questionsCount, keywords, specializations, company, slug } =
-		collection;
+	const {
+		title,
+		isFree,
+		imageSrc,
+		questionsCount,
+		keywords,
+		tasksCount,
+		specializations,
+		company,
+		slug,
+	} = collection;
 
 	const t = useTranslations(i18Namespace.collection);
 
@@ -86,6 +96,16 @@ export const CollectionPreview = ({
 										<Text variant="body2" color="purple-700">
 											{t(Collections.QUESTIONS_COUNT, {
 												count: questionsCount,
+											})}
+										</Text>
+									</div>
+								)}
+								{!!tasksCount && (
+									<div className={`${styles['access-item']} ${styles['access-item-task-icon']}`}>
+										<TasksIcon />
+										<Text variant="body2" color="purple-700">
+											{t(Collections.TASKS_COUNT, {
+												count: tasksCount,
 											})}
 										</Text>
 									</div>

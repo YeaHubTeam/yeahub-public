@@ -5,6 +5,7 @@ import {
 	getGuruWithMatchingSpecialization,
 	getNewGuruWithMatchingSpecialization,
 } from '@/entities/guru';
+import type { Task } from '@/entities/tasks';
 import { Collections, Link, ROUTES, i18Namespace } from '@/shared/config';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Button } from '@/shared/ui/Button';
@@ -12,7 +13,12 @@ import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
-import { AdditionalInfo, CollectionBody, CollectionHeader } from '@/widgets/Collection';
+import {
+	AdditionalInfo,
+	CollectionBody,
+	CollectionHeader,
+	CollectionTasksBody,
+} from '@/widgets/Collection';
 import { SidebarBanner } from '@/widgets/Media';
 
 import styles from './CollectionPage.module.css';
@@ -21,10 +27,17 @@ interface CollectionPageProps {
 	collection: Collection;
 	specialization: string;
 	locale: string;
+	tasks: Task[];
 }
 
-export const CollectionPage = ({ collection, specialization, locale }: CollectionPageProps) => {
-	const { questionsCount, questions, isFree, company, specializations, keywords } = collection;
+export const CollectionPage = ({
+	collection,
+	specialization,
+	locale,
+	tasks,
+}: CollectionPageProps) => {
+	const { questionsCount, tasksCount, questions, isFree, company, specializations, keywords } =
+		collection;
 
 	const t = useTranslations(i18Namespace.collection);
 
@@ -61,6 +74,7 @@ export const CollectionPage = ({ collection, specialization, locale }: Collectio
 						specialization={specialization}
 						locale={locale}
 					/>
+					{tasks.length > 0 && <CollectionTasksBody tasks={tasks} isFree={isFree} />}
 					{guru && (
 						<div className={styles.banner}>
 							<SidebarBanner guru={guru} newGuru={newGuru} />
@@ -73,6 +87,7 @@ export const CollectionPage = ({ collection, specialization, locale }: Collectio
 						isFree={isFree}
 						company={company}
 						questionsCount={questionsCount}
+						tasksCount={tasksCount}
 						keywords={keywords}
 					/>
 					<SidebarBanner guru={guru} newGuru={newGuru} />

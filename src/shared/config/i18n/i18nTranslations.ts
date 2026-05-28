@@ -215,6 +215,8 @@ export enum Collections {
 	QUESTIONS_SELECTED = 'questions.selected',
 	QUESTIONS_ADDITIONAL_INFO = 'numberOfQuestions',
 	QUESTIONS_COUNT = 'questions.length',
+	TASKS_ADDITIONAL_INFO = 'numberOfTasks',
+	TASKS_COUNT = 'tasks.count',
 	IMAGE_ALT = 'image-alt',
 	SEARCH_PLACEHOLDER = 'search.placeholder',
 	COLLECTIONS_TITLE = 'collections.title',
@@ -701,6 +703,9 @@ export enum Tasks {
 	CATEGORY_POINTERS = 'category.pointers',
 	CATEGORY_PATTERNS = 'category.patterns',
 	COUNT = 'count',
+	COMMUNITY_JOIN = 'community.join',
+	PREVIEW_LOCKED_COLLECTION = 'preview.locked.collection',
+	PREVIEW_EMPTY_COLLECTION = 'preview.empty.collection',
 }
 
 export enum Subscription {

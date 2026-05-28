@@ -50,10 +50,14 @@
 		"selected": "Selected questions: {count}",
 		"length": "{count, plural, one {# question} few {# questions} many {# questions} other {# question}}"
 	},
+	"tasks": {
+		"count": "{count, plural, one {# task} other {# tasks}}"
+	},
 	"image-src": "Image link",
 	"create-page-title": "Collection",
 	"image-alt": "Questions from the {title} interview on the topics {keywords}",
 	"numberOfQuestions": "Number of questions",
+	"numberOfTasks": "Number of tasks",
 	"collections": {
 		"title": "Interviews for {specialization}}",
 		"detail": "More",

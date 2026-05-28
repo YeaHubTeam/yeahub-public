@@ -50,10 +50,14 @@
 		"selected": "Выбранные вопросы: {{count}}",
 		"length": "{count, plural, one {# вопрос} few {# вопроса} many {# вопросов} other {# вопроса}}"
 	},
+	"tasks": {
+		"count": "{count, plural, one {# задача} few {# задачи} many {# задач} other {# задач}}"
+	},
 	"image-src": "Ссылка на картинку",
 	"create-page-title": "Коллекция",
 	"image-alt": "Вопросы с собеседования {title} по темам {keywords}",
 	"numberOfQuestions": "Количество вопросов",
+	"numberOfTasks": "Количество задач",
 	"collections": {
 		"title": "Собеседования на {specialization}",
 		"detail": "Подробнее",
