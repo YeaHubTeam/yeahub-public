@@ -56,6 +56,7 @@ const LandingPage = async ({ params }: PageProps) => {
 	]);
 
 	const getRandomCollection = (collections: Collection[]) => {
+		// eslint-disable-next-line react-hooks/purity
 		const randomIndex = Math.floor(Math.random() * collections.length);
 		return collections[randomIndex];
 	};
