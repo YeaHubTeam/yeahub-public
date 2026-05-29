@@ -6,14 +6,14 @@ import withSvgr from 'next-svgr';
 const withNextIntl = createNextIntlPlugin('./src/shared/config/i18n/i18n.ts');
 
 const nextConfig: NextConfig = {
-	turbopack: {
-		rules: {
-			'*.svg': {
-				loaders: ['@svgr/webpack'],
-				as: '*.ts',
-			},
-		},
-	},
+	// turbopack: {
+	// 	rules: {
+	// 		'*.svg': {
+	// 			loaders: ['@svgr/webpack'],
+	// 			as: '*.ts',
+	// 		},
+	// 	},
+	// },
 	images: {
 		unoptimized: process.env.NODE_ENV === 'development',
 		remotePatterns: [
