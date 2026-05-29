@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { QuizResultPage } from '@/_pages/QuizResult';
 import { getQuestionsSpecializationByIdCount } from '@/entities/question';
+import { QuizResultPage } from '@/pages/QuizResult';
 import { InterviewQuizResult, i18Namespace } from '@/shared/config';
 
 interface PageProps {

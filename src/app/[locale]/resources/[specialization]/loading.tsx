@@ -1,4 +1,4 @@
-import { ResourcesPageSkeleton } from '@/_pages/ResourcesPage';
+import { ResourcesPageSkeleton } from '@/pages/ResourcesPage';
 
 const Loading = () => {
 	return <ResourcesPageSkeleton />;

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { QuizPage } from '@/_pages/QuizPage';
+import { QuizPage } from '@/pages/QuizPage';
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

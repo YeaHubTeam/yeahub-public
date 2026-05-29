@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { HhAnalyticsPage as HhAnalyticsPageComponent } from '@/_pages/HhAnalyticsPage';
+import { HhAnalyticsPage as HhAnalyticsPageComponent } from '@/pages/HhAnalyticsPage';
 import { Analytics, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

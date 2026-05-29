@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { QuestionPage as QuestionPageComponent } from '@/_pages/QuestionPage';
 import { getQuestionBySlug, getQuestionsList } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
+import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

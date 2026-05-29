@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { LearningPage as LearningPageComponent } from '@/_pages/LearningPage';
+import { LearningPage as LearningPageComponent } from '@/pages/LearningPage';
 import { Learning, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

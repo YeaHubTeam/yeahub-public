@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { QuestionsPage } from '@/_pages/QuestionsPage';
 import { GetQuestionsListParamsRequest, getQuestionsList } from '@/entities/question';
 import { getSkills } from '@/entities/skill';
 import {
@@ -11,6 +10,7 @@ import {
 	getSpecializationSlugs,
 	getSpecializations,
 } from '@/entities/specialization';
+import { QuestionsPage } from '@/pages/QuestionsPage';
 import { Landing, Questions, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { CollectionsPage } from '@/_pages/CollectionsPage';
 import { GetCollectionsListParamsRequest, getCollectionsList } from '@/entities/collection';
 import { getCompanies } from '@/entities/company';
 import {
@@ -11,6 +10,7 @@ import {
 	getSpecializationSlugs,
 	getSpecializations,
 } from '@/entities/specialization';
+import { CollectionsPage } from '@/pages/CollectionsPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';

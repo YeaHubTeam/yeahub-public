@@ -1,4 +1,4 @@
-import { QuestionPageSkeleton } from '@/_pages/QuestionPage';
+import { QuestionPageSkeleton } from '@/pages/QuestionPage';
 
 const Loading = () => {
 	return <QuestionPageSkeleton />;

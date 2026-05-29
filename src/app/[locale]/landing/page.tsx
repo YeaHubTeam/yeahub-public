@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { LandingPage as LandingPageComponent } from '@/_pages/LandingPage';
 import { Collection, getCollectionsList } from '@/entities/collection';
 import { getCompanies } from '@/entities/company';
 import { getSkills } from '@/entities/skill';
+import { LandingPage as LandingPageComponent } from '@/pages/LandingPage';
 import { Landing, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { TasksPage } from '@/_pages/TasksPage';
 import { getLanguages } from '@/entities/programmingLanguage';
 import {
 	TaskCategoryCode,
@@ -10,6 +9,7 @@ import {
 	getTaskCategories,
 	getTasksList,
 } from '@/entities/tasks';
+import { TasksPage } from '@/pages/TasksPage';
 import { i18Namespace, locales } from '@/shared/config';
 import { Tasks } from '@/shared/config/i18n/i18nTranslations';
 import { APP_ROUTE } from '@/shared/config/router/constants';

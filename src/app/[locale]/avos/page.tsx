@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { AvosPage as AvosPageComponent } from '@/_pages/AvosPage';
+import { AvosPage as AvosPageComponent } from '@/pages/AvosPage';
 import { Avos, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 import { avosAndYeahubLogo } from '@/widgets/Avos';
