@@ -4,10 +4,10 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 
+import { CollectionPage as CollectionPageComponent } from '@/_pages/CollectionPage';
 import { getCollectionBySlug, getCollectionsList } from '@/entities/collection';
 import { getCollectionQuestions } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
-import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';

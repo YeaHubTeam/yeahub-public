@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { MentorPage as MentorPageComponent } from '@/pages/MentorPage';
+import { MentorPage as MentorPageComponent } from '@/_pages/MentorPage';
 import { Mentor, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 

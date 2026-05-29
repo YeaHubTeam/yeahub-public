@@ -51,6 +51,7 @@ export const QuizPage = () => {
 				answer: quizFromLS.response.answers.find((a: Answers) => a.questionId === question.id)
 					?.answer,
 			})) ?? [];
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setActiveQuizQuestions(combinedQuestions);
 	}, []);
 

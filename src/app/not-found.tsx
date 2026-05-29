@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
-import { Error404Page } from '@/pages/error404';
+import { Error404Page } from '@/_pages/error404';
 import { routing } from '@/shared/config';
 
 const GlobalNotFound = async () => {

@@ -1,4 +1,4 @@
-import { CollectionPageSkeleton } from '@/pages/CollectionPage';
+import { CollectionPageSkeleton } from '@/_pages/CollectionPage';
 
 const Loading = () => {
 	return <CollectionPageSkeleton />;

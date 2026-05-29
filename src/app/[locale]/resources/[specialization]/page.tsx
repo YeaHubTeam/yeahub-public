@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { ResourcesPage } from '@/_pages/ResourcesPage';
 import {
 	type GetResourcesListParamsRequest,
 	getResourceTypes,
@@ -14,7 +15,6 @@ import {
 	getSpecializationSlugs,
 	getSpecializations,
 } from '@/entities/specialization';
-import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';

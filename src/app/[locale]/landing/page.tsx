@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { LandingPage as LandingPageComponent } from '@/_pages/LandingPage';
 import { Collection, getCollectionsList } from '@/entities/collection';
 import { getCompanies } from '@/entities/company';
 import { getSkills } from '@/entities/skill';
-import { LandingPage as LandingPageComponent } from '@/pages/LandingPage';
 import { Landing, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 
@@ -56,6 +56,7 @@ const LandingPage = async ({ params }: PageProps) => {
 	]);
 
 	const getRandomCollection = (collections: Collection[]) => {
+		// eslint-disable-next-line react-hooks/purity
 		const randomIndex = Math.floor(Math.random() * collections.length);
 		return collections[randomIndex];
 	};
