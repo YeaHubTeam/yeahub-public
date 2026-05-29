@@ -8,3 +8,15 @@
 	justify-content: start;
 	gap: 20px;
 }
+
+.link {
+	text-decoration: none;
+}
+
+.card {
+	transition: transform 0.2s ease;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+}

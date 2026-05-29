@@ -98,7 +98,7 @@ const MainSpecializationsPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<SpecializationsPage specializations={specializations} />
+			<SpecializationsPage specializations={specializations} locale={locale} />
 		</>
 	);
 };

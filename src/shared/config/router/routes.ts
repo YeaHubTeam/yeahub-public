@@ -14,6 +14,14 @@ export const ROUTES = {
 		route: 'resources',
 		page: '/resources/:specialization',
 	},
+	specializations: {
+		route: 'specializations',
+		page: '/specializations',
+		detail: {
+			route: 'specializations/:specializationSlug',
+			page: '/specializations/:specializationSlug',
+		},
+	},
 	interview: {
 		route: 'interview',
 		page: '/interview',
