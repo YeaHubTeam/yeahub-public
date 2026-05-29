@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import EmptyStub from '@/shared/assets/icons/EmptyStub.svg';
+import EmptyStub from '@/shared/assets/icons/emptyStub.svg';
 
 import styles from './ImageWithWrapper.module.css';
 
