@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
-import { SpecializationSlugPage as SpecializationSlugPageComponent } from '@/pages/SpecializationSlugPage';
+import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 
@@ -123,7 +123,7 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<SpecializationSlugPageComponent title={specialization.title} description={description} />
+			<SpecializationPageComponent specialization={specialization} />
 		</>
 	);
 };
