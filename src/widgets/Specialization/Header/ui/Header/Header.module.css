@@ -1,0 +1,13 @@
+.description {
+	max-width: 540px;
+}
+
+@media (width < 768px) {
+	h1.title {
+		font-size: var(--font-size-h-xs);
+	}
+	
+	div.container {
+		gap: 8px;
+	}
+}

@@ -1,7 +1,10 @@
+import Link from 'next/link';
+
 import { getTranslations } from 'next-intl/server';
 
 import type { GetSpecializationsListResponse } from '@/entities/specialization';
-import { Specializations, i18Namespace } from '@/shared/config';
+import { ROUTES, Specializations, i18Namespace } from '@/shared/config';
+import { route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
@@ -10,9 +13,13 @@ import styles from './SpecializationsPage.module.css';
 
 interface SpecializationsPageProps {
 	specializations: GetSpecializationsListResponse;
+	locale: string;
 }
 
-export const SpecializationsPage = async ({ specializations }: SpecializationsPageProps) => {
+export const SpecializationsPage = async ({
+	specializations,
+	locale,
+}: SpecializationsPageProps) => {
 	const t = await getTranslations(i18Namespace.specialization);
 	const items = specializations.data || [];
 
@@ -24,9 +31,15 @@ export const SpecializationsPage = async ({ specializations }: SpecializationsPa
 
 			<div className={styles.grid}>
 				{items.map((specialization) => (
-					<Card key={specialization.id} className={styles.card} withOutsideShadow size="small">
-						<Text variant="head5">{specialization.title}</Text>
-					</Card>
+					<Link
+						key={specialization.id}
+						href={`/${locale}${route(ROUTES.specializations.detail.page, specialization.slug)}`}
+						className={styles.link}
+					>
+						<Card className={styles.card} withOutsideShadow size="small">
+							<Text variant="head5">{specialization.title}</Text>
+						</Card>
+					</Link>
 				))}
 			</div>
 		</Flex>

@@ -8,13 +8,16 @@ import { Translation, i18Namespace } from '@/shared/config';
 import { Icon } from '@/shared/ui/Icon';
 
 import { Button } from '../Button';
+import { ButtonProps } from '../Button/types';
 import styles from './BackButton.module.css';
 
 /**
  * Button to return to the previous page
  */
 
-export const BackButton = () => {
+type BackButtonProps = Pick<ButtonProps, 'size'>;
+
+export const BackButton = ({ size = 'medium' }: BackButtonProps) => {
 	const router = useRouter();
 	const t = useTranslations(i18Namespace.translation);
 
@@ -24,7 +27,7 @@ export const BackButton = () => {
 
 	return (
 		<Button
-			size="medium"
+			size={size}
 			onClick={onBack}
 			preffix={<Icon icon="altArrowLeft" color="purple-700" size={20} />}
 			variant="link-purple"
