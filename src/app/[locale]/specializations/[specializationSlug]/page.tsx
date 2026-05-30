@@ -4,18 +4,15 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
+import { SpecializationSlugPage as SpecializationSlugPageComponent } from '@/pages/SpecializationSlugPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
-import { BackButton } from '@/shared/ui/BackButton';
-import { Flex } from '@/shared/ui/Flex';
-import { Text } from '@/shared/ui/Text';
-
-import styles from './SpecializationSlugPage.module.css';
+import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
 	params: Promise<{ locale: string; specializationSlug: string }>;
 }
 
-export const dynamic = 'auto';
+export const dynamic = 'force-static';
 
 export const generateStaticParams = async () => {
 	try {
@@ -75,20 +72,59 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
+	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
+	const pageUrl = `${siteUrl}/${locale}/specializations/${specializationSlug}`;
+	const description = specialization.description || t(Specializations.TITLE_MAIN);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'CollectionPage',
+				'@id': pageUrl,
+				url: pageUrl,
+				name: specialization.title,
+				description,
+				isPartOf: {
+					'@type': 'WebSite',
+					url: siteUrl,
+					name: 'YeaHub',
+				},
+			},
+			{
+				'@type': 'BreadcrumbList',
+				itemListElement: [
+					{
+						'@type': 'ListItem',
+						position: 1,
+						name: 'YeaHub',
+						item: siteUrl,
+					},
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: t(Specializations.TITLE_MAIN),
+						item: `${siteUrl}/${locale}/specializations`,
+					},
+					{
+						'@type': 'ListItem',
+						position: 3,
+						name: specialization.title,
+						item: pageUrl,
+					},
+				],
+			},
+		],
+	};
+
 	return (
-		<section className={styles.container}>
-			<Flex>
-				<BackButton size="x-large" />
-			</Flex>
-			<Text variant="head2" isMainTitle className={styles.title}>
-				Подготовка к собеседованию:
-				<br />
-				{specialization.title}
-			</Text>
-			<Text variant="body3" className={styles.description}>
-				{specialization.description || t(Specializations.TITLE_MAIN)}
-			</Text>
-		</section>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<SpecializationSlugPageComponent title={specialization.title} description={description} />
+		</>
 	);
 };
 
