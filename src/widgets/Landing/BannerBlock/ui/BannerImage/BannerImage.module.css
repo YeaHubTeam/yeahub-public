@@ -45,7 +45,9 @@
 
 .wallpaper {
   position: absolute;
+	width: auto;
   max-width: 120%;
+	height: auto;
   object-fit: contain;
 }
 

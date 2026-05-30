@@ -3,11 +3,11 @@ import { NextResponse } from 'next/server';
 
 import createMiddleware from 'next-intl/middleware';
 
-import { routing } from './src/shared/config';
+import { routing } from './shared/config';
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
 	const host = request.headers.get('host');
 	const proto = request.headers.get('x-forwarded-proto') || 'https';
 
@@ -21,5 +21,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+	matcher: ['/((?!api|trpc|_next|_vercel|.*\\..*).*)'],
 };
