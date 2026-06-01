@@ -87,9 +87,11 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const currentSpecialization = await getSpecializationBySlug(specialization);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 
-	if (!currentSpecialization) notFound();
+	if (!currentSpecialization) {
+		notFound();
+	}
 
 	const specializationId = currentSpecialization.id;
 
