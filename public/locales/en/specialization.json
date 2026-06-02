@@ -8,5 +8,9 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"materials": {
+		"title": "Preparation materials",
+		"link": "View all resources"
 	}
 }
