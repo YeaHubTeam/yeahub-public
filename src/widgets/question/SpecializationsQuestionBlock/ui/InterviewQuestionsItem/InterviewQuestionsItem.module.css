@@ -1,0 +1,33 @@
+.item {
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border-radius: 20px;
+}
+
+.item-content {
+	padding: 25px 16px 16px 10px;
+}
+
+.title {
+	position: relative;
+	display: flex;
+	padding-left: 16px;
+	font-size: 16px;
+}
+
+.title::before {
+	position: absolute;
+	top: 7px;
+	left: 7px;
+	content: '';
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background-color: var(--text-color-link-active);
+}
+
+@media screen and (width <= 480px) {
+	.item-content {
+		flex-direction: column-reverse;
+		align-items: start;
+	}
+}

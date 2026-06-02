@@ -123,7 +123,7 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<SpecializationPageComponent specialization={specialization} />
+			<SpecializationPageComponent locale={locale} specialization={specialization} />
 		</>
 	);
 };

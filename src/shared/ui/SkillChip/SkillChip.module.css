@@ -1,0 +1,10 @@
+.skill {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0 12px;
+	height: 30px;
+	border-radius: 15px;
+	background: var(--color-green-007);
+	color: var(--color-green-750);
+}

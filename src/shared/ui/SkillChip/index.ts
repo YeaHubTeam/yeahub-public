@@ -1,0 +1,1 @@
+export { SkillChip } from './SkillChip';

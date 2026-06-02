@@ -130,6 +130,8 @@ export enum Specializations {
 	SELECT_CHOOSE = 'select.choose',
 	SELECT_EMPTY = 'select.empty',
 	SELECT_SELECTED = 'select.selected',
+	QUESTIONS_NEW_TITLE = 'questions.title_new',
+	QUESTIONS_LINK = 'questions.link',
 }
 
 export enum Companies {

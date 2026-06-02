@@ -1,0 +1,17 @@
+.title {
+	text-transform: uppercase;
+	font-size: 20px;
+}
+
+.link {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 8px;
+	color: var(--link-text-color-primary);
+	font-weight: var(--font-weight-600);
+}
+
+.link:hover {
+	text-decoration: underline;
+}

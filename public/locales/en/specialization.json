@@ -8,5 +8,9 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"questions": {
+		"title_new": "Interview questions",
+		"link": "View all questions"
 	}
 }
