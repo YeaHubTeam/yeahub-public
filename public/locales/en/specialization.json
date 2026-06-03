@@ -8,5 +8,11 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"keywords": {
+			"title": "Ключевые слова из вакансий"
+	},
+	"skills": {
+			"title": "Ключевые навыки"
 	}
 }
