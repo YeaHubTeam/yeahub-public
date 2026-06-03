@@ -8,5 +8,9 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
-	}
+	},
+  "collections": {
+	  "title": "Interviews in IT companies",
+	  "link": "View all interviews"
+}
 }

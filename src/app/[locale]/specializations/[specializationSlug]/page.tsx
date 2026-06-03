@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { getCollectionsList } from '@/entities/collection';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
@@ -72,6 +73,12 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
+	const collectionsResponse = await getCollectionsList({
+		specializations: specialization.id,
+		limit: 3,
+	}).catch(() => null);
+	const collections = collectionsResponse?.data ?? [];
+
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/specializations/${specializationSlug}`;
 	const description = specialization.description || t(Specializations.TITLE_MAIN);
@@ -123,7 +130,11 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<SpecializationPageComponent specialization={specialization} />
+			<SpecializationPageComponent
+				specialization={specialization}
+				collections={collections}
+				locale={locale}
+			/>
 		</>
 	);
 };
