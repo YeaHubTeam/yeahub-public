@@ -131,7 +131,9 @@ export enum Specializations {
 	SELECT_EMPTY = 'select.empty',
 	SELECT_SELECTED = 'select.selected',
 	KEYWORDS_SUBTITLE = 'keywords.subtitle',
-  SKILLS_SUBTITLE = 'skills.subtitle',
+	SKILLS_SUBTITLE = 'skills.subtitle',
+	TASKS_TITLE = 'tasks.title',
+	TASKS_LINK = 'tasks.link',
 }
 
 export enum Companies {
@@ -666,7 +668,9 @@ export enum Tasks {
 	DIFFICULTY_TITLE_SHORT = 'difficulty.title.short',
 	LANGUAGES_TITLE = 'languages.title',
 	COMPANIES_TITLE = 'companies.title',
-	STUB_EMPTY_TASKS_PUBLIC_SUBTITLE = 'stub.empty_tasks.public.filters.subtitle',
+	STUB_EMPTY_TASKS_PUBLIC_TITLE = 'stub.empty_tasks.public.title',
+	STUB_EMPTY_TASKS_PUBLIC_SUBTITLE = 'stub.empty_tasks.public.subtitle',
+	STUB_EMPTY_TASKS_PUBLIC_FILTERS_SUBTITLE = 'stub.empty_tasks.public.filters.subtitle',
 	CATEGORY_TITLE = 'category.title',
 	CATEGORY_SUBTITLE = 'category.subtitle',
 	CATEGORY_PLACEHOLDER = 'category.placeholder',

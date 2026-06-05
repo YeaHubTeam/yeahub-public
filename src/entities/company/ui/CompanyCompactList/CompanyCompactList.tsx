@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import EmptyStub from '@/shared/assets/icons/EmptyStub.svg';
 import { Flex } from '@/shared/ui/Flex';
 import { Tooltip } from '@/shared/ui/Tooltip';
 
@@ -16,16 +17,20 @@ export const CompanyCompactList = ({ companies }: CompanyCompactListProps) => {
 	return (
 		<Tooltip title={companiesTitles}>
 			<Flex align="center" justify="center" gap="10" className={styles.list}>
-				{companies.map((company) => (
-					<Image
-						className={styles.image}
-						key={company.id}
-						src={company.imageSrc || ''}
-						alt={company.title}
-						width={19}
-						height={19}
-					/>
-				))}
+				{companies.map((company) =>
+					company.imageSrc ? (
+						<Image
+							className={styles.image}
+							key={company.id}
+							src={company.imageSrc}
+							alt={company.title}
+							width={19}
+							height={19}
+						/>
+					) : (
+						<EmptyStub key={company.id} className={styles['fallback-image']} />
+					),
+				)}
 			</Flex>
 		</Tooltip>
 	);

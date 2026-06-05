@@ -14,5 +14,9 @@
 	},
 	"skills": {
 			"title": "Ключевые навыки"
+	},
+	"tasks": {
+		"title": "Interview algorithms and tasks",
+		"link": "View all tasks"
 	}
 }
