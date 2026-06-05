@@ -5,12 +5,12 @@ import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
-interface QuestionBlockProps {
+interface QuestionsSectionProps {
 	specialization: Specialization;
 	locale: string;
 }
 
-export const QuestionsSection = async ({ specialization, locale }: QuestionBlockProps) => {
+export const QuestionsSection = async ({ specialization, locale }: QuestionsSectionProps) => {
 	const questionsListRoute = route(ROUTES.questions.page, specialization.slug);
 	const questionsResponse = await getQuestionsList({
 		page: 1,
