@@ -5,8 +5,6 @@ h2.title {
 .wrapper {
 	display: grid;
 	grid-template-columns: 1fr auto;
-
-	/* grid-template-rows: a 1fr; */
 	grid-template-areas: 
 		'title link'
 		'list list';
