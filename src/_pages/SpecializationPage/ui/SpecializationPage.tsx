@@ -12,7 +12,7 @@ export const SpecializationPage = ({ specialization, locale }: SpecializationPag
 	return (
 		<Flex direction="column" gap="40">
 			<Header specialization={specialization} />
-			<TasksSection specialization={specialization} locale={locale} />
+			<TasksSection locale={locale} />
 		</Flex>
 	);
 };

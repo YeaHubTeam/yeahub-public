@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 
+import { CompanyCompactList } from '@/entities/company';
 import { ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { Task, TaskCard, TaskCompanyList } from '@/entities/tasks';
+import { Task, TaskCard } from '@/entities/tasks';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
@@ -29,7 +30,7 @@ export const TasksList = ({ tasks }: TasksListProps) => {
 				<TaskCard
 					key={task.id}
 					languagesSlot={<ProgrammingLanguageList supportedLanguages={task.supportedLanguages} />}
-					companiesSlot={<TaskCompanyList companies={task.companies} />}
+					companiesSlot={<CompanyCompactList companies={task.companies} />}
 					{...task}
 				/>
 			))}
