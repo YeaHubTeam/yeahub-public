@@ -5,7 +5,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { CollectionsSection } from '@/widgets/Specialization/CollectionsSection';
 import { Header } from '@/widgets/Specialization/Header';
 import { KeywordsSection } from '@/widgets/Specialization/KeywordsSection';
-import { PreparationMaterialsSection } from '@/widgets/Specialization/PreparationMaterialsSection';
+import { ResourcesSection } from '@/widgets/Specialization/ResourcesSection';
 import { SkillsSection } from '@/widgets/Specialization/SkillsSection';
 import { TasksSection } from '@/widgets/Specialization/TasksSection';
 import { QuestionsSection } from '@/widgets/question/QuestionsSection';
@@ -37,7 +37,7 @@ export const SpecializationPage = ({
 				locale={locale}
 			/>
 			<TasksSection locale={locale} />
-			<PreparationMaterialsSection locale={locale} specialization={specialization} />
+			<ResourcesSection locale={locale} specialization={specialization} />
 		</Flex>
 	);
 };

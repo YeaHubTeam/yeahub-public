@@ -1,20 +1,16 @@
-import { getResourcesList } from '@/entities/resource';
+import { ResourceCard, getResourcesList } from '@/entities/resource';
 import { type Specialization } from '@/entities/specialization';
 import { ROUTES, Specializations } from '@/shared/config';
 import { route } from '@/shared/libs';
+import { Flex } from '@/shared/ui/Flex';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
-import { PreparationMaterialsList } from '../PreparationMaterialsList/PreparationMaterialsList';
-
-interface PreparationMaterialsSectionProps {
+interface ResourcesSectionProps {
 	locale: string;
 	specialization: Specialization;
 }
 
-export const PreparationMaterialsSection = async ({
-	locale,
-	specialization,
-}: PreparationMaterialsSectionProps) => {
+export const ResourcesSection = async ({ locale, specialization }: ResourcesSectionProps) => {
 	const detailRoute = `/${locale}${route(ROUTES.resources.page, specialization.slug)}`;
 
 	const resourcesParams = {
@@ -25,13 +21,21 @@ export const PreparationMaterialsSection = async ({
 
 	const resources = await getResourcesList(resourcesParams);
 
+	if (!resources || !resources?.data?.length) {
+		return null;
+	}
+
 	return (
 		<SectionWrapper
 			actionTitle={Specializations.PREPARATION_MATERIALS_LINK}
 			actionRoute={detailRoute}
 			title={Specializations.PREPARATION_MATERIALS_TITLE}
 		>
-			<PreparationMaterialsList resources={resources.data} />
+			<Flex direction="column" gap="20">
+				{resources.data.map((resource) => (
+					<ResourceCard key={resource.id} resource={resource} />
+				))}
+			</Flex>
 		</SectionWrapper>
 	);
 };
