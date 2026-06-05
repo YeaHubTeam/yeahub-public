@@ -22,5 +22,9 @@
 	"collections": {
 		"title": "Interviews in IT companies",
 		"link": "View all interviews"
+	},
+	"questions": {
+		"title_new": "Interview questions",
+		"link": "View all questions"
 	}
 }

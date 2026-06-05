@@ -136,6 +136,8 @@ export enum Specializations {
 	SKILLS_SUBTITLE = 'skills.subtitle',
 	TASKS_TITLE = 'tasks.title',
 	TASKS_LINK = 'tasks.link',
+	QUESTIONS_NEW_TITLE = 'questions.title_new',
+	QUESTIONS_LINK = 'questions.link',
 }
 
 export enum Companies {

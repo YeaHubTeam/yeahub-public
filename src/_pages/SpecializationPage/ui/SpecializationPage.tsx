@@ -7,6 +7,7 @@ import { Header } from '@/widgets/Specialization/Header';
 import { KeywordsSection } from '@/widgets/Specialization/KeywordsSection';
 import { SkillsSection } from '@/widgets/Specialization/SkillsSection';
 import { TasksSection } from '@/widgets/Specialization/TasksSection';
+import { QuestionsSection } from '@/widgets/question/QuestionsSection';
 
 import styles from './SpecializationPage.module.css';
 
@@ -28,6 +29,7 @@ export const SpecializationPage = ({
 			<Header specialization={specialization} />
 			<SkillsSection skills={specAnalytics?.skills} />
 			<KeywordsSection keywords={specAnalytics?.keywords} />
+			<QuestionsSection locale={locale} specialization={specialization} />
 			<CollectionsSection
 				collections={collections}
 				specializationSlug={specialization.slug}
