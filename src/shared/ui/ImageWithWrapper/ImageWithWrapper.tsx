@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import EmptyStub from '@/shared/assets/icons/EmptyStub.svg';
+import EmptyStub from '@/shared/assets/icons/emptyStub.svg';
 
 import { ImageWithErrorHandling } from './ImageWithErrorHandling';
 import styles from './ImageWithWrapper.module.css';

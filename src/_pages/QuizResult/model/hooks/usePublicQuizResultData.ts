@@ -23,6 +23,7 @@ export const usePublicQuizResultData = () => {
 			if (!Array.isArray(answers)) {
 				throw new Error('Invalid format of questions data in localStorage');
 			}
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setQuizAnswers(answers);
 			timer = setTimeout(() => setIsLoading(false), 800);
 		} catch (error) {

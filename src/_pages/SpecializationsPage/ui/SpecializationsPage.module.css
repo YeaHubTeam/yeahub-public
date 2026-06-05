@@ -1,0 +1,22 @@
+.title {
+	text-transform: uppercase;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 289px);
+	justify-content: start;
+	gap: 20px;
+}
+
+.link {
+	text-decoration: none;
+}
+
+.card {
+	transition: transform 0.2s ease;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+}

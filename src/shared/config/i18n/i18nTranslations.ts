@@ -124,7 +124,9 @@ export enum Media {
 }
 
 export enum Specializations {
+	TITLE_DETAIL = 'title.detail',
 	TITLE_MAIN = 'title.main',
+	TITLE_PAGE = 'title.page',
 	SELECT_CHOOSE = 'select.choose',
 	SELECT_EMPTY = 'select.empty',
 	SELECT_SELECTED = 'select.selected',

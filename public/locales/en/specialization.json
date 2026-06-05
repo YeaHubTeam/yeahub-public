@@ -1,6 +1,8 @@
 {
 	"title": {
-		"main": "Specialization"
+		"detail": "Interview preparation:",
+		"main": "Specialization",
+		"page": "Choose your specialization"
 	},
 	"select": {
 		"choose": "Select specialization from the list",
