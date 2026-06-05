@@ -1,4 +1,4 @@
-import { HhTopBySpecResponse } from '@/entities/hh/api';
+import { HhTopBySpecResponse } from '@/entities/hh';
 import { Specialization } from '@/entities/specialization';
 import { Flex } from '@/shared/ui/Flex';
 import { Header } from '@/widgets/Specialization/Header';
@@ -13,12 +13,11 @@ interface SpecializationPageProps {
 }
 
 export const SpecializationPage = ({ specialization, specAnalytics }: SpecializationPageProps) => {
-	
 	return (
 		<Flex direction="column" gap="40" className={styles.container}>
-			<Header specialization={specialization}/>
-			<SkillsSection skills={specAnalytics.skills}/>
-			<KeywordsSection keywords={specAnalytics.keywords}/>
+			<Header specialization={specialization} />
+			<SkillsSection skills={specAnalytics.skills} />
+			<KeywordsSection keywords={specAnalytics.keywords} />
 		</Flex>
 	);
 };
