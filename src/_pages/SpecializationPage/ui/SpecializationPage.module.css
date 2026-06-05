@@ -11,3 +11,9 @@
 .description {
 	max-width: 540px;
 }
+
+@media (width < 768px) {
+	div.container{
+		gap: 20px;
+	}
+}
