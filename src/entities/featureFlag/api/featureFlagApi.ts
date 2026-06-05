@@ -18,6 +18,8 @@ export const getFeatureFlagsList = async (
 				page: 1,
 				limit: 100,
 				clientType: 'WEB',
+				enabled: true,
+				search: 'public.',
 				...params,
 			},
 		},
