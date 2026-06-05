@@ -42,7 +42,7 @@ export const generateStaticParams = async () => {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
 	const { locale, specialization } = await params;
 	setRequestLocale(locale);
-	const currentSpecialization = await getSpecializationBySlug(specialization);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 	if (!currentSpecialization) {
 		return { title: 'Not Found' };
 	}
