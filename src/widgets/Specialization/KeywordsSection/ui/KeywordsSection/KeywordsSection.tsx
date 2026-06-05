@@ -5,7 +5,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
 interface KeywordsSectionProps {
-	keywords: HhTopBySpecResponse['keywords'];
+	keywords?: HhTopBySpecResponse['keywords'];
 }
 
 export const KeywordsSection = ({ keywords = [] }: KeywordsSectionProps) => {

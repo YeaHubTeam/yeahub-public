@@ -10,18 +10,17 @@
 		"selected": "Selected specializations"
 	},
 	"keywords": {
-			"title": "Ключевые слова из вакансий"
+		"title": "Ключевые слова из вакансий"
 	},
 	"skills": {
-			"title": "Ключевые навыки"
+		"title": "Ключевые навыки"
 	},
 	"tasks": {
 		"title": "Interview algorithms and tasks",
 		"link": "View all tasks"
-	}
 	},
-  "collections": {
-	  "title": "Interviews in IT companies",
-	  "link": "View all interviews"
-}
+	"collections": {
+		"title": "Interviews in IT companies",
+		"link": "View all interviews"
+	}
 }
