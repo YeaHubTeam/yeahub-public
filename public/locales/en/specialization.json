@@ -9,6 +9,10 @@
 		"empty": "No options available",
 		"selected": "Selected specializations"
 	},
+	"materials": {
+		"title": "Preparation materials",
+		"link": "View all resources"
+	},
 	"keywords": {
 		"title": "Ключевые слова из вакансий"
 	},
