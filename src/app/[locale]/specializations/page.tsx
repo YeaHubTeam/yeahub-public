@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const title = t(Specializations.TITLE_MAIN);
 	const description = t(Specializations.TITLE_PAGE);
 	const keywords = [title, t(Specializations.SELECT_CHOOSE)];
-	
+
 	return {
 		title,
 		description,

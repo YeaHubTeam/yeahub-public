@@ -5,7 +5,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
 interface SkillsSectionProps {
-	skills: HhTopBySpecResponse['skills'];
+	skills?: HhTopBySpecResponse['skills'];
 }
 
 export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {

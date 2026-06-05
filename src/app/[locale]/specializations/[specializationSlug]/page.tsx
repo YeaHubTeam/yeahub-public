@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { getCollectionsList } from '@/entities/collection';
 import { getHhTopBySpec } from '@/entities/hh';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
@@ -73,11 +74,13 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	const specAnalytics = await getHhTopBySpec(specialization.id);
+	const collectionsResponse = await getCollectionsList({
+		specializations: specialization.id,
+		limit: 3,
+	}).catch(() => null);
+	const collections = collectionsResponse?.data ?? [];
 
-	if (!specAnalytics) {
-		notFound();
-	}
+	const specAnalytics = await getHhTopBySpec(specialization.id);
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/specializations/${specializationSlug}`;
@@ -133,6 +136,7 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 			<SpecializationPageComponent
 				specAnalytics={specAnalytics}
 				specialization={specialization}
+				collections={collections}
 				locale={locale}
 			/>
 		</>

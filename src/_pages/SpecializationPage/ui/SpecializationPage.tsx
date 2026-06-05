@@ -1,6 +1,8 @@
+import { Collection } from '@/entities/collection';
 import { HhTopBySpecResponse } from '@/entities/hh';
 import { Specialization } from '@/entities/specialization';
 import { Flex } from '@/shared/ui/Flex';
+import { CollectionsSection } from '@/widgets/Specialization/CollectionsSection';
 import { Header } from '@/widgets/Specialization/Header';
 import { KeywordsSection } from '@/widgets/Specialization/KeywordsSection';
 import { SkillsSection } from '@/widgets/Specialization/SkillsSection';
@@ -11,19 +13,26 @@ import styles from './SpecializationPage.module.css';
 interface SpecializationPageProps {
 	specialization: Specialization;
 	locale: string;
-	specAnalytics: HhTopBySpecResponse;
+	specAnalytics?: HhTopBySpecResponse;
+	collections: Collection[];
 }
 
 export const SpecializationPage = ({
 	specialization,
 	specAnalytics,
+	collections,
 	locale,
 }: SpecializationPageProps) => {
 	return (
 		<Flex direction="column" gap="40" className={styles.container}>
 			<Header specialization={specialization} />
-			<SkillsSection skills={specAnalytics.skills} />
-			<KeywordsSection keywords={specAnalytics.keywords} />
+			<SkillsSection skills={specAnalytics?.skills} />
+			<KeywordsSection keywords={specAnalytics?.keywords} />
+			<CollectionsSection
+				collections={collections}
+				specializationSlug={specialization.slug}
+				locale={locale}
+			/>
 			<TasksSection locale={locale} />
 		</Flex>
 	);
