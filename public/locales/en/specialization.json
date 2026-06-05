@@ -8,5 +8,9 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"tasks": {
+		"title": "Interview algorithms and tasks",
+		"link": "View all tasks"
 	}
 }
