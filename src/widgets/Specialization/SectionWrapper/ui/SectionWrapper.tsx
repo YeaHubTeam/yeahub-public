@@ -11,8 +11,8 @@ import { Text } from '@/shared/ui/Text';
 import styles from './SectionWrapper.module.css';
 
 interface SectionWrapperProps {
-	actionTitle: string;
-	actionRoute: string;
+	actionTitle?: string;
+	actionRoute?: string;
 	title: string;
 	children: ReactNode;
 }
@@ -30,10 +30,14 @@ export const SectionWrapper = ({
 			<Text variant="head2" className={styles.title}>
 				{t(title).toUpperCase()}
 			</Text>
-			<Link href={actionRoute} className={styles.link}>
-				{t(actionTitle)}
-				<Icon icon="arrowRight" size={24} />
-			</Link>
+			<div>
+				{actionTitle && actionRoute && (
+					<Link href={actionRoute} className={styles.link}>
+						{t(actionTitle)}
+						<Icon icon="arrowRight" size={24} />
+					</Link>
+				)}
+			</div>
 			{children}
 		</section>
 	);

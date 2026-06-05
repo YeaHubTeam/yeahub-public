@@ -9,6 +9,12 @@
 		"empty": "No options available",
 		"selected": "Selected specializations"
 	},
+	"keywords": {
+			"title": "Ключевые слова из вакансий"
+	},
+	"skills": {
+			"title": "Ключевые навыки"
+	},
 	"tasks": {
 		"title": "Interview algorithms and tasks",
 		"link": "View all tasks"
