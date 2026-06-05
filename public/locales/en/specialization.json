@@ -12,5 +12,23 @@
 	"materials": {
 		"title": "Preparation materials",
 		"link": "View all resources"
+	},
+	"keywords": {
+		"title": "Ключевые слова из вакансий"
+	},
+	"skills": {
+		"title": "Ключевые навыки"
+	},
+	"tasks": {
+		"title": "Interview algorithms and tasks",
+		"link": "View all tasks"
+	},
+	"collections": {
+		"title": "Interviews in IT companies",
+		"link": "View all interviews"
+	},
+	"questions": {
+		"title_new": "Interview questions",
+		"link": "View all questions"
 	}
 }
