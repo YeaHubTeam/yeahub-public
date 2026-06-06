@@ -130,6 +130,10 @@ export enum Specializations {
 	SELECT_CHOOSE = 'select.choose',
 	SELECT_EMPTY = 'select.empty',
 	SELECT_SELECTED = 'select.selected',
+	GURU_READ_MORE = 'guru.readMore',
+	GURU_DESCRIPTION = 'guru.description',
+	GURU_CHIP_TITILE = 'guru.chipTitle',
+	GURU_TITILE_SUFFIX = 'guru.titleSuffix',
 }
 
 export enum Companies {

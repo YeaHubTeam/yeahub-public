@@ -1,0 +1,55 @@
+.card{
+  padding: 16px;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.content {
+	flex: 1;
+	padding-left: 55px;
+	border-left: 1px solid var(--color-purple-100);
+}
+
+.description{
+  flex: 1;
+  max-width: 310px;
+}
+
+.button{
+  align-self: flex-end;
+}
+
+@media (width <= 1023px) {
+	.content {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+		padding-left: 13px;
+	}
+
+	.button{
+		width: 100%;
+	}
+}
+
+@media (width <= 767px) {
+	.card{
+  padding: 16px 10px;
+}
+
+	.wrapper {
+		flex-direction: column;
+		gap: 26px;
+	}
+
+	.content {
+		padding-left: 0;
+		width: 100%;
+		border: none; 
+	}
+
+}
