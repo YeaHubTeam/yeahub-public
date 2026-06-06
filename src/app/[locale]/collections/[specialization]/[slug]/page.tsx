@@ -104,12 +104,13 @@ const CollectionPage = async ({ params }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const collection = await getCollectionBySlug(slug);
-	const questions = await getCollectionQuestions(collection.id, 5);
+	const collection = await getCollectionBySlug(slug).catch(() => null);
 
 	if (!collection) {
 		notFound();
 	}
+
+	const questions = await getCollectionQuestions(collection.id, 5);
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}/${slug}`;
