@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getQuestionsSpecializationByIdCount } from '@/entities/question';
 import { QuizResultPage } from '@/pages/QuizResult';
+import { ROUTES } from '@/shared/config';
 import { InterviewQuizResult, i18Namespace } from '@/shared/config';
 
 interface PageProps {
@@ -28,6 +30,9 @@ export const dynamic = 'auto';
 const MainResultQuizPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
 	const { specializationId } = await searchParams;
+	if (!specializationId) {
+		redirect(`/${locale}${ROUTES.quiz.new.page}`);
+	}
 	setRequestLocale(locale);
 
 	const quizResults = specializationId

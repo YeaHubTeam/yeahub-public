@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import { useTranslations } from 'next-intl';
@@ -28,14 +30,19 @@ export const QuizResultPage = ({ quizResults, locale }: QuizResultPageProps) => 
 	const router = useRouter();
 	const t = useTranslations(i18Namespace.interviewQuizResult);
 
-	if (!quizResults) {
-		router.replace(ROUTES.quiz.new.page);
-	}
+	useEffect(() => {
+		if (!quizResults) {
+			router.replace(ROUTES.quiz.new.page);
+		}
+	}, [quizResults, router]);
 
 	const { quizAnswers } = usePublicQuizResultData();
 	const { isMobile, isTablet } = useScreenSize();
-
 	const skillsData = useCalculationQuizResult(quizResults);
+
+	if (!quizResults) {
+		return null;
+	}
 
 	return (
 		<Flex gap="20" direction="column">
