@@ -9,6 +9,12 @@
 		"empty": "No options available",
 		"selected": "Selected specializations"
 	},
+	"guru": {
+		"readMore": "Read more",
+		"description": "Full support until you get an offer — no expensive courses, pay only after you’re employed",
+		"chipTitle": "Your {specialization} Mentor",
+		"titleSuffix": "in YeaHub"
+	},
 	"materials": {
 		"title": "Preparation materials",
 		"link": "View all resources"

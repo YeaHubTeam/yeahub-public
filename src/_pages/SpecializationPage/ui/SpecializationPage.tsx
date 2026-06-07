@@ -1,8 +1,10 @@
 import { Collection } from '@/entities/collection';
+import { gurus } from '@/entities/guru';
 import { HhTopBySpecResponse } from '@/entities/hh';
 import { Specialization } from '@/entities/specialization';
 import { Flex } from '@/shared/ui/Flex';
 import { CollectionsSection } from '@/widgets/Specialization/CollectionsSection';
+import { GuruSection } from '@/widgets/Specialization/GuruSection';
 import { Header } from '@/widgets/Specialization/Header';
 import { KeywordsSection } from '@/widgets/Specialization/KeywordsSection';
 import { ResourcesSection } from '@/widgets/Specialization/ResourcesSection';
@@ -25,6 +27,7 @@ export const SpecializationPage = ({
 	collections,
 	locale,
 }: SpecializationPageProps) => {
+	const hasGuru = gurus.find((g) => g.specializations.includes(specialization.id));
 	return (
 		<Flex direction="column" gap="40" className={styles.container}>
 			<Header specialization={specialization} />
@@ -38,6 +41,8 @@ export const SpecializationPage = ({
 			/>
 			<TasksSection locale={locale} />
 			<ResourcesSection locale={locale} specialization={specialization} />
+
+			{hasGuru && <GuruSection specializationId={specialization.id} />}
 		</Flex>
 	);
 };
