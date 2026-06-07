@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { FeatureFlagProvider } from '@/entities/featureFlag';
+import { FeatureFlagProvider, getFeatureFlagsList } from '@/entities/featureFlag';
 import { Main, i18Namespace, routing } from '@/shared/config';
 import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
@@ -66,9 +66,11 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 		headline: t(Main.PROJECT_TITLE),
 	};
 
+	const flags = await getFeatureFlagsList().catch(() => ({}));
+
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
-			<FeatureFlagProvider>
+			<FeatureFlagProvider flags={flags}>
 				<Header />
 				<main className={styles.main}>
 					<div className={styles['main-content']}>{children}</div>

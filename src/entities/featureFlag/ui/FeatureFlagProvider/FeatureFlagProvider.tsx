@@ -1,37 +1,19 @@
 'use client';
 
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
 
-import { getFeatureFlagsList } from '../../api/featureFlagApi';
-import { featureFlags } from '../../model/constants/featureFlags';
-import { FeatureFlag, FeatureFlagType, FeatureFlags } from '../../model/types/featureFlag';
+import { FeatureFlagType, FeatureFlags } from '../../model/types/featureFlag';
 
-const FeatureFlagContext = createContext<FeatureFlags>(featureFlags);
+const FeatureFlagContext = createContext<FeatureFlags>({});
 
 interface FeatureFlagProviderProps {
 	children: ReactNode;
+	flags: FeatureFlags;
 }
 
-export const FeatureFlagProvider = ({ children }: FeatureFlagProviderProps) => {
-	const [flags, setFlags] = useState<FeatureFlags>(featureFlags);
+export const FeatureFlagProvider = ({ children, flags }: FeatureFlagProviderProps) => (
+	<FeatureFlagContext.Provider value={flags}>{children}</FeatureFlagContext.Provider>
+);
 
-	useEffect(() => {
-		getFeatureFlagsList()
-			.then((remoteFlags) => {
-				setFlags((currentFlags) => ({ ...currentFlags, ...remoteFlags }));
-			})
-			.catch(() => {
-				setFlags(featureFlags);
-			});
-	}, []);
-
-	const value = useMemo(() => flags, [flags]);
-
-	return <FeatureFlagContext.Provider value={value}>{children}</FeatureFlagContext.Provider>;
-};
-
-export const useFeatureFlag = (featureId: FeatureFlagType): FeatureFlag | undefined => {
-	const flags = useContext(FeatureFlagContext);
-
-	return flags[featureId] ?? featureFlags[featureId];
-};
+export const useFeatureFlag = (featureId: FeatureFlagType): boolean =>
+	useContext(FeatureFlagContext)[featureId] ?? false;

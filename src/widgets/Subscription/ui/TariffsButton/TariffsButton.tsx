@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { FEATURE_FLAGS, WithFeature } from '@/entities/featureFlag';
+import { WithFeature } from '@/entities/featureFlag';
 import { Subscription, i18Namespace } from '@/shared/config';
 import { useModal } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
@@ -15,7 +15,7 @@ export const TariffsButton = () => {
 	const { isOpen, onOpen, onClose } = useModal();
 
 	return (
-		<WithFeature featureId={FEATURE_FLAGS.publicSubscriptionShowTariffs}>
+		<WithFeature featureId="public.subscription.show-tariffs">
 			<Button variant="outline" onClick={onOpen}>
 				{t(Subscription.TARIFFS)}
 			</Button>

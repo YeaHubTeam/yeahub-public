@@ -12,11 +12,7 @@ interface WithFeatureProps {
 }
 
 export const WithFeature = ({ featureId, fallback = null, children }: WithFeatureProps) => {
-	const featureFlag = useFeatureFlag(featureId);
-
-	if (!featureFlag) return <>{fallback}</>;
-
-	const isEnabled = featureFlag.enabled;
+	const isEnabled = useFeatureFlag(featureId);
 
 	if (!isEnabled) return <>{fallback}</>;
 

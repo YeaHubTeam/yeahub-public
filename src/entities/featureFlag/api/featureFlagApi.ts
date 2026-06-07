@@ -1,7 +1,8 @@
 import { apiFetch } from '@/shared/api';
 
-import { featureFlagApiUrls, isFeatureFlagType } from '../model/constants/featureFlags';
+import { featureFlagApiUrls } from '../model/constants/featureFlags';
 import {
+	FeatureFlagType,
 	FeatureFlags,
 	GetFeatureFlagsListParamsRequest,
 	GetFeatureFlagsListResponse,
@@ -26,13 +27,7 @@ export const getFeatureFlagsList = async (
 	);
 
 	return response.data.reduce<FeatureFlags>((acc, item) => {
-		if (!isFeatureFlagType(item.flag)) return acc;
-
-		acc[item.flag] = {
-			id: item.flag,
-			enabled: item.enabled,
-			description: item.description,
-		};
+		acc[item.flag as FeatureFlagType] = item.enabled;
 
 		return acc;
 	}, {});

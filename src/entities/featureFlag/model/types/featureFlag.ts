@@ -2,23 +2,15 @@ import { Response } from '@/shared/libs';
 
 export type FeatureFlagType = 'public.subscription.show-tariffs';
 
-export interface FeatureFlag {
-	id: FeatureFlagType;
-	enabled: boolean;
-	description: string;
-}
-
-export type FeatureFlags = Partial<Record<FeatureFlagType, FeatureFlag>>;
+export type FeatureFlags = Partial<Record<FeatureFlagType, boolean>>;
 
 export type ClientType = 'WEB' | 'IOS' | 'ANDROID';
 
 export type GetFeatureFlagsListResponse = Response<FeatureFlagApiItem[]>;
 
-export type Flag = string;
-
 export interface FeatureFlagApiItem {
 	id: string;
-	flag: Flag;
+	flag: string;
 	enabled: boolean;
 	description: string;
 	clientType: ClientType;
