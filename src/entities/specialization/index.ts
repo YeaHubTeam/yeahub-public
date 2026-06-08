@@ -16,3 +16,4 @@ export { SpecializationsListField } from './ui/SpecializationsListField/Speciali
 export { SpecializationsListFieldSkeleton } from './ui/SpecializationsListField/SpecializationsListField.skeleton';
 export { SpecializationsList } from './ui/SpecializationsList/SpecializationsList';
 export { SpecializationSelect } from './ui/SpecializationSelect/SpecializationSelect';
+export { SpecializationGuruInfo } from './ui/SpecializationGuruInfo/SpecializationGuruInfo';

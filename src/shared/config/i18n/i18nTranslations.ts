@@ -124,14 +124,32 @@ export enum Media {
 }
 
 export enum Specializations {
+	TITLE_DETAIL = 'title.detail',
 	TITLE_MAIN = 'title.main',
+	TITLE_PAGE = 'title.page',
 	SELECT_CHOOSE = 'select.choose',
 	SELECT_EMPTY = 'select.empty',
 	SELECT_SELECTED = 'select.selected',
+	GURU_READ_MORE = 'guru.readMore',
+	GURU_DESCRIPTION = 'guru.description',
+	GURU_CHIP_TITILE = 'guru.chipTitle',
+	GURU_TITILE_SUFFIX = 'guru.titleSuffix',
+	PREPARATION_MATERIALS_TITLE = 'materials.title',
+	PREPARATION_MATERIALS_LINK = 'materials.link',
+	COLLECTIONS_TITLE = 'collections.title',
+	COLLECTIONS_LINK = 'collections.link',
+	KEYWORDS_SUBTITLE = 'keywords.subtitle',
+	SKILLS_SUBTITLE = 'skills.subtitle',
+	TASKS_TITLE = 'tasks.title',
+	TASKS_LINK = 'tasks.link',
+	QUESTIONS_NEW_TITLE = 'questions.title_new',
+	QUESTIONS_LINK = 'questions.link',
 }
 
 export enum Companies {
 	TITLE = 'title',
+	SELECT_CHOOSE = 'select.choose',
+	SELECT_SELECTED = 'select.selected',
 }
 
 export enum Skills {
@@ -660,7 +678,9 @@ export enum Tasks {
 	DIFFICULTY_TITLE_SHORT = 'difficulty.title.short',
 	LANGUAGES_TITLE = 'languages.title',
 	COMPANIES_TITLE = 'companies.title',
-	STUB_EMPTY_TASKS_PUBLIC_SUBTITLE = 'stub.empty_tasks.public.filters.subtitle',
+	STUB_EMPTY_TASKS_PUBLIC_TITLE = 'stub.empty_tasks.public.title',
+	STUB_EMPTY_TASKS_PUBLIC_SUBTITLE = 'stub.empty_tasks.public.subtitle',
+	STUB_EMPTY_TASKS_PUBLIC_FILTERS_SUBTITLE = 'stub.empty_tasks.public.filters.subtitle',
 	CATEGORY_TITLE = 'category.title',
 	CATEGORY_SUBTITLE = 'category.subtitle',
 	CATEGORY_PLACEHOLDER = 'category.placeholder',
