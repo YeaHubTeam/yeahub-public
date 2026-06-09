@@ -1,7 +1,7 @@
 import { Skill } from '@/entities/skill';
 import { Specializations } from '@/shared/config';
 import { Chip } from '@/shared/ui/Chip';
-import { Flex } from '@/shared/ui/Flex';
+import { CollapsibleChipGrid } from '@/widgets/Specialization/CollapsibleChipGrid';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
 interface SkillsSectionProps {
@@ -15,11 +15,11 @@ export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {
 
 	return (
 		<SectionWrapper title={Specializations.SKILLS_SUBTITLE}>
-			<Flex gap="16" wrap="wrap">
+			<CollapsibleChipGrid>
 				{skills.map((skill) => (
 					<Chip key={skill.id} label={skill.title} variant="big" />
 				))}
-			</Flex>
+			</CollapsibleChipGrid>
 		</SectionWrapper>
 	);
 };
