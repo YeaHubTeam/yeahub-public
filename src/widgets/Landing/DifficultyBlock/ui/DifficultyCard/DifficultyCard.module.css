@@ -1,0 +1,33 @@
+.indicator {
+	margin: 9px;
+	background-color: var(--color-purple-700);
+}
+
+.card {
+	padding: 20px;
+	width: calc((100% - 40px) / 3);
+	border-radius: 20px;
+}
+
+@media screen and (width < 1024px) {
+	.card {
+		padding: 16px;
+		width: calc((100% - 20px) / 2);
+	}
+
+	.title {
+		font-size: var(--font-size-h-xs);
+	}
+}
+
+@media screen and (width < 768px) {
+	.card {
+		padding: 16px 10px;
+	}
+}
+
+@media screen and (width < 480px) {
+	.card {
+		width: 100%;
+	}
+}

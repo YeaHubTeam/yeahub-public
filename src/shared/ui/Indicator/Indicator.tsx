@@ -1,5 +1,11 @@
+import classNames from 'classnames';
+
 import styles from './Indicator.module.css';
 
-export const Indicator = () => {
-	return <span className={styles.indicator} />;
+interface IndicatorProps {
+	className?: string;
+}
+
+export const Indicator = ({ className = '' }: IndicatorProps) => {
+	return <span className={classNames(styles.indicator, className)} />;
 };
