@@ -4,7 +4,6 @@ import { Skill } from '@/entities/skill';
 import { AboutQuestionsBlock } from '@/widgets/Landing/AboutQuestionsBlock';
 import { BannerBlock } from '@/widgets/Landing/BannerBlock';
 import { CollectionBlock } from '@/widgets/Landing/CollectionBlock';
-import { DifficultyBlock } from '@/widgets/Landing/DifficultyBlock';
 import { HistoryBlock } from '@/widgets/Landing/HistoryBlock';
 import { InterviewTrainerBlock } from '@/widgets/Landing/InterviewTrainerBlock';
 import { SpecializationBlock } from '@/widgets/Landing/SpecialityBlock';
@@ -20,7 +19,6 @@ export const LandingPage = ({ skills, companies, collections, locale }: LandingP
 	return (
 		<>
 			<BannerBlock />
-			<DifficultyBlock />
 			<SpecializationBlock locale={locale} />
 			<AboutQuestionsBlock skills={skills} locale={locale} />
 			<InterviewTrainerBlock />
