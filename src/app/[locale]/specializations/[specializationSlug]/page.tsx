@@ -39,25 +39,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	setRequestLocale(locale);
 
 	const t = await getTranslations({ locale, namespace: i18Namespace.translation });
+	const tSpecialization = await getTranslations({ locale, namespace: i18Namespace.specialization });
 	const specialization = await getSpecializationBySlug(specializationSlug).catch(() => null);
 
 	if (!specialization) {
 		return { title: t(Translation.ERROR_404_TITLE) };
 	}
 
-	const description = specialization.description || specialization.title;
 	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
 	const canonical = `${baseUrl}/${locale}/specializations/${specializationSlug}`;
 
 	return {
-		title: specialization.title,
-		description,
+		title: tSpecialization(Specializations.SEO_DETAIL_PAGE_TITLE, { Role: specialization.title }),
+		description: tSpecialization(Specializations.SEO_DETAIL_PAGE_DESCRIPTION, {
+			Role: specialization.title,
+		}),
+		keywords: tSpecialization(Specializations.SEO_DETAIL_PAGE_KEYWORDS, {
+			Role: specialization.title,
+		}),
 		alternates: {
 			canonical,
 		},
 		openGraph: {
-			title: specialization.title,
-			description,
+			title: tSpecialization(Specializations.SEO_DETAIL_PAGE_TITLE, {
+				Role: specialization.title,
+			}),
+			description: tSpecialization(Specializations.SEO_DETAIL_PAGE_DESCRIPTION, {
+				Role: specialization.title,
+			}),
 			type: 'website',
 			url: canonical,
 		},
