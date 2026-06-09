@@ -119,3 +119,9 @@
   --link-text-color-purple-focus: var(--color-purple-900);
   --link-text-color-purple-disabled: var(--color-purple-200);
 }
+
+[data-theme='dark'] {
+  /* outline */
+  --button-text-color-outline: var(--color-white-900);
+  --button-border-outline: var(--color-white-900);
+}

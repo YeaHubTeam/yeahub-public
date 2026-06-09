@@ -12,6 +12,7 @@ import styles from './HeaderNavLink.module.css';
 interface HeaderNavLinkProps extends Pick<HeaderNavLinks, 'link' | 'path'> {
 	children: ReactNode;
 	isActive?: boolean;
+	isInverted?: boolean;
 }
 
 export const HeaderNavLink = ({ link, children, isActive }: HeaderNavLinkProps) => {
@@ -22,7 +23,9 @@ export const HeaderNavLink = ({ link, children, isActive }: HeaderNavLinkProps) 
 				[styles.active]: Boolean(isActive),
 			})}
 		>
-			<Text variant="body3-accent">{children}</Text>
+			<Text variant="body3-accent" className={styles.text}>
+				{children}
+			</Text>
 		</Link>
 	);
 };
