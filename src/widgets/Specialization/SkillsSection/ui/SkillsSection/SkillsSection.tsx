@@ -1,11 +1,11 @@
-import { HhTopBySpecResponse } from '@/entities/hh';
+import { Skill } from '@/entities/skill';
 import { Specializations } from '@/shared/config';
 import { Chip } from '@/shared/ui/Chip';
 import { Flex } from '@/shared/ui/Flex';
 import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
 interface SkillsSectionProps {
-	skills?: HhTopBySpecResponse['skills'];
+	skills?: Skill[];
 }
 
 export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {
@@ -17,7 +17,7 @@ export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {
 		<SectionWrapper title={Specializations.SKILLS_SUBTITLE}>
 			<Flex gap="16" wrap="wrap">
 				{skills.map((skill) => (
-					<Chip key={skill.title} label={skill.title} variant="big" />
+					<Chip key={skill.id} label={skill.title} variant="big" />
 				))}
 			</Flex>
 		</SectionWrapper>

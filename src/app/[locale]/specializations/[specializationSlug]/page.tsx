@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getCollectionsList } from '@/entities/collection';
 import { getHhTopBySpec } from '@/entities/hh';
+import { getSkills } from '@/entities/skill';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
@@ -74,13 +75,17 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	const collectionsResponse = await getCollectionsList({
-		specializations: specialization.id,
-		limit: 3,
-	}).catch(() => null);
+	const [collectionsResponse, specAnalyticsResponse, skillsResponse] = await Promise.all([
+		getCollectionsList({
+			specializations: specialization.id,
+			limit: 3,
+		}).catch(() => null),
+		getHhTopBySpec(specialization.id).catch(() => null),
+		getSkills({ specializations: specialization.id, limit: 100 }).catch(() => null),
+	]);
 	const collections = collectionsResponse?.data ?? [];
-
-	const specAnalytics = await getHhTopBySpec(specialization.id);
+	const keywords = specAnalyticsResponse?.keywords ?? [];
+	const skills = skillsResponse?.data ?? [];
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/specializations/${specializationSlug}`;
@@ -134,7 +139,8 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 			<SpecializationPageComponent
-				specAnalytics={specAnalytics}
+				keywords={keywords}
+				skills={skills}
 				specialization={specialization}
 				collections={collections}
 				locale={locale}
