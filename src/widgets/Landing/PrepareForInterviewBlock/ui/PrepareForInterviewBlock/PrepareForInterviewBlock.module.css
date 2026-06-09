@@ -1,0 +1,27 @@
+.wrapper {
+	display: grid;
+	grid-template-areas: 'title link' 'cards cards';
+	justify-content: space-between;
+	column-gap: 60px;
+}
+
+.title-block {
+	grid-area: title;
+}
+
+.link {
+	display: flex;
+	grid-area: link;
+	align-items: flex-end;
+	white-space: nowrap;
+}
+
+.cards-list {
+	grid-area: cards;
+}
+
+@media screen and (width <=767px) {
+	.wrapper {
+		grid-template-areas: 'title' 'cards' 'link';
+	}
+}
