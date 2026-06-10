@@ -4,6 +4,10 @@
   background-color: var(--background-header);
 }
 
+.header.inverted {
+  background-color: var(--background-header);
+}
+
 .header-content {
   justify-content: space-between;
   align-items: center;

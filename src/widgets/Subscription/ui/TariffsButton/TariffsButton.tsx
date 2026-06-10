@@ -16,7 +16,7 @@ export const TariffsButton = () => {
 
 	return (
 		<>
-			<Button variant="outline" onClick={onOpen} className={styles['tariffs-button']}>
+			<Button variant="outline" onClick={onOpen} className={styles['button-tariffs']}>
 				{t(Subscription.TARIFFS)}
 			</Button>
 			{isOpen && <TariffsModal isOpen={isOpen} onClose={onClose} />}

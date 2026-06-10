@@ -22,7 +22,7 @@ export interface AppLogoProps {
 
 export const AppLogo = async ({
 	logoType = 'dark',
-	fill = 'black',
+	// fill = 'black',
 	navigationFooter = false,
 	disabled = false,
 }: AppLogoProps) => {
@@ -50,7 +50,7 @@ export const AppLogo = async ({
 						className={classNames(
 							styles['logo-text'],
 							{ [styles['logo-text-header']]: !navigationFooter },
-							styles[fill],
+							// styles[fill],
 						)}
 					/>
 				</>

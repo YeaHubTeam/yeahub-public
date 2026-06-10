@@ -11,8 +11,8 @@
 
 .nav-link .text {
   color: var(--text-color-header);
-}
-  
+} 
+
 .nav-link:hover{
   background-color:var(--color-black-30);
 }

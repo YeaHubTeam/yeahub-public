@@ -118,10 +118,25 @@
   --link-text-color-purple-active: var(--color-purple-900);
   --link-text-color-purple-focus: var(--color-purple-900);
   --link-text-color-purple-disabled: var(--color-purple-200);
+
+  /* tariff button in header */
+  --tariff-button-text-color-outline: var(--color-purple-700);
+  --tariff-button-text-color-outline-hover: var(--color-purple-700);
+  --tariff-button-text-color-outline-active: var(--color-purple-700);
+  --tariff-button-border-outline: var(--color-purple-700);
+  --tariff-button-border-outline-hover: var(--color-purple-700);
+  --tariff-button-border-outline-active: var(--color-purple-800);
+  --tariff-button-border-outline-focus: var(--color-purple-800);
+
 }
 
-[data-theme='dark'] {
-  /* outline */
-  --button-text-color-outline: var(--color-white-900);
-  --button-border-outline: var(--color-white-900);
+[class*='inverted'] {
+  /* tariff button in header */
+  --tariff-button-text-color-outline: var(--color-white-900);
+  --tariff-button-text-color-outline-hover: var(--color-white-900);
+  --tariff-button-text-color-outline-active: var(--color-white-900);
+  --tariff-button-border-outline: var(--color-white-900);
+  --tariff-button-border-outline-hover: var(--color-white-900);
+  --tariff-button-border-outline-active: var(--color-white-900);
+  --tariff-button-border-outline-focus: var(--color-white-900);
 }

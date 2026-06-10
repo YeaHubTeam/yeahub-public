@@ -5,7 +5,6 @@
   --background-app: var(--color-black-25);
   --background-button: var(--color-black-50);
   --background-block: var(--color-white-900);
-  --background-header: var(--color-white-900);
   --background-light-hover: var(--color-black-30);
   --background-light-chip: var(--color-purple-100);
   --background-light-block: var(--color-black-10);
@@ -23,7 +22,6 @@
   --text-color-the-lightest: var(--color-black-400);
   --text-color-more-lightest: var(--color-black-300);
   --text-color-white: var(--color-white-900);
-  --text-color-header: var(--color-black-900);
   --background-skeleton: var(--color-black-150);
   --text-color-red: var(--color-red-800);
   --background-nav-item: var(--color-purple-100);
@@ -49,12 +47,16 @@
   --background-first-step: var(--color-yellow-300);
   --main-shadow: 0px 4px 10px rgb(106 99 118 / 10%);
   --background-footer: rgb(24 0 62);
+  --background-header: var(--color-white-900);
+  --text-color-header: var(--color-black-900);
   --logo-text-color: var(--color-black-1000);
-    }
-  
-[data-theme='dark'] {
+  --color-burger: var(--color-black-600);
+}
+
+[class*='inverted'] {
+  /* dark theme colors */
   --background-header: var(--color-purple-1100);
-  --background-block: var(--color-purple-1100);
   --text-color-header: var(--color-white-900);
   --logo-text-color: var(--color-white-900); 
+  --color-burger: var(--color-white-900);
 }

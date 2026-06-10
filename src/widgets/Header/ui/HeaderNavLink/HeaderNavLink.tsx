@@ -12,7 +12,6 @@ import styles from './HeaderNavLink.module.css';
 interface HeaderNavLinkProps extends Pick<HeaderNavLinks, 'link' | 'path'> {
 	children: ReactNode;
 	isActive?: boolean;
-	isInverted?: boolean;
 }
 
 export const HeaderNavLink = ({ link, children, isActive }: HeaderNavLinkProps) => {

@@ -22,14 +22,6 @@
   fill: var(--logo-text-color);
 }
 
-/* .white > path {
-  fill: var(--color-white-900);
-}
-
-.black > path {
-  fill: var(--color-black-800);
-} */
-
 .center {
   transition: padding-left 0.4s ease-in-out;
 }
