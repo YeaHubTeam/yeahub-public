@@ -1,0 +1,45 @@
+.card {
+	position: relative;
+	z-index: 1;
+	display: block;
+	padding: 20px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border-radius: 20px;
+	background: #fff;
+}
+
+@media (hover: hover) {
+	.card:hover {
+		background: #fff linear-gradient(42.28deg, #fff 65.99%, #9c89ff 84.05%, #53f 97.11%);
+
+		.card-ellipse {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background: url('../../../../../shared/assets/images/specialization/specialization-card-bg.png')
+				no-repeat center center;
+			background-size: 100% 100%;
+		}
+	} 
+}
+
+.icon {
+	margin-bottom: 95px;
+	width: 29px;
+	height: 29px;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border: 1px solid #f0e7ff;
+	border-radius: 50%;
+	background: #fff no-repeat center center;
+	background-image: url("data:image/svg+xml,%3Csvg width='10' height='19' viewBox='0 0 10 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.0231815 10.2054L8.43637 0.037261C8.50509 -0.0457852 8.63847 0.0236767 8.60982 0.127587L6.27903 8.58173C6.26392 8.63652 6.29746 8.69287 6.35283 8.70572L9.71128 9.48476C9.78793 9.50254 9.81497 9.59779 9.75909 9.65319L0.962005 18.3753C0.886829 18.4498 0.762535 18.3717 0.797068 18.2716L3.47829 10.5018C3.5007 10.4369 3.45246 10.3692 3.38376 10.3692H0.100228C0.0156082 10.3692 -0.0307622 10.2706 0.0231815 10.2054Z' fill='%236A0BFF'/%3E%3C/svg%3E");
+}
+
+.title {
+	margin-bottom: 18px;
+}
+
+.skill-list {
+	display: flex;
+	gap: 13px;
+}
