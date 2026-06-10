@@ -1,0 +1,40 @@
+.interview-trainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	line-height: 130%;
+	white-space: pre-line;
+}
+
+.title {
+	margin-bottom: 10px;
+}
+
+.subtitle {
+	margin-bottom: 20px;
+}
+
+.interview-trainer-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    gap: 20px;  
+}
+
+.interview-trainer-wrapper > * {
+    height: 100%;
+}
+
+.title-block {
+	align-self: baseline;
+    max-width: 535px;
+}
+
+
+
+@media (width < 768px) {
+	.interview-trainer-wrapper {
+		grid-template-columns: 1fr;
+		margin-bottom: 70px;
+	}
+}
