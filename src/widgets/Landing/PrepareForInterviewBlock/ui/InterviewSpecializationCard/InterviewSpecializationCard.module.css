@@ -21,7 +21,7 @@
 				no-repeat center center;
 			background-size: 100% 100%;
 		}
-	} 
+	}
 }
 
 .icon {
@@ -42,4 +42,14 @@
 .skill-list {
 	display: flex;
 	gap: 13px;
+}
+
+@media screen and (width < 1024px) {
+	.icon {
+		margin-bottom: 45px;
+	}
+
+	.title {
+		font-size: 20px !important;
+	}
 }
