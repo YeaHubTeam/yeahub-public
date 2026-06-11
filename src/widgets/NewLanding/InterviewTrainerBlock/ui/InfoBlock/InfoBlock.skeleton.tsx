@@ -14,10 +14,10 @@ export const InfoBlockSkeleton = () => {
 							<Skeleton width={24} height={24} borderRadius="50%" />
 						</div>
 						<Flex gap="8" direction="column">
-							<TextSkeleton width={200} variant="head3" />
-							<TextSkeleton width="100%" variant="body3" rows={3} />
+							<TextSkeleton width={180} variant="head3" />
+							<TextSkeleton width="100%" variant="body3" />
 							<Flex gap="8" align="center">
-								<TextSkeleton width={80} variant="body3" />
+								<TextSkeleton width={70} variant="body3" />
 								<Skeleton width={16} height={16} borderRadius="4px" />
 							</Flex>
 						</Flex>

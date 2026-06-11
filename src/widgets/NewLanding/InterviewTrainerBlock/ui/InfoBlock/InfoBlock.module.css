@@ -30,12 +30,13 @@
 .circle {
     width: 24px;
     height: 24px;
+    
 }
 
 .arrow {
     width: 24px;
     height: 24px;
-    fill: var(--color-purple-700);
+    color: var(--color-purple-700);
 }
 
 .link {
@@ -54,9 +55,9 @@
     margin-top: 20px;
     width: 100%;
     max-width: 280px;
-    max-height: 280px;
+    max-height: 310px;
     box-shadow: 0 4px 10px 0 #374a011a;
-    border-radius: 12px;
+    border-radius: 14px;
 }
 
 .image-wrapper img {

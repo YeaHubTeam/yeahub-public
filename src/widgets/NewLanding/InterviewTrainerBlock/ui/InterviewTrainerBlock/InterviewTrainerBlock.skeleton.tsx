@@ -11,17 +11,8 @@ export const InterviewTrainerBlockSkeleton = () => {
 	return (
 		<section className={styles['interview-trainer']}>
 			<div className={styles['title-block']}>
-				<TextSkeleton
-					width={isMobile ? 280 : 350}
-					variant={isMobile ? 'body5-accent' : 'head4'}
-					className={styles.title}
-				/>
-				<TextSkeleton
-					width={isMobile ? 300 : 450}
-					variant="body3"
-					className={styles.subtitle}
-					rows={isMobile ? 2 : 1}
-				/>
+				<TextSkeleton width={isMobile ? 250 : 350} variant="head3" className={styles.title} />
+				<TextSkeleton width={isMobile ? 280 : 450} variant="body3" className={styles.subtitle} />
 			</div>
 			<Flex
 				gap="20"
