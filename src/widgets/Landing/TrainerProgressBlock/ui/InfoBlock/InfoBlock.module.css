@@ -27,10 +27,9 @@
     height: 100%;
 }
 
-.circle {
-    width: 24px;
-    height: 24px;
-    
+.indicator {
+	margin: 9px;
+	background-color: var(--color-purple-700);
 }
 
 .arrow {
@@ -121,7 +120,7 @@
         min-height: auto;
     }
 
-    .circle-wrapper {
+    .indicator {
         display: none;
     }
 }

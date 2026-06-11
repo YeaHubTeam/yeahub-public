@@ -1,4 +1,4 @@
-.interview-trainer {
+.trainer-progress {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -17,26 +17,26 @@
 	margin-bottom: 20px;
 }
 
-.interview-trainer-wrapper {
+.trainer-progress-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
     gap: 20px;  
 }
 
-.interview-trainer-wrapper > * {
+.trainer-progress-wrapper > * {
     height: 100%;
 }
 
 .title-block {
 	align-self: baseline;
-    max-width: 535px;
+   
 }
 
 
 
 @media (width < 768px) {
-	.interview-trainer-wrapper {
+	.trainer-progress-wrapper {
 		grid-template-columns: 1fr;
 		margin-bottom: 70px;
 	}

@@ -1,9 +1,9 @@
-import { InterviewTrainerBlock } from '@/widgets/NewLanding/InterviewTrainerBlock';
+import { TrainerProgressBlock } from '@/widgets/Landing/TrainerProgressBlock';
 
 export const NewLandingPage = () => {
 	return (
 		<>
-			<InterviewTrainerBlock />
+			<TrainerProgressBlock />
 		</>
 	);
 };

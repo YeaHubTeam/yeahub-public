@@ -3,9 +3,9 @@ import { Flex } from '@/shared/ui/Flex';
 import { TextSkeleton } from '@/shared/ui/Text';
 
 import { InfoBlockSkeleton } from '../InfoBlock/InfoBlock.skeleton';
-import styles from './InterviewTrainerBlock.module.css';
+import styles from './TrainerProgressBlock.module.css';
 
-export const InterviewTrainerBlockSkeleton = () => {
+export const TrainerProgressBlockSkeleton = () => {
 	const { isMobile, isTablet } = useScreenSize();
 
 	return (

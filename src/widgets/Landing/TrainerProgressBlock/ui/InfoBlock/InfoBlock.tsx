@@ -3,9 +3,9 @@ import Image, { StaticImageData } from 'next/image';
 import RightArrow from '@/shared/assets/icons/arrowRight.svg';
 import { Link } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
+import { Indicator } from '@/shared/ui/Indicator';
 import { Text } from '@/shared/ui/Text';
 
-import Circle from '../../model/assets/circle.svg';
 import styles from './InfoBlock.module.css';
 
 interface InfoBlockProps {
@@ -22,9 +22,8 @@ export const InfoBlock = ({ image, imageMobile, title, text, linkText }: InfoBlo
 			<Flex style={{ height: '100%' }} direction="row" className={styles['info-block']}>
 				<div className={styles['info-block-main-wrapper']}>
 					<Flex className={styles['info-block-main']} gap="20" direction="column">
-						<div className={styles['circle-wrapper']}>
-							<Circle className={styles['circle']} />
-						</div>
+						<Indicator className={styles.indicator} />
+
 						<Flex gap="8" direction="column">
 							<Text variant="head3" color="black-900">
 								{title}

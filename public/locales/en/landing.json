@@ -52,6 +52,22 @@
 		},
 		"link": "Try it"
 	},
+	"trainer_progress": {
+		"title": "Trainer and Progress Preparation",
+		"subtitle": "Train in quiz format, repeat questions, and track which topics you’ve already mastered and which still need practice.",
+		"blocks": {
+			"first": {
+				"title": "Question Trainer",
+				"description": "Go through questions in flashcard format, choose new or review mode, and reinforce your knowledge through practice.",
+				"link": "Trainer"
+			},
+			"second": {
+				"title": "Learning Progress",
+				"description": "Track which questions and topics you’ve already studied and control your level of preparation for interviews.",
+				"link": "Progress"
+			}
+		}
+	},
 	"questions": {
 		"title": "Interview Questions",
 		"description": "We have collected 10,000+ questions from real IT interviews. Choose your specialty, adjust the difficulty level and prepare for the interview in practice.",
