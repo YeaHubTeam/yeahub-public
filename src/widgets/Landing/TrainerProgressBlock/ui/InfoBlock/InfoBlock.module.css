@@ -10,7 +10,7 @@
     display: flex;
     flex: 1;
     flex-direction: row;
-    gap: 20px;
+    
 }
 
 .info-block-main-wrapper {
@@ -57,6 +57,8 @@
     max-height: 310px;
     box-shadow: 0 4px 10px 0 #374a011a;
     border-radius: 14px;
+  border-bottom-left-radius: 0;
+
 }
 
 .image-wrapper img {
