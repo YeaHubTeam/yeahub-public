@@ -8,5 +8,12 @@
 		0 0 0 8px rgb(207 207 207 / 20%),
 		0 0 0 9px rgb(255 255 255 / 40%);
 	border-radius: 50%;
+}
+
+.red {
 	background-color: var(--color-red-600);
+}
+
+.purple {
+	background-color: var(--color-purple-700);
 }

@@ -34,7 +34,7 @@ export const Badge = ({
 		{icon ? (
 			<Icon
 				icon={icon}
-				color={variant === 'red' ? 'red-600' : 'purple-600'}
+				color={variant === 'red' ? 'red-600' : 'purple-700'}
 				className={classNames(styles.icon, className)}
 			/>
 		) : null}

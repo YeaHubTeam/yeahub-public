@@ -12,9 +12,9 @@ interface DifficultyCardProps {
 
 export const DifficultyCard = ({ title, description }: DifficultyCardProps) => {
 	return (
-		<Card withOutsideShadow className={styles.card}>
-			<Flex direction="column" gap="24">
-				<Indicator className={styles.indicator} />
+		<Card withOutsideShadow className={styles.card} contentClassName={styles['card-content']}>
+			<Flex direction="column" gap="24" maxHeight justify="between">
+				<Indicator variant="purple" className={styles.indicator} />
 				<Flex direction="column" gap="8">
 					<Text variant="body6" className={styles.title}>
 						{title}
