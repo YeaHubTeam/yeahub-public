@@ -1,9 +1,9 @@
-import { PrepareForInterviewBlock } from '@/widgets/Landing/PrepareForInterviewBlock/indwx';
+import { PrepareForInterviewSection } from '@/widgets/NewLanding/PrepareForInterviewSection';
 
 export const NewLandingPage = () => {
 	return (
 		<>
-			<PrepareForInterviewBlock />
+			<PrepareForInterviewSection />
 		</>
 	);
 };

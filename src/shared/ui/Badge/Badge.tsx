@@ -14,6 +14,7 @@ interface BadgeProps {
 	className?: string;
 	wrapperClassName?: string;
 	color?: Pallete;
+	variant?: 'red' | 'purple';
 }
 
 export const Badge = ({
@@ -22,15 +23,20 @@ export const Badge = ({
 	className,
 	wrapperClassName,
 	color = 'red-600',
+	variant = 'red',
 }: BadgeProps) => (
 	<Flex
 		align="center"
 		justify="center"
-		className={classNames(styles['icon-badge'], wrapperClassName)}
+		className={classNames(styles['icon-badge'], styles[variant], wrapperClassName)}
 		aria-hidden
 	>
 		{icon ? (
-			<Icon icon={icon} color="red-600" className={classNames(styles.icon, className)} />
+			<Icon
+				icon={icon}
+				color={variant === 'red' ? 'red-600' : 'purple-600'}
+				className={classNames(styles.icon, className)}
+			/>
 		) : null}
 		{text ? (
 			<Text variant="body3-strong" color={color}>

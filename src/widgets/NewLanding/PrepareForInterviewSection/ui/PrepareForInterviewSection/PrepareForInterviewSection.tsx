@@ -1,18 +1,14 @@
-import Link from 'next/link';
-
 import { useTranslations } from 'next-intl';
 
 import { Landing, ROUTES, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
-import { Flex } from '@/shared/ui/Flex';
-import { Icon } from '@/shared/ui/Icon';
-import { Text } from '@/shared/ui/Text';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
+import { SpecializationCard } from '@/widgets/NewLanding/PrepareForInterviewSection/ui/SpecializationCard/SpecializationCard';
 
 import { Specialization } from '../../model/types';
-import { InterviewSpecializationCard } from '../InterviewSpecializationCard/InterviewSpecializationCard';
-import styles from './PrepareForInterviewBlock.module.css';
+import styles from './PrepareForInterviewSection.module.css';
 
-const mockSpecialization: Specialization[] = [
+const specializations: Specialization[] = [
 	{
 		id: 1,
 		title: 'Frontend',
@@ -51,31 +47,24 @@ const mockSpecialization: Specialization[] = [
 	},
 ];
 
-export const PrepareForInterviewBlock = () => {
+export const PrepareForInterviewSection = () => {
 	const t = useTranslations(i18Namespace.landing);
 	const specializationListRoute = route(ROUTES.specializations.page);
 
 	return (
-		<section className={styles.wrapper}>
-			<Flex direction="column" gap="10" className={styles['title-block']}>
-				<Text variant="head3" className={styles.title}>
-					{t(Landing.PREPARE_INTERVIEW_TITLE)}
-				</Text>
-				<Text variant="body3-accent" className={styles.subtitle}>
-					{t(Landing.PREPARE_INTERVIEW_SUBTITLE)}
-				</Text>
-			</Flex>
-			<Link href={specializationListRoute} className={styles.link}>
-				{t(Landing.SPECIALIZATION_LIST_LINK)}
-				<Icon icon="arrowRight" size={24} />
-			</Link>
+		<SectionWrapper
+			title={t(Landing.PREPARE_INTERVIEW_TITLE)}
+			subtitle={t(Landing.PREPARE_INTERVIEW_SUBTITLE)}
+			actionTitle={t(Landing.SPECIALIZATION_LIST_LINK)}
+			actionRoute={specializationListRoute}
+		>
 			<ul className={styles['cards-list']}>
-				{mockSpecialization.map((specialization) => (
+				{specializations.map((specialization) => (
 					<li key={specialization.id}>
-						<InterviewSpecializationCard specialization={specialization} />
+						<SpecializationCard specialization={specialization} />
 					</li>
 				))}
 			</ul>
-		</section>
+		</SectionWrapper>
 	);
 };
