@@ -2,6 +2,10 @@ h2.title {
 	font-size: var(--font-size-h-xs);
 }
 
+p.subtitle {
+	max-width: 500px;
+}
+
 .wrapper {
 	display: grid;
 	grid-template-columns: 1fr auto;
@@ -17,6 +21,7 @@ h2.title {
 
 .wrapper > *:nth-child(2) {
 	grid-area: link;
+	align-content: end;
 }
 
 .wrapper > *:nth-child(3) {

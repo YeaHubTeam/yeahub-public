@@ -1,9 +1,11 @@
+import { getTranslations } from 'next-intl/server';
+
 import { PreviewQuestionsItem, getQuestionsList } from '@/entities/question';
 import { Specialization } from '@/entities/specialization';
-import { ROUTES, Specializations } from '@/shared/config';
+import { ROUTES, Specializations, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 
 interface QuestionsSectionProps {
 	specialization: Specialization;
@@ -11,6 +13,7 @@ interface QuestionsSectionProps {
 }
 
 export const QuestionsSection = async ({ specialization, locale }: QuestionsSectionProps) => {
+	const t = await getTranslations(i18Namespace.specialization);
 	const questionsListRoute = route(ROUTES.questions.page, specialization.slug);
 	const questionsResponse = await getQuestionsList({
 		page: 1,
@@ -23,8 +26,8 @@ export const QuestionsSection = async ({ specialization, locale }: QuestionsSect
 	}
 	return (
 		<SectionWrapper
-			title={Specializations.QUESTIONS_NEW_TITLE}
-			actionTitle={Specializations.QUESTIONS_LINK}
+			title={t(Specializations.QUESTIONS_NEW_TITLE)}
+			actionTitle={t(Specializations.QUESTIONS_LINK)}
 			actionRoute={questionsListRoute}
 		>
 			<Flex componentType="ul" direction="column" gap="20">
