@@ -1,15 +1,15 @@
-.button-tariffs.button-tariffs{
+.button-tariffs.button-tariffs {
   border: 1px solid var(--tariff-button-border-outline);
   background-color: transparent;
   color: var(--tariff-button-text-color-outline); 
 }
 
-.button-tariffs.button-tariffs:hover{
+.button-tariffs.button-tariffs:hover {
   border: 1px solid var(--tariff-button-border-outline-hover); 
   background-color: transparent;
   color:var(--tariff-button-text-color-outline-hover); 
 }
 
-.button-tariffs.button-tariffs:active{
+.button-tariffs.button-tariffs:active {
   border: 1px solid  var(--tariff-button-border-outline-active);
 }

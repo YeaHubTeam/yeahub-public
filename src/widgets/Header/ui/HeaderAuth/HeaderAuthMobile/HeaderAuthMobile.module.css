@@ -46,8 +46,3 @@
 	}
 }
 
-@media screen and (width < 350px) {
-	.auth-popover {
-		transform: translateX(37px) translateY(43px);
-	}
-}

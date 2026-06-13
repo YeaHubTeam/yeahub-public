@@ -16,7 +16,7 @@
 	height: 48px;
 	border: 1px solid transparent;
 	border-radius: 12px;
-	background-color: var(--button-background-primary); 
+	background-color: var(--button-background-primary);
 	color: var(--text-color-white);
 	text-decoration: none;
   font-weight: var(--font-weight-500);

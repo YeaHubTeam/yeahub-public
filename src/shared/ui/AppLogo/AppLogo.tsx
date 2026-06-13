@@ -15,14 +15,12 @@ import styles from './AppLogo.module.css';
 
 export interface AppLogoProps {
 	logoType?: 'light' | 'dark';
-	fill?: 'white' | 'black';
 	navigationFooter?: boolean;
 	disabled?: boolean;
 }
 
 export const AppLogo = async ({
 	logoType = 'dark',
-	// fill = 'black',
 	navigationFooter = false,
 	disabled = false,
 }: AppLogoProps) => {
@@ -47,11 +45,9 @@ export const AppLogo = async ({
 						priority
 					/>
 					<LogoText
-						className={classNames(
-							styles['logo-text'],
-							{ [styles['logo-text-header']]: !navigationFooter },
-							// styles[fill],
-						)}
+						className={classNames(styles['logo-text'], {
+							[styles['logo-text-header']]: !navigationFooter,
+						})}
 					/>
 				</>
 			)}
