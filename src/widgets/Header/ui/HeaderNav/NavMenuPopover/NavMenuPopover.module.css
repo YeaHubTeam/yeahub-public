@@ -1,0 +1,45 @@
+.popover-menu {
+	padding: 10px 40px 40px;
+	border-radius: 0 0 20px 20px;
+	background: var(--background-header);
+}
+
+.popover-menu .column {
+	flex: 1;
+	min-width: 150px;
+}
+
+.column-title {
+	padding: 12px;
+	color: var(--color-black-400);
+}
+
+.menu-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.menu-item .nav-link-text {
+	color: var(--text-color-header);
+}
+
+.menu-item.inverted svg,
+.menu-item.inverted path {
+	stroke: var(--text-color-header);
+}
+
+.menu-item:hover *,
+.menu-item.inverted:hover * {
+	color: var(--color-purple-700);
+}
+
+.menu-item:hover svg,
+.menu-item:hover path,
+.menu-item.inverted:hover svg,
+.menu-item.inverted:hover path {
+	stroke: var(--color-purple-700);
+}
