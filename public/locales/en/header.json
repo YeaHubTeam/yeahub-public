@@ -7,7 +7,9 @@
 		"trainer": "Trainer",
 		"hhAnalytics": "Skills",
 		"tasks": "Tasks",
-		"learning": "Learning"
+		"learning": "Learning",
+		"ATS": "ATS",
+		"companies": "Companies"
 	},
 	"auth": {
 		"signIn": "Sign in",

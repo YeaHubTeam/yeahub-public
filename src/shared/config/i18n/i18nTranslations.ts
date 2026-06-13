@@ -36,6 +36,8 @@ export enum Header {
 	NAV_HH_ANALYTICS = 'nav.hhAnalytics',
 	NAV_TASKS = 'nav.tasks',
 	NAV_LEARNING = 'nav.learning',
+	NAV_ATS = 'nav.ATS',
+	NAV_COMPANIES = 'nav.companies',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
