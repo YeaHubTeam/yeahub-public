@@ -1,7 +1,9 @@
+import { useTranslations } from 'next-intl';
+
 import { Collection, CollectionPreview } from '@/entities/collection';
-import { Specializations } from '@/shared/config';
+import { Specializations, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 
 interface CollectionsSectionProps {
 	collections: Collection[];
@@ -14,14 +16,16 @@ export const CollectionsSection = ({
 	specializationSlug,
 	locale,
 }: CollectionsSectionProps) => {
+	const t = useTranslations(i18Namespace.specialization);
+
 	if (collections.length === 0) return null;
 
 	const allCollectionsPath = `/${locale}/collections/${specializationSlug}`;
 
 	return (
 		<SectionWrapper
-			title={Specializations.COLLECTIONS_TITLE}
-			actionTitle={Specializations.COLLECTIONS_LINK}
+			title={t(Specializations.COLLECTIONS_TITLE)}
+			actionTitle={t(Specializations.COLLECTIONS_LINK)}
 			actionRoute={allCollectionsPath}
 		>
 			<Flex direction="column" gap="20">

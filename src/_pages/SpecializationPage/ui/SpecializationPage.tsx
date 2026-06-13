@@ -7,10 +7,10 @@ import { CollectionsSection } from '@/widgets/Specialization/CollectionsSection'
 import { GuruSection } from '@/widgets/Specialization/GuruSection';
 import { Header } from '@/widgets/Specialization/Header';
 import { KeywordsSection } from '@/widgets/Specialization/KeywordsSection';
+import { QuestionsSection } from '@/widgets/Specialization/QuestionsSection';
 import { ResourcesSection } from '@/widgets/Specialization/ResourcesSection';
 import { SkillsSection } from '@/widgets/Specialization/SkillsSection';
 import { TasksSection } from '@/widgets/Specialization/TasksSection';
-import { QuestionsSection } from '@/widgets/question/QuestionsSection';
 
 import styles from './SpecializationPage.module.css';
 

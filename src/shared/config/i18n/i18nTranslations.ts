@@ -346,6 +346,9 @@ export enum Landing {
 	BANNER_IMG_STATISTICS = 'banner.img.statistics',
 	BANNER_IMG_COMPANY = 'banner.img.company',
 	BANNER_IMG_PROGRESS = 'banner.img.progress',
+	PREPARE_INTERVIEW_TITLE = 'prepare_for_Interview.title',
+	PREPARE_INTERVIEW_SUBTITLE = 'prepare_for_Interview.subtitle',
+	SPECIALIZATION_LIST_LINK = 'prepare_for_Interview.all_specializations_link',
 	SPECIALIZATION_NEW_TITLE = 'specialization.title_new',
 	SPECIALIZATION_DESCRIPTION = 'specialization.description',
 	SPECIALIZATION_BUTTON = 'specialization.button',
@@ -416,6 +419,21 @@ export enum Landing {
 	SEO_KEYWORDS = 'seo.keywords',
 
 	TASKS_TITLE = 'tasks.title',
+
+	DIFFICULTY_TITLE = 'difficulty.title',
+	DIFFICULTY_DESCRIPTION = 'difficulty.description',
+	DIFFICULTY_CARDS_FIRST_TITLE = 'difficulty.cards.first.title',
+	DIFFICULTY_CARDS_FIRST_DESCRIPTION = 'difficulty.cards.first.description',
+	DIFFICULTY_CARDS_SECOND_TITLE = 'difficulty.cards.second.title',
+	DIFFICULTY_CARDS_SECOND_DESCRIPTION = 'difficulty.cards.second.description',
+	DIFFICULTY_CARDS_THIRD_TITLE = 'difficulty.cards.third.title',
+	DIFFICULTY_CARDS_THIRD_DESCRIPTION = 'difficulty.cards.third.description',
+	DIFFICULTY_CARDS_FOURTH_TITLE = 'difficulty.cards.fourth.title',
+	DIFFICULTY_CARDS_FOURTH_DESCRIPTION = 'difficulty.cards.fourth.description',
+	DIFFICULTY_CARDS_FIFTH_TITLE = 'difficulty.cards.fifth.title',
+	DIFFICULTY_CARDS_FIFTH_DESCRIPTION = 'difficulty.cards.fifth.description',
+	DIFFICULTY_CARDS_SIXTH_TITLE = 'difficulty.cards.sixth.title',
+	DIFFICULTY_CARDS_SIXTH_DESCRIPTION = 'difficulty.cards.sixth.description',
 }
 
 export enum InterviewStatistics {
