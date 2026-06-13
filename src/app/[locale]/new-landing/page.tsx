@@ -1,11 +1,7 @@
 import { NewLandingPage as NewLandingPageComponent } from '@/pages/NewLandingPage';
 
-const newLandingPage = () => {
-	return (
-		<>
-			<NewLandingPageComponent />
-		</>
-	);
+const NewLandingPage = () => {
+	return <NewLandingPageComponent />;
 };
 
-export default newLandingPage;
+export default NewLandingPage;
