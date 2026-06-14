@@ -18,12 +18,8 @@
   height: 32px;
 }
 
-.white > path {
-  fill: var(--color-white-900);
-}
-
-.black > path {
-  fill: var(--color-black-800);
+.logo-text > path{
+  fill: var(--logo-text-color);
 }
 
 .center {

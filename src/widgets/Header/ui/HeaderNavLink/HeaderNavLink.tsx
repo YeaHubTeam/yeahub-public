@@ -22,7 +22,9 @@ export const HeaderNavLink = ({ link, children, isActive }: HeaderNavLinkProps) 
 				[styles.active]: Boolean(isActive),
 			})}
 		>
-			<Text variant="body3-accent">{children}</Text>
+			<Text variant="body3-accent" className={styles.text}>
+				{children}
+			</Text>
 		</Link>
 	);
 };

@@ -1,9 +1,16 @@
 .icon-badge {
 	flex-shrink: 0;
 	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
-	border: 1px solid rgb(243 22 78 / 7%);
 	border-radius: 50%;
 	background: #fff;
+}
+
+.red {
+	border: 1px solid rgb(243 22 78 / 7%);
+}
+
+.purple {
+	border: 1px solid #f0e7ff;
 }
 
 .icon {

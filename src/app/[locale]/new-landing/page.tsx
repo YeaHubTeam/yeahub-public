@@ -1,11 +1,7 @@
-import { ResumeSection } from '@/widgets/NewLanding/ResumeSection';
+import { NewLandingPage as NewLandingPageComponent } from '@/pages/NewLandingPage';
 
-const page = () => {
-	return (
-		<>
-			<ResumeSection />
-		</>
-	);
+const NewLandingPage = () => {
+	return <NewLandingPageComponent />;
 };
 
-export default page;
+export default NewLandingPage;

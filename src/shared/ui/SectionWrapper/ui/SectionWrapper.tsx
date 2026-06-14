@@ -2,9 +2,7 @@ import { ReactNode } from 'react';
 
 import Link from 'next/link';
 
-import { useTranslations } from 'next-intl';
-
-import { i18Namespace } from '@/shared/config';
+import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
@@ -14,6 +12,7 @@ interface SectionWrapperProps {
 	actionTitle?: string;
 	actionRoute?: string;
 	title: string;
+	subtitle?: string;
 	children: ReactNode;
 }
 
@@ -21,19 +20,25 @@ export const SectionWrapper = ({
 	actionTitle,
 	actionRoute,
 	title,
+	subtitle,
 	children,
 }: SectionWrapperProps) => {
-	const t = useTranslations(i18Namespace.specialization);
-
 	return (
 		<section className={styles.wrapper}>
-			<Text variant="head2" className={styles.title}>
-				{t(title).toUpperCase()}
-			</Text>
+			<Flex direction="column" gap="8">
+				<Text variant="head2" className={styles.title}>
+					{title.toUpperCase()}
+				</Text>
+				{subtitle && (
+					<Text variant="body3-accent" className={styles.subtitle}>
+						{subtitle}
+					</Text>
+				)}
+			</Flex>
 			<div>
 				{actionTitle && actionRoute && (
 					<Link href={actionRoute} className={styles.link}>
-						{t(actionTitle)}
+						{actionTitle}
 						<Icon icon="arrowRight" size={24} />
 					</Link>
 				)}
