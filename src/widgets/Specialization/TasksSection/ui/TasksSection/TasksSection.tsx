@@ -1,6 +1,8 @@
+import { getTranslations } from 'next-intl/server';
+
 import { getTasksList } from '@/entities/tasks';
-import { ROUTES, Specializations } from '@/shared/config';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
+import { ROUTES, Specializations, i18Namespace } from '@/shared/config';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 
 import { TasksList } from '../TasksList/TasksList';
 
@@ -9,6 +11,8 @@ interface TasksSectionProps {
 }
 
 export const TasksSection = async ({ locale }: TasksSectionProps) => {
+	const t = await getTranslations(i18Namespace.specialization);
+
 	const detailRoute = `/${locale}${ROUTES.tasks.page}`;
 
 	const tasks = await getTasksList({
@@ -17,9 +21,9 @@ export const TasksSection = async ({ locale }: TasksSectionProps) => {
 
 	return (
 		<SectionWrapper
-			actionTitle={Specializations.TASKS_LINK}
+			actionTitle={t(Specializations.TASKS_LINK)}
 			actionRoute={detailRoute}
-			title={Specializations.TASKS_TITLE}
+			title={t(Specializations.TASKS_TITLE)}
 		>
 			<TasksList tasks={tasks.data} />
 		</SectionWrapper>
