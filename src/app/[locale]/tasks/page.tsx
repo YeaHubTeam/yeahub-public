@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 	return {
 		title: t(Tasks.TITLE_SHORT),
-		description: t(Tasks.STUB_EMPTY_TASKS_PUBLIC_SUBTITLE),
+		description: t(Tasks.STUB_EMPTY_TASKS_PUBLIC_FILTERS_SUBTITLE),
 		keywords: ['coding', 'tasks', 'programming challenges'],
 	};
 }

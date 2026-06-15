@@ -8,5 +8,33 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"guru": {
+		"readMore": "Read more",
+		"description": "Full support until you get an offer — no expensive courses, pay only after you’re employed",
+		"chipTitle": "Your {specialization} Mentor",
+		"titleSuffix": "in YeaHub"
+	},
+	"materials": {
+		"title": "Preparation materials",
+		"link": "View all resources"
+	},
+	"keywords": {
+		"title": "Ключевые слова из вакансий"
+	},
+	"skills": {
+		"title": "Ключевые навыки"
+	},
+	"tasks": {
+		"title": "Interview algorithms and tasks",
+		"link": "View all tasks"
+	},
+	"collections": {
+		"title": "Interviews in IT companies",
+		"link": "View all interviews"
+	},
+	"questions": {
+		"title_new": "Interview questions",
+		"link": "View all questions"
 	}
 }

@@ -7,6 +7,7 @@ import { useModal } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 
 import { TariffsModal } from '../TariffsModal/TariffsModal';
+import styles from './TariffsButton.module.css';
 
 export const TariffsButton = () => {
 	const t = useTranslations(i18Namespace.subscription);
@@ -15,7 +16,7 @@ export const TariffsButton = () => {
 
 	return (
 		<>
-			<Button variant="outline" onClick={onOpen}>
+			<Button variant="outline" onClick={onOpen} className={styles['button-tariffs']}>
 				{t(Subscription.TARIFFS)}
 			</Button>
 			{isOpen && <TariffsModal isOpen={isOpen} onClose={onClose} />}

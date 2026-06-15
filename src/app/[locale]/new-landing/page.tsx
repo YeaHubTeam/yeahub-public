@@ -1,3 +1,4 @@
+
 import { i18Namespace, NewLanding } from "@/shared/config";
 import { APP_ROUTE } from "@/shared/config/router/constants";
 import { Metadata } from "next";
@@ -152,3 +153,12 @@ const NewLandingPage = async ({ params }: PageProps) => {
 	);
 };
 export default NewLandingPage;
+
+import { NewLandingPage as NewLandingPageComponent } from '@/pages/NewLandingPage';
+
+const NewLandingPage = () => {
+	return <NewLandingPageComponent />;
+};
+
+export default NewLandingPage;
+

@@ -46,6 +46,17 @@
   --background-demo-progress-bar: var(--color-green-800);
   --background-first-step: var(--color-yellow-300);
   --main-shadow: 0px 4px 10px rgb(106 99 118 / 10%);
-  --background-footer: rgb(24 0 62)
+  --background-footer: rgb(24 0 62);
+  --background-header: var(--color-white-900);
+  --text-color-header: var(--color-black-900);
+  --logo-text-color: var(--color-black-1000);
+  --color-burger: var(--color-black-600);
+}
 
-    }
+[class*='inverted'] {
+  /* dark theme colors */
+  --background-header: var(--color-purple-1100);
+  --text-color-header: var(--color-white-900);
+  --logo-text-color: var(--color-white-900); 
+  --color-burger: var(--color-white-900);
+}

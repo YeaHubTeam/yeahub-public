@@ -12,7 +12,7 @@ export interface ProfileSkillsStat {
 export const useCalculationQuizResult = (
 	quizResults?: GetQuestionsBySpecializationCountResponse,
 ): ProfileSkillsStat => {
-	if (!quizResults || !quizResults.skillsQuestions) {
+	if (!quizResults || !quizResults.skillsQuestions || typeof window === 'undefined') {
 		return {
 			skillStat: {
 				fullSkillsQuestionsMap: [],
@@ -22,6 +22,11 @@ export const useCalculationQuizResult = (
 	}
 
 	const activeMockQuiz: MockQuiz = getJSONFromLS(LS_ACTIVE_MOCK_QUIZ_KEY);
+
+	if (!activeMockQuiz?.response?.answers || !activeMockQuiz?.questions) {
+		return { skillStat: { fullSkillsQuestionsMap: [], learnedSkillsQuestionsMap: [] } };
+	}
+
 	const learnedCount = activeMockQuiz.response.answers.filter((el) => el.answer === 'KNOWN');
 
 	const learnedMap = new Map(learnedCount.map((lq) => [lq.questionId, true]));
