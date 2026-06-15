@@ -434,8 +434,7 @@ export enum Landing {
 	DIFFICULTY_CARDS_FIFTH_DESCRIPTION = 'difficulty.cards.fifth.description',
 	DIFFICULTY_CARDS_SIXTH_TITLE = 'difficulty.cards.sixth.title',
 	DIFFICULTY_CARDS_SIXTH_DESCRIPTION = 'difficulty.cards.sixth.description',
-}
-export enum NewLanding {
+
 	TRAINING_TITLE = 'training.title',
 	TRAINING_DESCRIPTION = 'training.description',
 

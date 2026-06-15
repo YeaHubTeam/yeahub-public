@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { NewLanding, i18Namespace } from '@/shared/config';
+import { Landing, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
@@ -14,10 +14,10 @@ export const TrainingSection = () => {
 		<section>
 			<Flex direction="column" gap="20">
 				<Flex direction="column" gap="8" className={styles['header-wrapper']}>
-					<Text variant="body5-accent" className={styles.title}>
-						{t(NewLanding.TRAINING_TITLE)}
+					<Text variant="head2" className={styles.title}>
+						{t(Landing.TRAINING_TITLE)}
 					</Text>
-					<Text variant="body3-accent">{t(NewLanding.TRAINING_DESCRIPTION)}</Text>
+					<Text variant="body3-accent">{t(Landing.TRAINING_DESCRIPTION)}</Text>
 				</Flex>
 
 				<TrainingList />

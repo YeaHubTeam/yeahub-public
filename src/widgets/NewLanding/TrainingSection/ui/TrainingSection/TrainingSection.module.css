@@ -3,5 +3,7 @@
 }
 
 .title {
+	line-height: 120%;
 	text-transform: uppercase;
+	font-size: 20px;
 }

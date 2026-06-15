@@ -1,4 +1,4 @@
-import { NewLanding, ROUTES } from '@/shared/config';
+import { Landing, ROUTES } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 
 import {
@@ -10,16 +10,16 @@ import {
 } from '../assets';
 import { TrainingCardsProps } from '../types/trainingType';
 
-export const cardDisabled = NewLanding.TRAINING_CARD_DISABLED;
+export const cardDisabled = Landing.TRAINING_CARD_DISABLED;
 export const TrainingCards: TrainingCardsProps[] = [
 	{
 		id: 'roadmap',
-		title: NewLanding.TRAINING_CARD_ROADMAP_TITLE,
-		description: NewLanding.TRAINING_CARD_ROADMAP_DESCRIPTION,
+		title: Landing.TRAINING_CARD_ROADMAP_TITLE,
+		description: Landing.TRAINING_CARD_ROADMAP_DESCRIPTION,
 		images: [
 			{
 				id: 'roadmapImg',
-				alt: NewLanding.TRAINING_CARD_ROADMAP_IMG_ALT,
+				alt: Landing.TRAINING_CARD_ROADMAP_IMG_ALT,
 				src: roudmapImg,
 				position: 'front',
 			},
@@ -30,18 +30,18 @@ export const TrainingCards: TrainingCardsProps[] = [
 	},
 	{
 		id: 'mentor',
-		title: NewLanding.TRAINING_CARD_MENTOR_TITLE,
-		description: NewLanding.TRAINING_CARD_MENTOR_DESCRIPTION,
+		title: Landing.TRAINING_CARD_MENTOR_TITLE,
+		description: Landing.TRAINING_CARD_MENTOR_DESCRIPTION,
 		images: [
 			{
 				id: 'mentorFrontImg',
-				alt: NewLanding.TRAINING_CARD_MENTOR_IMG_ALT,
+				alt: Landing.TRAINING_CARD_MENTOR_IMG_ALT,
 				src: mentorFrontImg,
 				position: 'front',
 			},
 			{
 				id: 'mentorBackImg',
-				alt: NewLanding.TRAINING_CARD_MENTOR_IMG_ALT,
+				alt: Landing.TRAINING_CARD_MENTOR_IMG_ALT,
 				src: mentorBackImg,
 				position: 'back',
 			},
@@ -51,18 +51,18 @@ export const TrainingCards: TrainingCardsProps[] = [
 	},
 	{
 		id: 'materials',
-		title: NewLanding.TRAINING_CARD_MATERIALS_TITLE,
-		description: NewLanding.TRAINING_CARD_MATERIALS_DESCRIPTION,
+		title: Landing.TRAINING_CARD_MATERIALS_TITLE,
+		description: Landing.TRAINING_CARD_MATERIALS_DESCRIPTION,
 		images: [
 			{
 				id: 'materialsFrontImg',
-				alt: NewLanding.TRAINING_CARD_MATERIALS_IMG_ALT,
+				alt: Landing.TRAINING_CARD_MATERIALS_IMG_ALT,
 				src: materialsFrontImg,
 				position: 'front',
 			},
 			{
 				id: 'materialsBackImg',
-				alt: NewLanding.TRAINING_CARD_MATERIALS_IMG_ALT,
+				alt: Landing.TRAINING_CARD_MATERIALS_IMG_ALT,
 				src: materialsBackImg,
 				position: 'back',
 			},
