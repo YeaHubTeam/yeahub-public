@@ -436,6 +436,24 @@ export enum Landing {
 	DIFFICULTY_CARDS_SIXTH_DESCRIPTION = 'difficulty.cards.sixth.description',
 }
 
+export enum NewLanding {
+	RESUME_TITLE = 'resume.title',
+	RESUME_DESCRIPTION = 'resume.description',
+	SOON_TEXT = 'soonText',
+	RESUME_CARD_ATS_TITLE = 'resumeCard.ats.title',
+	RESUME_CARD_ATS_DESCRIPTION = 'resumeCard.ats.description',
+	RESUME_CARD_ATS_IMG_ALT = 'resumeCard.ats.imgAlt',
+	RESUME_CARD_ATS_BUTTON_LINK_TEXT = 'resumeCard.ats.buttonLinkText',
+	RESUME_CARD_KEYWORDS_TITLE = 'resumeCard.keywords.title',
+	RESUME_CARD_KEYWORDS_DESCRIPTION = 'resumeCard.keywords.description',
+	RESUME_CARD_KEYWORDS_IMG_ALT = 'resumeCard.keywords.imgAlt',
+	RESUME_CARD_KEYWORDS_BUTTON_LINK_TEXT = 'resumeCard.keywords.buttonLinkText',
+	RESUME_CARD_VACANCY_TITLE = 'resumeCard.vacancy.title',
+	RESUME_CARD_VACANCY_DESCRIPTION = 'resumeCard.vacancy.description',
+	RESUME_CARD_VACANCY_IMG_ALT = 'resumeCard.vacancy.imgAlt',
+	RESUME_CARD_VACANCY_BUTTON_LINK_TEXT = 'resumeCard.vacancy.buttonLinkText',
+}
+
 export enum InterviewStatistics {
 	QUESTION_STATS_TITLE_SHORT = 'questionStats.titleShort',
 	QUESTION_STATS_TITLE = 'questionStats.title',

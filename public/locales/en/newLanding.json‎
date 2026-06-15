@@ -1,0 +1,27 @@
+{
+	"resume": {
+		"title": "Resume and job search in IT",
+		"description": "Prepare a resume, optimize it for ATS systems and find real vacancies in IT companies."
+	},
+	"soonText": "Soon",
+	"resumeCard": {
+		"ats": {
+			"title": "ATS resume",
+			"description": "Optimize your resume for automatic selection systems to pass company filters and get more feedback.",
+			"imgAlt": "Visual progress diagram: left empty To block, right filled After block",
+			"buttonLinkText": "Resume"
+		},
+		"keywords": {
+			"title": "Keywords",
+			"description": "Extract key skills and language from jobs to adapt resumes to real employer requirements.",
+			"imgAlt": "Keyword search interface visualization scheme",
+			"buttonLinkText": ""
+		},
+		"vacancy": {
+			"title": "Job aggregator",
+			"description": "Find relevant IT vacancies and internships in different companies with convenient search and filtering.",
+			"imgAlt": "Job card template with photo space, title, description, and favorite button",
+			"buttonLinkText": "Vacancies"
+		}
+	}
+}
