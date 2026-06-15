@@ -1,0 +1,32 @@
+.head {
+	max-width: 483px;
+}
+
+.title {
+	line-height: 120%;
+	font-size: var(--font-size-h-xs);
+}
+
+.cardsRow {
+	display: flex;
+	align-items: flex-end;
+	gap: 20px;
+}
+
+@media (width <= 1036px) {
+	.cardsRow {
+		max-width: 100%;  
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+}
+
+@media (width <= 600px){
+	.cardsRow {
+		flex-direction: column;
+		overflow-x: unset;
+		scrollbar-width: unset;
+	}
+}
+
+
