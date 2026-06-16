@@ -24,6 +24,7 @@ export const i18Namespace = {
 	analytics: 'analytics',
 	resources: 'resources',
 	landing: 'landing',
+	newLanding: 'new-landing',
 	tasks: 'tasks',
 	interviewStatistics: 'interviewStatistics',
 	subscription: 'subscription',
