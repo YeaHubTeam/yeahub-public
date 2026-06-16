@@ -437,6 +437,36 @@ export enum Landing {
 }
 
 export enum NewLanding {
+	BANNER_TITLE = 'banner.title',
+	BANNER_DESCRIPTION = 'banner.description',
+
+	SPECIALIZATION_BUTTON = 'specialization.button',
+	SPECIALIZATION_NEW_TITLE = 'specialization.title_new',
+	SPECIALIZATION_DESCRIPTION = 'specialization.description',
+
+	SPECIALIZATION_CARD_DESCRIPTION_FRONTEND = 'specialization.card.description.frontend',
+	SPECIALIZATION_CARD_DESCRIPTION_PYTHON = 'specialization.card.description.python',
+	SPECIALIZATION_CARD_DESCRIPTION_JAVA = 'specialization.card.description.java',
+	SPECIALIZATION_CARD_DESCRIPTION_NODE_JS = 'specialization.card.description.nodeJs',
+	SPECIALIZATION_CARD_DESCRIPTION_QA_ENGINEER = 'specialization.card.description.qaEngineer',
+	SPECIALIZATION_CARD_DESCRIPTION_GOLANG = 'specialization.card.description.golang',
+
+	QUESTIONS_TASKS_TITLE = 'questions_tasks.title',
+	QUESTIONS_TASKS_DESCRIPTION = 'questions_tasks.description',
+	QUESTIONS_TASKS_CARD_QUESTIONS_TITLE = 'questions_tasks.card.questions.title',
+	QUESTIONS_TASKS_CARD_QUESTIONS_DESCRIPTION = 'questions_tasks.card.questions.description',
+	QUESTIONS_TASKS_CARD_TASKS_TITLE = 'questions_tasks.card.tasks.title',
+	QUESTIONS_TASKS_CARD_TASKS_DESCRIPTION = 'questions_tasks.card.tasks.description',
+	QUESTIONS_TASKS_CARD_INTERVIEWS_TITLE = 'questions_tasks.card.interviews.title',
+	QUESTIONS_TASKS_CARD_INTERVIEWS_DESCRIPTION = 'questions_tasks.card.interviews.description',
+
+	QUESTIONS_TASKS_CARD_QUESTIONS_BUTTON = 'questions_tasks.card.questions.button',
+	QUESTIONS_TASKS_CARD_TASKS_BUTTON = 'questions_tasks.card.tasks.button',
+	QUESTIONS_TASKS_CARD_INTERVIEWS_BUTTON = 'questions_tasks.card.interviews.button',
+
+	SEO_TITLE = 'seo.title',
+	SEO_DESCRIPTION = 'seo.description',
+	SEO_KEYWORDS = 'seo.keywords',
 	RESUME_TITLE = 'resume.title',
 	RESUME_DESCRIPTION = 'resume.description',
 	SOON_TEXT = 'soonText',

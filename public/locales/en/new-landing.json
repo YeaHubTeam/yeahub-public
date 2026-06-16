@@ -1,0 +1,48 @@
+{
+	"banner": {
+		"title": "Preparation for IT interview: questions, tasks and interview database",
+		"description": "Database of questions and tasks for IT interviews, interview simulator and live coding. Preparation for technical interviews and passing selection in IT companies."
+	},
+	"specialization": {
+			"title_new": "Preparation for IT Interview by Specialization",
+			"description": "Choose your direction and get structured preparation for real interviews.",
+			"button": "All specializations",
+			"card": {
+					"description": {
+							"frontend": "HTML, CSS, JavaScript and modern frameworks",
+							"python": "Python, Django, PostgreSQL, databases and API",
+							"java": "Java, Spring, microservices and SQL",
+							"nodeJs": "Node.js, Express, async, REST API and JavaScript",
+							"qaEngineer": "Testing, automation, Postman and SQL",
+							"golang": "Golang, concurrency, MongoDB, Redis and high loads"
+					}
+			}
+	},
+	"questions_tasks": {
+    "title": "Interview Questions and Tasks in IT",
+    "description": "A large database of questions, tasks and real interviews in IT companies with convenient filters and preparation structure.",
+    "card": {
+        "questions": {
+            "title": "Question Database",
+            "description": "Study questions by 100+ skills, difficulty level and popularity for interview preparation.",
+						"button": "Go to questions" 
+        },
+        "tasks": {
+            "title": "Interview Tasks",
+            "description": "Solve real tasks from IT companies in a convenient code editor with different difficulty levels.",
+						"button": "Go to tasks" 
+        },
+        "interviews": {
+            "title": "Real Interviews",
+            "description": "Study over 400 interviews in IT companies with questions, tasks and interview stages.",
+						"button": "Go to interviews" 
+        },
+        "button": "Go to interviews"
+    	}
+	},
+	"seo": {
+		"title": "IT Company Interview: Questions, Tasks, and Interview Preparation",
+		"description": "A database of questions and tasks for IT interviews, an interview simulator, and live coding practice. Preparation for technical interviews and selection processes at IT companies.",
+		"keywords": "IT interview questions, IT interview preparation, programmer interview tasks, technical interview, how to pass an IT interview, IT company interview stages, HR IT questions, interview practice, interview simulator, live coding tasks, developer questions database, junior developer preparation"
+	}
+}
