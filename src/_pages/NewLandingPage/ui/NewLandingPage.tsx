@@ -9,8 +9,8 @@ export const NewLandingPage = () => {
 		<Flex direction="column" gap="80">
 			<DifficultySection />
 			<PrepareForInterviewSection />
-			<TrainerProgressSection />
 			<InterviewSection />
+			<TrainerProgressSection />
 		</Flex>
 	);
 };

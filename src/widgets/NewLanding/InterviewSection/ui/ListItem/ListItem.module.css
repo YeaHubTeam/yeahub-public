@@ -109,13 +109,27 @@ a.link:hover {
 	}
 }
 
-@media (width < 850px){
+@media (width < 850px) {
 	.card {
 		width: 253px;
 	}
 }
 
-@media (width < 768px){
+@media (width < 768px) {
+	.card-img img {
+		display: block;
+		margin: 0 auto;
+		width: auto;
+		height: 130px;
+	}
+
+	.card-img {
+		top: 20px;
+		left: auto;
+		transform: none;
+		opacity: 1;
+	}
+	
 	.card {
 		flex-shrink: 1;
 		padding: 16px;
@@ -134,10 +148,5 @@ a.link:hover {
 	.card:hover {
 		width: 100%;
 		height: 358px;
-	}
-
-	.card-img {
-		opacity: 1;
-		top: 20px;
 	}
 }
