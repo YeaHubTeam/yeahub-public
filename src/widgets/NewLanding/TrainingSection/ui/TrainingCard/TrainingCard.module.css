@@ -46,7 +46,6 @@
 .image-container {
 	display: grid;
 	margin: auto;
-	box-shadow: none;
 }
 
 .image {
@@ -104,7 +103,6 @@
 		padding: 15px 20px 0 16px;
 		width: 340px;
 		height: 300px;
-		box-shadow: 0 4px 10px 0 #6a63761a;
 		border-top-left-radius: 14px;
 	}
 
@@ -136,7 +134,7 @@
 	}
 }
 
-@media (width < 700px) {
+@media (width < 768px) {
 	.card-wrapper {
 		flex-direction: column;
 		padding: 16px 0;

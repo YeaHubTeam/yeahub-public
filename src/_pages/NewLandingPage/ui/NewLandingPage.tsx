@@ -13,8 +13,8 @@ export const NewLandingPage = () => {
 			<PrepareForInterviewSection />
 			<InterviewSection />
 			<TrainerProgressSection />
-			<TrainingSection />
 			<ResumeSection />
+			<TrainingSection />
 		</Flex>
 	);
 };
