@@ -6,8 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import classnames from 'classnames';
 
-import { INVERTED_THEME_URLS } from '@/widgets/Header/model/constants/headerConstants';
-
+import { INVERTED_THEME_URLS } from '../../model/constants/headerConstants';
 import styles from './Header.module.css';
 
 interface HeaderClientProps {
@@ -24,6 +23,7 @@ export const HeaderClient = ({ children }: HeaderClientProps) => {
 			data-testid="Header"
 			className={classnames(styles.header, { [styles.inverted]: isInverted })}
 		>
+			{isInverted && <div className={styles['inverted-bg']} />}
 			{children}
 		</header>
 	);

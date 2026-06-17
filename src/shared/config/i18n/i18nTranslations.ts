@@ -480,24 +480,33 @@ export enum Landing {
 	RESUME_CARD_VACANCY_DESCRIPTION = 'resume.card.vacancy.description',
 	RESUME_CARD_VACANCY_IMG_ALT = 'resume.card.vacancy.imgAlt',
 	RESUME_CARD_VACANCY_BUTTON_LINK_TEXT = 'resume.card.vacancy.buttonLinkText',
-
 	TRAINING_TITLE = 'training.title',
 	TRAINING_DESCRIPTION = 'training.description',
-
 	TRAINING_CARD_LINK = 'trainingCard.link',
 	TRAINING_CARD_DISABLED = 'trainingCard.disabled',
-
 	TRAINING_CARD_ROADMAP_TITLE = 'trainingCard.roadmap.title',
 	TRAINING_CARD_ROADMAP_DESCRIPTION = 'trainingCard.roadmap.description',
 	TRAINING_CARD_ROADMAP_IMG_ALT = 'trainingCard.roadmap.imgAlt',
-
 	TRAINING_CARD_MENTOR_TITLE = 'trainingCard.mentor.title',
 	TRAINING_CARD_MENTOR_DESCRIPTION = 'trainingCard.mentor.description',
 	TRAINING_CARD_MENTOR_IMG_ALT = 'trainingCard.mentor.imgAlt',
-
 	TRAINING_CARD_MATERIALS_TITLE = 'trainingCard.materials.title',
 	TRAINING_CARD_MATERIALS_DESCRIPTION = 'trainingCard.materials.description',
 	TRAINING_CARD_MATERIALS_IMG_ALT = 'trainingCard.materials.imgAlt',
+	HEADER_TITLE = 'header.title',
+	HEADER_SUBTITLE = 'header.subtitle',
+	HEADER_BUTTON = 'header.button',
+	HEADER_STATISTICS_QUESTIONS_COUNT = 'header.statistics.questions.count',
+	HEADER_STATISTICS_QUESTIONS_TEXT = 'header.statistics.questions.text',
+	HEADER_STATISTICS_TASKS_COUNT = 'header.statistics.tasks.count',
+	HEADER_STATISTICS_TASKS_TEXT = 'header.statistics.tasks.text',
+	HEADER_STATISTICS_COMPANIES_COUNT = 'header.statistics.companies.count',
+	HEADER_STATISTICS_COMPANIES_TEXT = 'header.statistics.companies.text',
+	HEADER_STATISTICS_SPECIALIZATIONS_COUNT = 'header.statistics.specializations.count',
+	HEADER_STATISTICS_SPECIALIZATIONS_TEXT = 'header.statistics.specializations.text',
+	HEADER_STATISTICS_SKILLS_COUNT = 'header.statistics.skills.count',
+	HEADER_STATISTICS_SKILLS_TEXT = 'header.statistics.skills.text',
+	HEADER_STATISTICS_INFO_TEXT = 'header.statistics.info.text',
 }
 
 export enum InterviewStatistics {
