@@ -1,18 +1,40 @@
 .grid {
-	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: 
+		'ats keywords vacancies';
 	gap: 20px;
+	width: 100%;
 }
 
-@media (max-width: 1070px) {
+
+.grid > div:nth-child(1) {
+	grid-area: ats;
+}
+
+.grid > div:nth-child(2) {
+	grid-area: keywords;
+}
+
+.grid > div:nth-child(3) {
+	grid-area: vacancies;
+}
+
+@media (width < 1280px) {
 	.grid {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas: 
+		'ats ats'
+		'keywords vacancies';
 	}
 }
 
-@media (max-width: 650px) {
+@media (width < 768px) {
 	.grid {
 		grid-template-columns: 1fr;
+		grid-template-areas: 
+		'ats'
+		'keywords'
+		'vacancies';
 	}
 }

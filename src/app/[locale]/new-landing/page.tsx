@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { NewLandingPage as NewLandingPageComponent } from '@/pages/NewLandingPage';
-import { NewLanding, i18Namespace } from '@/shared/config';
+import { Landing, i18Namespace } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config/router/constants';
 
 interface PageProps {
@@ -14,11 +14,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const { locale } = await params;
 
 	setRequestLocale(locale);
-	const t = await getTranslations({ locale, namespace: i18Namespace.newLanding });
+	const t = await getTranslations({ locale, namespace: i18Namespace.landing });
 
-	const title = t(NewLanding.SEO_TITLE);
-	const description = t(NewLanding.SEO_DESCRIPTION);
-	const keywords = t(NewLanding.SEO_KEYWORDS);
+	const title = t(Landing.SEO_TITLE);
+	const description = t(Landing.SEO_DESCRIPTION);
+	const keywords = t(Landing.SEO_KEYWORDS);
 
 	return {
 		title,
@@ -36,13 +36,13 @@ const NewLandingPage = async ({ params }: PageProps) => {
 	const { locale } = await params;
 
 	setRequestLocale(locale);
-	const t = await getTranslations({ locale, namespace: i18Namespace.newLanding });
+	const t = await getTranslations({ locale, namespace: i18Namespace.landing });
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/new-landing`;
 
-	const title = t(NewLanding.BANNER_TITLE);
-	const description = t(NewLanding.BANNER_DESCRIPTION);
+	const title = t(Landing.BANNER_TITLE);
+	const description = t(Landing.BANNER_DESCRIPTION);
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -83,44 +83,44 @@ const NewLandingPage = async ({ params }: PageProps) => {
 				},
 				mainEntity: {
 					'@type': 'ItemList',
-					name: t(NewLanding.SPECIALIZATION_NEW_TITLE),
-					description: t(NewLanding.SPECIALIZATION_DESCRIPTION),
+					name: t(Landing.SPECIALIZATION_NEW_TITLE),
+					description: t(Landing.SPECIALIZATION_DESCRIPTION),
 					itemListElement: [
 						{
 							'@type': 'ListItem',
 							position: 1,
 							name: 'Frontend',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_FRONTEND),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_FRONTEND),
 						},
 						{
 							'@type': 'ListItem',
 							position: 2,
 							name: 'Python',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_PYTHON),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_PYTHON),
 						},
 						{
 							'@type': 'ListItem',
 							position: 3,
 							name: 'Java',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_JAVA),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_JAVA),
 						},
 						{
 							'@type': 'ListItem',
 							position: 4,
 							name: 'Node.js',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_NODE_JS),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_NODE_JS),
 						},
 						{
 							'@type': 'ListItem',
 							position: 5,
 							name: 'QA En',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_QA_ENGINEER),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_QA_ENGINEER),
 						},
 						{
 							'@type': 'ListItem',
 							position: 6,
 							name: 'iOS',
-							description: t(NewLanding.SPECIALIZATION_CARD_DESCRIPTION_GOLANG),
+							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_GOLANG),
 						},
 					],
 				},

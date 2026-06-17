@@ -13,7 +13,6 @@ export {
 	InterviewQuizResult,
 	InterviewStatistics,
 	Landing,
-	NewLanding,
 	Learning,
 	Main,
 	Media,
@@ -25,7 +24,6 @@ export {
 	Subscription,
 	Tasks,
 	Translation,
-	NewLanding,
 } from './i18n/i18nTranslations';
 export { API_VERSION } from './query/apiConstants';
 

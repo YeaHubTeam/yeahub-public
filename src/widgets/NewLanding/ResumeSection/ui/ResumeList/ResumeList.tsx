@@ -7,7 +7,7 @@ import ResumeCard from '../ResumeCard/ResumeCard';
 import styles from './ResumeList.module.css';
 
 const ResumeList = () => {
-	const t = useTranslations(i18Namespace.newLanding);
+	const t = useTranslations(i18Namespace.landing);
 
 	return (
 		<div className={styles.grid}>
