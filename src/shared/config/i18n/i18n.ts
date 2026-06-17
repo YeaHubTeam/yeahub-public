@@ -27,6 +27,7 @@ export const i18Namespace = {
 	tasks: 'tasks',
 	interviewStatistics: 'interviewStatistics',
 	subscription: 'subscription',
+	newLanding: 'newLanding',
 } as const;
 
 export default getRequestConfig(async ({ requestLocale }) => {

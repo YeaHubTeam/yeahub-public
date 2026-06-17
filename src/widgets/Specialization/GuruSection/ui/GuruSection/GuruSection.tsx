@@ -20,8 +20,11 @@ export const GuruSection = ({ specializationId }: GuruSectionProps) => {
 	const guru = gurus.find((g) => g.specializations.includes(specializationId));
 	const t = useTranslations(i18Namespace.specialization);
 	const avatarSize = 91;
+
 	if (!guru) return null;
+
 	const detail = specializationId === 11 ? route(ROUTES.mentor.page) : guru?.socials.landing;
+
 	return (
 		<Card className={styles.card} withOutsideShadow size="small">
 			<Flex className={styles.wrapper} direction="row" justify="between" align="center">
