@@ -1,4 +1,4 @@
-import DOMPurify, { WindowLike } from 'dompurify';
+import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 
 export const normalizeHtmlContent = (htmlContent: string): string => {
@@ -6,7 +6,7 @@ export const normalizeHtmlContent = (htmlContent: string): string => {
 
 	const jsdom = new JSDOM('');
 	const doc = jsdom.window.document;
-	const purify = DOMPurify(jsdom.window as unknown as WindowLike);
+	const purify = DOMPurify(jsdom.window);
 
 	const tempDiv = doc.createElement('div');
 	tempDiv.innerHTML = purify.sanitize(htmlContent);
