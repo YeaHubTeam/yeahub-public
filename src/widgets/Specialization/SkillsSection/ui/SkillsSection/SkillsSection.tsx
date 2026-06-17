@@ -3,8 +3,8 @@ import { useTranslations } from 'next-intl';
 import { Skill } from '@/entities/skill';
 import { Specializations, i18Namespace } from '@/shared/config';
 import { Chip } from '@/shared/ui/Chip';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 import { CollapsibleChipGrid } from '@/widgets/Specialization/CollapsibleChipGrid';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
 
 interface SkillsSectionProps {
 	skills?: Skill[];
