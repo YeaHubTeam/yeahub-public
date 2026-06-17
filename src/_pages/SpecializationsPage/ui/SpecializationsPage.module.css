@@ -4,16 +4,33 @@
 
 .grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 289px);
-	justify-content: start;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 20px;
+	width: 100%;
+}
+
+@media screen and (width < 1280px) {
+	.grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (width < 768px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 .link {
+	display: block;
+	width: 100%;
+	text-align: center;
 	text-decoration: none;
 }
 
-.card {
+.card > div {
+	padding: 36px 16px;
+	height: 100%;
 	transition: transform 0.2s ease;
 }
 

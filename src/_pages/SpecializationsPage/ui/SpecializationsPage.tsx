@@ -36,7 +36,7 @@ export const SpecializationsPage = async ({
 						href={`/${locale}${route(ROUTES.specializations.detail.page, specialization.slug)}`}
 						className={styles.link}
 					>
-						<Card className={styles.card} withOutsideShadow size="small">
+						<Card className={styles.card} withOutsideShadow>
 							<Text variant="head5">{specialization.title}</Text>
 						</Card>
 					</Link>

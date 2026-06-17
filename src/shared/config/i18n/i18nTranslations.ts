@@ -144,6 +144,12 @@ export enum Specializations {
 	TASKS_LINK = 'tasks.link',
 	QUESTIONS_NEW_TITLE = 'questions.title_new',
 	QUESTIONS_LINK = 'questions.link',
+	SEO_MAIN_PAGE_TITLE = 'seo.main_page.title',
+	SEO_MAIN_PAGE_DESCRIPTION = 'seo.main_page.description',
+	SEO_MAIN_PAGE_KEYWORDS = 'seo.main_page.keywords',
+	SEO_DETAIL_PAGE_TITLE = 'seo.detail_page.title',
+	SEO_DETAIL_PAGE_DESCRIPTION = 'seo.detail_page.description',
+	SEO_DETAIL_PAGE_KEYWORDS = 'seo.detail_page.keywords',
 }
 
 export enum Companies {
