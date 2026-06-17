@@ -474,6 +474,24 @@ export enum Landing {
 	RESUME_CARD_VACANCY_DESCRIPTION = 'resume.card.vacancy.description',
 	RESUME_CARD_VACANCY_IMG_ALT = 'resume.card.vacancy.imgAlt',
 	RESUME_CARD_VACANCY_BUTTON_LINK_TEXT = 'resume.card.vacancy.buttonLinkText',
+
+	TRAINING_TITLE = 'training.title',
+	TRAINING_DESCRIPTION = 'training.description',
+
+	TRAINING_CARD_LINK = 'trainingCard.link',
+	TRAINING_CARD_DISABLED = 'trainingCard.disabled',
+
+	TRAINING_CARD_ROADMAP_TITLE = 'trainingCard.roadmap.title',
+	TRAINING_CARD_ROADMAP_DESCRIPTION = 'trainingCard.roadmap.description',
+	TRAINING_CARD_ROADMAP_IMG_ALT = 'trainingCard.roadmap.imgAlt',
+
+	TRAINING_CARD_MENTOR_TITLE = 'trainingCard.mentor.title',
+	TRAINING_CARD_MENTOR_DESCRIPTION = 'trainingCard.mentor.description',
+	TRAINING_CARD_MENTOR_IMG_ALT = 'trainingCard.mentor.imgAlt',
+
+	TRAINING_CARD_MATERIALS_TITLE = 'trainingCard.materials.title',
+	TRAINING_CARD_MATERIALS_DESCRIPTION = 'trainingCard.materials.description',
+	TRAINING_CARD_MATERIALS_IMG_ALT = 'trainingCard.materials.imgAlt',
 }
 
 export enum InterviewStatistics {
