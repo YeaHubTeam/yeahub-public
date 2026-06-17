@@ -28,7 +28,7 @@ export const ListItem = ({
 	buttonKey,
 	link,
 }: ListItemProps) => {
-	const t = useTranslations(i18Namespace.newLanding);
+	const t = useTranslations(i18Namespace.landing);
 	return (
 		<div className={styles.card}>
 			<Flex direction="column" justify="between" className={styles['card-content']}>

@@ -13,7 +13,6 @@ export {
 	InterviewQuizResult,
 	InterviewStatistics,
 	Landing,
-	NewLanding,
 	Learning,
 	Main,
 	Media,
