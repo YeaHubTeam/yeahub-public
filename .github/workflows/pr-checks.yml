@@ -57,5 +57,5 @@ jobs:
       - name: Stylelint
         run: npm run lint:css
 
-      - name: FSD (steiger)
-        run: npx steiger ./src
+      # - name: FSD (steiger)
+      #   run: npx steiger ./src

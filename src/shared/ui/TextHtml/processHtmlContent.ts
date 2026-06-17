@@ -1,4 +1,4 @@
-import DOMPurify, { WindowLike } from 'dompurify';
+import DOMPurify from 'dompurify';
 import { toHtml } from 'hast-util-to-html';
 import { JSDOM } from 'jsdom';
 import { common, createLowlight } from 'lowlight';
@@ -21,7 +21,7 @@ export interface ProcessHtmlResult {
 
 export const processHtmlContent = (html: string): ProcessHtmlResult => {
 	const window = new JSDOM('').window;
-	const DOMPurifyServer = DOMPurify(window as unknown as WindowLike);
+	const DOMPurifyServer = DOMPurify(window);
 
 	const normalizedHtml = normalizeHtmlContent(html);
 
