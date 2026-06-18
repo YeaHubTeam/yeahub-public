@@ -16,7 +16,7 @@ export const DifficultyCard = ({ title, description }: DifficultyCardProps) => {
 			<Flex direction="column" gap="24" maxHeight justify="between">
 				<Indicator variant="purple" className={styles.indicator} />
 				<Flex direction="column" gap="8">
-					<Text variant="body6" className={styles.title}>
+					<Text variant="head3" className={styles.title}>
 						{title}
 					</Text>
 					<Text variant="body3-accent">{description}</Text>

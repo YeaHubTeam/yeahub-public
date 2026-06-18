@@ -39,7 +39,7 @@ export const StatisticList = () => {
 		<div className={styles.list}>
 			{statistics.map((statistic) => (
 				<Flex
-					key={statistic.title}
+					key={statistic.title + statistic.subtitle}
 					justify="center"
 					align="center"
 					direction="column"
