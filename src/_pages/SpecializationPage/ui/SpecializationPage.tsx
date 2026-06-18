@@ -35,7 +35,7 @@ export const SpecializationPage = ({
 		<Flex direction="column" gap="40" className={styles.container}>
 			<Header specialization={specialization} />
 			<SkillsSection skills={skills} />
-			<KeywordsSection keywords={keywords} />
+			<KeywordsSection keywords={keywords} specialization={specialization} />
 			<QuestionsSection locale={locale} specialization={specialization} />
 			<CollectionsSection
 				collections={collections}
