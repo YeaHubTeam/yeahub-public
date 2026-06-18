@@ -1,0 +1,56 @@
+.icon-wrapper {
+	width: 29px;
+	height: 29px;
+}
+
+.chip {
+	padding: 0 10px;
+	height: 34px;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border-radius: 17px;
+	background: #fff;
+}
+
+div.card {
+	position: relative;
+	z-index: 1;
+	padding: 20px;
+	height: 241px;
+	overflow: hidden;
+}
+
+div.card::before {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	background: linear-gradient(42.28deg, #fff 65.99%, #9c89ff 84.05%, #53f 97.11%);
+	transition: opacity 0.3s ease-in-out;
+	content: '';
+	opacity: 0;
+	pointer-events: none;
+}
+
+.card-ellipse {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: url('../../../../../shared/assets/images/specialization/specialization-card-bg.png')
+		no-repeat center center;
+	background-size: 100% 100%;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media (hover: hover) {
+	div.card:hover::before,
+	div.card:hover .card-ellipse {
+		opacity: 1;
+	}
+}
+
+@media screen and (width < 1280px) {
+	div.card {
+		height: 181px;
+	}
+}

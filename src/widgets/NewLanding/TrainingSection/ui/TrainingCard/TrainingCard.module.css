@@ -1,0 +1,207 @@
+.card-wrapper {
+	position: relative;
+	padding: 20px 0;
+	overflow: hidden;
+	border-radius: 20px;
+	background-color: var(--background-block);
+}
+
+.reverse {
+	flex-direction: column-reverse;
+}
+
+.description-card {
+	flex-direction: column-reverse;
+	gap: 16px;
+	padding: 0 20px;
+}
+
+.title-container {
+	padding-bottom: 8px;
+}
+
+.title {
+	line-height: 120%;
+}
+
+.disabled {
+	position: absolute;
+	top: 0;
+	right: 20px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 5px 12px;
+	border-radius: 21px;
+	background-color: var(--color-purple-700);
+	color: var(--color-white-900);
+	font-size: var(--font-size-p-s);
+}
+
+.card-text {
+	max-width: 278px;
+	line-height: 130%;
+}
+
+.image-container {
+	display: grid;
+	margin: auto;
+}
+
+.image {
+	grid-area: 1 / 1;
+}
+
+.image-roadmap-front {
+	width: 268px;
+	height: 179px;
+}
+
+.image-mentor-front {
+	width: 220px;
+	height: 125px;
+	transform: translate(-67px, -10px);
+}
+
+.image-mentor-back {
+	width: 225px;
+	height: 130px;
+	transform: translate(67px, 20px);
+}
+
+.image-materials {
+	width: 254px;
+	height: 133px;
+}
+
+.image-materials-front {
+	z-index: 2;
+	transform: translate(-49px, 0);
+}
+
+.image-materials-back {
+	z-index: 1;
+	transform: translate(49px, 20px);
+}
+
+@media (width < 1280px) {
+	.card-wrapper {
+		flex-direction: row;
+		justify-content: space-between;
+		height: 310px;
+	}
+
+	.disabled {
+		right: auto;
+		left: 20px;
+	}
+
+	.image-container {
+		right: -8px;
+		margin: 0;
+		margin-top: 26px;
+		padding: 15px 20px 0 16px;
+		width: 340px;
+		height: 300px;
+		border-top-left-radius: 14px;
+	}
+
+	.image-roadmap-front {
+		width: 302px;
+		height: 201px;
+	}
+
+	.image-mentor-front {
+		z-index: 2;
+		width: 230px;
+		height: 134px;
+		transform: translate(0, 20px);
+	}
+
+	.image-mentor-back {
+		z-index: 1;
+		width: 250px;
+		height: 154px;
+		transform: translate(65px, 88px);
+	}
+
+	.image-materials-front {
+		transform: translate(0, 30px);
+	}
+
+	.image-materials-back {
+		transform: translate(54px, 88px);
+	}
+}
+
+@media (width < 768px) {
+	.card-wrapper {
+		flex-direction: column;
+		padding: 16px 0;
+		height: auto;
+	}
+
+	.reverse {
+		flex-direction: column-reverse;
+	}
+
+	.description-card {
+		gap: 8px;
+		padding: 0 10px;
+		height: auto;
+	}
+
+	.title {
+		font-size: 20px;
+	}
+
+	.disabled {
+		top: 0;
+		right: 16px;
+		left: auto;
+	}
+
+	.image-container {
+		margin: 0 auto;
+		padding: 0;
+		width: 330px;
+		height: auto;
+		box-shadow: none;
+	}
+
+	.image {
+		margin: auto;
+	}
+
+	.image-roadmap-front {
+		width: 262px;
+		height: 175px;
+	}
+
+	.image-mentor-front {
+		z-index: 1;
+		width: 215px;
+		height: 119px;
+		transform: translate(-54px, 0);
+	}
+
+	.image-mentor-back {
+		z-index: 2;
+		width: 225px;
+		height: 130px;
+		transform: translate(59px, 42px);
+	}
+
+	.image-materials {
+		width: 252px;
+		height: 131px;
+	}
+
+	.image-materials-front {
+		transform: translate(-32px, -36px);
+	}
+
+	.image-materials-back {
+		transform: translate(32px, 0);
+	}
+}

@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getCollectionsList } from '@/entities/collection';
 import { getHhTopBySpec } from '@/entities/hh';
+import { getSkills } from '@/entities/skill';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
@@ -38,25 +39,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	setRequestLocale(locale);
 
 	const t = await getTranslations({ locale, namespace: i18Namespace.translation });
+	const tSpecialization = await getTranslations({ locale, namespace: i18Namespace.specialization });
 	const specialization = await getSpecializationBySlug(specializationSlug).catch(() => null);
 
 	if (!specialization) {
 		return { title: t(Translation.ERROR_404_TITLE) };
 	}
 
-	const description = specialization.description || specialization.title;
 	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
 	const canonical = `${baseUrl}/${locale}/specializations/${specializationSlug}`;
 
 	return {
-		title: specialization.title,
-		description,
+		title: tSpecialization(Specializations.SEO_DETAIL_PAGE_TITLE, { Role: specialization.title }),
+		description: tSpecialization(Specializations.SEO_DETAIL_PAGE_DESCRIPTION, {
+			Role: specialization.title,
+		}),
+		keywords: tSpecialization(Specializations.SEO_DETAIL_PAGE_KEYWORDS, {
+			Role: specialization.title,
+		}),
 		alternates: {
 			canonical,
 		},
 		openGraph: {
-			title: specialization.title,
-			description,
+			title: tSpecialization(Specializations.SEO_DETAIL_PAGE_TITLE, {
+				Role: specialization.title,
+			}),
+			description: tSpecialization(Specializations.SEO_DETAIL_PAGE_DESCRIPTION, {
+				Role: specialization.title,
+			}),
 			type: 'website',
 			url: canonical,
 		},
@@ -74,13 +84,17 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 		notFound();
 	}
 
-	const collectionsResponse = await getCollectionsList({
-		specializations: specialization.id,
-		limit: 3,
-	}).catch(() => null);
+	const [collectionsResponse, specAnalyticsResponse, skillsResponse] = await Promise.all([
+		getCollectionsList({
+			specializations: specialization.id,
+			limit: 3,
+		}).catch(() => null),
+		getHhTopBySpec(specialization.id).catch(() => null),
+		getSkills({ specializations: specialization.id, limit: 100 }).catch(() => null),
+	]);
 	const collections = collectionsResponse?.data ?? [];
-
-	const specAnalytics = await getHhTopBySpec(specialization.id);
+	const keywords = specAnalyticsResponse?.keywords ?? [];
+	const skills = skillsResponse?.data ?? [];
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/specializations/${specializationSlug}`;
@@ -134,7 +148,8 @@ const SpecializationSlugPage = async ({ params }: PageProps) => {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 			<SpecializationPageComponent
-				specAnalytics={specAnalytics}
+				keywords={keywords}
+				skills={skills}
 				specialization={specialization}
 				collections={collections}
 				locale={locale}
