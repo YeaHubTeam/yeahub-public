@@ -21,7 +21,7 @@ export const TrainingCard = ({
 	reverse,
 	disabledText,
 }: TrainingCardProps) => {
-	const t = useTranslations(i18Namespace.newLanding);
+	const t = useTranslations(i18Namespace.landing);
 	return (
 		<Flex
 			className={classNames(styles['card-wrapper'], { [styles.reverse]: reverse })}

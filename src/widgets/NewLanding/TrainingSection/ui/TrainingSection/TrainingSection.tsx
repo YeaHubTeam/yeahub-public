@@ -6,7 +6,7 @@ import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 import { TrainingList } from '../TrainingList/TrainingList';
 
 export const TrainingSection = () => {
-	const t = useTranslations(i18Namespace.newLanding);
+	const t = useTranslations(i18Namespace.landing);
 
 	return (
 		<SectionWrapper title={t(Landing.TRAINING_TITLE)} subtitle={t(Landing.TRAINING_DESCRIPTION)}>

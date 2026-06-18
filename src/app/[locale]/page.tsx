@@ -2,7 +2,7 @@ import React from 'react';
 
 import { setRequestLocale } from 'next-intl/server';
 
-import LandingPage from './landing/page';
+import NewLandingPage from './new-landing/page';
 
 export const dynamic = 'force-static';
 
@@ -20,7 +20,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
 	return (
 		<>
-			<LandingPage params={params} />
+			<NewLandingPage params={params} />
 		</>
 	);
 };

@@ -7,7 +7,7 @@ import { TrainingCard } from '../TrainingCard/TrainingCard';
 import styles from './TrainingList.module.css';
 
 export const TrainingList = () => {
-	const t = useTranslations(i18Namespace.newLanding);
+	const t = useTranslations(i18Namespace.landing);
 
 	return (
 		<div className={styles.grid}>

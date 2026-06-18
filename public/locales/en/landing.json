@@ -230,35 +230,57 @@
 				"imgAlt": "Job card template with photo space, title, description, and favorite button",
 				"buttonLinkText": "Vacancies"
 			}
-		},
-		"header": {
-			"title": "Preparing for an IT interview: questions, tasks, and interview database",
-			"subtitle": "Interview questions and tasks database for IT interviews, interview simulator, and live coding. Preparation for technical interviews and selection in IT companies.",
-			"button": "Join",
-			"statistics": {
-				"questions": {
-					"count": "10,000+",
-					"text": "questions"
-				},
-				"tasks": {
-					"count": "150+",
-					"text": "tasks"
-				},
-				"companies": {
-					"count": "300+",
-					"text": "компаний"
-				},
-				"specializations": {
-					"count": "20+",
-					"text": "specialization"
-				},
-				"skills": {
-					"count": "100+",
-					"text": "skills"
-				},
-				"info": {
-					"text": "Updated every week"
-				}
+		}
+	},
+	"header": {
+		"title": "Preparing for an IT interview: questions, tasks, and interview database",
+		"subtitle": "Interview questions and tasks database for IT interviews, interview simulator, and live coding. Preparation for technical interviews and selection in IT companies.",
+		"button": "Join",
+		"statistics": {
+			"questions": {
+				"count": "10,000+",
+				"text": "questions"
+			},
+			"tasks": {
+				"count": "150+",
+				"text": "tasks"
+			},
+			"companies": {
+				"count": "300+",
+				"text": "компаний"
+			},
+			"specializations": {
+				"count": "20+",
+				"text": "specialization"
+			},
+			"skills": {
+				"count": "100+",
+				"text": "skills"
+			},
+			"info": {
+				"text": "Updated every week"
+			}
+		}
+	},
+	"training": {
+		"title": "Training and career advancement in IT",
+		"description": "If you're not ready for interviews yet, start with training, mentors, and a structured development plan.",
+		"card": {
+			"disabled": "Soon",
+			"roadmap": {
+				"title": "Roadmap",
+				"description": "A structured learning path and resource base for preparing for IT interviews.",
+				"imgAlt": "Front-end development courses"
+			},
+			"mentor": {
+				"title": "Mentoring",
+				"description": "Work with a mentor and participate in practical tasks to gain real-world experience.",
+				"imgAlt": "Mentor support"
+			},
+			"materials": {
+				"title": "Materials",
+				"description": "Articles and guides on preparation, technology, and passing IT interviews.",
+				"imgAlt": "IT Interview Preparation Materials"
 			}
 		}
 	}
