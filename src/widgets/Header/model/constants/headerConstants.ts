@@ -42,3 +42,5 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 		title: Header.NAV_TASKS,
 	},
 ];
+
+export const INVERTED_THEME_URLS = [''] as const;

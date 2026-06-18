@@ -6,6 +6,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 
@@ -29,7 +30,7 @@ const x = (...names) => compat.extends(...names).map(sanitize);
 
 export default [
 	{ ignores },
-
+	...nextCoreWebVitals,
 	js.configs.recommended,
 
 	// TS пресет только для *.ts/tsx и с project
@@ -49,10 +50,6 @@ export default [
 	})),
 
 	// пресеты через compat
-	...x('plugin:react/recommended'),
-	...x('plugin:react-hooks/recommended'),
-	...x('plugin:jsx-a11y/recommended'),
-	...x('next/core-web-vitals'),
 	...x('prettier'), // выключает конфликтующие форматирующие правила в ESLint
 	...x('plugin:@conarti/feature-sliced/recommended'),
 
@@ -69,10 +66,6 @@ export default [
 		},
 		plugins: {
 			'@typescript-eslint': tseslint.plugin,
-			react: reactPlugin,
-			'react-hooks': reactHooks,
-			import: importPlugin,
-			'jsx-a11y': jsxA11y,
 			prettier: prettierPlugin,
 		},
 		settings: {
@@ -99,6 +92,8 @@ export default [
 			],
 			'react/jsx-uses-react': 'off',
 			'react/react-in-jsx-scope': 'off',
+			'react-hooks/set-state-in-effect': 'warn',
+			'react-hooks/refs': 'warn',
 
 			'@typescript-eslint/no-shadow': 'off',
 			'@typescript-eslint/ban-ts-comment': 'error',

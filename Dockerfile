@@ -4,9 +4,9 @@ WORKDIR /app
 
 # Копируем только package.json для кэша
 COPY package*.json ./
+RUN npm install -g npm@latest
 RUN npm ci
 
-# Копируем исходники
 COPY . .
 
 # Аргументы для сборки
