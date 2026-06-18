@@ -43,5 +43,4 @@ export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
 	},
 ];
 
-export const INVERTED_THEME_URLS = ['/new-landing'] as const;
-// export const INVERTED_THEME_URLS = [''] as const;
+export const INVERTED_THEME_URLS = [''] as const;
