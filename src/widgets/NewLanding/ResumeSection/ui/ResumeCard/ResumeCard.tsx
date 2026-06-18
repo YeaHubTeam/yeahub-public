@@ -76,6 +76,7 @@ const ResumeCard = ({
 							size="large"
 							suffix={<Icon icon="arrowRight" size={24} />}
 							disabled={disabled}
+							href={to}
 						>
 							{linkText}
 						</Button>

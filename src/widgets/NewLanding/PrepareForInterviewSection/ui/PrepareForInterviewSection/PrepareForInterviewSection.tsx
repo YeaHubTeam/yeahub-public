@@ -18,7 +18,7 @@ const specializations: Specialization[] = [
 	{
 		id: 2,
 		title: 'Python Backend',
-		slug: 'python-developer',
+		slug: 'python-backend-developer',
 		skills: ['Python', 'Django', 'PostgreSQL'],
 	},
 	{
