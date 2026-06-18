@@ -8,5 +8,45 @@
 		"choose": "Select specialization from the list",
 		"empty": "No options available",
 		"selected": "Selected specializations"
+	},
+	"guru": {
+		"readMore": "Read more",
+		"description": "Full support until you get an offer — no expensive courses, pay only after you’re employed",
+		"chipTitle": "Your {specialization} Mentor",
+		"titleSuffix": "in YeaHub"
+	},
+	"materials": {
+		"title": "Preparation materials",
+		"link": "View all resources"
+	},
+	"keywords": {
+		"title": "Ключевые слова из вакансий"
+	},
+	"skills": {
+		"title": "Ключевые навыки"
+	},
+	"tasks": {
+		"title": "Interview algorithms and tasks",
+		"link": "View all tasks"
+	},
+	"collections": {
+		"title": "Interviews in IT companies",
+		"link": "View all interviews"
+	},
+	"questions": {
+		"title_new": "Interview questions",
+		"link": "View all questions"
+	},
+	"seo": {
+		"main_page": {
+			"title": "IT Specializations for Interview Preparation",
+			"description": "Browse IT specializations on YeaHub: Frontend, Backend, QA, DevOps, Mobile, Data Science and other. Choose your track and prepare for technical interviews with questions, skills, and coding tasks.",
+			"keywords": "it specializations, it career paths, choose it specialization, technical interview preparation, frontend interview prep, backend developer interview, qa testing interview, devops interview questions, mobile development interview, data science interview, it interview questions by role, developer skills preparation, junior developer interview, yeahub specializations"
+		},
+		"detail_page": {
+			"title": "How to pass the interview {Role}",
+			"description": "Full guide to {Role}: interview preparation, tasks, questions and answers, resume optimization, key skills and tips for employment",
+			"keywords": "how to pass the interview {Role}, interview preparation {Role}, tasks {Role}, questions {Role}, answers {Role}, resume optimization {Role}, key skills {Role}, tips for employment {Role}"
+		}
 	}
 }

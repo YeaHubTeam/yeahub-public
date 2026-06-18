@@ -6,9 +6,13 @@
   min-height: 38px;
   border-radius: 12px;
   white-space: nowrap;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease; 
 }
-  
+
+.nav-link .text {
+  color: var(--text-color-header);
+} 
+
 .nav-link:hover{
   background-color:var(--color-black-30);
 }

@@ -90,7 +90,9 @@ const MainResourcesPage = async ({ params, searchParams }: PageProps) => {
 
 	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 
-	if (!currentSpecialization) notFound();
+	if (!currentSpecialization) {
+		notFound();
+	}
 
 	const specializationId = currentSpecialization.id;
 

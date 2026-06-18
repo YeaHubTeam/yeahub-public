@@ -98,7 +98,7 @@ const QuestionPage = async ({ params }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const question = await getQuestionBySlug(slug);
+	const question = await getQuestionBySlug(slug).catch(() => null);
 
 	if (!question) {
 		notFound();
