@@ -13,7 +13,7 @@ export const cardsData: CardData[] = [
 		titleKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_QUESTIONS_TITLE,
 		descriptionKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_QUESTIONS_DESCRIPTION,
 		buttonKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_QUESTIONS_BUTTON,
-		link: '/questions',
+		link: '/questions/react-frontend-developer',
 	},
 	{
 		id: 'tasks',
@@ -31,6 +31,6 @@ export const cardsData: CardData[] = [
 		titleKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_INTERVIEWS_TITLE,
 		descriptionKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_INTERVIEWS_DESCRIPTION,
 		buttonKey: Landing.INTERVIEW_QUESTIONS_TASKS_CARD_INTERVIEWS_BUTTON,
-		link: '/collections',
+		link: '/collections/react-frontend-developer',
 	},
 ];

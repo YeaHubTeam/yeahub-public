@@ -23,8 +23,15 @@ a.link:hover {
 	text-decoration: none;
 }
 
-.card {
+.card-wrapper {
 	position: relative;
+	height: 270px;
+}
+
+.card {
+	position: absolute;
+	bottom: 0;
+	left: 0;
 	padding: 20px;
 	height: 270px;
 	overflow: hidden;

@@ -41,8 +41,9 @@ const NewLandingPage = async ({ params }: PageProps) => {
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/new-landing`;
 
-	const title = t(Landing.BANNER_TITLE);
-	const description = t(Landing.BANNER_DESCRIPTION);
+	const title = t(Landing.HEADER_TITLE);
+	const description = t(Landing.HEADER_SUBTITLE);
+	const seoDescription = t(Landing.SEO_DESCRIPTION);
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -52,7 +53,7 @@ const NewLandingPage = async ({ params }: PageProps) => {
 				'@id': `${siteUrl}/#organization`,
 				name: 'YeaHub',
 				url: siteUrl,
-				description: description,
+				description: seoDescription,
 				sameAs: [],
 			},
 			{
@@ -81,49 +82,191 @@ const NewLandingPage = async ({ params }: PageProps) => {
 				about: {
 					'@id': `${siteUrl}/#organization`,
 				},
-				mainEntity: {
-					'@type': 'ItemList',
-					name: t(Landing.SPECIALIZATION_NEW_TITLE),
-					description: t(Landing.SPECIALIZATION_DESCRIPTION),
-					itemListElement: [
-						{
-							'@type': 'ListItem',
-							position: 1,
-							name: 'Frontend',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_FRONTEND),
-						},
-						{
-							'@type': 'ListItem',
-							position: 2,
-							name: 'Python',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_PYTHON),
-						},
-						{
-							'@type': 'ListItem',
-							position: 3,
-							name: 'Java',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_JAVA),
-						},
-						{
-							'@type': 'ListItem',
-							position: 4,
-							name: 'Node.js',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_NODE_JS),
-						},
-						{
-							'@type': 'ListItem',
-							position: 5,
-							name: 'QA En',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_QA_ENGINEER),
-						},
-						{
-							'@type': 'ListItem',
-							position: 6,
-							name: 'iOS',
-							description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_GOLANG),
-						},
-					],
-				},
+				hasPart: [
+					{
+						'@type': 'ItemList',
+						name: t(Landing.DIFFICULTY_TITLE),
+						description: t(Landing.DIFFICULTY_DESCRIPTION),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: t(Landing.DIFFICULTY_CARDS_FIRST_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_FIRST_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: t(Landing.DIFFICULTY_CARDS_SECOND_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_SECOND_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: t(Landing.DIFFICULTY_CARDS_THIRD_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_THIRD_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 4,
+								name: t(Landing.DIFFICULTY_CARDS_FOURTH_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_FOURTH_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 5,
+								name: t(Landing.DIFFICULTY_CARDS_FIFTH_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_FIFTH_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 6,
+								name: t(Landing.DIFFICULTY_CARDS_SIXTH_TITLE),
+								description: t(Landing.DIFFICULTY_CARDS_SIXTH_DESCRIPTION),
+							},
+						],
+					},
+					{
+						'@type': 'ItemList',
+						name: t(Landing.PREPARE_INTERVIEW_TITLE),
+						description: t(Landing.PREPARE_INTERVIEW_SUBTITLE),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: 'Frontend',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_FRONTEND),
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: 'Python Backend',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_PYTHON),
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: 'Java Backend',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_JAVA),
+							},
+							{
+								'@type': 'ListItem',
+								position: 4,
+								name: 'Node.js Backend',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_NODE_JS),
+							},
+							{
+								'@type': 'ListItem',
+								position: 5,
+								name: 'QA Engineer',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_QA_ENGINEER),
+							},
+							{
+								'@type': 'ListItem',
+								position: 6,
+								name: 'Golang Backend',
+								description: t(Landing.INTERVIEW_SPECIALIZATION_CARD_DESCRIPTION_GOLANG),
+							},
+						],
+					},
+					{
+						'@type': 'ItemList',
+						name: t(Landing.INTERVIEW_QUESTIONS_TASKS_TITLE),
+						description: t(Landing.INTERVIEW_QUESTIONS_TASKS_DESCRIPTION),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_QUESTIONS_TITLE),
+								description: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_QUESTIONS_DESCRIPTION),
+								url: `${siteUrl}/${locale}/questions`,
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_TASKS_TITLE),
+								description: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_TASKS_DESCRIPTION),
+								url: `${siteUrl}/${locale}/tasks`,
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_INTERVIEWS_TITLE),
+								description: t(Landing.INTERVIEW_QUESTIONS_TASKS_CARD_INTERVIEWS_DESCRIPTION),
+								url: `${siteUrl}/${locale}/collections`,
+							},
+						],
+					},
+					{
+						'@type': 'ItemList',
+						name: t(Landing.TRAINER_PROGRESS_TITLE),
+						description: t(Landing.TRAINER_PROGRESS_SUBTITLE),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: t(Landing.TRAINER_PROGRESS_BLOCK_FIRST_TITLE),
+								description: t(Landing.TRAINER_PROGRESS_BLOCK_FIRST_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: t(Landing.TRAINER_PROGRESS_BLOCK_SECOND_TITLE),
+								description: t(Landing.TRAINER_PROGRESS_BLOCK_SECOND_DESCRIPTION),
+							},
+						],
+					},
+					{
+						'@type': 'ItemList',
+						name: t(Landing.RESUME_TITLE),
+						description: t(Landing.RESUME_DESCRIPTION),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: t(Landing.RESUME_CARD_ATS_TITLE),
+								description: t(Landing.RESUME_CARD_ATS_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: t(Landing.RESUME_CARD_KEYWORDS_TITLE),
+								description: t(Landing.RESUME_CARD_KEYWORDS_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: t(Landing.RESUME_CARD_VACANCY_TITLE),
+								description: t(Landing.RESUME_CARD_VACANCY_DESCRIPTION),
+							},
+						],
+					},
+					{
+						'@type': 'ItemList',
+						name: t(Landing.TRAINING_TITLE),
+						description: t(Landing.TRAINING_DESCRIPTION),
+						itemListElement: [
+							{
+								'@type': 'ListItem',
+								position: 1,
+								name: t(Landing.TRAINING_CARD_ROADMAP_TITLE),
+								description: t(Landing.TRAINING_CARD_ROADMAP_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: t(Landing.TRAINING_CARD_MENTOR_TITLE),
+								description: t(Landing.TRAINING_CARD_MENTOR_DESCRIPTION),
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: t(Landing.TRAINING_CARD_MATERIALS_TITLE),
+								description: t(Landing.TRAINING_CARD_MATERIALS_DESCRIPTION),
+							},
+						],
+					},
+				],
 			},
 			{
 				'@type': 'BreadcrumbList',
@@ -144,6 +287,7 @@ const NewLandingPage = async ({ params }: PageProps) => {
 			},
 		],
 	};
+
 	return (
 		<>
 			<script

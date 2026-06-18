@@ -30,26 +30,28 @@ export const ListItem = ({
 }: ListItemProps) => {
 	const t = useTranslations(i18Namespace.landing);
 	return (
-		<div className={styles.card}>
-			<Flex direction="column" justify="between" className={styles['card-content']}>
-				<div className={classnames(styles['card-img'], styles[imgClass])}>
-					<Image src={img} alt="interviewBanner" />
-				</div>
-				<Indicator variant="purple" className={styles.indicator} />
-				<Flex direction="column" gap="20">
-					<Flex gap="8" direction="column" className={styles.text}>
-						<Text variant="head3" color="black-900" className={styles['card-title']}>
-							{t(titleKey)}
-						</Text>
-						<Text variant="body3-accent" color="black-900">
-							{t(descriptionKey)}
-						</Text>
+		<div className={styles['card-wrapper']}>
+			<div className={styles.card}>
+				<Flex direction="column" justify="between" className={styles['card-content']}>
+					<div className={classnames(styles['card-img'], styles[imgClass])}>
+						<Image src={img} alt="interviewBanner" />
+					</div>
+					<Indicator variant="purple" className={styles.indicator} />
+					<Flex direction="column" gap="20">
+						<Flex gap="8" direction="column" className={styles.text}>
+							<Text variant="head3" color="black-900" className={styles['card-title']}>
+								{t(titleKey)}
+							</Text>
+							<Text variant="body3-accent" color="black-900">
+								{t(descriptionKey)}
+							</Text>
+						</Flex>
+						<Button variant="link" size="large" className={styles.link} href={link}>
+							{t(buttonKey)}
+						</Button>
 					</Flex>
-					<Button variant="link" size="large" className={styles.link} href={link}>
-						{t(buttonKey)}
-					</Button>
 				</Flex>
-			</Flex>
+			</div>
 		</div>
 	);
 };
