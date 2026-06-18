@@ -4,6 +4,7 @@ export {
 	Analytics,
 	Avos,
 	Collections,
+	Companies,
 	Docs,
 	Footer,
 	Header,

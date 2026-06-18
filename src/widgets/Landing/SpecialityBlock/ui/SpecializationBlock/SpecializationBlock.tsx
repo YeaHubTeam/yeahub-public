@@ -34,7 +34,11 @@ export const SpecializationBlock = ({ locale }: SpecializationBlockProps) => {
 					</li>
 				))}
 			</ul>
-			<SpecializationButton variant="outline" className="button">
+			<SpecializationButton
+				variant="outline"
+				className="button"
+				link={`/${locale}/specializations`}
+			>
 				{t(Landing.SPECIALIZATION_BUTTON)}
 			</SpecializationButton>
 		</Flex>
