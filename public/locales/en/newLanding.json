@@ -1,0 +1,25 @@
+{
+	"training": {
+		"title": "Training and career advancement in IT",
+		"description": "If you're not ready for interviews yet, start with training, mentors, and a structured development plan."
+	},
+
+	"trainingCard": {
+		"disabled": "Soon",
+		"roadmap": {
+			"title": "Roadmap",
+			"description": "A structured learning path and resource base for preparing for IT interviews.",
+			"imgAlt": "Front-end development courses"
+		},
+		"mentor": {
+			"title": "Mentoring",
+			"description": "Work with a mentor and participate in practical tasks to gain real-world experience.",
+			"imgAlt": "Mentor support"
+		},
+		"materials": {
+			"title": "Materials",
+			"description": "Articles and guides on preparation, technology, and passing IT interviews.",
+			"imgAlt": "IT Interview Preparation Materials"
+		}
+	}
+}

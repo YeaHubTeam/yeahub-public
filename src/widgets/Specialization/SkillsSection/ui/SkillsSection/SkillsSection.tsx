@@ -1,25 +1,29 @@
-import { HhTopBySpecResponse } from '@/entities/hh';
-import { Specializations } from '@/shared/config';
+import { useTranslations } from 'next-intl';
+
+import { Skill } from '@/entities/skill';
+import { Specializations, i18Namespace } from '@/shared/config';
 import { Chip } from '@/shared/ui/Chip';
-import { Flex } from '@/shared/ui/Flex';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
+import { CollapsibleChipGrid } from '@/widgets/Specialization/CollapsibleChipGrid';
 
 interface SkillsSectionProps {
-	skills?: HhTopBySpecResponse['skills'];
+	skills?: Skill[];
 }
 
 export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {
+	const t = useTranslations(i18Namespace.specialization);
+
 	if (!skills.length) {
 		return null;
 	}
 
 	return (
-		<SectionWrapper title={Specializations.SKILLS_SUBTITLE}>
-			<Flex gap="16" wrap="wrap">
+		<SectionWrapper title={t(Specializations.SKILLS_SUBTITLE)}>
+			<CollapsibleChipGrid>
 				{skills.map((skill) => (
-					<Chip key={skill.title} label={skill.title} variant="big" />
+					<Chip key={skill.id} label={skill.title} variant="big" />
 				))}
-			</Flex>
+			</CollapsibleChipGrid>
 		</SectionWrapper>
 	);
 };

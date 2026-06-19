@@ -74,3 +74,5 @@ export const POPOVER_COLUMNS: PopoverColumn[] = [
 		],
 	},
 ];
+
+export const INVERTED_THEME_URLS = [''] as const;

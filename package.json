@@ -1,6 +1,6 @@
 {
 	"name": "yeahub-public",
-	"version": "1.0.14",
+	"version": "1.0.15",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --webpack",
@@ -86,6 +86,7 @@
 	},
 	"overrides": {
 		"@types/react": "19.2.15",
-		"@types/react-dom": "19.2.3"
+		"@types/react-dom": "19.2.3",
+		"@swc/helpers": "0.5.23"
 	}
 }

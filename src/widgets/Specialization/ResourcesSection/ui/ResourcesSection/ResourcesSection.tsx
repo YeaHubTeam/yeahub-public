@@ -1,9 +1,11 @@
+import { getTranslations } from 'next-intl/server';
+
 import { ResourceCard, getResourcesList } from '@/entities/resource';
 import { type Specialization } from '@/entities/specialization';
-import { ROUTES, Specializations } from '@/shared/config';
+import { ROUTES, Specializations, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
-import { SectionWrapper } from '@/widgets/Specialization/SectionWrapper';
+import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 
 interface ResourcesSectionProps {
 	locale: string;
@@ -11,6 +13,8 @@ interface ResourcesSectionProps {
 }
 
 export const ResourcesSection = async ({ locale, specialization }: ResourcesSectionProps) => {
+	const t = await getTranslations(i18Namespace.specialization);
+
 	const detailRoute = `/${locale}${route(ROUTES.resources.page, specialization.slug)}`;
 
 	const resourcesParams = {
@@ -27,9 +31,9 @@ export const ResourcesSection = async ({ locale, specialization }: ResourcesSect
 
 	return (
 		<SectionWrapper
-			actionTitle={Specializations.PREPARATION_MATERIALS_LINK}
+			actionTitle={t(Specializations.PREPARATION_MATERIALS_LINK)}
 			actionRoute={detailRoute}
-			title={Specializations.PREPARATION_MATERIALS_TITLE}
+			title={t(Specializations.PREPARATION_MATERIALS_TITLE)}
 		>
 			<Flex direction="column" gap="20">
 				{resources.data.map((resource) => (

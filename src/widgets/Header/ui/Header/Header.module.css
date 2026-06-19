@@ -1,10 +1,51 @@
 .header {
+	position: relative;
   display: flex;
   justify-content: center;
-  background-color: var(--color-white-900);
+  background-color: var(--background-header);
+}
+
+.header.inverted {
+  background-color: var(--background-header);
+}
+
+.header .inverted-bg {
+	position: absolute;
+	width: 100%;
+	height: 807px;
+	background-image: linear-gradient(180deg, #020207 0%, #0B0624 34.25%, #4A25FF 57.53%, #f4f4f4 100%);
+}
+
+.header .inverted-bg::before {
+	position: absolute;
+	bottom: -20%;
+	left: 50%;
+	width: 100%;
+	height: 40%;
+	border-radius: 50%;
+	background: var(--color-white-900);
+	transform: translateX(-50%);
+	content: "";
+	opacity: 0.8;
+	filter: blur(100px);
+}
+
+.header .inverted-bg::after {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 70%;
+	height: 35%;
+	border-radius: 50%;
+	background: var(--color-white-900);
+	transform: translateX(-50%);
+	content: "";
+	opacity: 0.8;
+	filter: blur(100px);
 }
 
 .header-content {
+	z-index: 1;
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
@@ -22,6 +63,13 @@
     padding: 0 60px;
   }
 }
+
+@media screen and (width < 1280px) {
+	.header .inverted-bg {
+		height: 790px;
+	}
+}
+
 
 @media screen and (width < 1200px) {
   .header {
@@ -43,7 +91,7 @@
     padding: 0 10px;
   }
 
-  .header-content {
+	.header-content {
     padding: 10px 0;
   }
 

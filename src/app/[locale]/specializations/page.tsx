@@ -17,9 +17,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.specialization });
 
-	const title = t(Specializations.TITLE_MAIN);
-	const description = t(Specializations.TITLE_PAGE);
-	const keywords = [title, t(Specializations.SELECT_CHOOSE)];
+	const title = t(Specializations.SEO_MAIN_PAGE_TITLE);
+	const description = t(Specializations.SEO_MAIN_PAGE_DESCRIPTION);
+	const keywords = [title, t(Specializations.SEO_MAIN_PAGE_KEYWORDS)];
 
 	return {
 		title,
