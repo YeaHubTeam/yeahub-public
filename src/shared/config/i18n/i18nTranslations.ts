@@ -140,6 +140,7 @@ export enum Specializations {
 	COLLECTIONS_LINK = 'collections.link',
 	KEYWORDS_SUBTITLE = 'keywords.subtitle',
 	SKILLS_SUBTITLE = 'skills.subtitle',
+	SKILLS_LINK = 'skills.link',
 	TASKS_TITLE = 'tasks.title',
 	TASKS_LINK = 'tasks.link',
 	QUESTIONS_NEW_TITLE = 'questions.title_new',
