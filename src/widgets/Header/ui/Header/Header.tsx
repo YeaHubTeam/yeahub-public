@@ -5,6 +5,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { HeaderAuth } from '../HeaderAuth/HeaderAuth';
 import { HeaderNav } from '../HeaderNav/HeaderNav';
 import styles from './Header.module.css';
+import { HeaderClient } from './HeaderClient';
 
 export const Header = () => {
 	const jsonLd = {
@@ -23,7 +24,7 @@ export const Header = () => {
 	};
 
 	return (
-		<header data-testid={'Header'} className={styles.header}>
+		<HeaderClient>
 			<Flex className={styles['header-content']}>
 				<Flex className={styles['header-main']}>
 					<AppLogo />
@@ -38,6 +39,6 @@ export const Header = () => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-		</header>
+		</HeaderClient>
 	);
 };

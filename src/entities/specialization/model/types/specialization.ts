@@ -26,3 +26,10 @@ export interface SpecializationSlug {
 }
 
 export type GetSpecializationSlugsResponse = Response<SpecializationSlug[]>;
+
+export interface GuruInSpecialization {
+	title: string;
+	name: string;
+	specializations: number[];
+	image: string;
+}
