@@ -1,14 +1,14 @@
 .nav-popover {
-	min-width: 660px;
-	width: 100%;
-	border-radius: 0 0 20px 20px !important;
-	box-shadow: none !important;
 	padding: 0 !important;
+	width: 100%;
+	min-width: 660px;
+	box-shadow: none !important;
 	border: none !important;
+	border-radius: 0 0 20px 20px !important;
 }
 
 .nav-wrapper {
 	padding: 0 40px;
-	min-width: 660px;
 	width: 100%;
+	min-width: 660px;
 }

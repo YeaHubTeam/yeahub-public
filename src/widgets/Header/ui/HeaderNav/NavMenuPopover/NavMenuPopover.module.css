@@ -16,11 +16,11 @@
 
 .menu-item {
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
+	align-items: center;
 	padding: 12px;
-	white-space: nowrap;
 	width: 100%;
+	white-space: nowrap;
 }
 
 .menu-item .nav-link-text {
