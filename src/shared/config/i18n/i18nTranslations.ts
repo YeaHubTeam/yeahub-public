@@ -842,3 +842,9 @@ export enum Subscription {
 	CARD_BENEFITS_FOURTH = 'card.benefits.fourth',
 	CARD_BENEFITS_FIFTH = 'card.benefits.fifth',
 }
+
+export enum Vacancies {
+	MAIN_PAGE_TITLE = 'main_page.title',
+	MAIN_PAGE_DESCRIPTION = 'main_page.description',
+	MAIN_PAGE_KEYWORDS = 'main_page.keywords',
+}

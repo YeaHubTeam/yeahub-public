@@ -1,7 +1,7 @@
 :root {
 	/* сolor palette */
-	--color-purple-1100: #060413; 
-	--color-purple-1050: #1E1454;
+	--color-purple-1100: #060413;
+	--color-purple-1050: #1e1454;
 	--color-purple-1000: #18003e;
 	--color-purple-950: #4600e9;
 	--color-purple-900: #400799;
@@ -74,4 +74,5 @@
 	--color-border: rgb(227 227 227 / 75%);
 	--color-sticky-shadow: #00550e;
 	--color-circle-border: #f3164e12;
+	--color-dot: #6e6e6e;
 }
