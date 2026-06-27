@@ -847,4 +847,10 @@ export enum Vacancies {
 	MAIN_PAGE_TITLE = 'main_page.title',
 	MAIN_PAGE_DESCRIPTION = 'main_page.description',
 	MAIN_PAGE_KEYWORDS = 'main_page.keywords',
+	MAIN_PAGE_DAY_TODAY = 'main_page.day.today',
+	MAIN_PAGE_DAY_YESTERDAY = 'main_page.day.yesterday',
+	MAIN_PAGE_COUNT_SKILLS = 'main_page.count.skills',
+	MAIN_PAGE_COUNT_COLLECTIONS = 'main_page.count.collections',
+	MAIN_PAGE_COUNT_QUESTIONS = 'main_page.count.questions',
+	MAIN_PAGE_COUNT_TASKS = 'main_page.count.tasks',
 }
