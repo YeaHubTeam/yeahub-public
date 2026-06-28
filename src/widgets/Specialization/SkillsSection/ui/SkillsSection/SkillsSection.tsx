@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { useTranslations } from 'next-intl';
 
 import { Skill } from '@/entities/skill';
@@ -21,7 +23,22 @@ export const SkillsSection = ({ skills = [] }: SkillsSectionProps) => {
 		<SectionWrapper title={t(Specializations.SKILLS_SUBTITLE)}>
 			<CollapsibleChipGrid>
 				{skills.map((skill) => (
-					<Chip key={skill.id} label={skill.title} variant="big" />
+					<Chip
+						key={skill.id}
+						label={skill.title}
+						variant="big"
+						prefix={
+							skill.imageSrc ? (
+								<Image
+									width={34}
+									height={34}
+									src={skill.imageSrc}
+									alt={skill.title}
+									loading="lazy"
+								/>
+							) : null
+						}
+					/>
 				))}
 			</CollapsibleChipGrid>
 		</SectionWrapper>

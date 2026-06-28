@@ -74,6 +74,24 @@ div.card-content {
 	width: 93px;
 }
 
+.button-link-key-words {
+	width: 91px;
+	font-weight: var(--font-weight-600);
+}
+
+.button-link-key-words svg {
+  transition: .3s ease-in-out;
+}
+
+.button-link-key-words:hover {
+  color: var(--color-purple-700);
+  text-decoration: none;
+}
+
+.button-link-key-words:hover svg {
+  transform: translateX(5px);
+}
+
 .button-link-vacancy {
 	width: 106px;
 }

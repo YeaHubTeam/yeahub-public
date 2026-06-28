@@ -222,7 +222,7 @@
 				"title": "Keywords",
 				"description": "Extract key skills and language from jobs to adapt resumes to real employer requirements.",
 				"imgAlt": "Keyword search interface visualization scheme",
-				"buttonLinkText": ""
+				"buttonLinkText": "Skills"
 			},
 			"vacancy": {
 				"title": "Job aggregator",

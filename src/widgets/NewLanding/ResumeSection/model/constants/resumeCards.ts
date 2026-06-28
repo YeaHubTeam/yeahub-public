@@ -25,7 +25,7 @@ export const resumeCards: ResumeCardProps[] = [
 	},
 
 	{
-		id: 'keyWords',
+		id: 'key-words',
 		title: Landing.RESUME_CARD_KEYWORDS_TITLE,
 		description: Landing.RESUME_CARD_KEYWORDS_DESCRIPTION,
 		images: [
@@ -35,6 +35,7 @@ export const resumeCards: ResumeCardProps[] = [
 				src: KeywordsContainer,
 			},
 		],
+		to: route(ROUTES.hhAnalytics.page),
 		linkText: Landing.RESUME_CARD_KEYWORDS_BUTTON_LINK_TEXT,
 	},
 	{
