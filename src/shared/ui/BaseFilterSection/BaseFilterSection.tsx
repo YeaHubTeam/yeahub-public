@@ -9,6 +9,7 @@ import { Text } from '@/shared/ui/Text';
 
 import { Chip } from '../Chip';
 import { Icon, IconName } from '../Icon';
+import type { StatusChipVariant } from '../StatusChip';
 import { Tooltip } from '../Tooltip';
 import styles from './BaseFilterSection.module.css';
 
@@ -27,6 +28,8 @@ export interface BaseFilterSectionProps<T> {
 	data: BaseFilterItem<T>[];
 	onClick: (id: T) => void;
 	disabled?: boolean;
+	variant?: 'accent' | 'base';
+	colorVariant?: StatusChipVariant;
 }
 
 export const BaseFilterSection = <T,>({
@@ -34,10 +37,13 @@ export const BaseFilterSection = <T,>({
 	data,
 	onClick,
 	disabled = false,
+	variant = 'base',
+	colorVariant,
 }: BaseFilterSectionProps<T>) => {
 	const onHandleClick = (id: T) => () => {
 		onClick(id);
 	};
+	const isAccent = variant === 'accent';
 
 	return (
 		<Flex direction="column" gap="8" style={{ maxWidth: 'max-content' }}>
@@ -51,7 +57,9 @@ export const BaseFilterSection = <T,>({
 							<Chip
 								className={styles.chip}
 								label={item.title}
-								theme="primary"
+								theme={isAccent ? 'accent' : 'primary'}
+								labelVariant={isAccent ? 'body2-accent' : undefined}
+								themeVariant={colorVariant}
 								prefix={
 									item.iconName ? (
 										<Icon icon={item.iconName} size={20} color="black-700" />

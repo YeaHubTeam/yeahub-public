@@ -1,0 +1,18 @@
+{
+	"search": {
+		"placeholder": "Job title..."
+	},
+
+	"workFormat": {
+		"title": "Working format",
+		"office": "Office",
+		"remote": "Remote",
+		"hybrid": "Hybrid"
+	},
+	"industry": "Industry",
+	"grade": "Grade",
+	"companyType": "Company Type",
+	"employmentType": "Employment type",
+	"salary": "Salary",
+	"englishLevel": "English proficiency level"
+}

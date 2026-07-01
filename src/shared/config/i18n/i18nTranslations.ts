@@ -842,3 +842,17 @@ export enum Subscription {
 	CARD_BENEFITS_FOURTH = 'card.benefits.fourth',
 	CARD_BENEFITS_FIFTH = 'card.benefits.fifth',
 }
+
+export enum Vacancies {
+	VACANCIES_SEARCH_PLACEHOLDER = 'search.placeholder',
+	WORKING_FORMAT = 'workFormat.title',
+	WORKING_FORMAT_OFFICE = 'workFormat.office',
+	WORKING_FORMAT_REMOTE = 'workFormat.remote',
+	WORKING_FORMAT_HYBRID = 'workFormat.hybrid',
+	GRADE = 'grade',
+	COMPANY_TYPE = 'companyType',
+	SALARY = 'salary',
+	INDUSTRY = 'industry',
+	ENGLISH_LEVEL = 'englishLevel',
+	EMPLOYMENT_TYPE = 'employmentType',
+}

@@ -1,0 +1,17 @@
+{
+	"search": {
+		"placeholder": "Название вакансии..."
+	},
+	"workFormat": {
+		"title": "Формат работы",
+		"office": "Офис",
+		"remote": "Удалённо",
+		"hybrid": "Гибрид"
+	},
+	"industry": "Сфера",
+	"grade": "Грейд",
+	"companyType": "Тип компании",
+	"employmentType": "Тип занятости",
+	"salary": "Зарплата",
+	"englishLevel": "Уровень английского"
+}

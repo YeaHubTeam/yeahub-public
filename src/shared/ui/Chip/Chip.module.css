@@ -1,95 +1,144 @@
 .chip-delete-icon {
-  cursor: pointer;
-  flex-shrink: 0;
-  margin-left: 8px;
+	cursor: pointer;
+	flex-shrink: 0;
+	margin-left: 8px;
 }
 
 .chip-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  width: fit-content;
-  border: 1px solid var(--color-black-200);
-  border-radius: 12px;
-  background-color: transparent;
-  font-weight: var(--font-weight-500);
-  user-select: none;
-  cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: fit-content;
+	cursor: pointer;
+	font-weight: var(--font-weight-500);
+	user-select: none;
+}
 
-  &.chip-clickable {
-    cursor: pointer;
-  }
+.chip-base {
+	padding: 12px;
+	border: 1px solid var(--color-black-200);
+	border-radius: 12px;
+	background-color: transparent;
 
-  &.chip-disabled {
-    box-shadow: none;
-    border: 1px solid var(--color-black-150);
-    background-color: transparent;
-    color: var(--color-black-150);
-    cursor: not-allowed;
-    pointer-events: none;
-    opacity: 0.6;
+	&.chip-clickable {
+		cursor: pointer;
+	}
 
-    .chip-delete-icon {
-      cursor: not-allowed;
-    }
-  }
+	&.chip-disabled {
+		box-shadow: none;
+		border: 1px solid var(--color-black-150);
+		background-color: transparent;
+		color: var(--color-black-150);
+		cursor: not-allowed;
+		pointer-events: none;
+		opacity: 0.6;
 
-  &.chip-active {
-    border: 1px solid var(--color-purple-700);
-  }
+		.chip-delete-icon {
+			cursor: not-allowed;
+		}
+	}
 
-  &.chip-primary {
-    background-color: var(--color-white-900);
-    color: var(--color-black-900);
-  }
+	&.chip-active-base {
+		border: 1px solid var(--color-purple-700);
+	}
 
-  &.chip-outlined {
-    border: 1px solid var(--color-purple-700);
-  }
+	&.chip-primary {
+		background-color: var(--color-white-900);
+		color: var(--color-black-900);
+	}
+
+	&.chip-outlined {
+		border: 1px solid var(--color-purple-700);
+	}
+}
+
+.chip-accent {
+	padding: 6px 12px;
+	border-radius: 21px;
+
+	&.chip-accent-yellow {
+		background-color: var(--color-yellow-200);
+		color: var(--color-yellow-800);
+	}
+
+	&.chip-active-yellow {
+		background-color: var(--color-yellow-800);
+		color: var(--color-yellow-200);
+	}
+
+	&.chip-accent-red {
+		background-color: var(--color-red-200);
+		color: var(--color-red-900);
+	}
+
+	&.chip-active-red {
+		background-color: var(--color-red-900);
+		color: var(--color-red-200);
+	}
+
+	&.chip-accent-green {
+		background-color: var(--color-green-200);
+		color: var(--color-green-750);
+	}
+
+	&.chip-active-green {
+		background-color: var(--color-green-750);
+		color: var(--color-green-200);
+	}
+
+	&.chip-accent-purple {
+		background-color: var(--color-purple-100);
+		color: var(--color-purple-800);
+	}
+
+	&.chip-active-purple {
+		background-color: var(--color-purple-800);
+		color: var(--color-purple-100);
+	}
 }
 
 .small {
-  height: 42px;
+	height: 42px;
 }
 
 .big {
-  height: 48px;
+	height: 48px;
 }
 
 .chip-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: inherit;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: inherit;
 }
 
 .chip-prefix {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 
-  img, svg {
-    max-width: 36px;
-    max-height: 36px;
-  }
+	img,
+	svg {
+		max-width: 36px;
+		max-height: 36px;
+	}
 }
 
 .gap {
-  margin-right: 6px;
+	margin-right: 6px;
 }
 
 @media (width > 1024px) {
-  .chip-wrapper:hover:where(.chip-clickable:not(.chip-disabled)),
-  .chip-wrapper:focus-visible:where(.chip-clickable:not(.chip-disabled)),
-  .chip-wrapper:active:where(.chip-clickable:not(.chip-disabled)) {
-    border: 1px solid var(--color-purple-700);
-    background-color: var(--color-purple-700);
-    color: var(--color-white-900);
-  }
+	.chip-base:hover:where(.chip-clickable:not(.chip-disabled)),
+	.chip-base:focus-visible:where(.chip-clickable:not(.chip-disabled)),
+	.chip-base:active:where(.chip-clickable:not(.chip-disabled)) {
+		border: 1px solid var(--color-purple-700);
+		background-color: var(--color-purple-700);
+		color: var(--color-white-900);
+	}
 
-  .chip-wrapper:hover:where(.chip-clickable:not(.chip-disabled)) .chip-label,
-  .chip-wrapper:focus-visible:where(.chip-clickable:not(.chip-disabled)) .chip-label,
-  .chip-wrapper:active:where(.chip-clickable:not(.chip-disabled)) .chip-label {
-    color: var(--color-white-900);
-  }
+	.chip-base:hover:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+	.chip-base:focus-visible:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+	.chip-base:active:where(.chip-clickable:not(.chip-disabled)) .chip-label {
+		color: var(--color-white-900);
+	}
 }

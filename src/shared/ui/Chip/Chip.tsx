@@ -15,6 +15,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 		{
 			variant = 'small',
 			theme = 'primary',
+			themeVariant,
 			label,
 			labelVariant = 'body3-accent',
 			className,
@@ -27,6 +28,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 		},
 		ref,
 	): React.JSX.Element => {
+		const isAccent = theme === 'accent';
 		const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
 			if (event.key === 'Enter' || event.key === ' ') {
 				event.preventDefault();
@@ -39,13 +41,15 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 				{...props}
 				className={classNames(
 					styles['chip-wrapper'],
-					styles[variant],
+					isAccent
+						? [styles['chip-accent'], styles[`chip-accent-${themeVariant}`]]
+						: [styles['chip-base'], styles[variant]],
 					{
 						[styles['chip-primary']]: theme === 'primary',
 						[styles['chip-outlined']]: theme === 'outlined',
 						[styles['chip-clickable']]: onClick,
 						[styles['chip-disabled']]: disabled,
-						[styles['chip-active']]: active,
+						[styles[`chip-active-${themeVariant || 'base'}`]]: active,
 					},
 					className,
 				)}
@@ -61,10 +65,10 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 					<div className={classNames(styles['chip-prefix'], { [styles.gap]: label })}>{prefix}</div>
 				)}
 				{label && (
-					<Text variant={labelVariant} color="black-800" className={styles['chip-label']}>
+					<Text variant={labelVariant} className={styles['chip-label']}>
 						{label}
 					</Text>
-				)}{' '}
+				)}
 				{onDelete && (
 					<Icon
 						className={styles['chip-delete-icon']}
