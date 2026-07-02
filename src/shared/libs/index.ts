@@ -29,3 +29,5 @@ export {
 } from './browser/managaLocalStorage/manageLocalStorage';
 
 export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
+export { getCurrentDay } from './date/getCurrentDay';
+export { getFormatSalary } from './salary/getFormatSalary';

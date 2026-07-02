@@ -22,6 +22,7 @@ export {
 	Skills,
 	Specializations,
 	Subscription,
+	Vacancies,
 	Tasks,
 	Translation,
 } from './i18n/i18nTranslations';

@@ -21,6 +21,10 @@
     cursor: pointer;
   }
 
+  &.chip-no-pointer{
+    cursor: default
+  }
+
   &.chip-disabled {
     box-shadow: none;
     border: 1px solid var(--color-black-150);

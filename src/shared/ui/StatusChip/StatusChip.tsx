@@ -8,7 +8,7 @@ import { TextVariant } from '@/shared/ui/Text/types';
 import styles from './StatusChip.module.css';
 
 export type StatusChipVariant = 'green' | 'yellow' | 'red' | 'purple';
-export type StatusChipSize = 'small' | 'medium';
+export type StatusChipSize = 'small' | 'premedium' | 'medium';
 
 export interface StatusChipItem {
 	text: string;
@@ -25,6 +25,7 @@ export const StatusChip = ({ status, size = 'small' }: StatusChipProps) => {
 
 	const textSize: Record<StatusChipSize, TextVariant> = {
 		medium: 'body3-strong',
+		premedium: 'body2-accent',
 		small: 'body1-accent',
 	};
 

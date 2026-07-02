@@ -8,6 +8,7 @@ export interface ChipProps {
 	label?: string | ReactNode;
 	labelVariant?: TextVariant;
 	onDelete?: () => void;
+	disablePointer?: boolean;
 	disabled?: boolean;
 	active?: boolean;
 	prefix?: ReactNode;

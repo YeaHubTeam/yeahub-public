@@ -1,10 +1,12 @@
-export type IconSize = 14 | 18 | 20 | 24 | 26 | 28 | 32 | 34 | 36 | 40;
+export type IconSize = 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 32 | 34 | 36 | 38 | 40;
 
 export type IconName =
 	| 'arrowRight'
+	| 'arrowRightUp'
 	| 'arrowLeft'
 	| 'arrowUpSquare'
 	| 'arrowDownSquare'
+	| 'bar'
 	| 'arrowSelect'
 	| 'clock'
 	| 'calendar'
@@ -23,6 +25,7 @@ export type IconName =
 	| 'student'
 	| 'clockCounterClockwise'
 	| 'arrowShortDown'
+	| 'starFall'
 	| 'slidersHorizontal'
 	| 'search'
 	| 'closeCircle'
@@ -40,8 +43,10 @@ export type IconName =
 	| 'facebook'
 	| 'github'
 	| 'githubWhite'
+	| 'globe'
 	| 'behance'
 	| 'whatsapp'
+	| 'target'
 	| 'telegram'
 	| 'telegramWithBackground'
 	| 'youtube'
@@ -49,7 +54,9 @@ export type IconName =
 	| 'tiktok'
 	| 'plus'
 	| 'minus'
+	| 'pin'
 	| 'plusCircle'
+	| 'packageBox'
 	| 'imageEdit'
 	| 'burger'
 	| 'checkCircle'
@@ -76,6 +83,7 @@ export type IconName =
 	| 'watch'
 	| 'tickWithBackground'
 	| 'lightning'
+	| 'wifi'
 	| 'refresh';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

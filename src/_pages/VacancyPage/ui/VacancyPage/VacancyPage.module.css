@@ -1,0 +1,26 @@
+.layout {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	justify-content: center;
+	align-items: start;
+	gap: 24px;
+}
+
+.card {
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.sidebar-desktop-only {
+	display: block;
+}
+
+@media screen and (width < 1024px) {
+	.layout {
+		grid-template-columns: 1fr;
+	}
+
+	.sidebar-desktop-only {
+		display: none;
+	}
+}
