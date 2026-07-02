@@ -2,8 +2,9 @@ import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 
 import { Vacancy } from '../../model/types/vacancy';
-import { VacancyCardCompany } from '../VacancyCardCompany/VacancyCardCompany';
-import { VacancyCardDetails } from '../VacancyCardPreparation/VacancyCardDetails';
+import { VacancyCardHeader } from '../VacancyCardHeader/VacancyCardHeader';
+import { VacancyCardPreparation } from '../VacancyCardPreparation/VacancyCardPreparation';
+import { VacancyCardSalary } from '../VacancyCardSalary/VacancyCardSalary';
 import { VacancyCardSkills } from '../VacancyCardSkills/VacancyCardSkills';
 import { VacancyCardWorkFormat } from '../VacancyCardWorkFormat/VacancyCardWorkFormat';
 import styles from './VacancyCard.module.css';
@@ -26,10 +27,16 @@ export const VacancyCard = ({ vacancy }: VacancyCardProps) => {
 		salary,
 	} = vacancy;
 
+	const hasPreparation = Boolean(
+		preparation.collectionsCount || preparation.questionsCount || preparation.tasksCount,
+	);
+	const hasSalary = Boolean(salary.from || salary.to);
+	const hasSkills = Boolean(skills.length);
+
 	return (
-		<Card withOutsideShadow className={styles.content}>
-			<Flex gap="40" direction="column">
-				<VacancyCardCompany company={company} publishedAt={publishedAt} title={title} />
+		<Card withOutsideShadow className={styles.card} contentClassName={styles.content}>
+			<Flex gap="40" direction="column" justify="between" flex={1}>
+				<VacancyCardHeader company={company} publishedAt={publishedAt} title={title} />
 				<Flex gap="20" direction="column">
 					<VacancyCardWorkFormat
 						employmentForm={employmentForm}
@@ -37,8 +44,13 @@ export const VacancyCard = ({ vacancy }: VacancyCardProps) => {
 						workFormat={workFormat}
 						area={area}
 					/>
-					<VacancyCardSkills skills={skills} />
-					<VacancyCardDetails preparation={preparation} salary={salary} />
+					{hasSkills && <VacancyCardSkills skills={skills} />}
+					{(hasPreparation || hasSalary) && (
+						<Flex justify="between" align="center" gap="8">
+							{hasPreparation && <VacancyCardPreparation preparation={preparation} />}
+							{hasSalary && <VacancyCardSalary salary={salary} />}
+						</Flex>
+					)}
 				</Flex>
 			</Flex>
 		</Card>

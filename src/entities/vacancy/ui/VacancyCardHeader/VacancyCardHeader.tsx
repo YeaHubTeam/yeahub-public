@@ -1,29 +1,22 @@
-import { useTranslations } from 'next-intl';
-
-import { Vacancies, i18Namespace } from '@/shared/config';
-import { getCurrentDay } from '@/shared/libs';
+import { useGetCurrentDay } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
 import { StatusChip } from '@/shared/ui/StatusChip';
 import { Text } from '@/shared/ui/Text';
 
 import { VacancyCompany } from '../../model/types/vacancy';
-import styles from './VacancyCardCompany.module.css';
+import styles from './VacancyCardHeader.module.css';
 
-interface VacancyCardCompanyProps {
+interface VacancyCardHeaderProps {
 	company: VacancyCompany;
 	publishedAt: string;
 	title: string;
 }
 
-export const VacancyCardCompany = ({ company, publishedAt, title }: VacancyCardCompanyProps) => {
-	const t = useTranslations(i18Namespace.vacancies);
-
+export const VacancyCardHeader = ({ company, publishedAt, title }: VacancyCardHeaderProps) => {
 	const { imageSrc, title: companyTitle } = company;
-	const publishedDate = getCurrentDay(publishedAt, {
-		today: t(Vacancies.MAIN_PAGE_DAY_TODAY),
-		yesterday: t(Vacancies.MAIN_PAGE_DAY_YESTERDAY),
-	});
+
+	const publishedDate = useGetCurrentDay(publishedAt);
 
 	return (
 		<Flex gap="12" wrap="wrap" justify="between">

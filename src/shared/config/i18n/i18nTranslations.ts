@@ -25,6 +25,8 @@ export enum Translation {
 	/* Error 404 */
 	ERROR_404_TITLE = 'error-404.title',
 	ERROR_404_BUTTON = 'error-404.button',
+	DATE_TODAY = 'date.today',
+	DATE_YESTERDAY = 'date.yesterday',
 }
 
 export enum Header {
@@ -844,13 +846,13 @@ export enum Subscription {
 }
 
 export enum Vacancies {
-	MAIN_PAGE_TITLE = 'main_page.title',
-	MAIN_PAGE_DESCRIPTION = 'main_page.description',
-	MAIN_PAGE_KEYWORDS = 'main_page.keywords',
-	MAIN_PAGE_DAY_TODAY = 'main_page.day.today',
-	MAIN_PAGE_DAY_YESTERDAY = 'main_page.day.yesterday',
-	MAIN_PAGE_COUNT_SKILLS = 'main_page.count.skills',
-	MAIN_PAGE_COUNT_COLLECTIONS = 'main_page.count.collections',
-	MAIN_PAGE_COUNT_QUESTIONS = 'main_page.count.questions',
-	MAIN_PAGE_COUNT_TASKS = 'main_page.count.tasks',
+	LIST_PAGE_TITLE = 'list_page.title',
+	LIST_PAGE_DESCRIPTION = 'list_page.description',
+	LIST_PAGE_KEYWORDS = 'list_page.keywords',
+	LIST_PAGE_SALARY_FROM = 'list_page.salary.from',
+	LIST_PAGE_SALARY_TO = 'list_page.salary.to',
+	COUNT_SKILLS = 'count.skills',
+	COUNT_COLLECTIONS = 'count.collections',
+	COUNT_QUESTIONS = 'count.questions',
+	COUNT_TASKS = 'count.tasks',
 }

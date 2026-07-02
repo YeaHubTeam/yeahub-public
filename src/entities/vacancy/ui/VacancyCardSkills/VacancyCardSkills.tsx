@@ -37,7 +37,7 @@ export const VacancyCardSkills = ({ skills }: VacancyCardCompanyProps) => {
 						.join(', ')}
 				>
 					<Text variant="body3" color="black-400">
-						{t(Vacancies.MAIN_PAGE_COUNT_SKILLS, { count: hiddenSkillsCount })}
+						{t(Vacancies.COUNT_SKILLS, { count: hiddenSkillsCount })}
 					</Text>
 				</Tooltip>
 			)}

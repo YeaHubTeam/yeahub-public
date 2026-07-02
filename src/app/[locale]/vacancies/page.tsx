@@ -10,7 +10,7 @@ import {
 import { VacanciesPage as VacanciesPageComponent } from '@/pages/VacanciesPage';
 import { Vacancies, i18Namespace } from '@/shared/config';
 
-export const dynamic = 'auto';
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;
@@ -23,9 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.vacancies });
 
-	const title = t(Vacancies.MAIN_PAGE_TITLE);
-	const description = t(Vacancies.MAIN_PAGE_DESCRIPTION);
-	const keywords = t(Vacancies.MAIN_PAGE_KEYWORDS);
+	const title = t(Vacancies.LIST_PAGE_TITLE);
+	const description = t(Vacancies.LIST_PAGE_DESCRIPTION);
+	const keywords = t(Vacancies.LIST_PAGE_KEYWORDS);
 
 	return {
 		title,

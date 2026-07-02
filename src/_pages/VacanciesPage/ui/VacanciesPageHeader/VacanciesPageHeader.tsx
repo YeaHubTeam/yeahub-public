@@ -6,5 +6,5 @@ import { Text } from '@/shared/ui/Text';
 export const VacanciesPageHeader = () => {
 	const t = useTranslations(i18Namespace.vacancies);
 
-	return <Text variant="head2">{t(Vacancies.MAIN_PAGE_TITLE).toLocaleUpperCase()}</Text>;
+	return <Text variant="head2">{t(Vacancies.LIST_PAGE_TITLE).toLocaleUpperCase()}</Text>;
 };

@@ -1,5 +1,10 @@
-.content {
+.card {
 	display: flex;
 	padding: 20px;
+	min-height: 270px;
 	border-radius: 20px;
+}
+
+.content {
+	flex: 1;
 }
