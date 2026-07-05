@@ -84,6 +84,7 @@ export type IconName =
 	| 'tickWithBackground'
 	| 'lightning'
 	| 'wifi'
-	| 'refresh';
+	| 'refresh'
+	| 'refferals';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

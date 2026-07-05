@@ -54,6 +54,7 @@ import Pin from '@/shared/assets/icons/pin.svg';
 import Plus from '@/shared/assets/icons/plus.svg';
 import PlusCircle from '@/shared/assets/icons/plusCircle.svg';
 import Question from '@/shared/assets/icons/questions.svg';
+import Referrals from '@/shared/assets/icons/referralsIcon.svg';
 import Refresh from '@/shared/assets/icons/refresh.svg';
 import SealCheck from '@/shared/assets/icons/sealCheck.svg';
 import SealCheckOutlined from '@/shared/assets/icons/sealCheckOutlined.svg';
@@ -170,4 +171,5 @@ export const icons: Record<IconName, IconComponent> = {
 	tickWithBackground: TickWithBackground,
 	lightning: Lightning,
 	refresh: Refresh,
+	refferals: Referrals,
 };
