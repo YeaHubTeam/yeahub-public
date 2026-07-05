@@ -5,12 +5,14 @@ export type {
 	GetVacanciesListResponse,
 	Vacancy,
 	GetVacanciesListParamsRequest,
-  VacancyDetails,
-  VacancyAiProfile,
-  VacancyPreparation
+	VacancyDetails,
+	VacancyAiProfile,
+	VacancyPreparation,
 } from './model/types/vacancy';
 export { VacancyCard } from './ui/VacancyCard/VacancyCard';
 export { VacancyCardSkeleton } from './ui/VacancyCard/VacancyCard.skeleton';
 
-export { MAX_SHOW_LIMIT_VACANCIES } from './model/constants/vacancyConstants';
-export { MAX_SHOW_LIMIT_KEYWORDS } from './model/constants/vacancy';
+export {
+	MAX_SHOW_LIMIT_VACANCIES,
+	MAX_SHOW_LIMIT_KEYWORDS,
+} from './model/constants/vacancyConstants';

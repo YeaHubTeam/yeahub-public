@@ -846,7 +846,7 @@ export enum Subscription {
 }
 
 export enum Vacancies {
-  LIST_PAGE_TITLE = 'list_page.title',
+	LIST_PAGE_TITLE = 'list_page.title',
 	LIST_PAGE_DESCRIPTION = 'list_page.description',
 	LIST_PAGE_KEYWORDS = 'list_page.keywords',
 	LIST_PAGE_SALARY_FROM = 'list_page.salary.from',

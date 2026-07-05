@@ -6,7 +6,7 @@ export type VacancySource = 'hh' | 'habr' | 'telegram' | 'company_site' | 'hr' |
 export type VacancyEmploymentForm = 'Fulltime' | 'Parttime' | 'Project' | 'Shift' | null;
 export type VacancyGrade = 'Trainee' | 'Junior' | 'Middle' | 'Senior' | 'Lead' | 'Head' | null;
 export type VacancyEnglishLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | null;
-export type VacancyWorkFormat = 'Office' | 'Remote' | 'Hybrid' | 'Field' | null
+export type VacancyWorkFormat = 'Office' | 'Remote' | 'Hybrid' | 'Field' | null;
 export type VacancySkill = Pick<Skill, 'id' | 'title'>;
 export type VacancySpecialization = Pick<Specialization, 'id' | 'title'>;
 export type VacancyStatus = 'active' | 'archived' | null;
@@ -72,7 +72,7 @@ export interface VacancyExtra {
 }
 
 export interface Vacancy {
-  id: string;
+	id: string;
 	source: VacancySource;
 	title: string;
 	area: string;

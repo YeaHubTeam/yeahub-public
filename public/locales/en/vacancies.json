@@ -1,5 +1,5 @@
 {
-  "list_page": {
+	"list_page": {
 		"title": "All vacancies",
 		"description": "All current vacancies in one place",
 		"keywords": "IT vacancies, developer jobs, remote IT jobs, junior vacancies, middle vacancies, senior vacancies, IT hiring, software engineer jobs, tech jobs, IT career, developer career, programming jobs, IT recruitment, open positions, job search IT, IT company vacancies, developer jobs",
@@ -13,7 +13,7 @@
 		"collections": "{count, plural, one {# interview} other {# interviews}}",
 		"questions": "{count, plural, one {# question} other {# questions}}",
 		"tasks": "{count, plural, one {# task} other {# tasks}}"
-  },
+	},
 	"detail_page": {
 		"title": "Vacancy",
 		"description": "Detailed information about the vacancy",
@@ -76,5 +76,5 @@
 		"section": {
 			"title": "Interviews at {company}"
 		}
-  }
+	}
 }

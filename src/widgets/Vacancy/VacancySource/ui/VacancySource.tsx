@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 
 import { VacancyDetails } from '@/entities/vacancy';
 import { Vacancies, i18Namespace } from '@/shared/config';
-import { getCurrentDay } from '@/shared/libs';
+import { useGetCurrentDay } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
 import { Text } from '@/shared/ui/Text';
@@ -17,10 +17,7 @@ interface VacancySourceProps {
 export const VacancySource = ({ source, publishDate }: VacancySourceProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
-	const formattedDate = getCurrentDay(publishDate, {
-		today: t(Vacancies.SOURCE_DATE_TODAY),
-		yesterday: t(Vacancies.SOURCE_DATE_TODAY),
-	});
+	const formattedDate = useGetCurrentDay(publishDate);
 
 	return (
 		<Flex className={styles.container}>
