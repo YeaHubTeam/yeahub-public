@@ -4,7 +4,7 @@ import { Company } from '@/entities/company';
 import { ROUTES } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 import { Slider } from '@/shared/ui/Slider';
-import { skillsTickerSliderSettings } from '@/widgets/Landing/AboutQuestionsBlock/model/constants';
+import { skillsTickerSliderSettings } from '@/widgets/Landing/AboutQuestionsBlock';
 
 import { FilterChip } from '../FilterChip/FilterChip';
 import styles from './FiltersBlock.module.css';

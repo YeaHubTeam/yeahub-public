@@ -7,7 +7,7 @@ import { getCompanies } from '@/entities/company';
 import { getSkills } from '@/entities/skill';
 import { LandingPage as LandingPageComponent } from '@/pages/LandingPage';
 import { Landing, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;

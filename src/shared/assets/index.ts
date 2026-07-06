@@ -11,6 +11,9 @@ export { default as KeywordsContainer } from './images/new-landing-page/Keywords
 export { default as CardVacancyOne } from './images/new-landing-page/CardVacancyOne.png';
 export { default as CardVacancyTwo } from './images/new-landing-page/CardVacancyTwo.png';
 
+export { default as mentorPhone } from './images/mentor/icon/mentorPhone.png';
+export { default as mentorQuestions } from './images/mentor/icon/mentorQuestions.png';
+export { default as mentors } from './images/mentor/icon/mentors.png';
 // export { default as html5 } from './icons/html5.svg';
 // export { default as css3 } from './icons/css3.svg';
 // export { default as js } from './icons/js.svg';

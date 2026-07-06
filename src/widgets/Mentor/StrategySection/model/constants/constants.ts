@@ -1,4 +1,4 @@
-import { mentorPhone, mentorQuestions, mentors } from '@/shared/assets/images/mentor';
+import { mentorPhone, mentorQuestions, mentors } from '@/shared/assets';
 import { Mentor } from '@/shared/config';
 
 export const strategyList = [

@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server';
 import { getTaskBySlug, getTasksSlugs } from '@/entities/tasks';
 import { TaskPage as TaskPageComponent } from '@/pages/TaskPage';
 import { Tasks, Translation, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; slug: string }>;

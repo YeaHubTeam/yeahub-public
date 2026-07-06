@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { AvosPage as AvosPageComponent } from '@/pages/AvosPage';
 import { Avos, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { avosAndYeahubLogo } from '@/widgets/Avos';
 
 interface PageProps {

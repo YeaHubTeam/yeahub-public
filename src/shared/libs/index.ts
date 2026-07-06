@@ -1,4 +1,5 @@
 export { type Pallete, type Response, type Author, type SortOrder } from './types';
+export { type SelectedEntity } from './app';
 
 export {
 	COUNT_TO_GET_QUESTIONS_FOR_SSG,

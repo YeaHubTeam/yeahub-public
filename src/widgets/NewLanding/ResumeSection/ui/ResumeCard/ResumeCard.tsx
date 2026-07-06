@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { Landing, i18Namespace } from '@/shared/config';
 import { Badge } from '@/shared/ui/Badge';
-import { Button } from '@/shared/ui/Button/Button';
+import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { Icon } from '@/shared/ui/Icon/Icon';
+import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
 import { ResumeCardProps } from '../../model/types/resumeTypes';

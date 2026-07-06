@@ -7,7 +7,7 @@ import { getQuestionBySlug, getQuestionsList } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string; slug: string }>;

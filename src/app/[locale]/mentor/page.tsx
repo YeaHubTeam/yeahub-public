@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { MentorPage as MentorPageComponent } from '@/pages/MentorPage';
 import { Mentor, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;

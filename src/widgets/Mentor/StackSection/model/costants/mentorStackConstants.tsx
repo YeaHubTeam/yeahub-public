@@ -15,7 +15,7 @@ import reduxImg from '@/shared/assets/images/mentor/redux.webp';
 import storybookImg from '@/shared/assets/images/mentor/storybook.webp';
 import tsImg from '@/shared/assets/images/mentor/ts.webp';
 import webpackImg from '@/shared/assets/images/mentor/webpack.webp';
-import { Mentor } from '@/shared/config/i18n/i18nTranslations';
+import { Mentor } from '@/shared/config';
 
 export interface TechItem {
 	id: string;

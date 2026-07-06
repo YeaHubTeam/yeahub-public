@@ -1,5 +1,5 @@
-import type { Skill } from '@/entities/skill';
-import type { Specialization } from '@/entities/specialization';
+import type { Skill } from '@/entities/skill/@x/vacancy';
+import type { Specialization } from '@/entities/specialization/@x/vacancy';
 import type { Response } from '@/shared/libs';
 
 export type VacancySource = 'hh' | 'habr' | 'telegram' | 'company_site' | 'hr' | 'anonymous' | null;
