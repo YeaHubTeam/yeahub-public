@@ -1,6 +1,11 @@
 .popover-menu {
 	padding: 10px 40px 40px;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
 	border-radius: 0 0 20px 20px;
+	background: var(--background-header);
+}
+
+.popover-menu.inverted {
 	background: var(--background-header);
 }
 
@@ -21,15 +26,15 @@
 	padding: 12px;
 	width: 100%;
 	white-space: nowrap;
+	color: var(--text-color-header);
+}
+
+.menu-item.inverted {
+	color: var(--text-color-header);
 }
 
 .menu-item .nav-link-text {
 	color: var(--text-color-header);
-}
-
-.menu-item.inverted svg,
-.menu-item.inverted path {
-	stroke: var(--text-color-header);
 }
 
 .menu-item:hover *,
@@ -37,9 +42,27 @@
 	color: var(--color-purple-700);
 }
 
-.menu-item:hover svg,
-.menu-item:hover path,
-.menu-item.inverted:hover svg,
-.menu-item.inverted:hover path {
-	stroke: var(--color-purple-700);
+.menu-item.active {
+	color: var(--color-purple-700);
+	text-decoration: underline var(--color-purple-700) 1px;
+	text-underline-offset: 5px;
+}
+
+.menu-item.active .nav-link-text {
+	color: var(--color-purple-700);
+}
+
+.popover-list {
+	flex-direction: row;
+}
+
+@media (width < 1024px) {
+	.popover-list {
+		flex-direction: column;
+	}
+	
+	.popover-menu {
+		padding: 10px 0;
+		min-width: 240px;
+	}
 }

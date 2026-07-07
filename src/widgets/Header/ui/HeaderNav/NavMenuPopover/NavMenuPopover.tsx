@@ -1,32 +1,29 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import classNames from 'classnames';
 
 import { Flex } from '@/shared/ui/Flex';
-import { Icon, IconName } from '@/shared/ui/Icon';
+import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
+import { NavLink } from '../../../model/types/headerTypes';
 import styles from './NavMenuPopover.module.css';
 
 interface NavMenuPopoverProps {
-	columns: {
-		id: string;
-		title: string;
-		subitems: {
-			name: string;
-			href: string;
-			path?: string;
-			icon?: IconName;
-		}[];
-	}[];
+	columns: NavLink[];
 	onItemClick: () => void;
-	onLinkHover: (title: string) => void;
+	isInverted: boolean;
 }
 
-export const NavMenuPopover = ({ columns, onItemClick, onLinkHover }: NavMenuPopoverProps) => {
+export const NavMenuPopover = ({ columns, onItemClick, isInverted }: NavMenuPopoverProps) => {
+	const pathname = usePathname();
+
 	return (
-		<div className={styles['popover-menu']}>
-			<Flex gap="40">
+		<div className={classNames(styles['popover-menu'], { [styles.inverted]: isInverted })}>
+			<Flex gap="40" className={styles['popover-list']}>
 				{columns.map((column) => (
 					<div key={column.id} className={styles.column}>
 						<Flex direction="column" gap="4" className={styles['column-items']}>
@@ -35,21 +32,21 @@ export const NavMenuPopover = ({ columns, onItemClick, onLinkHover }: NavMenuPop
 							</Text>
 							{column.subitems.map((subitem) => (
 								<Link
-									key={subitem.href}
-									href={subitem.href}
+									key={subitem.link}
+									href={subitem.link}
 									onClick={onItemClick}
-									onMouseEnter={() => {
-										onLinkHover(column.id);
-									}}
-									className={`${styles['menu-item']} ${styles['inverted']}`}
+									className={classNames(styles['menu-item'], {
+										[styles.inverted]: isInverted,
+										[styles.active]: pathname.includes(subitem.path),
+									})}
 								>
 									<Flex gap="8">
-										<Icon icon={subitem.icon || 'cursor'} size={20} color="black-900" />
+										<Icon icon={subitem.icon || 'cursor'} size={20} />
 										<Text variant="body3-accent" className={styles['nav-link-text']}>
-											{subitem.name}
+											{subitem.title}
 										</Text>
 									</Flex>
-									<Icon icon="arrowRight" size={20} color="black-900" />
+									<Icon icon="arrowRight" size={20} />
 								</Link>
 							))}
 						</Flex>

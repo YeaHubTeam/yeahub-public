@@ -1,59 +1,52 @@
 'use client';
 
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
+import { useModal } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
 
+import { INVERTED_THEME_URLS } from '../../../model/constants/headerConstants';
+import { NavLink } from '../../../model/types/headerTypes';
 import { HeaderNavLink } from '../../HeaderNavLink/HeaderNavLink';
 import { NavMenuPopover } from '../NavMenuPopover/NavMenuPopover';
-import type { NavItem } from '../types/headerNavTypes';
 import styles from './HeaderNavDesktop.module.css';
 
 interface HeaderNavDesktopProps {
-	items: NavItem[];
+	items: NavLink[];
 }
 
 export const HeaderNavDesktop = ({ items }: HeaderNavDesktopProps) => {
-	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-	const [activeNavLink, setActiveNavLink] = useState<string | null>(null);
+	const { isOpen, onOpen, onClose } = useModal();
+	const pathname = usePathname();
+
+	const isInverted = INVERTED_THEME_URLS.some((url) => pathname.slice(3) === url);
+	const activeNavLink = items.find((item) =>
+		item.subitems?.some((column) => pathname.includes(column.path)),
+	);
 
 	const handleMouseEnter = () => {
-		setIsPopoverOpen(true);
+		onOpen();
 	};
 
 	const handleMouseLeave = () => {
-		setIsPopoverOpen(false);
-		setActiveNavLink(null);
+		onClose();
 	};
 
 	const handlePopoverMouseLeave = () => {
 		handleMouseLeave();
 	};
 
-	const handleNavLinkHover = (id: string) => {
-		setActiveNavLink(id);
-	};
-
-	const popoverColumns = items[0]?.columns || [];
-
-	const navItems = items.map((item) => ({
-		id: item.id,
-		label: item.label,
-		href: item.href,
-		path: item.path,
-	}));
-
 	const popoverMenuItems: PopoverMenuItem[] = [
 		{
 			renderComponent: (onToggle: () => void) => (
 				<div onMouseLeave={handlePopoverMouseLeave}>
 					<NavMenuPopover
-						columns={popoverColumns}
-						onLinkHover={handleNavLinkHover}
+						columns={items}
+						isInverted={isInverted}
 						onItemClick={() => {
 							onToggle();
-							setIsPopoverOpen(false);
+							onClose();
 						}}
 					/>
 				</div>
@@ -63,25 +56,19 @@ export const HeaderNavDesktop = ({ items }: HeaderNavDesktopProps) => {
 
 	return (
 		<Popover
-			isOpen={isPopoverOpen}
+			isOpen={isOpen}
 			placement="bottom-start"
 			menuItems={popoverMenuItems}
 			className={styles['nav-popover']}
 		>
-			<Flex
-				dataTestId="HeaderNavDesktop_Wrapper"
-				gap="40"
-				onMouseEnter={handleMouseEnter}
-				className={styles['nav-wrapper']}
-			>
-				{navItems.map((item) => (
+			<Flex gap="40" onMouseEnter={handleMouseEnter} className={styles['nav-wrapper']}>
+				{items.map((item) => (
 					<HeaderNavLink
 						key={item.id}
-						link={item.href}
-						path={item.path}
-						isActive={activeNavLink === item.id}
+						isActive={activeNavLink?.id === item.id}
+						isInverted={isInverted}
 					>
-						{item.label}
+						{item.title}
 					</HeaderNavLink>
 				))}
 			</Flex>

@@ -3,7 +3,7 @@ import { IconName } from '@/shared/ui/Icon';
 export interface HeaderNavLinks {
 	id: string;
 	label: string;
-	path: string;
+	path?: string;
 	link?: string;
 }
 export interface PopoverNavLink {
@@ -12,7 +12,7 @@ export interface PopoverNavLink {
 	path: string;
 	icon: IconName;
 }
-export interface PopoverColumn {
+export interface NavLink {
 	id: string;
 	title: string;
 	subitems: PopoverNavLink[];

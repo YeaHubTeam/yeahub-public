@@ -1,30 +1,22 @@
 import { Header, ROUTES } from '@/shared/config';
-import { route } from '@/shared/libs';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 
-import { HeaderNavLinks, PopoverColumn } from '../types/headerTypes';
+import { NavLink } from '../types/headerTypes';
 
-const initialSpecialization = 'react-frontend-developer';
-
-export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
-	{ id: 'interview', label: 'Собеседование', path: '/interview' },
-	{ id: 'training', label: 'Обучение', path: '/training' },
-	{ id: 'cv', label: 'Резюме', path: '/cv' },
-];
-
-export const POPOVER_COLUMNS: PopoverColumn[] = [
+export const HEADER_NAV_LINKS: NavLink[] = [
 	{
 		id: 'interview',
 		title: 'Собеседование',
 		subitems: [
 			{
-				link: route(ROUTES.questions.page, initialSpecialization),
+				link: route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG),
 				path: '/questions',
 				title: Header.NAV_QUESTIONS,
 				icon: 'question',
 			},
 			{
-				link: '#',
-				path: '#',
+				link: route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/collections',
 				title: Header.NAV_COMPANIES,
 				icon: 'companies',
 			},
@@ -47,7 +39,7 @@ export const POPOVER_COLUMNS: PopoverColumn[] = [
 				icon: 'quiz',
 			},
 			{
-				link: route(ROUTES.resources.page, initialSpecialization),
+				link: route(ROUTES.resources.page, DEFAULT_SPECIALIZATION_SLUG),
 				path: '/resources',
 				title: Header.NAV_RESOURCES,
 				icon: 'list',
