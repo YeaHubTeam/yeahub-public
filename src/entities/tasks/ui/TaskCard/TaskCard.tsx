@@ -49,7 +49,7 @@ export const TaskCard = ({
 				) : (
 					<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
 				)}
-				<Flex direction="row" gap="10" align="center">
+				<Flex direction="row" gap="10" align="center" wrap="wrap">
 					<TaskDifficultyChip key={id} difficulty={difficulty} />
 					{languagesSlot}
 					<StatusChip
