@@ -83,6 +83,7 @@ export type IconName =
 	| 'user'
 	| 'quiz'
 	| 'list'
-	| 'cursor';
+	| 'cursor'
+	| 'refferals';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

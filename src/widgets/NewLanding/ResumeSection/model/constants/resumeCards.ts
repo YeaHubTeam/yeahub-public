@@ -54,11 +54,10 @@ export const resumeCards: ResumeCardProps[] = [
 				src: CardVacancyTwo,
 			},
 		],
-		//Заменить путь на активный, и поменять флаг(disabled)
-		to: route(ROUTES.learning.page),
+		to: route(ROUTES.vacancies.page),
 		linkText: Landing.RESUME_CARD_VACANCY_BUTTON_LINK_TEXT,
-		disabled: true,
+		disabled: false,
 		iconFlash: true,
-		soon: true,
+		soon: false,
 	},
 ];
