@@ -25,7 +25,7 @@
 		}
 	},
 	"questions-count-available": "{count, plural, one {Ещё # вопрос доступен зарегистрированным пользователям} few {Ещё # вопроса доступно зарегистрированным пользователям} many {Ещё # вопросов доступно зарегистрированным пользователям} other {Ещё # вопроса доступно зарегистрированным пользователям}}",
-	"question-seo-title": "Вопрос для специализации {specialization}: {questionTitle}",
+	"question-seo-title": "{questionTitle} | {specialization}",
 	"banner-authorized": "Зарегистрироваться",
 	"error-404": {
 		"title": "Страница не найдена",
