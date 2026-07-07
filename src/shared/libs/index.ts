@@ -30,3 +30,4 @@ export {
 
 export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
 export { useGetCurrentDay } from './date/useGetCurrentDay';
+export { getQuestionSpecializationTitle } from './seo';

@@ -30,10 +30,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.resources });
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
+	const specializationTitle = currentSpecialization?.title ?? specialization;
 
-	const title = t(Resources.HEADER_TITLE);
-	const description = t(Resources.HEADER_TITLE);
-	const keywords = [t(Resources.HEADER_TITLE), t(Resources.RESOURCES_TITLE)];
+	const title = t(Resources.SEO_TITLE, { specialization: specializationTitle });
+	const description = title;
+	const keywords = [t(Resources.HEADER_TITLE), t(Resources.RESOURCES_TITLE), specializationTitle];
 
 	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
 	const canonical = `${baseUrl}/${locale}/resources/${specialization}`;
