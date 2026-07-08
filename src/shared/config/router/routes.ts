@@ -97,4 +97,8 @@ export const ROUTES = {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',
 		},
 	},
+	vacancies: {
+		route: 'vacancies',
+		page: '/vacancies',
+	},
 } as const;

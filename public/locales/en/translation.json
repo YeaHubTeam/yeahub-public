@@ -38,5 +38,9 @@
 				}
 			}
 		}
+	},
+	"day": {
+		"today": "Today",
+		"yesterday": "Yesterday"
 	}
 }
