@@ -23,7 +23,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
 
 	return (
 		<Card withOutsideShadow className={styles.content}>
-			<a href={url} target="_blank" rel="noopener noreferrer" className={styles.wrapper}>
+			<a href={url} target="_blank" rel="noopener noreferrer nofollow" className={styles.wrapper}>
 				<ImageWithWrapper
 					src={imageSrc ?? undefined}
 					alt={name}
