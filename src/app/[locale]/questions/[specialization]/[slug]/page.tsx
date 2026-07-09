@@ -7,7 +7,7 @@ import { getQuestionBySlug, getQuestionsList } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE, SITE_URL } from '@/shared/config';
 import { getQuestionSpecializationTitle } from '@/shared/libs';
 
 interface PageProps {
@@ -25,6 +25,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		};
 	}
 
+	const canonicalSpecSlug = question.questionSpecializations?.[0]?.slug || specialization;
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
+	const canonicalUrl = `${siteUrl}${locale}/questions/${canonicalSpecSlug}/${slug}`;
+	const pageUrl = `${siteUrl}${locale}/questions/${specialization}/${slug}`;
+
 	const description =
 		question.description || question.shortAnswer?.slice(0, 160).replace(/<[^>]*>/g, '') || '';
 	const specializationTitle =
@@ -39,11 +44,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		title,
 		description,
 		keywords: question.keywords,
+		alternates: {
+			canonical: canonicalUrl,
+		},
 		openGraph: {
 			title,
 			description,
 			type: 'article',
 			images: question.imageSrc ? [question.imageSrc] : [],
+			url: pageUrl,
 		},
 	};
 }
