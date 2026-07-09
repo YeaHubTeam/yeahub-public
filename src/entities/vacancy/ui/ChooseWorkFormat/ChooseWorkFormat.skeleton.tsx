@@ -1,5 +1,5 @@
 import { BaseFilterSectionSkeleton } from '@/shared/ui/BaseFilterSection';
 
-export const ChoiceWorkFormatSkeleton = () => {
+export const ChooseWorkFormatSkeleton = () => {
 	return <BaseFilterSectionSkeleton length={3} width={75} variant="accent" />;
 };

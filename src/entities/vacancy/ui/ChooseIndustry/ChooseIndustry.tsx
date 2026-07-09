@@ -13,7 +13,7 @@ import { getUpdatedSingleFilter } from '../../libs/updateFilterValue';
 import { INDUSTRY, MAX_SHOW_LIMIT_INDUSTRY } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiceIndustry = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseIndustry = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 	const tCommon = useTranslations(i18Namespace.translation);
 

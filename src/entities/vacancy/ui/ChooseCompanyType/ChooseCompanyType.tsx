@@ -7,11 +7,11 @@ import { getUpdatedSingleFilter } from '../../libs/updateFilterValue';
 import { COMPANY_TYPE } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiseCompanyType = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseCompanyType = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
 	const onCompanyType = (id: number) => {
-		const newValue = COMPANY_TYPE.find((el) => el.id === id)?.title || '';
+		const newValue = COMPANY_TYPE.find((el) => el.id === id)?.value || '';
 		const updates = getUpdatedSingleFilter(newValue, selectedFilter);
 		onChangeFilter(updates);
 	};

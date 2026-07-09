@@ -8,17 +8,14 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: fit-content;
-	cursor: pointer;
-	font-weight: var(--font-weight-500);
-	user-select: none;
-}
-
-.chip-base {
 	padding: 12px;
+	width: fit-content;
 	border: 1px solid var(--color-black-200);
 	border-radius: 12px;
 	background-color: transparent;
+	font-weight: var(--font-weight-500);
+	user-select: none;
+	cursor: pointer;
 
 	&.chip-clickable {
 		cursor: pointer;
@@ -38,7 +35,7 @@
 		}
 	}
 
-	&.chip-active-base {
+	&.chip-active {
 		border: 1px solid var(--color-purple-700);
 	}
 
@@ -49,51 +46,6 @@
 
 	&.chip-outlined {
 		border: 1px solid var(--color-purple-700);
-	}
-}
-
-.chip-accent {
-	padding: 6px 12px;
-	border-radius: 21px;
-
-	&.chip-accent-yellow {
-		background-color: var(--color-yellow-200);
-		color: var(--color-yellow-800);
-	}
-
-	&.chip-active-yellow {
-		background-color: var(--color-yellow-800);
-		color: var(--color-yellow-200);
-	}
-
-	&.chip-accent-red {
-		background-color: var(--color-red-200);
-		color: var(--color-red-900);
-	}
-
-	&.chip-active-red {
-		background-color: var(--color-red-900);
-		color: var(--color-red-200);
-	}
-
-	&.chip-accent-green {
-		background-color: var(--color-green-200);
-		color: var(--color-green-750);
-	}
-
-	&.chip-active-green {
-		background-color: var(--color-green-750);
-		color: var(--color-green-200);
-	}
-
-	&.chip-accent-purple {
-		background-color: var(--color-purple-100);
-		color: var(--color-purple-800);
-	}
-
-	&.chip-active-purple {
-		background-color: var(--color-purple-800);
-		color: var(--color-purple-100);
 	}
 }
 
@@ -116,8 +68,7 @@
 	display: flex;
 	align-items: center;
 
-	img,
-	svg {
+	img, svg {
 		max-width: 36px;
 		max-height: 36px;
 	}
@@ -128,17 +79,17 @@
 }
 
 @media (width > 1024px) {
-	.chip-base:hover:where(.chip-clickable:not(.chip-disabled)),
-	.chip-base:focus-visible:where(.chip-clickable:not(.chip-disabled)),
-	.chip-base:active:where(.chip-clickable:not(.chip-disabled)) {
+	.chip-wrapper:hover:where(.chip-clickable:not(.chip-disabled)),
+	.chip-wrapper:focus-visible:where(.chip-clickable:not(.chip-disabled)),
+	.chip-wrapper:active:where(.chip-clickable:not(.chip-disabled)) {
 		border: 1px solid var(--color-purple-700);
 		background-color: var(--color-purple-700);
 		color: var(--color-white-900);
 	}
 
-	.chip-base:hover:where(.chip-clickable:not(.chip-disabled)) .chip-label,
-	.chip-base:focus-visible:where(.chip-clickable:not(.chip-disabled)) .chip-label,
-	.chip-base:active:where(.chip-clickable:not(.chip-disabled)) .chip-label {
+	.chip-wrapper:hover:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+	.chip-wrapper:focus-visible:where(.chip-clickable:not(.chip-disabled)) .chip-label,
+	.chip-wrapper:active:where(.chip-clickable:not(.chip-disabled)) .chip-label {
 		color: var(--color-white-900);
 	}
 }

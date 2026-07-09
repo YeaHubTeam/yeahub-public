@@ -7,7 +7,7 @@ import { getUpdatedSingleFilter } from '../../libs/updateFilterValue';
 import { EMPLOYMENT_TYPE } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiseEmploymentType = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseEmploymentType = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
 	const onCompanyType = (id: number) => {

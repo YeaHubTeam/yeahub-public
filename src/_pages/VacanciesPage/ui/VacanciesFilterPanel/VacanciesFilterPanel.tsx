@@ -9,13 +9,13 @@ import {
 	SpecializationsListField,
 } from '@/entities/specialization';
 import {
-	ChoiceIndustry,
-	ChoiceWorkFormat,
-	ChoiseCompanyType,
-	ChoiseEmploymentType,
-	ChoiseEnglishLevel,
-	ChoiseGrade,
-	ChoiseSalary,
+	ChooseCompanyType,
+	ChooseEmploymentType,
+	ChooseEnglishLevel,
+	ChooseGrade,
+	ChooseIndustry,
+	ChooseSalary,
+	ChooseWorkFormat,
 } from '@/entities/vacancy';
 import { Vacancies, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
@@ -42,7 +42,7 @@ export const VacanciesFilterPanel = ({
 				placeholder={t(Vacancies.VACANCIES_SEARCH_PLACEHOLDER)}
 				onSearch={handlers.onSearch}
 			/>
-			<ChoiceWorkFormat
+			<ChooseWorkFormat
 				selectedFilter={filter.workFormat}
 				onChangeFilter={handlers.onChangeWorkFormat}
 			/>
@@ -57,21 +57,21 @@ export const VacanciesFilterPanel = ({
 				selectedSpecialization={selectedSpecialization}
 				initialData={initialSkills}
 			/>
-			<ChoiceIndustry selectedFilter={filter.industry} onChangeFilter={handlers.onChangeIndustry} />
-			<ChoiseGrade selectedFilter={filter.grade} onChangeFilter={handlers.onChangeGrade} />
-			<ChoiseCompanyType
+			<ChooseIndustry selectedFilter={filter.industry} onChangeFilter={handlers.onChangeIndustry} />
+			<ChooseGrade selectedFilter={filter.grade} onChangeFilter={handlers.onChangeGrade} />
+			<ChooseCompanyType
 				selectedFilter={filter.companyType}
 				onChangeFilter={handlers.onChangeCompanyType}
 			/>
-			<ChoiseEmploymentType
+			<ChooseEmploymentType
 				selectedFilter={filter.employmentType}
 				onChangeFilter={handlers.onChangeEmploymentType}
 			/>
-			<ChoiseSalary
+			<ChooseSalary
 				selectedFilter={filter.salaryBucket}
 				onChangeFilter={handlers.onChangeSalaryBucket}
 			/>
-			<ChoiseEnglishLevel
+			<ChooseEnglishLevel
 				selectedFilter={filter.englishLevel}
 				onChangeFilter={handlers.onChangeEnglishLevel}
 			/>

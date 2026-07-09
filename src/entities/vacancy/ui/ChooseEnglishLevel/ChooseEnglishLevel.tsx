@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 
+import { VacancyEnglishLevel } from '@/entities/vacancy/model/types/vacancy';
 import { Vacancies, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 
@@ -7,7 +8,7 @@ import { getUpdatedMultipleFilter } from '../../libs/updateFilterValue';
 import { ENGLISH_LEVEL } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiseEnglishLevel = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseEnglishLevel = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
 	const onEnglishLevel = (id: number) => {
@@ -18,7 +19,9 @@ export const ChoiseEnglishLevel = ({ selectedFilter, onChangeFilter }: ChoiseFil
 
 	const preparedData = ENGLISH_LEVEL.map((item) => ({
 		...item,
-		active: selectedFilter?.some((selectedItem) => item.value.includes(selectedItem)),
+		active: selectedFilter?.some((selectedItem) =>
+			item.value.includes(selectedItem as VacancyEnglishLevel),
+		),
 	}));
 
 	return (

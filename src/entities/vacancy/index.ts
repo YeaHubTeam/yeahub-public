@@ -1,23 +1,3 @@
-export { ChoiceWorkFormat } from './ui/ChoiceWorkFormat/ChoiceWorkFormat';
-export { ChoiceWorkFormatSkeleton } from './ui/ChoiceWorkFormat/ChoiceWorkFormat.skeleton';
-
-export { ChoiseSalary } from './ui/ChoiseSalary/ChoiseSalary';
-export { ChoiseSalarySkeleton } from './ui/ChoiseSalary/ChoiseSalary.skeleton';
-
-export { ChoiceIndustry } from './ui/ChoiceIndustry/ChoiceIndustry';
-export { ChoiceIndustrySkeleton } from './ui/ChoiceIndustry/ChoiceIndustry.skeleton';
-
-export { ChoiseGrade } from './ui/ChoiseGrade/ChoiseGrade';
-export { ChoiseGradeSkeleton } from './ui/ChoiseGrade/ChoiseGrade.skeleton';
-
-export { ChoiseCompanyType } from './ui/ChoiseCompanyType/ChoiseCompanyType';
-export { ChoiseCompanyTypeSkeleton } from './ui/ChoiseCompanyType/ChoiseCompanyType.skeleton';
-
-export { ChoiseEmploymentType } from './ui/ChoiseEmploymentType/ChoiseEmploymentType';
-export { ChoiseEmploymentTypeSkeleton } from './ui/ChoiseEmploymentType/ChoiseEmploymentType.skeleton';
-
-export { ChoiseEnglishLevel } from './ui/ChoiseEnglishLevel/ChoiseEnglishLevel';
-export { ChoiseEnglishLevelSkeleton } from './ui/ChoiseEnglishLevel/ChoiseEnglishLevel.skeleton';
 export { getVacancies } from './api/getVacancies';
 export type {
 	GetVacanciesListResponse,
@@ -28,3 +8,23 @@ export { VacancyCard } from './ui/VacancyCard/VacancyCard';
 export { VacancyCardSkeleton } from './ui/VacancyCard/VacancyCard.skeleton';
 
 export { MAX_SHOW_LIMIT_VACANCIES } from './model/constants/vacancyConstants';
+export { ChooseWorkFormat } from '@/entities/vacancy/ui/ChooseWorkFormat/ChooseWorkFormat';
+export { ChooseWorkFormatSkeleton } from '@/entities/vacancy/ui/ChooseWorkFormat/ChooseWorkFormat.skeleton';
+
+export { ChooseSalary } from '@/entities/vacancy/ui/ChooseSalary/ChooseSalary';
+export { ChooseSalarySkeleton } from '@/entities/vacancy/ui/ChooseSalary/ChooseSalary.skeleton';
+
+export { ChooseIndustry } from '@/entities/vacancy/ui/ChooseIndustry/ChooseIndustry';
+export { ChooseIndustrySkeleton } from '@/entities/vacancy/ui/ChooseIndustry/ChooseIndustry.skeleton';
+
+export { ChooseGrade } from '@/entities/vacancy/ui/ChooseGrade/ChooseGrade';
+export { ChooseGradeSkeleton } from '@/entities/vacancy/ui/ChooseGrade/ChooseGrade.skeleton';
+
+export { ChooseCompanyType } from '@/entities/vacancy/ui/ChooseCompanyType/ChooseCompanyType';
+export { ChooseCompanyTypeSkeleton } from '@/entities/vacancy/ui/ChooseCompanyType/ChooseCompanyType.skeleton';
+
+export { ChooseEmploymentType } from '@/entities/vacancy/ui/ChooseEmploymentType/ChooseEmploymentType';
+export { ChooseEmploymentTypeSkeleton } from '@/entities/vacancy/ui/ChooseEmploymentType/ChooseEmploymentType.skeleton';
+
+export { ChooseEnglishLevel } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel';
+export { ChooseEnglishLevelSkeleton } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel.skeleton';

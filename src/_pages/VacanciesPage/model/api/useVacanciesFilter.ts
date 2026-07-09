@@ -82,9 +82,9 @@ export const useVacanciesFiter = (currentSpecialization: Specialization) => {
 			params.delete('page');
 			params.delete('skills');
 
-			router.push(`/${locale}/questions/${slug}?${params.toString()}`, { scroll: false });
+			router.push(`/${locale}/vacancies/${slug}?${params.toString()}`, { scroll: false });
 		},
-		[locale, router, searchParamsString, currentSpecialization],
+		[locale, router, searchParamsString],
 	);
 
 	const onChangeSkills = useCallback((skills?: number[]) => setParam('skills', skills), [setParam]);

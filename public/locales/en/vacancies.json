@@ -1,4 +1,20 @@
 {
+	"list_page": {
+		"title": "Vacancies {specialization}",
+		"description": "All current vacancies in one place",
+		"keywords": "IT vacancies, developer jobs, remote IT jobs, junior vacancies, middle vacancies, senior vacancies, IT hiring, software engineer jobs, tech jobs, IT career, developer career, programming jobs, IT recruitment, open positions, job search IT, IT company vacancies, developer jobs",
+		"salary": {
+			"from": "from",
+			"to": "to"
+		}
+	},
+	"detail_page": {},
+	"count": {
+		"skills": "+{count, plural, one {# skill} other {# skills}}",
+		"collections": "{count, plural, one {# interview} other {# interviews}}",
+		"questions": "{count, plural, one {# question} other {# questions}}",
+		"tasks": "{count, plural, one {# task} other {# tasks}}"
+	},
 	"search": {
 		"placeholder": "Job title..."
 	},
@@ -15,20 +31,4 @@
 	"employmentType": "Employment type",
 	"salary": "Salary",
 	"englishLevel": "English proficiency level"
-	"list_page": {
-		"title": "All vacancies",
-		"description": "All current vacancies in one place",
-		"keywords": "IT vacancies, developer jobs, remote IT jobs, junior vacancies, middle vacancies, senior vacancies, IT hiring, software engineer jobs, tech jobs, IT career, developer career, programming jobs, IT recruitment, open positions, job search IT, IT company vacancies, developer jobs",
-		"salary": {
-			"from": "from",
-			"to": "to"
-		}
-	},
-	"detail_page": {},
-	"count": {
-		"skills": "+{count, plural, one {# skill} other {# skills}}",
-		"collections": "{count, plural, one {# interview} other {# interviews}}",
-		"questions": "{count, plural, one {# question} other {# questions}}",
-		"tasks": "{count, plural, one {# task} other {# tasks}}"
-	}
 }

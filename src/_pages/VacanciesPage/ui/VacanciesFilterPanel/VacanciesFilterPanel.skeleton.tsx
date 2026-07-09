@@ -1,13 +1,13 @@
 import { SkillsListFieldSkeleton } from '@/entities/skill';
 import { SpecializationsListFieldSkeleton } from '@/entities/specialization';
 import {
-	ChoiceIndustrySkeleton,
-	ChoiceWorkFormatSkeleton,
-	ChoiseCompanyTypeSkeleton,
-	ChoiseEmploymentTypeSkeleton,
-	ChoiseEnglishLevelSkeleton,
-	ChoiseGradeSkeleton,
-	ChoiseSalarySkeleton,
+	ChooseCompanyTypeSkeleton,
+	ChooseEmploymentTypeSkeleton,
+	ChooseEnglishLevelSkeleton,
+	ChooseGradeSkeleton,
+	ChooseIndustrySkeleton,
+	ChooseSalarySkeleton,
+	ChooseWorkFormatSkeleton,
 } from '@/entities/vacancy';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInputSkeleton } from '@/shared/ui/SearchInput';
@@ -16,15 +16,15 @@ export const VacanciesFilterPanelSkeleton = () => {
 	return (
 		<Flex direction="column" gap="24">
 			<SearchInputSkeleton />
-			<ChoiceWorkFormatSkeleton />
+			<ChooseWorkFormatSkeleton />
 			<SpecializationsListFieldSkeleton />
 			<SkillsListFieldSkeleton />
-			<ChoiceIndustrySkeleton />
-			<ChoiseGradeSkeleton />
-			<ChoiseCompanyTypeSkeleton />
-			<ChoiseEmploymentTypeSkeleton />
-			<ChoiseSalarySkeleton />
-			<ChoiseEnglishLevelSkeleton />
+			<ChooseIndustrySkeleton />
+			<ChooseGradeSkeleton />
+			<ChooseCompanyTypeSkeleton />
+			<ChooseEmploymentTypeSkeleton />
+			<ChooseSalarySkeleton />
+			<ChooseEnglishLevelSkeleton />
 		</Flex>
 	);
 };

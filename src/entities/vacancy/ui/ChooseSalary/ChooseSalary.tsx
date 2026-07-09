@@ -7,7 +7,7 @@ import { getUpdatedSingleFilter } from '../../libs/updateFilterValue';
 import { SALARY_BUCKET } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiseSalary = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseSalary = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
 	const onSalaryBucket = (id: number) => {

@@ -4,31 +4,30 @@ import { Vacancies, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 
 import { getUpdatedSingleFilter } from '../../libs/updateFilterValue';
-import { WORKING_FORMAT } from '../../model/constants';
+import { GRADE } from '../../model/constants';
 import { ChoiseFilterProps } from '../../model/types';
 
-export const ChoiceWorkFormat = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
+export const ChooseGrade = ({ selectedFilter, onChangeFilter }: ChoiseFilterProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
-	const onWorkFormat = (id: number) => {
-		const newValue = WORKING_FORMAT.find((el) => el.id === id)?.value || '';
+	const onGrade = (id: number) => {
+		const newValue = GRADE.find((el) => el.id === id)?.value || '';
 		const updates = getUpdatedSingleFilter(newValue, selectedFilter);
 		onChangeFilter(updates);
 	};
 
-	const preparedData = WORKING_FORMAT.map((item) => ({
+	const preparedData = GRADE.map((item) => ({
 		...item,
-		title: t(item.title),
-		active: selectedFilter?.some((selectedItem) => item.value === selectedItem),
+		active: selectedFilter?.some((selectedItem) => item.title === selectedItem),
 	}));
 
 	return (
 		<BaseFilterSection
 			data={preparedData}
-			title={t(Vacancies.WORKING_FORMAT)}
-			onClick={onWorkFormat}
+			title={t(Vacancies.GRADE)}
+			onClick={onGrade}
 			variant="accent"
-			colorVariant="green"
+			colorVariant="purple"
 		/>
 	);
 };

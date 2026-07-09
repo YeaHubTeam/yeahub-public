@@ -99,6 +99,6 @@ export const ROUTES = {
 	},
 	vacancies: {
 		route: 'vacancies',
-		page: '/vacancies',
+		page: '/vacancies/:specialization',
 	},
 } as const;
