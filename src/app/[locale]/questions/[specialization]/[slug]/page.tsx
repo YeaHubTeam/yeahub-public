@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	}
 
 	const canonicalSpecSlug = question.questionSpecializations?.[0]?.slug || specialization;
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
-	const canonicalUrl = `${siteUrl}${locale}/questions/${canonicalSpecSlug}/${slug}`;
-	const pageUrl = `${siteUrl}${locale}/questions/${specialization}/${slug}`;
+	const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || SITE_URL).replace(/\/$/, '');
+	const canonicalUrl = `${siteUrl}/${locale}/questions/${canonicalSpecSlug}/${slug}`;
+	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}/${slug}`;
 
 	const description =
 		question.description || question.shortAnswer?.slice(0, 160).replace(/<[^>]*>/g, '') || '';
