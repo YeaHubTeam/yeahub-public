@@ -21,12 +21,15 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-	const { locale } = await params;
+	const { locale, specialization } = await params;
 
 	setRequestLocale(locale);
 	const t = await getTranslations({ locale, namespace: i18Namespace.vacancies });
-
-	const title = t(Vacancies.LIST_PAGE_TITLE);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
+	if (!currentSpecialization) {
+		return { title: 'Not Found' };
+	}
+	const title = t(Vacancies.LIST_PAGE_TITLE, { specialization: currentSpecialization.title });
 	const description = t(Vacancies.LIST_PAGE_DESCRIPTION);
 	const keywords = t(Vacancies.LIST_PAGE_KEYWORDS);
 
