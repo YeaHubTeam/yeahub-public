@@ -848,6 +848,17 @@ export enum Subscription {
 }
 
 export enum Vacancies {
+	VACANCIES_SEARCH_PLACEHOLDER = 'search.placeholder',
+	WORKING_FORMAT = 'workFormat.title',
+	WORKING_FORMAT_OFFICE = 'workFormat.office',
+	WORKING_FORMAT_REMOTE = 'workFormat.remote',
+	WORKING_FORMAT_HYBRID = 'workFormat.hybrid',
+	GRADE = 'grade',
+	COMPANY_TYPE = 'companyType',
+	SALARY = 'salary',
+	INDUSTRY = 'industry',
+	ENGLISH_LEVEL = 'englishLevel',
+	EMPLOYMENT_TYPE = 'employmentType',
 	LIST_PAGE_TITLE = 'list_page.title',
 	LIST_PAGE_DESCRIPTION = 'list_page.description',
 	LIST_PAGE_KEYWORDS = 'list_page.keywords',
