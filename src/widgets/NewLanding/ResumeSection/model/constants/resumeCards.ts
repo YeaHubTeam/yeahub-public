@@ -1,6 +1,6 @@
 import { BeforAfter, CardVacancyOne, CardVacancyTwo, KeywordsContainer } from '@/shared/assets';
 import { Landing, ROUTES } from '@/shared/config';
-import { route } from '@/shared/libs';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 
 import { type ResumeCardProps } from '../types/resumeTypes';
 
@@ -54,7 +54,7 @@ export const resumeCards: ResumeCardProps[] = [
 				src: CardVacancyTwo,
 			},
 		],
-		to: route(ROUTES.vacancies.page),
+		to: route(ROUTES.vacancies.page, DEFAULT_SPECIALIZATION_SLUG),
 		linkText: Landing.RESUME_CARD_VACANCY_BUTTON_LINK_TEXT,
 		disabled: false,
 		iconFlash: true,

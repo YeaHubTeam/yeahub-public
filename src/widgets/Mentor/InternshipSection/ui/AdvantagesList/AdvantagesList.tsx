@@ -65,7 +65,7 @@ export const AdvantagesList = ({ locale }: AdvantagesListProps) => {
 					}}
 				>
 					{advantage.badge ? (
-						<StatusChip size="medium" status={{ text: t(advantage.badge), variant: 'green' }} />
+						<StatusChip size="large" status={{ text: t(advantage.badge), variant: 'green' }} />
 					) : (
 						<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
 					)}
