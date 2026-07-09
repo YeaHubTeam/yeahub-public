@@ -48,7 +48,7 @@ export const TaskDescription = ({
 							variant: 'green',
 							text: t(taskCategories[mainCategory]),
 						}}
-						size="medium"
+						size="large"
 					/>
 					<CompanyCompactList companies={companies} />
 				</Flex>

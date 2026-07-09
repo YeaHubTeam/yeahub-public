@@ -8,7 +8,7 @@ import { TextVariant } from '@/shared/ui/Text/types';
 import styles from './StatusChip.module.css';
 
 export type StatusChipVariant = 'green' | 'yellow' | 'red' | 'purple';
-export type StatusChipSize = 'small' | 'premedium' | 'medium';
+export type StatusChipSize = 'small' | 'medium' | 'large';
 
 export interface StatusChipItem {
 	text: string;
@@ -18,14 +18,16 @@ export interface StatusChipItem {
 export interface StatusChipProps {
 	status: StatusChipItem;
 	size?: StatusChipSize;
+	onClick?: () => void;
+	isActive?: boolean;
 }
 
-export const StatusChip = ({ status, size = 'small' }: StatusChipProps) => {
+export const StatusChip = ({ status, size = 'small', onClick, isActive }: StatusChipProps) => {
 	const { variant, text } = status;
 
 	const textSize: Record<StatusChipSize, TextVariant> = {
-		medium: 'body3-strong',
-		premedium: 'body2-accent',
+		large: 'body3-strong',
+		medium: 'body2-accent',
 		small: 'body1-accent',
 	};
 
@@ -34,9 +36,14 @@ export const StatusChip = ({ status, size = 'small' }: StatusChipProps) => {
 			justify="center"
 			align="center"
 			dataTestId={statusChipTestIds.statusChip}
-			className={classNames(styles.wrapper, styles[`variant-${variant}`], styles[`size-${size}`])}
+			className={classNames(styles.wrapper, styles[`variant-${variant}`], styles[`size-${size}`], {
+				[styles.clickable]: !!onClick,
+				[styles.active]: isActive,
+			})}
+			onClick={onClick}
 		>
 			<Text
+				className={styles.text}
 				dataTestId={statusChipTestIds.statusChipText}
 				variant={textSize[size]}
 				color={statusChipVariants[variant]}

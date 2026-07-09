@@ -99,7 +99,7 @@ export const ROUTES = {
 	},
 	vacancies: {
 		route: 'vacancies',
-		page: '/vacancies',
+		page: '/vacancies/:specialization',
 		detail: {
 			route: 'vacancies/:vacancyId',
 			page: '/vacancies/:vacancyId',

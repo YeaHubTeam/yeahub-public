@@ -3,24 +3,88 @@
   width: fit-content;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 .variant-yellow {
   background-color: var(--color-yellow-200);
-  color: var(--color-yellow-800);
 }
 
 .variant-red {
   background-color: var(--color-red-200);
-  color: var(--color-red-900);
 }
 
 .variant-green {
   background-color: var(--color-green-200);
-  color: var(--color-green-750);
 }
 
 .variant-purple {
   background-color: var(--color-purple-100);
-  color: var(--color-purple-800);
+}
+
+.variant-yellow.active {
+	background-color: var(--color-yellow-800);
+}
+
+.variant-yellow.clickable:hover {
+	background-color: var(--color-yellow-600);
+}
+
+.variant-red.active {
+	background-color: var(--color-red-900);
+}
+
+.variant-red.clickable:hover {
+	background-color: var(--color-red-700);
+}
+
+.variant-green.active {
+	background-color: var(--color-green-750);
+}
+
+.variant-green.clickable:hover {
+	background-color: var(--color-green-700);
+}
+
+.variant-purple.active {
+	background-color: var(--color-purple-800);
+}
+
+.variant-purple.clickable:hover {
+	background-color: var(--color-purple-600);
+}
+
+.variant-yellow.active .text {
+	color: var(--color-yellow-300);
+}
+
+.variant-red.active .text {
+	color: var(--color-red-200);
+}
+
+.variant-green.active .text {
+	color: var(--color-green-200);
+}
+
+.variant-purple.active .text {
+	color: var(--color-purple-100);
+}
+
+.variant-yellow.clickable:hover .text {
+	color: var(--color-yellow-300);
+}
+
+.variant-red.clickable:hover .text {
+	color: var(--color-red-200);
+}
+
+.variant-green.clickable:hover .text {
+	color: var(--color-green-200);
+}
+
+.variant-purple.clickable:hover .text {
+	color: var(--color-purple-100);
 }
 
 .size-small {
@@ -35,6 +99,12 @@
 }
 
 .size-medium {
+	padding: 6px 12px;
+	height: 24px;
+	border-radius: 30px;
+}
+
+.size-large {
   height: 32px;
   border-radius: 8px;
 }

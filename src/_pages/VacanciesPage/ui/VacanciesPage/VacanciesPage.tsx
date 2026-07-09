@@ -1,4 +1,10 @@
+import React from 'react';
+
+import { GetSkillsListResponse } from '@/entities/skill';
+import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import type { Vacancy } from '@/entities/vacancy';
+import { VacanciesFilterPanel } from '@/pages/VacanciesPage/ui/VacanciesFilterPanel/VacanciesFilterPanel';
+import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { VacanciesList } from '@/widgets/Vacancy';
 
@@ -11,17 +17,38 @@ interface VacanciesPageProps {
 	page: number;
 	total: number;
 	limit: number;
+	initialSpecializations?: GetSpecializationsListResponse | null;
+	initialSkills?: GetSkillsListResponse | null;
+	currentSpecialization: Specialization;
 }
 
-export const VacanciesPage = ({ vacancies, page, total, limit }: VacanciesPageProps) => {
+export const VacanciesPage = ({
+	vacancies,
+	page,
+	total,
+	limit,
+	initialSpecializations,
+	initialSkills,
+	currentSpecialization,
+}: VacanciesPageProps) => {
 	return (
 		<Flex gap="20" align="start">
-			<Flex gap="20" direction="column" className={styles.main}>
-				<VacanciesPageHeader />
+			<Card className={styles.main}>
+				<VacanciesPageHeader
+					currentSpecialization={currentSpecialization}
+					initialSpecializations={initialSpecializations}
+					initialSkills={initialSkills}
+				/>
 				<VacanciesList vacancies={vacancies} />
 				<VacanciesPagePagination total={total} limit={limit} currentPage={page} />
-			</Flex>
-			<Flex className={styles.filters}></Flex>
+			</Card>
+			<Card className={styles.filters}>
+				<VacanciesFilterPanel
+					initialSpecializations={initialSpecializations}
+					initialSkills={initialSkills}
+					currentSpecialization={currentSpecialization}
+				/>
+			</Card>
 		</Flex>
 	);
 };
