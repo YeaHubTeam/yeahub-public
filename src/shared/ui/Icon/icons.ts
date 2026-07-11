@@ -7,6 +7,7 @@ import ArrowRightUp from '@/shared/assets/icons/arrowRightUp.svg';
 import ArrowSelect from '@/shared/assets/icons/arrowSelect.svg';
 import ArrowShortDown from '@/shared/assets/icons/arrowShortDown.svg';
 import ArrowUpSquare from '@/shared/assets/icons/arrowUpSquare.svg';
+import BagSimple from '@/shared/assets/icons/bagSimple.svg';
 import Bar from '@/shared/assets/icons/bar.svg';
 import Behance from '@/shared/assets/icons/behance.svg';
 import Burger from '@/shared/assets/icons/burger.svg';
@@ -18,6 +19,7 @@ import ClipboardText from '@/shared/assets/icons/clipboardText.svg';
 import Clock from '@/shared/assets/icons/clock.svg';
 import ClockCounterClockwise from '@/shared/assets/icons/clockCounterClockwise.svg';
 import CloseCircle from '@/shared/assets/icons/closeCircle.svg';
+import Compass from '@/shared/assets/icons/compass.svg';
 import Copy from '@/shared/assets/icons/copy.svg';
 import Dislike from '@/shared/assets/icons/dislike.svg';
 import DotsThree from '@/shared/assets/icons/dotsThree.svg';
@@ -93,6 +95,7 @@ export const icons: Record<IconName, IconComponent> = {
 	arrowUpSquare: ArrowUpSquare,
 	arrowDownSquare: ArrowDownSquare,
 	arrowSelect: ArrowSelect,
+	bagSimple: BagSimple,
 	bar: Bar,
 	clock: Clock,
 	calendar: Calendar,
@@ -110,6 +113,7 @@ export const icons: Record<IconName, IconComponent> = {
 	search: Search,
 	closeCircle: CloseCircle,
 	copy: Copy,
+	compass: Compass,
 	trash: Trash,
 	pen: Pen,
 	pin: Pin,

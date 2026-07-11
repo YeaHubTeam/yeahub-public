@@ -1,26 +1,23 @@
-.layout {
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	justify-content: center;
-	align-items: start;
-	gap: 24px;
-}
-
-.card {
+div.card {
 	padding: 20px;
 	border-radius: 20px;
 }
 
-.sidebar-desktop-only {
-	display: block;
+.additional {
+	width: 392px;
+	height: auto;
+}
+
+.ai {
+	display: none;
 }
 
 @media screen and (width < 1024px) {
-	.layout {
-		grid-template-columns: 1fr;
-	}
-
-	.sidebar-desktop-only {
+	.additional {
 		display: none;
+	}
+	
+	.ai {
+		display: block;
 	}
 }

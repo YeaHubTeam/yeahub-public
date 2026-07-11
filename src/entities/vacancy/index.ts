@@ -5,7 +5,7 @@ export type {
 	GetVacanciesListResponse,
 	Vacancy,
 	GetVacanciesListParamsRequest,
-	VacancyDetails,
+	VacancyListItem,
 	VacancyAiProfile,
 	VacancyPreparation,
 } from './model/types/vacancy';

@@ -28,23 +28,22 @@
 	"grade": "Grade",
 	"companyType": "Company Type",
 	"employmentType": "Employment type",
-	"salary": "Salary",
-	"englishLevel": "English proficiency level"
+	"englishLevel": "English proficiency level",
 	"detail_page": {
 		"title": "Vacancy",
 		"description": "Detailed information about the vacancy",
 		"keywords": "vacancy, job, IT, developer, programmer, employment, career, job search, developer vacancy, IT job, job description, candidate requirements, working conditions, salary, skills, experience, remote work, office, hybrid format"
 	},
 	"salary": {
+		"title": "Salary",
 		"from": "from",
-		"to": "to",
-		"caption": "per month"
+		"to": "to"
 	},
 	"buttons": {
 		"respond": "Respond"
 	},
 	"tags": {
-		"work_format": "Work format",
+		"area": "Area",
 		"grade": "Level",
 		"employment": "Employment",
 		"industry": "Industry",
@@ -59,9 +58,13 @@
 	"source": {
 		"title": "Source",
 		"date": {
-			"added": "Date added",
-			"today": "Today",
-			"yesterday": "Yesterday"
+			"added": "Date added"
+		},
+		"format": "Format",
+		"internship": {
+			"title": "Internship",
+			"yes": "Yes",
+			"no": "No"
 		}
 	},
 	"description": {

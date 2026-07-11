@@ -72,37 +72,19 @@ export interface VacancySalary {
 
 export interface Vacancy {
 	id: string;
-	source: VacancySource | null;
-	title: string;
-	area: string;
-	publishedAt: string;
-	employmentForm: VacancyEmploymentForm | null;
-	internship: boolean;
-	grade: VacancyGrade | null;
-	englishLevel: VacancyEnglishLevel | null;
-	workFormat: VacancyWorkFormat[] | null;
-	company: VacancyCompany;
-	salary: VacancySalary;
-	specialization: VacancySpecialization;
-	skills: VacancySkill[];
-	preparation: VacancyPreparation;
-}
-
-export interface VacancyDetails {
-	id: string;
 	source: VacancySource;
 	sourceVacancyId: string;
 	title: string;
 	description: string;
 	status: VacancyStatus;
 	area: string;
-	employmentForm: VacancyEmploymentForm;
+	employmentForm: VacancyEmploymentForm | null;
 	internship: boolean;
-	grade: VacancyGrade;
-	englishLevel: VacancyEnglishLevel;
-	workFormat: VacancyWorkFormat[];
-	industry: VacancyIndustry;
-	companyType: VacancyCompanyType;
+	grade: VacancyGrade | null;
+	englishLevel: VacancyEnglishLevel | null;
+	workFormat: VacancyWorkFormat[] | null;
+	industry: VacancyIndustry | null;
+	companyType: VacancyCompanyType | null;
 	specializationId: number;
 	salary: VacancySalary;
 	publishedAt: string;
@@ -113,6 +95,18 @@ export interface VacancyDetails {
 	aiProfile: VacancyAiProfile;
 	preparation: VacancyPreparation;
 }
+
+export type VacancyListItem = Omit<
+	Vacancy,
+	| 'sourceVacancyId'
+	| 'description'
+	| 'status'
+	| 'industry'
+	| 'companyType'
+	| 'specializationId'
+	| 'sourcePublishedAt'
+	| 'applyVacancyUrl'
+>;
 
 export interface GetVacanciesListParamsRequest {
 	page?: number;
@@ -132,5 +126,4 @@ export interface GetVacanciesListParamsRequest {
 	salaryBucket?: string;
 }
 
-export type GetVacanciesListResponse = Response<Vacancy[]>;
-export type GetVacancyDetailsResponse = Response<VacancyDetails>;
+export type GetVacanciesListResponse = Response<VacancyListItem[]>;

@@ -101,8 +101,8 @@ export const ROUTES = {
 		route: 'vacancies',
 		page: '/vacancies/:specialization',
 		detail: {
-			route: 'vacancies/:vacancyId',
-			page: '/vacancies/:vacancyId',
+			route: 'vacancies/:specialization/:vacancyId',
+			page: '/:locale/vacancies/:specialization/:vacancyId',
 		},
 	},
 } as const;
