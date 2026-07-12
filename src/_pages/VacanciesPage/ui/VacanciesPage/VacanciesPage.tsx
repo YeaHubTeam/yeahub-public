@@ -4,19 +4,15 @@ import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
 import type { Vacancy } from '@/entities/vacancy';
 import { VacanciesFilterPanel } from '@/pages/VacanciesPage/ui/VacanciesFilterPanel/VacanciesFilterPanel';
-import { Card } from '@/shared/ui/Card';
-import { Flex } from '@/shared/ui/Flex';
+import { ListPageWrapper } from '@/widgets/ListPageWrapper';
 import { VacanciesList } from '@/widgets/Vacancy';
-
-import { VacanciesPageHeader } from '../VacanciesPageHeader/VacanciesPageHeader';
-import { VacanciesPagePagination } from '../VacanciesPagePagination/VacanciesPagePagination';
-import styles from './VacanciesPage.module.css';
 
 interface VacanciesPageProps {
 	vacancies: Vacancy[];
 	page: number;
 	total: number;
 	limit: number;
+	title: string;
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
 	currentSpecialization: Specialization;
@@ -27,28 +23,26 @@ export const VacanciesPage = ({
 	page,
 	total,
 	limit,
+	title,
 	initialSpecializations,
 	initialSkills,
 	currentSpecialization,
 }: VacanciesPageProps) => {
 	return (
-		<Flex gap="20" align="start">
-			<Card className={styles.main}>
-				<VacanciesPageHeader
-					currentSpecialization={currentSpecialization}
-					initialSpecializations={initialSpecializations}
-					initialSkills={initialSkills}
-				/>
-				<VacanciesList vacancies={vacancies} />
-				<VacanciesPagePagination total={total} limit={limit} currentPage={page} />
-			</Card>
-			<Card className={styles.filters}>
+		<ListPageWrapper
+			page={page}
+			total={total}
+			limit={limit}
+			title={title}
+			filters={
 				<VacanciesFilterPanel
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
 					currentSpecialization={currentSpecialization}
 				/>
-			</Card>
-		</Flex>
+			}
+		>
+			<VacanciesList vacancies={vacancies} />
+		</ListPageWrapper>
 	);
 };
