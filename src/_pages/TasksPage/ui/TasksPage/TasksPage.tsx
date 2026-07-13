@@ -16,6 +16,9 @@ interface TasksPageProps {
 	hasFilters: boolean;
 	categories: TaskCategory[];
 	languages: ProgrammingLanguage[];
+	total: number;
+	limit: number;
+	page: number;
 }
 
 export const TasksPage = ({
@@ -25,12 +28,18 @@ export const TasksPage = ({
 	categories,
 	languages,
 	title,
+	total,
+	limit,
+	page,
 }: TasksPageProps) => {
 	setRequestLocale(locale);
 	const isEmptyWithFilters = tasks.length === 0 && hasFilters;
 
 	return (
 		<ListPageWrapper
+			page={page}
+			total={total}
+			limit={limit}
 			title={title}
 			filters={<TasksFilterPanel languages={languages} categories={categories} />}
 		>
