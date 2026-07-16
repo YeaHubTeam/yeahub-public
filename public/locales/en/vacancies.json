@@ -30,5 +30,11 @@
 	"companyType": "Company Type",
 	"employmentType": "Employment type",
 	"salary": "Salary",
-	"englishLevel": "English proficiency level"
+	"englishLevel": "English proficiency level",
+	"stub": {
+		"empty": {
+			"title": "No vacancies found yet",
+			"subtitle": "Vacancies are added periodically, just wait a bit"
+		}
+	}
 }

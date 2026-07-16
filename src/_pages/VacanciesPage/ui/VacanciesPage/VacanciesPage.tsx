@@ -20,6 +20,7 @@ interface VacanciesPageProps {
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
 	currentSpecialization: Specialization;
+	hasFilters: boolean;
 }
 
 export const VacanciesPage = ({
@@ -30,6 +31,7 @@ export const VacanciesPage = ({
 	initialSpecializations,
 	initialSkills,
 	currentSpecialization,
+	hasFilters,
 }: VacanciesPageProps) => {
 	return (
 		<Flex gap="20" align="start">
@@ -39,7 +41,7 @@ export const VacanciesPage = ({
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
 				/>
-				<VacanciesList vacancies={vacancies} />
+				<VacanciesList hasFilters={hasFilters} vacancies={vacancies} />
 				<VacanciesPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>
 			<Card className={styles.filters}>

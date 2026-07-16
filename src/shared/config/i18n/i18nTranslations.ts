@@ -866,4 +866,8 @@ export enum Vacancies {
 	COUNT_COLLECTIONS = 'count.collections',
 	COUNT_QUESTIONS = 'count.questions',
 	COUNT_TASKS = 'count.tasks',
+
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_NOT_AUTH_TITLE = 'stub.not_auth.title',
 }
