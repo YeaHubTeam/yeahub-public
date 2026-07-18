@@ -33,7 +33,7 @@ export const KeywordsSection = ({ keywords = [], specialization }: KeywordsSecti
 					<StatusChip
 						key={keyword.title}
 						status={{ text: keyword.title, variant: 'green' }}
-						size="medium"
+						size="large"
 					/>
 				))}
 			</Flex>

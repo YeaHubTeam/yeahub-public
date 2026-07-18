@@ -7,13 +7,20 @@ import { BaseFilterSectionProps } from './BaseFilterSection';
 export const BaseFilterSectionSkeleton = <T,>({
 	length,
 	width,
+	variant = 'base',
 }: Partial<BaseFilterSectionProps<T>> & { width?: number; length: number }) => {
+	const isAccent = variant === 'accent';
 	return (
 		<Flex direction="column" gap="8">
 			<TextSkeleton variant="body2" width={100} />
 			<Flex wrap="wrap" gap="8">
 				{[...Array(length)].map((_, index) => (
-					<Skeleton width={width || 100} height={40} borderRadius={12} key={index} />
+					<Skeleton
+						width={width || 100}
+						height={isAccent ? 28 : 40}
+						borderRadius={isAccent ? 21 : 12}
+						key={index}
+					/>
 				))}
 			</Flex>
 		</Flex>

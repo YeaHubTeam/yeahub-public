@@ -30,7 +30,7 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 			isActionPositionBottom
 			actionPositionX="start"
 		>
-			<StatusChip size="medium" status={{ text: t(badge), variant: 'green' }} />
+			<StatusChip size="large" status={{ text: t(badge), variant: 'green' }} />
 			<Flex gap="20" className={styles.row}>
 				<Flex gap="8" direction="column" className={styles['text-content']}>
 					<Text

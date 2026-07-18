@@ -2,13 +2,32 @@ import type { Skill } from '@/entities/skill/@x/vacancy';
 import type { Specialization } from '@/entities/specialization/@x/vacancy';
 import type { Response } from '@/shared/libs';
 
-export type VacancySource = 'hh' | 'habr' | 'telegram' | 'company_site' | 'hr' | 'anonymous' | null;
-export type VacancyEmploymentForm = 'Fulltime' | 'Parttime' | 'Project' | 'Shift' | null;
-export type VacancyGrade = 'Trainee' | 'Junior' | 'Middle' | 'Senior' | 'Lead' | 'Head' | null;
-export type VacancyEnglishLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | null;
-export type VacancyWorkFormat = 'Office' | 'Remote' | 'Hybrid' | 'Field' | null;
+export type VacancySource = 'hh' | 'habr' | 'telegram' | 'company_site' | 'hr' | 'anonymous';
+export type VacancyEmploymentForm = 'Fulltime' | 'Parttime' | 'Project' | 'Shift';
+export type VacancyGrade = 'Trainee' | 'Junior' | 'Middle' | 'Senior' | 'Lead' | 'Head';
+export type VacancyEnglishLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+export type VacancyWorkFormat = 'Office' | 'Remote' | 'Hybrid';
+export type VacancyIndustry =
+	| 'AI'
+	| 'SaaS'
+	| 'FinTech'
+	| 'GameDev'
+	| 'Ecommerce'
+	| 'Robotics'
+	| 'IGamming'
+	| 'Retail'
+	| 'MedTech'
+	| 'EdTech'
+	| 'HRTech'
+	| 'Cybersecurity'
+	| 'Logistics'
+	| 'Travel'
+	| 'Telecom'
+	| 'Other';
+export type VacancyCompanyType = 'Product' | 'Outsource' | 'Startup' | 'Other';
 export type VacancySkill = Pick<Skill, 'id' | 'title'>;
 export type VacancySpecialization = Pick<Specialization, 'id' | 'title'>;
+
 export interface VacancyCompany {
 	id: string | null;
 	title: string;
@@ -29,15 +48,15 @@ export interface VacancySalary {
 
 export interface Vacancy {
 	id: string;
-	source: VacancySource;
+	source: VacancySource | null;
 	title: string;
 	area: string;
 	publishedAt: string;
-	employmentForm: VacancyEmploymentForm;
+	employmentForm: VacancyEmploymentForm | null;
 	internship: boolean;
-	grade: VacancyGrade;
-	englishLevel: VacancyEnglishLevel;
-	workFormat: VacancyWorkFormat[];
+	grade: VacancyGrade | null;
+	englishLevel: VacancyEnglishLevel | null;
+	workFormat: VacancyWorkFormat[] | null;
 	company: VacancyCompany;
 	salary: VacancySalary;
 	specialization: VacancySpecialization;
@@ -48,6 +67,19 @@ export interface Vacancy {
 export interface GetVacanciesListParamsRequest {
 	page?: number;
 	limit?: number;
+	search?: string;
+	source?: string;
+	specializationId?: number;
+	skillId?: string;
+	companyId?: string;
+	area?: string;
+	employmentForm?: string;
+	grade?: string;
+	englishLevel?: string;
+	industry?: string;
+	companyType?: string;
+	workFormat?: string;
+	salaryBucket?: string;
 }
 
 export type GetVacanciesListResponse = Response<Vacancy[]>;

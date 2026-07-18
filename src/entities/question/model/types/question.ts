@@ -28,7 +28,7 @@ export interface Question {
 	disabled?: boolean;
 }
 
-type skillFilterMode = 'ALL' | 'ANY';
+type SkillFilterMode = 'ALL' | 'ANY';
 
 export interface GetQuestionsListParamsRequest {
 	page?: number;
@@ -40,7 +40,7 @@ export interface GetQuestionsListParamsRequest {
 	collection?: number;
 	rate?: string;
 	keywords?: string[];
-	skillFilterMode?: skillFilterMode;
+	skillFilterMode?: SkillFilterMode;
 	specializationId?: number;
 	order?: string;
 	orderBy?: string;
