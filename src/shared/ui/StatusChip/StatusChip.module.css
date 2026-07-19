@@ -92,6 +92,12 @@
   border-radius: 30px;
 }
 
+.size-premedium {
+	padding: 0 12px;
+	height: 24px;
+	border-radius: 21px;
+}
+
 .size-medium {
 	padding: 6px 12px;
 	height: 24px;

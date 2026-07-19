@@ -7,24 +7,31 @@ import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 
 interface CollectionsSectionProps {
 	collections: Collection[];
-	specializationSlug: string;
+	specializationSlug?: string;
 	locale: string;
+	companyId?: string;
+	title?: string;
 }
 
 export const CollectionsSection = ({
 	collections,
 	specializationSlug,
 	locale,
+	companyId,
+	title,
 }: CollectionsSectionProps) => {
 	const t = useTranslations(i18Namespace.specialization);
 
 	if (collections.length === 0) return null;
 
-	const allCollectionsPath = `/${locale}/collections/${specializationSlug}`;
+	const additionalParams = companyId ? `?companies=${companyId}` : '';
+	const allCollectionsPath = specializationSlug
+		? `/${locale}/collections/${specializationSlug}${additionalParams}`
+		: undefined;
 
 	return (
 		<SectionWrapper
-			title={t(Specializations.COLLECTIONS_TITLE)}
+			title={title ?? t(Specializations.COLLECTIONS_TITLE)}
 			actionTitle={t(Specializations.COLLECTIONS_LINK)}
 			actionRoute={allCollectionsPath}
 		>
@@ -33,7 +40,7 @@ export const CollectionsSection = ({
 					<CollectionPreview
 						key={collection.id}
 						collection={collection}
-						specialization={specializationSlug}
+						specialization={specializationSlug ?? ''}
 						locale={locale}
 					/>
 				))}

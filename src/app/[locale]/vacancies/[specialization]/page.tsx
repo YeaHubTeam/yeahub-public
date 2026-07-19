@@ -97,6 +97,7 @@ const MainVacanciesPage = async ({ searchParams, params }: PageProps) => {
 				initialSpecializations={specializationsResponse}
 				initialSkills={skillsResponse}
 				currentSpecialization={currentSpecialization}
+				locale={locale}
 			/>
 		</>
 	);

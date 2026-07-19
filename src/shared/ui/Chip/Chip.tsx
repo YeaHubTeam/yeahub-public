@@ -23,6 +23,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 			prefix,
 			onClick,
 			onDelete,
+			disablePointer,
 			...props
 		},
 		ref,
@@ -46,6 +47,7 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 						[styles['chip-clickable']]: onClick,
 						[styles['chip-disabled']]: disabled,
 						[styles['chip-active']]: active,
+						[styles['chip-no-pointer']]: disablePointer,
 					},
 					className,
 				)}
