@@ -17,6 +17,8 @@ div.company-logo {
 	}
 }
 
+
+
 .respond-link {
 	display: flex;
 	margin-top: auto;
@@ -55,11 +57,7 @@ div.company-logo {
 	.salary {
 		font-size: var(--font-size-p-l);
 	}
-
-	.salary-caption {
-		font-size: var(--font-size-p-s);
-	}
-
+	
 	.respond-btn {
 		font-size: var(--font-size-p-m);
 	}

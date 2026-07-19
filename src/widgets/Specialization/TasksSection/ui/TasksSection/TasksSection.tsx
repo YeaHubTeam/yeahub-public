@@ -15,7 +15,8 @@ interface TasksSectionProps {
 export const TasksSection = async ({ locale, companyId, title }: TasksSectionProps) => {
 	const t = await getTranslations(i18Namespace.specialization);
 
-	const detailRoute = `/${locale}${ROUTES.tasks.page}?companyId=${companyId}`;
+	const additionalParams = companyId ? `?companies=${companyId}` : '';
+	const detailRoute = `/${locale}${ROUTES.tasks.page}${additionalParams}`;
 
 	const tasks = await getTasksList({
 		limit: 3,

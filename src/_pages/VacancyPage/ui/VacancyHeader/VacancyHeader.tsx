@@ -52,7 +52,7 @@ export const VacancyHeader = ({ company, title, salary }: VacancyHeaderProps) =>
 
 				<Flex gap="20" direction="column" align="end">
 					{newSalary && (
-						<Text variant="body6" color="black-900" className={styles.salary}>
+						<Text variant="body6" color="black-900" isNoWrap className={styles.salary}>
 							{newSalary}
 						</Text>
 					)}

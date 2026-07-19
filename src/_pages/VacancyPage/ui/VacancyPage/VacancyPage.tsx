@@ -42,9 +42,11 @@ export const VacancyPage = ({
 					<Card className={styles.card}>
 						<VacancyDescription description={vacancy.description} />
 					</Card>
-					<div className={styles.ai}>
-						<VacancyAdditionalInfo skills={vacancy.skills} aiProfile={vacancy.aiProfile} />
-					</div>
+					{vacancy.aiProfile && (
+						<div className={styles.ai}>
+							<VacancyAdditionalInfo skills={vacancy.skills} aiProfile={vacancy.aiProfile} />
+						</div>
+					)}
 					{vacancy.company.id && vacancy.preparation.collectionsCount > 0 && (
 						<CollectionsSection
 							collections={collections ?? []}
