@@ -1,4 +1,4 @@
-.header-popover {
+div.header-popover {
   padding: 0;
   overflow-y: hidden !important; /* important необходим для переопределения стилей портала */
 	box-shadow: 0 5px 10px -2px rgb(0 0 0 / 12%);

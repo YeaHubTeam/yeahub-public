@@ -14,7 +14,7 @@ export const HeaderNav = async () => {
 
 	const items: NavLink[] = HEADER_NAV_LINKS.map((link) => ({
 		id: link.id,
-		title: link.title,
+		title: t(link.title),
 		subitems: link.subitems.map((childItem) => ({
 			title: t(childItem.title, { default: childItem.title }),
 			link: childItem.link === '/' ? `/${locale}` : `/${locale}${childItem.link}`,

@@ -1,5 +1,8 @@
 {
 	"nav": {
+		"interview": "Собеседование",
+		"learning": "Обучение",
+		"resume": "Резюме",
 		"questions": "Вопросы",
 		"resources": "Материалы",
 		"quiz": "Тренажёр",
@@ -7,8 +10,9 @@
 		"trainer": "Тренажёр",
 		"hhAnalytics": "Навыки",
 		"tasks": "Задачи",
-		"learning": "Менторы",
+		"mentors": "Менторы",
 		"ATS": "АТС",
+		"vacancies": "Вакансии",
 		"companies": "Компании"
 	},
 	"auth": {

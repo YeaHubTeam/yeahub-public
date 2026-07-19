@@ -30,6 +30,9 @@ export enum Translation {
 }
 
 export enum Header {
+	NAV_INTERVIEW = 'nav.interview',
+	NAV_LEARNING = 'nav.learning',
+	NAV_RESUME = 'nav.resume',
 	NAV_QUESTIONS = 'nav.questions',
 	NAV_RESOURCES = 'nav.resources',
 	NAV_QUIZ = 'nav.quiz',
@@ -37,8 +40,9 @@ export enum Header {
 	NAV_TRAINER = 'nav.trainer',
 	NAV_HH_ANALYTICS = 'nav.hhAnalytics',
 	NAV_TASKS = 'nav.tasks',
-	NAV_LEARNING = 'nav.learning',
+	NAV_MENTORS = 'nav.mentors',
 	NAV_ATS = 'nav.ATS',
+	NAV_VACANCIES = 'nav.vacancies',
 	NAV_COMPANIES = 'nav.companies',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',

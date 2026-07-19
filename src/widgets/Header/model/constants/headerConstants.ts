@@ -6,7 +6,7 @@ import { NavLink } from '../types/headerTypes';
 export const HEADER_NAV_LINKS: NavLink[] = [
 	{
 		id: 'interview',
-		title: 'Собеседование',
+		title: Header.NAV_INTERVIEW,
 		subitems: [
 			{
 				link: route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG),
@@ -30,7 +30,7 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 	},
 	{
 		id: 'training',
-		title: 'Обучение',
+		title: Header.NAV_LEARNING,
 		subitems: [
 			{
 				link: ROUTES.quiz.new.page,
@@ -47,14 +47,14 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 			{
 				link: ROUTES.learning.page,
 				path: '/learning',
-				title: Header.NAV_LEARNING,
+				title: Header.NAV_MENTORS,
 				icon: 'user',
 			},
 		],
 	},
 	{
 		id: 'cv',
-		title: 'Резюме',
+		title: Header.NAV_RESUME,
 		subitems: [
 			{
 				link: ROUTES.hhAnalytics.page,
@@ -62,7 +62,13 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 				title: Header.NAV_HH_ANALYTICS,
 				icon: 'skills',
 			},
-			{ title: Header.NAV_ATS, link: '#', path: '#', icon: 'clipboardText' },
+			// { title: Header.NAV_ATS, link: '#', path: '#', icon: 'clipboardText' },
+			{
+				title: Header.NAV_VACANCIES,
+				link: ROUTES.vacancies.page,
+				path: '/vacancies',
+				icon: 'clipboardText',
+			},
 		],
 	},
 ];
