@@ -57,7 +57,7 @@ export const TaskCard = ({
 							variant: 'green',
 							text: t(taskCategories[mainCategory]),
 						}}
-						size="medium"
+						size="large"
 					/>
 					{companiesSlot}
 				</Flex>

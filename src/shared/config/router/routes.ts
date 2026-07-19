@@ -99,6 +99,10 @@ export const ROUTES = {
 	},
 	vacancies: {
 		route: 'vacancies',
-		page: '/vacancies',
+		page: '/vacancies/:specialization',
+		detail: {
+			route: 'vacancies/:specialization/:vacancyId',
+			page: '/:locale/vacancies/:specialization/:vacancyId',
+		},
 	},
 } as const;

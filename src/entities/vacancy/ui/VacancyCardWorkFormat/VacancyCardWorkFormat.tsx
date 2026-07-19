@@ -9,9 +9,9 @@ import type {
 import styles from './VacancyCardWorkFormat.module.css';
 
 interface VacancyCardCompanyProps {
-	employmentForm: VacancyEmploymentForm;
-	grade: VacancyGrade;
-	workFormat: VacancyWorkFormat[];
+	employmentForm: VacancyEmploymentForm | null;
+	grade: VacancyGrade | null;
+	workFormat: VacancyWorkFormat[] | null;
 	area: string;
 }
 
@@ -21,7 +21,7 @@ export const VacancyCardWorkFormat = ({
 	workFormat,
 	area,
 }: VacancyCardCompanyProps) => {
-	const formats = [employmentForm, grade, ...workFormat, area].filter(Boolean);
+	const formats = [employmentForm, grade, ...(workFormat || []), area].filter(Boolean);
 
 	return (
 		<Flex gap="6" className={styles.conditions} align="center">

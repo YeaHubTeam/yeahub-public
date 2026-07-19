@@ -1,12 +1,14 @@
-import ListMagnifyingGlass from '@/shared/assets/icons/ListMagnifyingGlass.svg';
 import AltArrowLeft from '@/shared/assets/icons/altArrowLeft.svg';
 import AltArrowRight from '@/shared/assets/icons/altArrowRight.svg';
 import ArrowDownSquare from '@/shared/assets/icons/arrowDownSquare.svg';
 import ArrowLeft from '@/shared/assets/icons/arrowLeft.svg';
 import ArrowRight from '@/shared/assets/icons/arrowRight.svg';
+import ArrowRightUp from '@/shared/assets/icons/arrowRightUp.svg';
 import ArrowSelect from '@/shared/assets/icons/arrowSelect.svg';
 import ArrowShortDown from '@/shared/assets/icons/arrowShortDown.svg';
 import ArrowUpSquare from '@/shared/assets/icons/arrowUpSquare.svg';
+import BagSimple from '@/shared/assets/icons/bagSimple.svg';
+import Bar from '@/shared/assets/icons/bar.svg';
 import Behance from '@/shared/assets/icons/behance.svg';
 import Burger from '@/shared/assets/icons/burger.svg';
 import Calendar from '@/shared/assets/icons/calendar.svg';
@@ -19,6 +21,7 @@ import ClockCounterClockwise from '@/shared/assets/icons/clockCounterClockwise.s
 import CloseCircle from '@/shared/assets/icons/closeCircle.svg';
 import Collection from '@/shared/assets/icons/collection.svg';
 import Companies from '@/shared/assets/icons/companies.svg';
+import Compass from '@/shared/assets/icons/compass.svg';
 import Copy from '@/shared/assets/icons/copy.svg';
 import Cursor from '@/shared/assets/icons/cursorSquare.svg';
 import Dislike from '@/shared/assets/icons/dislike.svg';
@@ -33,6 +36,7 @@ import Figma from '@/shared/assets/icons/figma_white.svg';
 import Filter from '@/shared/assets/icons/filter.svg';
 import Github from '@/shared/assets/icons/github.svg';
 import GithubWhite from '@/shared/assets/icons/github_white.svg';
+import Globe from '@/shared/assets/icons/globe.svg';
 import GraphUp from '@/shared/assets/icons/graphUp.svg';
 import HandShake from '@/shared/assets/icons/handShake.svg';
 import ImageEdit from '@/shared/assets/icons/imageEdit.svg';
@@ -42,6 +46,7 @@ import KeySquare from '@/shared/assets/icons/keySquare.svg';
 import Lightning from '@/shared/assets/icons/lightning.svg';
 import Like from '@/shared/assets/icons/like.svg';
 import Linkedin from '@/shared/assets/icons/linkedin.svg';
+import ListMagnifyingGlass from '@/shared/assets/icons/listMagnifyingGlass.svg';
 import ListWithBackground from '@/shared/assets/icons/listWithBackground.svg';
 import LogoText from '@/shared/assets/icons/logoText.svg';
 import Magnifer from '@/shared/assets/icons/magnifer.svg';
@@ -49,7 +54,9 @@ import Megaphone from '@/shared/assets/icons/megaphone.svg';
 import Minus from '@/shared/assets/icons/minus.svg';
 import More from '@/shared/assets/icons/more.svg';
 import NotePencil from '@/shared/assets/icons/notePencil.svg';
+import PackageBox from '@/shared/assets/icons/packageBox.svg';
 import Pen from '@/shared/assets/icons/pen.svg';
+import Pin from '@/shared/assets/icons/pin.svg';
 import Plus from '@/shared/assets/icons/plus.svg';
 import PlusCircle from '@/shared/assets/icons/plusCircle.svg';
 import Question from '@/shared/assets/icons/questions.svg';
@@ -63,7 +70,9 @@ import Settings from '@/shared/assets/icons/settings.svg';
 import Skills from '@/shared/assets/icons/skillsIcon.svg';
 import SlidersHorizontal from '@/shared/assets/icons/slidersHorizontal.svg';
 import Specialization from '@/shared/assets/icons/specialization.svg';
+import StarFall from '@/shared/assets/icons/starFall.svg';
 import Student from '@/shared/assets/icons/student.svg';
+import Target from '@/shared/assets/icons/target.svg';
 import Telegram from '@/shared/assets/icons/telegram.svg';
 import TelegramWithBackground from '@/shared/assets/icons/telegramWithBackground.svg';
 import ThumbsDown from '@/shared/assets/icons/thumbsDown.svg';
@@ -79,6 +88,7 @@ import UserSwitch from '@/shared/assets/icons/userSwitch.svg';
 import Warning from '@/shared/assets/icons/warning.svg';
 import Watch from '@/shared/assets/icons/watch.svg';
 import Whatsapp from '@/shared/assets/icons/whatsapp.svg';
+import Wifi from '@/shared/assets/icons/wifi.svg';
 import YeaHubCommunity from '@/shared/assets/icons/yeaHubCommunity.svg';
 import Youtube from '@/shared/assets/icons/youtube.svg';
 import YoutubeWithBackground from '@/shared/assets/icons/youtubeWithBackground.svg';
@@ -88,9 +98,12 @@ import { IconComponent, IconName } from './types';
 export const icons: Record<IconName, IconComponent> = {
 	arrowLeft: ArrowLeft,
 	arrowRight: ArrowRight,
+	arrowRightUp: ArrowRightUp,
 	arrowUpSquare: ArrowUpSquare,
 	arrowDownSquare: ArrowDownSquare,
 	arrowSelect: ArrowSelect,
+	bagSimple: BagSimple,
+	bar: Bar,
 	clock: Clock,
 	calendar: Calendar,
 	altArrowLeft: AltArrowLeft,
@@ -98,15 +111,19 @@ export const icons: Record<IconName, IconComponent> = {
 	dotsThree: DotsThree,
 	dotsThreeVertical: DotsThreeVertical,
 	more: More,
+	starFall: StarFall,
 	student: Student,
+	target: Target,
 	clockCounterClockwise: ClockCounterClockwise,
 	arrowShortDown: ArrowShortDown,
 	slidersHorizontal: SlidersHorizontal,
 	search: Search,
 	closeCircle: CloseCircle,
 	copy: Copy,
+	compass: Compass,
 	trash: Trash,
 	pen: Pen,
+	pin: Pin,
 	eye: Eye,
 	eyeClosed: EyeClosed,
 	like: Like,
@@ -117,9 +134,11 @@ export const icons: Record<IconName, IconComponent> = {
 	twitter: Twitter,
 	facebook: Facebook,
 	github: Github,
+	globe: Globe,
 	githubWhite: GithubWhite,
 	behance: Behance,
 	whatsapp: Whatsapp,
+	wifi: Wifi,
 	telegram: Telegram,
 	telegramWithBackground: TelegramWithBackground,
 	youtube: Youtube,
@@ -147,6 +166,7 @@ export const icons: Record<IconName, IconComponent> = {
 	userSwitch: UserSwitch,
 	trendUp: TrendUp,
 	notePencil: NotePencil,
+	packageBox: PackageBox,
 	clipboardText: ClipboardText,
 	megaphone: Megaphone,
 	magnifer: Magnifer,

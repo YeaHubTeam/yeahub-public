@@ -1,61 +1,18 @@
-import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getSpecializationSlugs } from '@/entities/specialization';
+import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
-import {
-	type GetVacanciesListParamsRequest,
-	MAX_SHOW_LIMIT_VACANCIES,
-	getVacancies,
-} from '@/entities/vacancy';
-import { VacanciesPage as VacanciesPageComponent } from '@/pages/VacanciesPage';
-import { Vacancies, i18Namespace } from '@/shared/config';
+const VacanciesRoot = async () => {
+	const { data: slugs = [] } = await getSpecializationSlugs().catch(() => ({ data: [] }));
 
-export const dynamic = 'force-dynamic';
+	const defaultSlugExists = slugs.some((s) => s.slug === DEFAULT_SPECIALIZATION_SLUG);
 
-interface PageProps {
-	params: Promise<{ locale: string }>;
-	searchParams: Promise<GetVacanciesListParamsRequest>;
-}
+	const targetSlug = defaultSlugExists
+		? DEFAULT_SPECIALIZATION_SLUG
+		: (slugs[0]?.slug ?? DEFAULT_SPECIALIZATION_SLUG);
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-	const { locale } = await params;
-
-	setRequestLocale(locale);
-	const t = await getTranslations({ locale, namespace: i18Namespace.vacancies });
-
-	const title = t(Vacancies.LIST_PAGE_TITLE);
-	const description = t(Vacancies.LIST_PAGE_DESCRIPTION);
-	const keywords = t(Vacancies.LIST_PAGE_KEYWORDS);
-
-	return {
-		title,
-		description,
-		keywords,
-		openGraph: {
-			title,
-			description,
-			type: 'website',
-		},
-	};
-}
-
-const MainVacanciesPage = async ({ searchParams }: PageProps) => {
-	const { page = '1' } = await searchParams;
-
-	const pageNum = Number(page);
-
-	const vacancies = await getVacancies({ page: pageNum, limit: MAX_SHOW_LIMIT_VACANCIES });
-
-	return (
-		<>
-			<VacanciesPageComponent
-				vacancies={vacancies?.data || []}
-				total={vacancies?.total || 0}
-				limit={vacancies?.limit || 0}
-				page={pageNum}
-			/>
-		</>
-	);
+	redirect(`/vacancies/${targetSlug}`);
 };
 
-export default MainVacanciesPage;
+export default VacanciesRoot;
