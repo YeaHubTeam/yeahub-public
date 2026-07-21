@@ -2,6 +2,7 @@ export const specializationApiUrls = {
 	getSpecializations: 'specializations',
 	getSpecializationSlugs: 'specializations/slugs',
 	getSpecializationBySlug: 'specializations/by-slug/:slug',
+	getSpecializationById: 'specializations/:id',
 };
 
 export const DEFAULT_SPECIALIZATION_ID = 11;

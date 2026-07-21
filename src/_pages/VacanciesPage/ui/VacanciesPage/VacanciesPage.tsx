@@ -2,7 +2,7 @@ import React from 'react';
 
 import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import type { Vacancy } from '@/entities/vacancy';
+import type { VacancyListItem } from '@/entities/vacancy';
 import { VacanciesFilterPanel } from '@/pages/VacanciesPage/ui/VacanciesFilterPanel/VacanciesFilterPanel';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
@@ -13,13 +13,15 @@ import { VacanciesPagePagination } from '../VacanciesPagePagination/VacanciesPag
 import styles from './VacanciesPage.module.css';
 
 interface VacanciesPageProps {
-	vacancies: Vacancy[];
+	vacancies: VacancyListItem[];
 	page: number;
 	total: number;
 	limit: number;
 	initialSpecializations?: GetSpecializationsListResponse | null;
 	initialSkills?: GetSkillsListResponse | null;
 	currentSpecialization: Specialization;
+	locale: string;
+	hasFilters: boolean;
 }
 
 export const VacanciesPage = ({
@@ -30,6 +32,8 @@ export const VacanciesPage = ({
 	initialSpecializations,
 	initialSkills,
 	currentSpecialization,
+	locale,
+	hasFilters,
 }: VacanciesPageProps) => {
 	return (
 		<Flex gap="20" align="start">
@@ -39,7 +43,12 @@ export const VacanciesPage = ({
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
 				/>
-				<VacanciesList vacancies={vacancies} />
+				<VacanciesList
+					hasFilters={hasFilters}
+					vacancies={vacancies}
+					locale={locale}
+					specialization={currentSpecialization.slug}
+				/>
 				<VacanciesPagePagination total={total} limit={limit} currentPage={page} />
 			</Card>
 			<Card className={styles.filters}>
