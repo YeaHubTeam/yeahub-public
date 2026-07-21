@@ -10,7 +10,7 @@ import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specializa
 import { parseNumberArray, parseStringArray, useDebounce } from '@/shared/libs';
 
 interface FilterParams {
-	title?: string;
+	search?: string;
 	workFormat?: string[];
 	specialization?: number | number[];
 	skills?: number[];
@@ -33,7 +33,7 @@ export const useVacanciesFiter = (currentSpecialization: Specialization) => {
 
 	const filter: FilterParams = useMemo(
 		() => ({
-			title: searchParams?.get('titleOrDescription') ?? '',
+			search: searchParams?.get('search') ?? '',
 			workFormat: parseStringArray(searchParams?.get('workFormat') ?? ''),
 			specialization: specializationId,
 			skills: parseNumberArray(searchParams?.get('skills') ?? ''),
@@ -63,10 +63,7 @@ export const useVacanciesFiter = (currentSpecialization: Specialization) => {
 		},
 		[pathname, router, searchParamsString],
 	);
-	const onChangeSearch = useCallback(
-		(value: string) => setParam('titleOrDescription', value),
-		[setParam],
-	);
+	const onChangeSearch = useCallback((value: string) => setParam('search', value), [setParam]);
 
 	const onChangeWorkFormat = useCallback(
 		(values: string[]) => setParam('workFormat', values),
