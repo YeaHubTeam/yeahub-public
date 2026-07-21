@@ -29,3 +29,7 @@ export function getSpecializationSlugs() {
 export function getSpecializationBySlug(slug: string) {
 	return apiFetch<Specialization>(route(specializationApiUrls.getSpecializationBySlug, slug));
 }
+
+export function getSpecializationById(id: number) {
+	return apiFetch<Specialization>(route(specializationApiUrls.getSpecializationById, id));
+}

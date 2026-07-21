@@ -8,7 +8,6 @@
 			"to": "до"
 		}
 	},
-	"detail_page": {},
 	"count": {
 		"skills": "+{count, plural, one {# навык} few {# навыка} many {# навыков} other {# навыков}}",
 		"collections": "{count, plural, one {# собеседование} few {# собеседования} many {# собеседований} other {# собеседований}}",
@@ -28,8 +27,71 @@
 	"grade": "Грейд",
 	"companyType": "Тип компании",
 	"employmentType": "Тип занятости",
-	"salary": "Зарплата",
 	"englishLevel": "Уровень английского",
+	"detail_page": {
+		"title": "Вакансия",
+		"description": "Подробная информация о вакансии",
+		"keywords": "вакансия, работа, IT, разработчик, программист, трудоустройство, карьера, поиск работы, вакансия разработчика, работа в IT, описание вакансии, требования к кандидату, условия работы, зарплата, навыки, опыт работы, удалённая работа, офис, гибридный формат"
+	},
+	"salary": {
+		"title": "Зарплата",
+		"from": "от",
+		"to": "до"
+	},
+	"buttons": {
+		"respond": "Откликнуться"
+	},
+	"tags": {
+		"area": "Город",
+		"grade": "Уровень",
+		"employment": "Занятость",
+		"industry": "Сфера",
+		"company_type": "Тип"
+	},
+	"stats": {
+		"title": "Есть база подготовки",
+		"interviews": "{count, plural, one {собеседование} few {собеседования} many {собеседований} other {собеседования}}",
+		"tasks": "{count, plural, one {задача} few {задачи} many {задач} other {задачи}}",
+		"questions": "{count, plural, one {вопрос} few {вопроса} many {вопросов} other {вопроса}}"
+	},
+	"source": {
+		"title": "Источник",
+		"date": {
+			"added": "Дата добавления"
+		},
+		"format": "Формат",
+		"internship": {
+			"title": "Стажировка",
+			"yes": "Есть",
+			"no": "Нет"
+		}
+	},
+	"description": {
+		"title": "Описание Вакансии"
+	},
+	"neuro_fields": {
+		"title": "Нейрополя YeaHub"
+	},
+	"tasks": {
+		"title": "Задачи",
+		"section": {
+			"title": "Алгоритмы и задачи в {company}"
+		}
+	},
+	"skills": {
+		"title": "Ключевые навыки"
+	},
+	"keywords": {
+		"title": "Ключевые слова"
+	},
+	"priority": {
+		"title": "Приоритет"
+	},
+	"collections": {
+		"section": {
+			"title": "Собеседования в {company}"
+		}
+	},
 	"stub": {
 		"empty": {
 			"title": "Похоже здесь пока нет вакансий",

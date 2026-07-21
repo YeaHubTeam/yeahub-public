@@ -1,0 +1,23 @@
+div.card {
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.additional {
+	width: 392px;
+	height: auto;
+}
+
+.ai {
+	display: none;
+}
+
+@media screen and (width < 1280px) {
+	.additional {
+		display: none;
+	}
+	
+	.ai {
+		display: block;
+	}
+}

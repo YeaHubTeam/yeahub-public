@@ -21,14 +21,18 @@
 		cursor: pointer;
 	}
 
-	&.chip-disabled {
-		box-shadow: none;
-		border: 1px solid var(--color-black-150);
-		background-color: transparent;
-		color: var(--color-black-150);
-		cursor: not-allowed;
-		pointer-events: none;
-		opacity: 0.6;
+  &.chip-no-pointer{
+    cursor: default
+  }
+
+  &.chip-disabled {
+    box-shadow: none;
+    border: 1px solid var(--color-black-150);
+    background-color: transparent;
+    color: var(--color-black-150);
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
 
 		.chip-delete-icon {
 			cursor: not-allowed;

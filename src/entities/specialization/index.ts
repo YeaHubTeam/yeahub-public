@@ -10,6 +10,7 @@ export {
 	getSpecializations,
 	getSpecializationSlugs,
 	getSpecializationBySlug,
+	getSpecializationById,
 } from './api/getSpecializations';
 
 export { SpecializationsListField } from './ui/SpecializationsListField/SpecializationsListField';

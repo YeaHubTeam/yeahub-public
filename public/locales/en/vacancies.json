@@ -8,7 +8,6 @@
 			"to": "to"
 		}
 	},
-	"detail_page": {},
 	"count": {
 		"skills": "+{count, plural, one {# skill} other {# skills}}",
 		"collections": "{count, plural, one {# interview} other {# interviews}}",
@@ -29,8 +28,74 @@
 	"grade": "Grade",
 	"companyType": "Company Type",
 	"employmentType": "Employment type",
-	"salary": "Salary",
 	"englishLevel": "English proficiency level",
+	"detail_page": {
+		"title": "Vacancy",
+		"description": "Detailed information about the vacancy",
+		"keywords": "vacancy, job, IT, developer, programmer, employment, career, job search, developer vacancy, IT job, job description, candidate requirements, working conditions, salary, skills, experience, remote work, office, hybrid format"
+	},
+	"salary": {
+		"title": "Salary",
+		"from": "from",
+		"to": "to"
+	},
+	"buttons": {
+		"respond": "Respond"
+	},
+	"tags": {
+		"area": "Area",
+		"grade": "Level",
+		"employment": "Employment",
+		"industry": "Industry",
+		"company_type": "Type"
+	},
+	"stats": {
+		"title": "Preparation materials available",
+		"interviews": "{count, plural, one {interview} other {interviews}}",
+		"tasks": "{count, plural, one {task} other {tasks}}",
+		"questions": "{count, plural, one {question} other {questions}}"
+	},
+	"source": {
+		"title": "Source",
+		"date": {
+			"added": "Date added"
+		},
+		"format": "Format",
+		"internship": {
+			"title": "Internship",
+			"yes": "Yes",
+			"no": "No"
+		}
+	},
+	"description": {
+		"title": "Job description"
+	},
+	"preparation": {
+		"title": "Preparation materials"
+	},
+	"neuro_fields": {
+		"title": "YeaHub Neuro Fields"
+	},
+	"tasks": {
+		"title": "Tasks",
+		"section": {
+			"title": "Algorithms and tasks in {company}"
+		}
+	},
+	"skills": {
+		"title": "Key Skills"
+	},
+	"keywords": {
+		"title": "Keywords"
+	},
+	"priority": {
+		"title": "Priority"
+	},
+	"collections": {
+		"section": {
+			"title": "Interviews at {company}"
+		}
+	},
 	"stub": {
 		"empty": {
 			"title": "No vacancies found yet",
