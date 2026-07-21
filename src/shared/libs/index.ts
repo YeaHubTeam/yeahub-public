@@ -31,3 +31,4 @@ export {
 export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
 export { getFormatSalary } from './salary/getFormatSalary';
 export { useGetCurrentDay } from './date/useGetCurrentDay';
+export { getQuestionSpecializationTitle } from './seo';

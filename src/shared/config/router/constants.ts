@@ -4,3 +4,5 @@ export const AUTH_LINKS = {
 };
 
 export const APP_ROUTE = 'https://app.yeatwork.ru';
+
+export const SITE_URL = 'https://yeahub.ru';

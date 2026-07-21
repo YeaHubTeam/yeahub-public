@@ -20,6 +20,7 @@ export enum Translation {
 	MODE_SELECT_TOOLTIP_PREMIUM_ONLY = 'mode.select.tooltip.premium.only',
 
 	QUESTIONS_COUNT_AVAILABLE_AUTHORIZED = 'questions-count-available',
+	QUESTION_SEO_TITLE = 'question-seo-title',
 	LOGIN_REGISTER_LINK = 'banner-authorized',
 
 	/* Error 404 */
@@ -345,6 +346,7 @@ export enum Analytics {
 
 export enum Resources {
 	HEADER_TITLE = 'header.title',
+	SEO_TITLE = 'seo.title',
 	SEARCH_PLACEHOLDER = 'search.placeholder',
 	RESOURCES_TITLE = 'resources.title',
 	STUB_EMPTY_RESOURCES_TITLE = 'stub.empty.resources.title',
