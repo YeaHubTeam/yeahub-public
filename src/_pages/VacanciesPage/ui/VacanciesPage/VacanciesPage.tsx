@@ -21,6 +21,7 @@ interface VacanciesPageProps {
 	initialSkills?: GetSkillsListResponse | null;
 	currentSpecialization: Specialization;
 	locale: string;
+	hasFilters: boolean;
 }
 
 export const VacanciesPage = ({
@@ -32,6 +33,7 @@ export const VacanciesPage = ({
 	initialSkills,
 	currentSpecialization,
 	locale,
+	hasFilters,
 }: VacanciesPageProps) => {
 	return (
 		<Flex gap="20" align="start">
@@ -42,6 +44,7 @@ export const VacanciesPage = ({
 					initialSkills={initialSkills}
 				/>
 				<VacanciesList
+					hasFilters={hasFilters}
 					vacancies={vacancies}
 					locale={locale}
 					specialization={currentSpecialization.slug}

@@ -95,5 +95,11 @@
 		"section": {
 			"title": "Interviews at {company}"
 		}
+	},
+	"stub": {
+		"empty": {
+			"title": "No vacancies found yet",
+			"subtitle": "Vacancies are added periodically, just wait a bit"
+		}
 	}
 }
