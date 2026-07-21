@@ -87,6 +87,13 @@ export type IconName =
 	| 'lightning'
 	| 'wifi'
 	| 'refresh'
+	| 'companies'
+	| 'collection'
+	| 'skills'
+	| 'user'
+	| 'quiz'
+	| 'list'
+	| 'cursor'
 	| 'refferals';
 
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

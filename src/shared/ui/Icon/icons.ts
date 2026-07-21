@@ -19,8 +19,11 @@ import ClipboardText from '@/shared/assets/icons/clipboardText.svg';
 import Clock from '@/shared/assets/icons/clock.svg';
 import ClockCounterClockwise from '@/shared/assets/icons/clockCounterClockwise.svg';
 import CloseCircle from '@/shared/assets/icons/closeCircle.svg';
+import Collection from '@/shared/assets/icons/collection.svg';
+import Companies from '@/shared/assets/icons/companies.svg';
 import Compass from '@/shared/assets/icons/compass.svg';
 import Copy from '@/shared/assets/icons/copy.svg';
+import Cursor from '@/shared/assets/icons/cursorSquare.svg';
 import Dislike from '@/shared/assets/icons/dislike.svg';
 import DotsThree from '@/shared/assets/icons/dotsThree.svg';
 import DotsThreeVertical from '@/shared/assets/icons/dotsThreeVertical.svg';
@@ -43,6 +46,7 @@ import KeySquare from '@/shared/assets/icons/keySquare.svg';
 import Lightning from '@/shared/assets/icons/lightning.svg';
 import Like from '@/shared/assets/icons/like.svg';
 import Linkedin from '@/shared/assets/icons/linkedin.svg';
+import ListMagnifyingGlass from '@/shared/assets/icons/listMagnifyingGlass.svg';
 import ListWithBackground from '@/shared/assets/icons/listWithBackground.svg';
 import LogoText from '@/shared/assets/icons/logoText.svg';
 import Magnifer from '@/shared/assets/icons/magnifer.svg';
@@ -56,12 +60,14 @@ import Pin from '@/shared/assets/icons/pin.svg';
 import Plus from '@/shared/assets/icons/plus.svg';
 import PlusCircle from '@/shared/assets/icons/plusCircle.svg';
 import Question from '@/shared/assets/icons/questions.svg';
+import Quiz from '@/shared/assets/icons/quizIcon.svg';
 import Referrals from '@/shared/assets/icons/referralsIcon.svg';
 import Refresh from '@/shared/assets/icons/refresh.svg';
 import SealCheck from '@/shared/assets/icons/sealCheck.svg';
 import SealCheckOutlined from '@/shared/assets/icons/sealCheckOutlined.svg';
 import Search from '@/shared/assets/icons/search.svg';
 import Settings from '@/shared/assets/icons/settings.svg';
+import Skills from '@/shared/assets/icons/skillsIcon.svg';
 import SlidersHorizontal from '@/shared/assets/icons/slidersHorizontal.svg';
 import Specialization from '@/shared/assets/icons/specialization.svg';
 import StarFall from '@/shared/assets/icons/starFall.svg';
@@ -76,6 +82,7 @@ import TikTok from '@/shared/assets/icons/tiktok.svg';
 import Trash from '@/shared/assets/icons/trash.svg';
 import TrendUp from '@/shared/assets/icons/trendUp.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
+import User from '@/shared/assets/icons/user.svg';
 import UserCheckWithBackground from '@/shared/assets/icons/userCheckWithBackground.svg';
 import UserSwitch from '@/shared/assets/icons/userSwitch.svg';
 import Warning from '@/shared/assets/icons/warning.svg';
@@ -175,5 +182,12 @@ export const icons: Record<IconName, IconComponent> = {
 	tickWithBackground: TickWithBackground,
 	lightning: Lightning,
 	refresh: Refresh,
+	companies: Companies,
+	collection: Collection,
+	skills: Skills,
+	user: User,
+	quiz: Quiz,
+	list: ListMagnifyingGlass,
+	cursor: Cursor,
 	refferals: Referrals,
 };

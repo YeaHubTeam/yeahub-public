@@ -7,7 +7,6 @@ import { getStylePrefix } from './helpers';
 import { ButtonProps } from './types';
 
 export const ButtonSkeleton = ({
-	dataTestId,
 	className,
 	variant = 'primary',
 	fullWidth,
@@ -19,7 +18,6 @@ export const ButtonSkeleton = ({
 
 	return (
 		<Skeleton
-			dataTestId={dataTestId}
 			borderRadius={12}
 			width={width}
 			className={classnames(
