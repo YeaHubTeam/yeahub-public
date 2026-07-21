@@ -24,7 +24,12 @@ export const VacancyMainInfo = ({ vacancy }: VacancyInfoProps) => {
 				companyType={vacancy.companyType}
 			/>
 			<VacancyStats preparation={vacancy.preparation} />
-			<VacancySource source={vacancy.source} publishDate={vacancy.sourcePublishedAt} />
+			<VacancySource
+				source={vacancy.source}
+				publishDate={vacancy.sourcePublishedAt}
+				internship={vacancy.internship}
+				workFormat={vacancy.workFormat}
+			/>
 		</Flex>
 	);
 };
