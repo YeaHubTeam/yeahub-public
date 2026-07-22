@@ -12,7 +12,7 @@ export interface Task {
 	difficulty: TaskDifficulty;
 	supportedLanguages: ProgrammingLanguage[];
 	taskStructures: TaskStructure[];
-	mainCategory: TaskCategoryCode;
+	categories: TaskCategoryCode[];
 	canSolve: boolean;
 	slug: string;
 	description: string;
