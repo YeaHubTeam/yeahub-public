@@ -19,7 +19,7 @@ interface TaskDescriptionProps {
 	name: string;
 	difficulty: TaskDifficulty;
 	supportedLanguages: ProgrammingLanguage[];
-	mainCategory: TaskCategoryCode;
+	categories: TaskCategoryCode[];
 	description: string;
 	companies: Company[];
 }
@@ -28,7 +28,7 @@ export const TaskDescription = ({
 	name,
 	difficulty,
 	supportedLanguages,
-	mainCategory,
+	categories,
 	description,
 	companies,
 }: TaskDescriptionProps) => {
@@ -43,13 +43,16 @@ export const TaskDescription = ({
 				<Flex gap="10" wrap="wrap">
 					<TaskDifficultyChip difficulty={difficulty} />
 					<ProgrammingLanguageList supportedLanguages={supportedLanguages} />
-					<StatusChip
-						status={{
-							variant: 'green',
-							text: t(taskCategories[mainCategory]),
-						}}
-						size="medium"
-					/>
+					{categories?.map((category) => (
+						<StatusChip
+							key={category}
+							status={{
+								variant: 'green',
+								text: t(taskCategories[category]),
+							}}
+							size="large"
+						/>
+					))}
 					<CompanyCompactList companies={companies} />
 				</Flex>
 				<TextHtml html={description} />

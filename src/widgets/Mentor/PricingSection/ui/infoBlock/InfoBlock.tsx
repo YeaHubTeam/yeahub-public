@@ -22,7 +22,7 @@ export const InfoBlock = () => {
 				contentClassName={styles['wrapper-content']}
 			>
 				<StatusChip
-					size="medium"
+					size="large"
 					status={{ text: t(Mentor.PRICING_INFO_BADGE_INSTEAD), variant: 'green' }}
 				/>
 				<Text variant="body6" className={styles.title}>
