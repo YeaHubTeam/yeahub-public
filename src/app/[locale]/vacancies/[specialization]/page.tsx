@@ -93,6 +93,7 @@ const MainVacanciesPage = async ({ searchParams, params }: PageProps) => {
 			companyType,
 			englishLevel,
 			workFormat,
+			specializationId,
 		}),
 		getSpecializations({ limit: 5 }),
 		getSkills({ limit: 5, specializations: specializationId }),
