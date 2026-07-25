@@ -9,6 +9,7 @@
 
 .description {
 	max-width: 493px;
+	white-space: pre-line;
 }
 
 @media (width < 1280px) {

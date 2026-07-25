@@ -6,6 +6,11 @@
 	min-height: 357px;
 }
 
+.card {
+	padding: 20px;
+	border-radius: 20px;
+}
+
 .wrapper-content {
 	height: 100%;
 }
@@ -20,6 +25,7 @@
 
 .button {
 	margin-top: 20px;
+	padding: 0;
 	font-size: var(--font-size-p-l);
 }
 
@@ -120,6 +126,7 @@
 @media (width < 1280px) {
 	.wrapper {
 		grid-template-columns: 1fr 1fr;
+		min-height: 352px;
 	}
 	
 	.badges {
@@ -136,6 +143,7 @@
 	}
 
 	.badge-outline {
+		display: none;
 		margin-top: 8px;
 		width: 80px;
 		height: 80px;
@@ -171,4 +179,5 @@
 		padding: 10px;
 		min-height: 337px;
 	}
+ 
 }

@@ -28,7 +28,9 @@ export const TariffCardAdvantages = ({ advantages, isInverted }: TariffCardAdvan
 						className={styles['list-item']}
 					>
 						<Indicator />
-						<Text variant="body3-accent">{advantage}</Text>
+						<Text variant="body3-accent" className={styles['description']}>
+							{advantage}
+						</Text>
 					</Flex>
 				))}
 			</Flex>
