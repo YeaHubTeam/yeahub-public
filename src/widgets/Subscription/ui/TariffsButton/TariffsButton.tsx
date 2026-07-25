@@ -2,12 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 
+import { WithFeature } from '@/entities/featureFlag';
 import { Subscription, i18Namespace } from '@/shared/config';
 import { useModal } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 
 import { TariffsModal } from '../TariffsModal/TariffsModal';
-import styles from './TariffsButton.module.css';
 
 export const TariffsButton = () => {
 	const t = useTranslations(i18Namespace.subscription);
@@ -15,11 +15,11 @@ export const TariffsButton = () => {
 	const { isOpen, onOpen, onClose } = useModal();
 
 	return (
-		<>
-			<Button variant="outline" onClick={onOpen} className={styles['button-tariffs']}>
+		<WithFeature featureId="public.subscription.show-tariffs">
+			<Button variant="outline" onClick={onOpen}>
 				{t(Subscription.TARIFFS)}
 			</Button>
 			{isOpen && <TariffsModal isOpen={isOpen} onClose={onClose} />}
-		</>
+		</WithFeature>
 	);
 };
