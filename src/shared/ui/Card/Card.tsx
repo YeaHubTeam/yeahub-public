@@ -72,7 +72,7 @@ export const Card = ({
 				[styles.border]: withBorder,
 			})}
 		>
-			{(title || actionRoute || titleComponent) && (
+			{(title || titleComponent || headerAction) && (
 				<div
 					className={classNames(styles['card-header'], {
 						[styles['card-header-title-center']]: isTitleCenter,
@@ -81,33 +81,34 @@ export const Card = ({
 				>
 					{title && <Text variant="body5-accent">{title}</Text>}
 					{titleComponent ? titleComponent : null}
-					{actionRoute ? (
-						<Link
-							href={actionRoute}
-							{...actionOptions}
-							className={classNames(styles.link, styles[`link-${actionPositionX}`], {
-								[styles['link-bottom']]: isActionPositionBottom,
-								[styles['link-disabled']]: actionDisabled,
-							})}
-						>
-							<Text
-								variant="body3-strong"
-								color={actionDisabled ? 'purple-300' : 'purple-700'}
-								dataTestId="Card_Link"
-							>
-								{actionTitle}
-							</Text>
-							<Icon
-								icon="arrowRight"
-								size={24}
-								color={actionDisabled ? 'purple-300' : 'purple-700'}
-								className={styles.icon}
-							/>
-						</Link>
-					) : null}
+
 					{headerAction}
 				</div>
 			)}
+			{actionRoute && actionTitle ? (
+				<Link
+					href={actionRoute}
+					{...actionOptions}
+					className={classNames(styles.link, styles[`link-${actionPositionX}`], {
+						[styles['link-bottom']]: isActionPositionBottom,
+						[styles['link-disabled']]: actionDisabled,
+					})}
+				>
+					<Text
+						variant="body3-accent"
+						color={actionDisabled ? 'purple-300' : 'purple-700'}
+						dataTestId="Card_Link"
+					>
+						{actionTitle}
+					</Text>
+					<Icon
+						icon="arrowRight"
+						size={24}
+						color={actionDisabled ? 'purple-300' : 'purple-700'}
+						className={styles.icon}
+					/>
+				</Link>
+			) : null}
 
 			<div
 				className={classNames(styles.content, contentClassName, {
