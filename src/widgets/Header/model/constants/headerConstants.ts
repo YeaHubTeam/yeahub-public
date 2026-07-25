@@ -65,7 +65,7 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 			// { title: Header.NAV_ATS, link: '#', path: '#', icon: 'clipboardText' },
 			{
 				title: Header.NAV_VACANCIES,
-				link: ROUTES.vacancies.page,
+				link: route(ROUTES.vacancies.page, DEFAULT_SPECIALIZATION_SLUG),
 				path: '/vacancies',
 				icon: 'clipboardText',
 			},
