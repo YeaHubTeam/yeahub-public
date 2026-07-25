@@ -5,7 +5,6 @@ import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
 const VacanciesRoot = async () => {
 	const { data: slugs = [] } = await getSpecializationSlugs().catch(() => ({ data: [] }));
-	console.log('slugs', slugs);
 
 	const defaultSlugExists = slugs.some((s) => s.slug === DEFAULT_SPECIALIZATION_SLUG);
 
