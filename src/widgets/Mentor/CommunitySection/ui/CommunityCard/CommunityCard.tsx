@@ -16,6 +16,7 @@ export const CommunityCard = ({ title, description, linkText, linkUrl }: Communi
 		<Card
 			className={styles.card}
 			contentClassName={styles['card-content']}
+			linkClassName={styles['link']}
 			actionTitle={linkText}
 			actionRoute={linkUrl}
 			actionPositionX="start"

@@ -1,0 +1,3 @@
+.section-header > div:nth-child(2) > p {
+	max-width: 420px;
+}
