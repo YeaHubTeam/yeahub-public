@@ -64,7 +64,7 @@ export const FaqList = () => {
 	];
 
 	return (
-		<Flex direction="column" gap="20" className={styles.wrapper}>
+		<Flex direction="column" className={styles.wrapper}>
 			<Flex direction="column" gap="20" className={styles.content}>
 				{steps.map(({ id, title, description }) => (
 					<AccordionMentor key={id} number={id} title={t(title)} defaultOpen={false}>
