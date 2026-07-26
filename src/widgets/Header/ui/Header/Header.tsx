@@ -11,7 +11,7 @@ export const Header = () => {
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'SiteNavigationElement',
-		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме'],
+		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме', 'Вакансии'],
 
 		url: [
 			'/ru/questions/react-frontend-developer',
@@ -20,6 +20,7 @@ export const Header = () => {
 			'/ru/resources/react-frontend-developer',
 			'/ru/learning',
 			'/ru/hh-analytics',
+			'/ru/vacancies',
 		],
 	};
 
