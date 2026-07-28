@@ -10,7 +10,7 @@ import type { ResourceTypeCode } from '@/entities/resource';
 import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specialization';
 import { parseNumberArray, parseStringArray, useDebounce } from '@/shared/libs';
 
-import type { ResourcesFilterParams } from '../types/types';
+import type { ResourcesFilterParams } from '../model/types/types';
 
 export const useResourcesFilter = (currentSpec: Specialization) => {
 	const router = useRouter();
