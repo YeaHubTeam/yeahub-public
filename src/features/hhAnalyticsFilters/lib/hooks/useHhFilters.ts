@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { DEFAULT_SPECIALIZATION_ID } from '@/entities/specialization';
 
-import type { HhAnalyticsMode } from '../model/types/types';
+import type { HhAnalyticsMode } from '../../model/types/types';
 
 interface UseHhFiltersOptions {
 	defaultSpecialization?: number;
