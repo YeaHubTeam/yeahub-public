@@ -28,6 +28,7 @@ export type Pallete =
 	| 'yellow-400'
 	| 'yellow-300'
 	| 'yellow-200'
+	| 'green-1000'
 	| 'green-900'
 	| 'green-800'
 	| 'green-750'

@@ -31,5 +31,8 @@
 	},
 	"resources": {
 		"title": "Resource types"
+	},
+	"seo": {
+		"title": "Resources for {specialization} specialization"
 	}
 }

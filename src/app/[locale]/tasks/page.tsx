@@ -111,6 +111,9 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 				hasFilters={hasFilters}
 				languages={languagesResponse}
 				categories={categoriesResponse}
+				page={pageNum}
+				total={tasksResponse?.total || 0}
+				limit={tasksResponse?.limit || 0}
 			/>
 		</>
 	);

@@ -19,7 +19,7 @@ export const TaskPage = ({ task }: TaskPageProps) => {
 	const {
 		description,
 		difficulty,
-		mainCategory,
+		categories,
 		name,
 		supportedLanguages,
 		taskStructures,
@@ -36,7 +36,7 @@ export const TaskPage = ({ task }: TaskPageProps) => {
 					<TaskDescription
 						description={description}
 						difficulty={difficulty}
-						mainCategory={mainCategory}
+						categories={categories}
 						name={name}
 						supportedLanguages={supportedLanguages}
 						companies={companies}

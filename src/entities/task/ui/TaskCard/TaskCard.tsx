@@ -20,7 +20,7 @@ export interface TasksCardProps {
 	id: string;
 	name: string;
 	difficulty: TaskDifficulty;
-	mainCategory: TaskCategoryCode;
+	categories: TaskCategoryCode[];
 	canSolve: boolean;
 	languagesSlot?: React.ReactNode;
 	companiesSlot?: React.ReactNode;
@@ -31,7 +31,7 @@ export const TaskCard = ({
 	id,
 	name,
 	difficulty,
-	mainCategory,
+	categories,
 	languagesSlot,
 	companiesSlot,
 	canSolve,
@@ -49,16 +49,19 @@ export const TaskCard = ({
 				) : (
 					<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
 				)}
-				<Flex direction="row" gap="10" align="center">
+				<Flex direction="row" gap="10" align="center" wrap="wrap">
 					<TaskDifficultyChip key={id} difficulty={difficulty} />
 					{languagesSlot}
-					<StatusChip
-						status={{
-							variant: 'green',
-							text: t(taskCategories[mainCategory]),
-						}}
-						size="large"
-					/>
+					{categories?.map((category) => (
+						<StatusChip
+							key={category}
+							status={{
+								variant: 'green',
+								text: t(taskCategories[category]),
+							}}
+							size="large"
+						/>
+					))}
 					{companiesSlot}
 				</Flex>
 			</Flex>
