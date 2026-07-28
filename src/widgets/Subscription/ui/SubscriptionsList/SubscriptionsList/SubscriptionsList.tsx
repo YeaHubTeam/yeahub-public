@@ -5,7 +5,7 @@ import { useScreenSize } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
-import { useGetSubscriptionsInfo } from '../../libs/hooks/useGetSubscriptionsInfo';
+import { useGetSubscriptionsInfo } from '../../../model/hooks/useGetSubscriptionsInfo';
 import { SubscriptionCard } from '../SubscriptionCard/SubscriptionCard';
 import styles from './SubscriptionsList.module.css';
 

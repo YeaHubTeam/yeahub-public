@@ -4,8 +4,8 @@ import { SubscriptionCode, useSubscriptions } from '@/entities/subscription';
 import { Subscription, i18Namespace } from '@/shared/config';
 import { Pallete } from '@/shared/libs';
 
-import { SubscriptionInfo } from '../../model/types/types';
 import { SubscriptionInfoBenefit, premiumBenefits } from '../constants/benefitsConstants';
+import { SubscriptionInfo } from '../types/subscription';
 
 export const useGetSubscriptionsInfo = (): SubscriptionInfo[] => {
 	const t = useTranslations(i18Namespace.subscription);

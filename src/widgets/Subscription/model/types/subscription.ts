@@ -1,7 +1,7 @@
 import { SubscriptionCode } from '@/entities/subscription';
 import { Pallete } from '@/shared/libs';
 
-import { SubscriptionInfoBenefit } from '../../libs/constants/benefitsConstants';
+import { SubscriptionInfoBenefit } from '../constants/benefitsConstants';
 
 export interface SubscriptionInfo {
 	id: number;

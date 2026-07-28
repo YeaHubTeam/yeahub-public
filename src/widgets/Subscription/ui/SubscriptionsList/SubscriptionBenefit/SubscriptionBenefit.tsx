@@ -6,7 +6,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-import { SubscriptionInfoBenefit } from '../../libs/constants/benefitsConstants';
+import { SubscriptionInfoBenefit } from '../../../model/constants/benefitsConstants';
 import styles from './SubscriptionBenefit.module.css';
 
 interface SubscriptionBenefitProps {
