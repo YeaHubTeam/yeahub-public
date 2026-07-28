@@ -17,7 +17,7 @@ import {
 import { ResourcesPage } from '@/pages/ResourcesPage';
 import { Resources, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { RESOURCES_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {

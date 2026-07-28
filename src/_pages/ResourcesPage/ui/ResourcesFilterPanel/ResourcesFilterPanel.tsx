@@ -13,7 +13,7 @@ import { Resources, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useResourcesFilter } from '../../model/api/useResourcesFilter';
+import { useResourcesFilter } from '../../api/useResourcesFilter';
 
 interface ResourcesFilterPanelProps {
 	currentSpecialization: Specialization;

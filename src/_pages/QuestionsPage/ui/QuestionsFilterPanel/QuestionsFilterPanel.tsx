@@ -14,7 +14,7 @@ import { Questions, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useQuestionsFilter } from '../../model/api/useQuestionsFilter';
+import { useQuestionsFilter } from '../../api/useQuestionsFilter';
 
 interface QuestionsFilterPanelProps {
 	initialSpecializations?: GetSpecializationsListResponse | null;

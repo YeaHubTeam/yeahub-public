@@ -2,11 +2,10 @@ import {
 	getGuruWithMatchingSpecialization,
 	getNewGuruWithMatchingSpecialization,
 } from '@/entities/guru';
-import { Question } from '@/entities/question';
+import { Question, QuestionAdditionalInfo } from '@/entities/question';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
 import { SidebarBanner } from '@/widgets/Media';
-import { QuestionAdditionalInfo } from '@/widgets/question/QuestionAdditionalInfo';
 import { QuestionBody } from '@/widgets/question/QuestionBody';
 import { QuestionHeader } from '@/widgets/question/QuestionHeader';
 

@@ -7,7 +7,7 @@ import { getSkills } from '@/entities/skill';
 import { DEFAULT_SPECIALIZATION_ID, getSpecializations } from '@/entities/specialization';
 import { CreateQuizPage } from '@/pages/CreateQuizPage';
 import { InterviewQuiz, InterviewQuizCreate, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string }>;
