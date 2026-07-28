@@ -1,5 +1,5 @@
-import { Company } from '@/entities/company/@x/tasks';
-import { ProgrammingLanguage } from '@/entities/programmingLanguage/@x/tasks';
+import { Company } from '@/entities/company/@x/task';
+import { ProgrammingLanguage } from '@/entities/programmingLanguage/@x/task';
 import { Response, SortOrder } from '@/shared/libs';
 
 export type TaskDifficulty = 1 | 2 | 3 | 4 | 5;

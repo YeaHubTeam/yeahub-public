@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { CompaniesSelect } from '@/entities/company/@x/tasks';
+import { CompaniesSelect } from '@/entities/company/@x/task';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';

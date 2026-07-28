@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { TaskCategoryCode, TaskDifficulty } from '@/entities/tasks';
+import { TaskCategoryCode, TaskDifficulty } from '@/entities/task';
 import { parseNumberArray, useDebounce } from '@/shared/libs';
 import { TasksFilterParams } from '@/widgets/task/TasksFilterPanel';
 

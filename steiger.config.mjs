@@ -6,6 +6,8 @@ export default defineConfig([
 	{
 		rules: {
 			'fsd/insignificant-slice': 'off',
+			'fsd/typo-in-layer-name': 'warn',
+			'fsd/excessive-slicing': 'warn',
 		},
 	},
 ]);

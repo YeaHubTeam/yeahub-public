@@ -3,12 +3,7 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getLanguages } from '@/entities/programmingLanguage';
-import {
-	TaskCategoryCode,
-	TaskDifficulty,
-	getTaskCategories,
-	getTasksList,
-} from '@/entities/tasks';
+import { TaskCategoryCode, TaskDifficulty, getTaskCategories, getTasksList } from '@/entities/task';
 import { TasksPage } from '@/pages/TasksPage';
 import { i18Namespace, locales } from '@/shared/config';
 import { Tasks } from '@/shared/config';
