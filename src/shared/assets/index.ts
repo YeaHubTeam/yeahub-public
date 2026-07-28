@@ -6,10 +6,10 @@ export { default as cardsImgQuestInfo } from './images/cardQuestInfo.png';
 export { default as cardsImgCollectInfo } from './images/cardCollectionInfo.png';
 export { default as cardsImgTaskInfo } from './images/cardTaskInfo.png';
 export { default as indicator } from './images/IndicatorIcon.png';
-export { default as BeforAfter } from './images/new-landing-page/BeforAfter.png';
-export { default as KeywordsContainer } from './images/new-landing-page/KeywordsContainer.png';
-export { default as CardVacancyOne } from './images/new-landing-page/CardVacancyOne.png';
-export { default as CardVacancyTwo } from './images/new-landing-page/CardVacancyTwo.png';
+export { default as BeforAfter } from './images/landing-page/BeforAfter.png';
+export { default as KeywordsContainer } from './images/landing-page/KeywordsContainer.png';
+export { default as CardVacancyOne } from './images/landing-page/CardVacancyOne.png';
+export { default as CardVacancyTwo } from './images/landing-page/CardVacancyTwo.png';
 
 export { default as mentorPhone } from './images/mentor/icon/mentorPhone.png';
 export { default as mentorQuestions } from './images/mentor/icon/mentorQuestions.png';
