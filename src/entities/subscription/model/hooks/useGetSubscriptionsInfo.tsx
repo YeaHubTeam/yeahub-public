@@ -1,11 +1,12 @@
 import { useTranslations } from 'next-intl';
 
-import { SubscriptionCode, useSubscriptions } from '@/entities/subscription';
 import { Subscription, i18Namespace } from '@/shared/config';
 import { Pallete } from '@/shared/libs';
 
+import { useSubscriptions } from '../../libs/hooks/useSubscriptions';
 import { SubscriptionInfoBenefit, premiumBenefits } from '../constants/benefitsConstants';
-import { SubscriptionInfo } from '../types/subscription';
+import { SubscriptionCode } from '../types/subscription';
+import { SubscriptionInfo } from '../types/subscriptionInfo';
 
 export const useGetSubscriptionsInfo = (): SubscriptionInfo[] => {
 	const t = useTranslations(i18Namespace.subscription);

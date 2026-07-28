@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 
-import { QuestionGradeListSkeleton } from '@/entities/question';
-import { SkillListSkeleton } from '@/entities/skill';
+import { SkillListSkeleton } from '@/entities/skill/@x/question';
 import { CardSkeleton } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { KeywordsListSkeleton } from '@/shared/ui/KeywordsList';
 import { TextSkeleton } from '@/shared/ui/Text';
 
+import { QuestionGradeListSkeleton } from '../QuestionGradeList/QuestionGradeList.skeleton';
 import { QuestionAdditionalInfoProps } from './QuestionAdditionalInfo';
 import styles from './QuestionAdditionalInfo.module.css';
 

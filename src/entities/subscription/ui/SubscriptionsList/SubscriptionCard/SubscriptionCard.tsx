@@ -10,7 +10,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-import { SubscriptionInfo } from '../../../model/types/subscription';
+import { SubscriptionInfo } from '../../../model/types/subscriptionInfo';
 import { SubscriptionBenefit } from '../SubscriptionBenefit/SubscriptionBenefit';
 import styles from './SubscriptionCard.module.css';
 

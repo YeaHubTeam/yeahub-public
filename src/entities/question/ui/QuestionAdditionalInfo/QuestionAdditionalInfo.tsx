@@ -1,9 +1,8 @@
 import classnames from 'classnames';
 import { getTranslations } from 'next-intl/server';
 
-import { QuestionGradeList } from '@/entities/question';
-import { Skill, SkillList } from '@/entities/skill';
-import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia';
+import { Skill, SkillList } from '@/entities/skill/@x/question';
+import { MediaLinksBanner, getChannelsForSpecialization } from '@/entities/socialMedia/@x/question';
 import { Specialization } from '@/entities/specialization/@x/question';
 import { i18Namespace } from '@/shared/config';
 import { Questions } from '@/shared/config';
@@ -12,6 +11,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { KeywordsList } from '@/shared/ui/KeywordsList';
 import { Text } from '@/shared/ui/Text';
 
+import { QuestionGradeList } from '../QuestionGradeList/QuestionGradeList';
 import styles from './QuestionAdditionalInfo.module.css';
 
 export interface QuestionAdditionalInfoProps {

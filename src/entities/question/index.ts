@@ -26,3 +26,5 @@ export {
 } from './api/getQuestions';
 export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestionsItem';
 export { ChooseQuestionCount } from './ui/ChooseQuestionCount/ChooseQuestionCount';
+export { QuestionAdditionalInfo } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo';
+export { QuestionAdditionalInfoSkeleton } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo.skeleton';

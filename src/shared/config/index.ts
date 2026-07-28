@@ -32,4 +32,3 @@ export { Link, redirect, usePathname, useRouter } from './navigation';
 export { AUTH_LINKS, SITE_URL, APP_ROUTE } from './router/constants';
 export { ROUTES } from './router/routes';
 export { routing } from './routing';
-export { APP_ROUTE } from './router/constants';
