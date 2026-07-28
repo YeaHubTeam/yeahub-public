@@ -13,6 +13,7 @@
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
 		"lint:css": "stylelint \"**/*.css\"",
 		"lint:css:fix": "stylelint \"**/*.css\" --fix",
+		"lint:fsd": "steiger ./src",
 		"prepare": "husky",
 		"test": "jest",
 		"test:watch": "jest --watch",

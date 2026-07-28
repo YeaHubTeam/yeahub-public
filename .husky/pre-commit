@@ -7,3 +7,6 @@ fi
 
 echo '🔍🎨 Formatting & linting staged files...'
 npx lint-staged || { echo '💀❌ lint-staged failed'; exit 1; }
+
+echo '🏗️ Checking FSD architecture (steiger)...'
+npm run lint:fsd || { echo '💀❌ steiger failed'; exit 1; }
