@@ -10,4 +10,10 @@ export default defineConfig([
 			'fsd/excessive-slicing': 'warn',
 		},
 	},
+	{
+		files: ['./src/shared/assets/**'],
+		rules: {
+			'fsd/segments-by-purpose': 'warn',
+		},
+	},
 ]);
