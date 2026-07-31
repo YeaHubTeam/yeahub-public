@@ -46,7 +46,12 @@ export const VacanciesPage = ({
 				/>
 			}
 		>
-			<VacanciesList vacancies={vacancies} />
+			<VacanciesList
+				vacancies={vacancies}
+				hasFilters={hasFilters}
+				locale={locale}
+				specialization={currentSpecialization.slug}
+			/>
 		</ListPageWrapper>
 	);
 };
