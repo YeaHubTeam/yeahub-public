@@ -37,6 +37,7 @@ export const SpecializationsPage = async ({
 						className={styles.link}
 					>
 						<Card className={styles.card} withOutsideShadow>
+							<div className={styles['card-ellipse']}></div>
 							<Text variant="head5">{specialization.title}</Text>
 						</Card>
 					</Link>

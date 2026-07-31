@@ -9,6 +9,7 @@ import { Text } from '@/shared/ui/Text';
 
 import { Chip } from '../Chip';
 import { Icon, IconName } from '../Icon';
+import { StatusChip, StatusChipVariant } from '../StatusChip';
 import { Tooltip } from '../Tooltip';
 import styles from './BaseFilterSection.module.css';
 
@@ -27,6 +28,8 @@ export interface BaseFilterSectionProps<T> {
 	data: BaseFilterItem<T>[];
 	onClick: (id: T) => void;
 	disabled?: boolean;
+	variant?: 'accent' | 'base';
+	colorVariant?: StatusChipVariant;
 }
 
 export const BaseFilterSection = <T,>({
@@ -34,10 +37,13 @@ export const BaseFilterSection = <T,>({
 	data,
 	onClick,
 	disabled = false,
+	variant = 'base',
+	colorVariant,
 }: BaseFilterSectionProps<T>) => {
 	const onHandleClick = (id: T) => () => {
 		onClick(id);
 	};
+	const isAccent = variant === 'accent';
 
 	return (
 		<Flex direction="column" gap="8" style={{ maxWidth: 'max-content' }}>
@@ -48,30 +54,39 @@ export const BaseFilterSection = <T,>({
 				{data &&
 					data.map((item) => (
 						<Tooltip title={item.tooltip} key={item?.id as Key}>
-							<Chip
-								className={styles.chip}
-								label={item.title}
-								theme="primary"
-								prefix={
-									item.iconName ? (
-										<Icon icon={item.iconName} size={20} color="black-700" />
-									) : (
-										item.imageSrc && (
-											<Image
-												width={20}
-												height={20}
-												style={{ width: 20, height: 20 }}
-												src={item.imageSrc}
-												alt={item.title}
-												loading="lazy"
-											/>
+							{isAccent ? (
+								<StatusChip
+									size="medium"
+									status={{ variant: colorVariant || 'purple', text: item.title }}
+									onClick={onHandleClick(item.id)}
+									isActive={!disabled && item.active}
+								/>
+							) : (
+								<Chip
+									className={styles.chip}
+									label={item.title}
+									theme="primary"
+									prefix={
+										item.iconName ? (
+											<Icon icon={item.iconName} size={20} color="black-700" />
+										) : (
+											item.imageSrc && (
+												<Image
+													width={20}
+													height={20}
+													style={{ width: 20, height: 20 }}
+													src={item.imageSrc}
+													alt={item.title}
+													loading="lazy"
+												/>
+											)
 										)
-									)
-								}
-								onClick={onHandleClick(item.id)}
-								active={!disabled && item.active}
-								disabled={disabled || item.disabled}
-							/>
+									}
+									onClick={onHandleClick(item.id)}
+									active={!disabled && item.active}
+									disabled={disabled || item.disabled}
+								/>
+							)}
 						</Tooltip>
 					))}
 			</Flex>

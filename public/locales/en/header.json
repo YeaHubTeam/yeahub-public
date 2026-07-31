@@ -1,5 +1,8 @@
 {
 	"nav": {
+		"interview": "Interview",
+		"learning": "Learning",
+		"resume": "Resume",
 		"questions": "Questions",
 		"resources": "Resources",
 		"quiz": "Quiz",
@@ -7,7 +10,10 @@
 		"trainer": "Trainer",
 		"hhAnalytics": "Skills",
 		"tasks": "Tasks",
-		"learning": "Learning"
+		"mentors": "Mentors",
+		"ATS": "ATS",
+		"vacancies": "Vacancies",
+		"companies": "Companies"
 	},
 	"auth": {
 		"signIn": "Sign in",

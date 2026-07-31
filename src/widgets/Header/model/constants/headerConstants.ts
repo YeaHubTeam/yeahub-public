@@ -1,45 +1,75 @@
 import { Header, ROUTES } from '@/shared/config';
-import { route } from '@/shared/libs';
+import { DEFAULT_SPECIALIZATION_SLUG, route } from '@/shared/libs';
 
-import { HeaderNavLinks } from '../types/headerTypes';
+import { NavLink } from '../types/headerTypes';
 
-const initialSpecialization = 'react-frontend-developer';
-
-export const HEADER_NAV_LINKS: HeaderNavLinks[] = [
+export const HEADER_NAV_LINKS: NavLink[] = [
 	{
-		link: route(ROUTES.questions.page, initialSpecialization),
-		path: '/questions',
-		title: Header.NAV_QUESTIONS,
+		id: 'interview',
+		title: Header.NAV_INTERVIEW,
+		subitems: [
+			{
+				link: route(ROUTES.questions.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/questions',
+				title: Header.NAV_QUESTIONS,
+				icon: 'question',
+			},
+			{
+				link: route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/collections',
+				title: Header.NAV_COMPANIES,
+				icon: 'companies',
+			},
+			{
+				link: ROUTES.tasks.page,
+				path: '/tasks',
+				title: Header.NAV_TASKS,
+				icon: 'collection',
+			},
+		],
 	},
 	{
-		link: route(ROUTES.collections.page, initialSpecialization),
-		path: '/collections',
-		title: Header.NAV_COLLECTIONS,
-	},
-	{
-		link: ROUTES.quiz.new.page,
-		path: '/quiz',
-		title: Header.NAV_TRAINER,
-	},
-	{
-		link: route(ROUTES.resources.page, initialSpecialization),
-		path: '/resources',
-		title: Header.NAV_RESOURCES,
-	},
-	{
-		link: ROUTES.learning.page,
-		path: '/learning',
+		id: 'training',
 		title: Header.NAV_LEARNING,
+		subitems: [
+			{
+				link: ROUTES.quiz.new.page,
+				path: '/quiz',
+				title: Header.NAV_TRAINER,
+				icon: 'quiz',
+			},
+			{
+				link: route(ROUTES.resources.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/resources',
+				title: Header.NAV_RESOURCES,
+				icon: 'list',
+			},
+			{
+				link: ROUTES.learning.page,
+				path: '/learning',
+				title: Header.NAV_MENTORS,
+				icon: 'user',
+			},
+		],
 	},
 	{
-		link: ROUTES.hhAnalytics.page,
-		path: '/hh-analytics',
-		title: Header.NAV_HH_ANALYTICS,
-	},
-	{
-		link: ROUTES.tasks.page,
-		path: '/tasks',
-		title: Header.NAV_TASKS,
+		id: 'cv',
+		title: Header.NAV_RESUME,
+		subitems: [
+			{
+				link: ROUTES.hhAnalytics.page,
+				path: '/hh-analytics',
+				title: Header.NAV_HH_ANALYTICS,
+				icon: 'skills',
+			},
+			// { title: Header.NAV_ATS, link: '#', path: '#', icon: 'clipboardText' },
+			{
+				title: Header.NAV_VACANCIES,
+				link: route(ROUTES.vacancies.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/vacancies',
+				icon: 'clipboardText',
+			},
+		],
 	},
 ];
 
