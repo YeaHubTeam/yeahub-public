@@ -12,7 +12,7 @@ import {
 } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
 import { Collections, Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {

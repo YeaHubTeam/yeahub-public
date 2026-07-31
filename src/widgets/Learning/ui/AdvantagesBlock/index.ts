@@ -1,1 +1,1 @@
-export { AdvantagesBlock } from './ui/AdvantagesBlock';
+export { AdvantagesBlock } from './AdvantagesBlock';

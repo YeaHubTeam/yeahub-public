@@ -9,7 +9,7 @@ import { getSkills } from '@/entities/skill';
 import { getSpecializationBySlug, getSpecializationSlugs } from '@/entities/specialization';
 import { SpecializationPage as SpecializationPageComponent } from '@/pages/SpecializationPage';
 import { Specializations, Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string; specializationSlug: string }>;

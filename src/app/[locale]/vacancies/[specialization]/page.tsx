@@ -63,6 +63,16 @@ const MainVacanciesPage = async ({ searchParams, params }: PageProps) => {
 
 	const pageNum = Number(page);
 	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
+	const hasFilters =
+		!!search ||
+		!!skillId ||
+		!!industry ||
+		!!grade ||
+		!!companyType ||
+		!!employmentForm ||
+		!!salaryBucket ||
+		!!englishLevel ||
+		!!workFormat;
 
 	if (!currentSpecialization) {
 		notFound();
@@ -83,6 +93,7 @@ const MainVacanciesPage = async ({ searchParams, params }: PageProps) => {
 			companyType,
 			englishLevel,
 			workFormat,
+			specializationId,
 		}),
 		getSpecializations({ limit: 5 }),
 		getSkills({ limit: 5, specializations: specializationId }),
@@ -94,9 +105,11 @@ const MainVacanciesPage = async ({ searchParams, params }: PageProps) => {
 				total={vacanciesResponse?.total || 0}
 				limit={vacanciesResponse?.limit || 0}
 				page={pageNum}
+				hasFilters={hasFilters}
 				initialSpecializations={specializationsResponse}
 				initialSkills={skillsResponse}
 				currentSpecialization={currentSpecialization}
+				locale={locale}
 			/>
 		</>
 	);

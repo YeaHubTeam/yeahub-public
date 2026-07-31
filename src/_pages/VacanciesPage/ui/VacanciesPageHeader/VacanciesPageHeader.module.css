@@ -8,7 +8,7 @@
 	border-bottom-color: var(--color-black-50);
 }
 
-@media screen and (width < 1024px) {
+@media screen and (width < 1280px) {
 	.header {
 		margin-bottom: 20px;
 	}

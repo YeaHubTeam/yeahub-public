@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 
 import { CompanyCompactList } from '@/entities/company';
 import { ProgrammingLanguage, ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { Task, TaskCard, TaskCategory } from '@/entities/tasks';
+import { Task, TaskCard, TaskCategory } from '@/entities/task';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
 import { ListPageWrapper } from '@/widgets/ListPageWrapper';

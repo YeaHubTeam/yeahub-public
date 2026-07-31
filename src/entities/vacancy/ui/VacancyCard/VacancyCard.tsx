@@ -1,7 +1,11 @@
+import Link from 'next/link';
+
+import { ROUTES } from '@/shared/config';
+import { route } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 
-import { Vacancy } from '../../model/types/vacancy';
+import { VacancyListItem } from '../../model/types/vacancy';
 import { VacancyCardHeader } from '../VacancyCardHeader/VacancyCardHeader';
 import { VacancyCardPreparation } from '../VacancyCardPreparation/VacancyCardPreparation';
 import { VacancyCardSalary } from '../VacancyCardSalary/VacancyCardSalary';
@@ -10,11 +14,14 @@ import { VacancyCardWorkFormat } from '../VacancyCardWorkFormat/VacancyCardWorkF
 import styles from './VacancyCard.module.css';
 
 interface VacancyCardProps {
-	vacancy: Vacancy;
+	vacancy: VacancyListItem;
+	locale: string;
+	specialization: string;
 }
 
-export const VacancyCard = ({ vacancy }: VacancyCardProps) => {
+export const VacancyCard = ({ vacancy, locale, specialization }: VacancyCardProps) => {
 	const {
+		id,
 		company,
 		title,
 		employmentForm,
@@ -33,26 +40,30 @@ export const VacancyCard = ({ vacancy }: VacancyCardProps) => {
 	const hasSalary = Boolean(salary.from || salary.to);
 	const hasSkills = Boolean(skills.length);
 
+	const vacancyPath = route(ROUTES.vacancies.detail.page, locale, specialization, id);
+
 	return (
-		<Card withOutsideShadow className={styles.card} contentClassName={styles.content}>
-			<Flex gap="40" direction="column" justify="between" flex={1}>
-				<VacancyCardHeader company={company} publishedAt={publishedAt} title={title} />
-				<Flex gap="20" direction="column">
-					<VacancyCardWorkFormat
-						employmentForm={employmentForm}
-						grade={grade}
-						workFormat={workFormat}
-						area={area}
-					/>
-					{hasSkills && <VacancyCardSkills skills={skills} />}
-					{(hasPreparation || hasSalary) && (
-						<Flex justify="between" align="center" gap="8">
-							{hasPreparation && <VacancyCardPreparation preparation={preparation} />}
-							{hasSalary && <VacancyCardSalary salary={salary} />}
-						</Flex>
-					)}
+		<Link href={vacancyPath}>
+			<Card withOutsideShadow className={styles.card} contentClassName={styles.content}>
+				<Flex gap="40" direction="column" justify="between" flex={1}>
+					<VacancyCardHeader company={company} publishedAt={publishedAt} title={title} />
+					<Flex gap="20" direction="column">
+						<VacancyCardWorkFormat
+							employmentForm={employmentForm}
+							grade={grade}
+							workFormat={workFormat}
+							area={area}
+						/>
+						{hasSkills && <VacancyCardSkills skills={skills} />}
+						{(hasPreparation || hasSalary) && (
+							<Flex justify="between" align="center" gap="8">
+								{hasPreparation && <VacancyCardPreparation preparation={preparation} />}
+								{hasSalary && <VacancyCardSalary salary={salary} />}
+							</Flex>
+						)}
+					</Flex>
 				</Flex>
-			</Flex>
-		</Card>
+			</Card>
+		</Link>
 	);
 };

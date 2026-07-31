@@ -22,6 +22,10 @@ export const ChooseSalary = ({ selectedFilter, onChangeFilter }: ChoiseFilterPro
 	}));
 
 	return (
-		<BaseFilterSection data={preparedData} title={t(Vacancies.SALARY)} onClick={onSalaryBucket} />
+		<BaseFilterSection
+			data={preparedData}
+			title={t(Vacancies.SALARY_TITLE)}
+			onClick={onSalaryBucket}
+		/>
 	);
 };

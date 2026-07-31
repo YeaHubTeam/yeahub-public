@@ -2,50 +2,62 @@
 
 import { usePathname } from 'next/navigation';
 
+import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import { Header, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
-import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
+import { INVERTED_THEME_URLS } from '@/widgets/Header/model/constants/headerConstants';
+import { NavMenuPopover } from '@/widgets/Header/ui/HeaderNav/NavMenuPopover/NavMenuPopover';
 
-import { HeaderNavLink } from '../../HeaderNavLink/HeaderNavLink';
-import type { NavItem } from '../types/headerNavTypes';
+import { NavLink } from '../../../model/types/headerTypes';
 import styles from './HeaderNavMobile.module.css';
 
-export const HeaderNavMobile = ({ items }: { items: NavItem[] }) => {
+interface HeaderNavMobileProps {
+	items: NavLink[];
+}
+
+export const HeaderNavMobile = ({ items }: HeaderNavMobileProps) => {
 	const t = useTranslations(i18Namespace.header);
 	const pathname = usePathname();
 
-	const menuItems: PopoverMenuItem[] = items.map(({ href, label, path }) => ({
-		renderComponent: (onToggle) => (
-			<Flex onClick={onToggle}>
-				<HeaderNavLink key={href} link={href} path={path} isActive={pathname?.includes(href)}>
-					{label}
-				</HeaderNavLink>
-			</Flex>
-		),
-	}));
+	const isInverted = INVERTED_THEME_URLS.some((url) => pathname.slice(3) === url);
+	const activeNavLink = items.find((item) =>
+		item.subitems?.some((column) => pathname.includes(column.path)),
+	);
+
+	const popoverMenuItems: PopoverMenuItem[] = [
+		{
+			renderComponent: (onToggle: () => void) => (
+				<NavMenuPopover
+					columns={items}
+					isInverted={isInverted}
+					onItemClick={() => {
+						onToggle();
+					}}
+				/>
+			),
+		},
+	];
 
 	return (
-		<Popover menuItems={menuItems} className={styles['header-popover']}>
+		<Popover menuItems={popoverMenuItems} className={styles['header-popover']}>
 			{({ onToggle, isOpen }) => (
 				<Button
-					dataTestId="PopoverButton"
 					suffix={
 						<Icon
-							dataTestId="ArrowShortDown_Icon"
 							icon="arrowShortDown"
 							size={24}
-							className={`${styles.arrow} ${isOpen ? styles['arrow-open'] : ''}`}
+							className={classNames(styles.arrow, { [styles['arrow-open']]: isOpen })}
 						/>
 					}
 					variant="tertiary-link"
-					className={styles.button}
+					className={classNames(styles.button, { [styles.inverted]: isInverted })}
 					onClick={onToggle}
 				>
-					{t(Header.MENU)}
+					{activeNavLink?.title || t(Header.MENU)}
 				</Button>
 			)}
 		</Popover>

@@ -1,4 +1,5 @@
 export { type Pallete, type Response, type Author, type SortOrder } from './types';
+export { type SelectedEntity } from './app';
 
 export {
 	COUNT_TO_GET_QUESTIONS_FOR_SSG,
@@ -29,4 +30,6 @@ export {
 } from './browser/managaLocalStorage/manageLocalStorage';
 
 export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
+export { getFormatSalary } from './salary/getFormatSalary';
 export { useGetCurrentDay } from './date/useGetCurrentDay';
+export { getQuestionSpecializationTitle } from './seo';
