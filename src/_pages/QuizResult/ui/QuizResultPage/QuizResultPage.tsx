@@ -12,7 +12,7 @@ import { ROUTES } from '@/shared/config';
 import { useScreenSize } from '@/shared/libs';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
-import { QuizResultButton } from '@/widgets/Landing/QuizResultModal';
+import { QuizResultButton } from '@/widgets/QuizResultModal';
 import { CategoryProgressList } from '@/widgets/interview/CategoryProgressList';
 import { PassedQuestionsList } from '@/widgets/interview/PassedQuestionsList';
 import { PassedQuestionsStatistic } from '@/widgets/interview/QuestionsStatistic';

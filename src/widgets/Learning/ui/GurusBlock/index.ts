@@ -1,2 +1,2 @@
-export { GurusBlock } from './ui/GurusBlock/GurusBlock';
-export { GurusBlockSkeleton } from './ui/GurusBlock/GurusBlock.skeleton';
+export { GurusBlock } from './GurusBlock/GurusBlock';
+export { GurusBlockSkeleton } from './GurusBlock/GurusBlock.skeleton';

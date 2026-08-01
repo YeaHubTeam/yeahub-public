@@ -1,12 +1,8 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import prettierPlugin from 'eslint-plugin-prettier';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import tseslint from 'typescript-eslint';
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
+import prettierPlugin from 'eslint-plugin-prettier';
+import tseslint from 'typescript-eslint';
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 

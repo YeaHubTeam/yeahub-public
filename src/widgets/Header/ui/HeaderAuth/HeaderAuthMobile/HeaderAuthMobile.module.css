@@ -1,4 +1,4 @@
-.auth-popover {
+div.auth-popover {
 	padding: 6px;
 	overflow-y: hidden !important; /* important необходим для переопределения стилей портала */
 	border: none;

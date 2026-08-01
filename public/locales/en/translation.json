@@ -25,6 +25,7 @@
 		}
 	},
 	"questions-count-available": "{count, plural, one {# more question is available for registered users} other {# more questions are available for registered users}}",
+	"question-seo-title": "{questionTitle} | {specialization}",
 	"banner-authorized": "Register",
 	"error-404": {
 		"title": "Page not found",

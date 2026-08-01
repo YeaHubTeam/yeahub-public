@@ -16,6 +16,7 @@ type FlexGap =
 	| '10'
 	| '12'
 	| '14'
+	| '15'
 	| '16'
 	| '20'
 	| '24'
@@ -28,6 +29,7 @@ type FlexGap =
 	| '52'
 	| '60'
 	| '80'
+	| '95'
 	| '100'
 	| '120';
 
@@ -66,6 +68,7 @@ const gapClasses: Record<FlexGap, string> = {
 	'10': styles.gap10,
 	'12': styles.gap12,
 	'14': styles.gap14,
+	'15': styles.gap15,
 	'16': styles.gap16,
 	'20': styles.gap20,
 	'24': styles.gap24,
@@ -77,6 +80,7 @@ const gapClasses: Record<FlexGap, string> = {
 	'48': styles.gap48,
 	'52': styles.gap52,
 	'60': styles.gap60,
+	'95': styles.gap95,
 	'80': styles.gap80,
 	'100': styles.gap100,
 	'120': styles.gap120,

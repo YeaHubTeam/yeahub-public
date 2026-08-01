@@ -7,14 +7,15 @@ import { getQuestionBySlug, getQuestionsList } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
 import { QuestionPage as QuestionPageComponent } from '@/pages/QuestionPage';
 import { Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE, SITE_URL } from '@/shared/config';
+import { getQuestionSpecializationTitle } from '@/shared/libs';
 
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string; slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-	const { slug, locale } = await params;
+	const { slug, locale, specialization } = await params;
 	const t = await getTranslations({ locale, namespace: i18Namespace.translation });
 	const question = await getQuestionBySlug(slug).catch(() => null);
 
@@ -24,18 +25,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		};
 	}
 
+	const canonicalSpecSlug = question.questionSpecializations?.[0]?.slug || specialization;
+	const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || SITE_URL).replace(/\/$/, '');
+	const canonicalUrl = `${siteUrl}/${locale}/questions/${canonicalSpecSlug}/${slug}`;
+	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}/${slug}`;
+
 	const description =
 		question.description || question.shortAnswer?.slice(0, 160).replace(/<[^>]*>/g, '') || '';
+	const specializationTitle =
+		getQuestionSpecializationTitle(question.questionSpecializations, specialization) ??
+		specialization;
+	const title = t(Translation.QUESTION_SEO_TITLE, {
+		specialization: specializationTitle,
+		questionTitle: question.title,
+	});
 
 	return {
-		title: question.title,
+		title,
 		description,
 		keywords: question.keywords,
+		alternates: {
+			canonical: canonicalUrl,
+		},
 		openGraph: {
-			title: question.title,
+			title,
 			description,
 			type: 'article',
 			images: question.imageSrc ? [question.imageSrc] : [],
+			url: pageUrl,
 		},
 	};
 }
@@ -106,6 +123,9 @@ const QuestionPage = async ({ params }: PageProps) => {
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/questions/${specialization}/${slug}`;
+	const specializationTitle =
+		getQuestionSpecializationTitle(question.questionSpecializations, specialization) ??
+		specialization;
 
 	const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
 
@@ -146,7 +166,7 @@ const QuestionPage = async ({ params }: PageProps) => {
 					{
 						'@type': 'ListItem',
 						position: 2,
-						name: question.questionSpecializations?.[0]?.title || specialization,
+						name: specializationTitle,
 						item: `${siteUrl}/${locale}/questions/${specialization}`,
 					},
 					{

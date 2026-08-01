@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 
 import { ProgrammingLanguage, ProgrammingLanguageSelect } from '@/entities/programmingLanguage';
-import { TaskStructure } from '@/entities/tasks';
+import { TaskStructure } from '@/entities/task';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
