@@ -1,1 +1,0 @@
-Prevents Next.js from using src/pages as the Pages Router

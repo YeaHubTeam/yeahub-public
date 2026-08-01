@@ -11,8 +11,8 @@ import {
 	getSpecializations,
 } from '@/entities/specialization';
 import { CollectionsPage } from '@/pages/CollectionsPage';
-import { Translation, i18Namespace, locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { Collections, Translation, i18Namespace, locales } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -41,12 +41,15 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
 	const { locale, specialization } = await params;
 	const t = await getTranslations({ locale, namespace: i18Namespace.collection });
+	const tTranslation = await getTranslations({ locale, namespace: i18Namespace.translation });
 	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 	if (!currentSpecialization) {
-		return { title: t(Translation.ERROR_404_TITLE) };
+		return { title: tTranslation(Translation.ERROR_404_TITLE) };
 	}
 
-	const collectionsTitle = t('collections.title', { specialization: currentSpecialization.title });
+	const collectionsTitle = t(Collections.COLLECTIONS_TITLE, {
+		specialization: currentSpecialization.title,
+	});
 	const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://yeahub.ru').replace(/\/$/, '');
 	const canonical = `${baseUrl}/${locale}/collections/${specialization}`;
 

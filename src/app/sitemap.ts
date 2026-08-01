@@ -14,7 +14,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	const staticPaths = [
 		'',
-		'/landing',
 		'/docs',
 		'/learning',
 		'/mentor',
@@ -24,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		'/media',
 		'/hh-analytics',
 		'/avos',
+		'/specializations',
 	];
 
 	for (const locale of locales) {
@@ -59,6 +59,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					lastModified: new Date(),
 					changeFrequency: 'weekly' as const,
 					priority: 0.8,
+				});
+				urls.push({
+					url: `${baseUrl}/${locale}/specializations/${spec.slug}`,
+					lastModified: new Date(),
+					changeFrequency: 'weekly' as const,
+					priority: 0.9,
 				});
 			}
 		}

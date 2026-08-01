@@ -90,6 +90,10 @@
 	gap: 14px;
 }
 
+.gap15 {
+	gap: 15px;
+}
+
 .gap16 {
 	gap: 16px;
 }
@@ -132,6 +136,14 @@
 
 .gap60 {
 	gap: 60px;
+}
+
+.gap80 {
+	gap: 80px;
+}
+
+.gap95 {
+	gap: 95px;
 }
 
 .gap100 {

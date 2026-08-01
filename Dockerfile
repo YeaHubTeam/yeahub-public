@@ -6,7 +6,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Копируем исходники
 COPY . .
 
 # Аргументы для сборки

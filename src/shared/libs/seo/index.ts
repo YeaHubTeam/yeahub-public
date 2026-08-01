@@ -1,0 +1,1 @@
+export { getQuestionSpecializationTitle } from './getQuestionSpecializationTitle';

@@ -5,12 +5,13 @@ import { Flex } from '@/shared/ui/Flex';
 import { HeaderAuth } from '../HeaderAuth/HeaderAuth';
 import { HeaderNav } from '../HeaderNav/HeaderNav';
 import styles from './Header.module.css';
+import { HeaderClient } from './HeaderClient';
 
 export const Header = () => {
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'SiteNavigationElement',
-		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме'],
+		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме', 'Вакансии'],
 
 		url: [
 			'/ru/questions/react-frontend-developer',
@@ -19,11 +20,12 @@ export const Header = () => {
 			'/ru/resources/react-frontend-developer',
 			'/ru/learning',
 			'/ru/hh-analytics',
+			'/ru/vacancies',
 		],
 	};
 
 	return (
-		<header data-testid={'Header'} className={styles.header}>
+		<HeaderClient>
 			<Flex className={styles['header-content']}>
 				<Flex className={styles['header-main']}>
 					<AppLogo />
@@ -38,6 +40,6 @@ export const Header = () => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-		</header>
+		</HeaderClient>
 	);
 };

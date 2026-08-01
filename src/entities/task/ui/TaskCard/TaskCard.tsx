@@ -1,0 +1,78 @@
+import Link from 'next/link';
+
+import { useTranslations } from 'next-intl';
+
+import { ROUTES, Tasks, i18Namespace } from '@/shared/config';
+import { route } from '@/shared/libs';
+import { Card } from '@/shared/ui/Card';
+import { Flex } from '@/shared/ui/Flex';
+import { Skeleton } from '@/shared/ui/Skeleton';
+import { StatusChip } from '@/shared/ui/StatusChip';
+import { Text } from '@/shared/ui/Text';
+import { Tooltip } from '@/shared/ui/Tooltip';
+
+import { taskCategories } from '../../model/constants/task';
+import { TaskCategoryCode, TaskDifficulty } from '../../model/types/task';
+import { TaskDifficultyChip } from '../TaskDifficultyChip/TaskDifficultyChip';
+import styles from './TaskCard.module.css';
+
+export interface TasksCardProps {
+	id: string;
+	name: string;
+	difficulty: TaskDifficulty;
+	categories: TaskCategoryCode[];
+	canSolve: boolean;
+	languagesSlot?: React.ReactNode;
+	companiesSlot?: React.ReactNode;
+	slug: string;
+}
+
+export const TaskCard = ({
+	id,
+	name,
+	difficulty,
+	categories,
+	languagesSlot,
+	companiesSlot,
+	canSolve,
+	slug,
+}: TasksCardProps) => {
+	const t = useTranslations(i18Namespace.tasks);
+
+	const taskCard = (
+		<Card key={id} withOutsideShadow className={styles.content}>
+			<Flex direction="column" gap="8">
+				{canSolve ? (
+					<Text variant="body4" maxRows={2}>
+						{name}
+					</Text>
+				) : (
+					<Skeleton variant="blur" text={<Text variant="body4">{t(Tasks.TITLE_HIDE)}</Text>} />
+				)}
+				<Flex direction="row" gap="10" align="center" wrap="wrap">
+					<TaskDifficultyChip key={id} difficulty={difficulty} />
+					{languagesSlot}
+					{categories?.map((category) => (
+						<StatusChip
+							key={category}
+							status={{
+								variant: 'green',
+								text: t(taskCategories[category]),
+							}}
+							size="large"
+						/>
+					))}
+					{companiesSlot}
+				</Flex>
+			</Flex>
+		</Card>
+	);
+
+	return canSolve ? (
+		<Link href={route(ROUTES.tasks.external.detail.page, slug)}>{taskCard}</Link>
+	) : (
+		<Tooltip title={t(Tasks.NOT_AVAILABLE)} placement="right">
+			{taskCard}
+		</Tooltip>
+	);
+};

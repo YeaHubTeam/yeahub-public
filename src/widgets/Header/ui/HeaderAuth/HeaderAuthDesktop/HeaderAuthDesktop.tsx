@@ -10,9 +10,8 @@ export const HeaderAuthDesktop = async () => {
 	const t = await getTranslations(i18Namespace.header);
 
 	return (
-		<Flex dataTestId="HeaderAuthDesktop_Wrapper" justify="between" align="center" gap="26">
+		<Flex justify="between" align="center" gap="26">
 			<Button
-				dataTestId="RegisterButton"
 				variant="link"
 				size="large"
 				className={styles['register-button']}

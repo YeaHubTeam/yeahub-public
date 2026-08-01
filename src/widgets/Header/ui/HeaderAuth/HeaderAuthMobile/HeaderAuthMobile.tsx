@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import { TariffsModal } from '@/entities/subscription';
 import { AUTH_LINKS, Header, Subscription, i18Namespace } from '@/shared/config';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
 import { UserPlusIcon } from '@/widgets/Header/ui/HeaderAuth/UserPlusIcon';
-import { TariffsModal } from '@/widgets/Subscription';
 
 import styles from './HeaderAuthMobile.module.css';
 
@@ -62,7 +62,6 @@ export const HeaderAuthMobile = () => {
 			<Popover menuItems={authMenuLinks} className={styles['auth-popover']}>
 				{({ onToggle }) => (
 					<IconButton
-						dataTestId="HeaderAuthMobile_IconButton"
 						form="square"
 						variant="tertiary"
 						onClick={onToggle}

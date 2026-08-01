@@ -1,0 +1,72 @@
+.title {
+	text-transform: uppercase;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+	width: 100%;
+}
+
+.link {
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+}
+
+.card {
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+}
+
+.card > div {
+	padding: 36px 16px;
+	height: 100%;
+}
+
+div.card::before {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	border-radius: 16px;
+	background: linear-gradient(42.28deg, #fff 65.99%, #9c89ff 84.05%, #53f 97.11%);
+	transition: opacity 0.3s ease-in-out;
+	content: '';
+	opacity: 0;
+	pointer-events: none;
+}
+
+.card-ellipse {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: 16px;
+	background: url('../../../shared/assets/images/specialization/specialization-card-bg.png')
+		no-repeat center center;
+	background-size: 100% 100%;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media (hover: hover) {
+	div.card:hover::before,
+	div.card:hover .card-ellipse {
+		opacity: 1;
+	}
+}
+
+@media screen and (width < 1280px) {
+	.grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (width < 768px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+}

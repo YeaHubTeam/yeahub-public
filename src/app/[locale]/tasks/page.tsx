@@ -3,16 +3,11 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getLanguages } from '@/entities/programmingLanguage';
-import {
-	TaskCategoryCode,
-	TaskDifficulty,
-	getTaskCategories,
-	getTasksList,
-} from '@/entities/tasks';
+import { TaskCategoryCode, TaskDifficulty, getTaskCategories, getTasksList } from '@/entities/task';
 import { TasksPage } from '@/pages/TasksPage';
 import { i18Namespace, locales } from '@/shared/config';
-import { Tasks } from '@/shared/config/i18n/i18nTranslations';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { Tasks } from '@/shared/config';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;
@@ -33,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 	return {
 		title: t(Tasks.TITLE_SHORT),
-		description: t(Tasks.STUB_EMPTY_TASKS_PUBLIC_SUBTITLE),
+		description: t(Tasks.STUB_EMPTY_TASKS_PUBLIC_FILTERS_SUBTITLE),
 		keywords: ['coding', 'tasks', 'programming challenges'],
 	};
 }
@@ -41,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: i18Namespace.tasks });
-	const { title, difficulty, langIds, category, page = '1' } = await searchParams;
+	const { title, difficulty, langIds, category, companyId, page = '1' } = await searchParams;
 
 	const pageNum = Number(page);
 	const parsedDifficulty = difficulty ? (Number(difficulty) as TaskDifficulty) : undefined;
@@ -61,12 +56,13 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 			difficulty: parsedDifficulty,
 			langIds: parsedLangIds,
 			category: category as TaskCategoryCode | undefined,
+			companyId: companyId as string | undefined,
 		}),
 		getTaskCategories(),
 		getLanguages(),
 	]);
 
-	const hasFilters = !!difficulty || !!langIds || !!category || !!title;
+	const hasFilters = !!difficulty || !!langIds || !!category || !!title || !!companyId;
 	const siteUrl = process.env.APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/tasks/`;
 	const titleTasks = t(Tasks.TITLE_SHORT);
@@ -115,6 +111,9 @@ const MainTasksPage = async ({ params, searchParams }: PageProps) => {
 				hasFilters={hasFilters}
 				languages={languagesResponse}
 				categories={categoriesResponse}
+				page={pageNum}
+				total={tasksResponse?.total || 0}
+				limit={tasksResponse?.limit || 0}
 			/>
 		</>
 	);

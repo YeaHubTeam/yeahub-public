@@ -13,7 +13,7 @@ import {
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { Landing, Questions, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {
@@ -42,7 +42,7 @@ export const generateStaticParams = async () => {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
 	const { locale, specialization } = await params;
 	setRequestLocale(locale);
-	const currentSpecialization = await getSpecializationBySlug(specialization);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 	if (!currentSpecialization) {
 		return { title: 'Not Found' };
 	}
@@ -87,9 +87,11 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 
 	const pageNum = Number(page);
 
-	const currentSpecialization = await getSpecializationBySlug(specialization);
+	const currentSpecialization = await getSpecializationBySlug(specialization).catch(() => null);
 
-	if (!currentSpecialization) notFound();
+	if (!currentSpecialization) {
+		notFound();
+	}
 
 	const specializationId = currentSpecialization.id;
 

@@ -2,6 +2,18 @@ export { default as logoDark } from './icons/logoDark.avif';
 export { default as logoLight } from './icons/logoLight.avif';
 export { default as LogoText } from './icons/logoText.svg';
 export { default as interviewBanner } from './images/interviewBanner.png';
+export { default as cardsImgQuestInfo } from './images/cardQuestInfo.png';
+export { default as cardsImgCollectInfo } from './images/cardCollectionInfo.png';
+export { default as cardsImgTaskInfo } from './images/cardTaskInfo.png';
+export { default as indicator } from './images/IndicatorIcon.png';
+export { default as BeforAfter } from './images/landing-page/BeforAfter.png';
+export { default as KeywordsContainer } from './images/landing-page/KeywordsContainer.png';
+export { default as CardVacancyOne } from './images/landing-page/CardVacancyOne.png';
+export { default as CardVacancyTwo } from './images/landing-page/CardVacancyTwo.png';
+
+export { default as mentorPhone } from './images/mentor/icon/mentorPhone.png';
+export { default as mentorQuestions } from './images/mentor/icon/mentorQuestions.png';
+export { default as mentors } from './images/mentor/icon/mentors.png';
 // export { default as html5 } from './icons/html5.svg';
 // export { default as css3 } from './icons/css3.svg';
 // export { default as js } from './icons/js.svg';

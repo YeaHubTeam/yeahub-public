@@ -1,22 +1,22 @@
 {
-  "title": "Interview questions",
+	"title": "Interview questions",
 
-  "complete": "Complete",
-  "next": "Next",
+	"complete": "Complete",
+	"next": "Next",
 
-  "check": {
-    "quiz": "Check"
-  },
+	"check": {
+		"quiz": "Check"
+	},
 
-  "a11y": {
-    "next": "Next interview question",
-    "prev": "Previous interview question"
-  },
+	"a11y": {
+		"next": "Next interview question",
+		"prev": "Previous interview question"
+	},
 
-  "answer": {
-    "hide": "Hide answer",
-    "show": "Show answer",
-    "doNotKnow": "Do not know",
-    "know": "Know"
-  }
+	"answer": {
+		"hide": "Hide answer",
+		"show": "Show answer",
+		"doNotKnow": "Do not know",
+		"know": "Know"
+	}
 }

@@ -10,7 +10,7 @@ import { getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
 interface PageProps {
@@ -104,12 +104,13 @@ const CollectionPage = async ({ params }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	const collection = await getCollectionBySlug(slug);
-	const questions = await getCollectionQuestions(collection.id, 5);
+	const collection = await getCollectionBySlug(slug).catch(() => null);
 
 	if (!collection) {
 		notFound();
 	}
+
+	const questions = await getCollectionQuestions(collection.id, 5);
 
 	const siteUrl = process.env.NEXT_PUBLIC_APP_SITE_URL || APP_ROUTE;
 	const pageUrl = `${siteUrl}/${locale}/collections/${specialization}/${slug}`;

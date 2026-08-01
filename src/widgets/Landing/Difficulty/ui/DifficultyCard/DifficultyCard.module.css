@@ -1,0 +1,30 @@
+div.card {
+	padding: 20px;
+	height: 168px;
+	border-radius: 20px;
+}
+
+div.card-content {
+	height: 100%;
+}
+
+.indicator {
+	margin-top: 8px;
+}
+
+@media screen and (width < 1280px) {
+	div.card {
+		padding: 16px;
+		height: 181px;
+	}
+
+	p.title {
+		font-size: var(--font-size-h-xs);
+	}
+}
+
+@media screen and (width < 768px) {
+	div.card {
+		padding: 16px 10px;
+	}
+}

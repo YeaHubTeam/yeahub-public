@@ -1,56 +1,24 @@
 {
-	"banner": {
-		"sticker": {
-			"skill": "YeaHub — level up your skills",
-			"candidate": "Candidate"
-		},
-		"title": "IT Interview Preparation: Questions, Tasks, and Interview Database",
-		"description": "Join the YeaHub community: learn, practice, develop skills, and find a job in IT",
-		"button": "Join the community",
-		"img": {
-			"homepage": "Homepage banner",
-			"statistics": "Statistics",
-			"company": "Company",
-			"progress": "Progress"
-		}
+	"prepare_for_Interview": {
+		"title": "Preparing for an IT interview",
+		"subtitle": "Choose a direction and get structured preparation for real interviews.",
+		"all_specializations_link": "All specializations"
 	},
-	"specialization": {
-		"title_new": "Choose Your Specialty",
-		"description": "Questions for 20+ IT Specializations",
-		"button": "See more",
-		"card": {
-			"description": {
-				"frontend": "HTML, CSS, JavaScript, and modern frameworks",
-				"backend": "Databases, APIs, architecture, and security",
-				"data": "Build predictions and automate decisions",
-				"machine": "How machine learning is transforming the world of technology",
-				"testing": "Testing fundamentals: key aspects and approaches",
-				"ios": "iOS development: tools and approaches",
-				"android": "Explore key aspects of Android development",
-				"game": "Game development fundamentals: key points"
+	"trainer_progress": {
+		"title": "Trainer and Progress Preparation",
+		"subtitle": "Train in quiz format, repeat questions, and track which topics you’ve already mastered and which still need practice.",
+		"blocks": {
+			"first": {
+				"title": "Question Trainer",
+				"description": "Go through questions in flashcard format, choose new or review mode, and reinforce your knowledge through practice.",
+				"link": "Trainer"
 			},
-			"img": {
-				"frontend": "Image: Web development (HTML, CSS, JavaScript) on a laptop screen",
-				"backend": "Image: Server infrastructure with databases and a security shield",
-				"data": "Image: Graphs and algorithms for data analysis and forecasting",
-				"machine": "Image: Robot with a neural network in a digital world",
-				"testing": "Image: Checklist and software testing tools",
-				"ios": "Image: iPhone with an app development interface",
-				"android": "Image: Android smartphone with open-source application code",
-				"game": "Image: Game controller and game development elements"
-			},
-			"button": "Go to Questions"
+			"second": {
+				"title": "Learning Progress",
+				"description": "Track which questions and topics you’ve already studied and control your level of preparation for interviews.",
+				"link": "Progress"
+			}
 		}
-	},
-	"training_interview": {
-		"title": "Interview trainer",
-		"subtitle": "Turn preparation into a game! Our interactive trainer will help you \neffectively memorize information and pass interviews\n with confidence.",
-		"subtitle_tablet": "Repeat Mode — practice with questions you’ve already tackled.",
-		"advantages": {
-			"first": "Memorization mode — learn new topics with a smart repetition algorithm",
-			"second": "Flexible customization — choose difficulty level, key skills, and IT specialties"
-		},
-		"link": "Try it"
 	},
 	"questions": {
 		"title": "Interview Questions",
@@ -64,48 +32,164 @@
 		"fourth": "What is closure in JavaScript?",
 		"list": "Questions list"
 	},
-	"skills": {
-		"title": "Master Key Skills",
-		"description": "50+ in-demand technologies: JavaScript, React, Python, SQL, and more"
-	},
-	"filters": {
-		"title": "Flexible Filtering",
-		"description": "Easily filter questions by difficulty, popularity, and relevance"
-	},
-	"collections": {
-		"title": "Real Company Questions",
-		"subtitle": "Prepare for interviews with collections of questions from major \nIT companies. Discover what questions are asked at Sber, T-Bank, \nYandex, Avito, Ozon, VK, and other companies.",
-		"cards": {
-			"sber": "Middle Frontend Developer at Sber",
-			"tbank": "Senior Frontend Developer at T-Bank",
-			"vk": "Senior Backend Developer at VK"
-		},
-		"additional": {
-			"first": "Current and in-demand questions from real technical interviews",
-			"second": "Study and practice questions in the interactive YeaHub simulator",
-			"third": "Test if you can pass an interview at top IT companies!"
-		},
-		"link": "Try it",
-		"expand": "See more",
-		"star": "For participants"
-	},
-	"history": {
-		"title": "Your progress is your success",
-		"subtitle": "Every interview is a step forward! We track your progress to help improve weak points and reinforce what you've learned.",
-		"slides": {
-			"first": "How many questions have you mastered already?",
-			"second": "Study only the necessary questions",
-			"third": "Which skills require more attention?"
-		},
-		"img": {
-			"statistics": "Statistics",
-			"description": "Description",
-			"progress": "Progress"
-		}
-	},
 	"seo": {
 		"title": "IT Company Interview: Questions, Tasks, and Interview Preparation",
 		"description": "A database of questions and tasks for IT interviews, an interview simulator, and live coding practice. Preparation for technical interviews and selection processes at IT companies.",
 		"keywords": "IT interview questions, IT interview preparation, programmer interview tasks, technical interview, how to pass an IT interview, IT company interview stages, HR IT questions, interview practice, interview simulator, live coding tasks, developer questions database, junior developer preparation"
+	},
+	"difficulty": {
+		"title": "Why IT Interviews Are Hard",
+		"description": "Most candidates face the same challenges when preparing for an interview.",
+		"cards": {
+			"first": {
+				"title": "Too Many Questions",
+				"description": "There is too much material, and it’s unclear what you really need to study."
+			},
+			"second": {
+				"title": "Real interviews",
+				"description": "It’s hard to understand what questions and stages are used at specific IT companies."
+			},
+			"third": {
+				"title": "Difficult tasks",
+				"description": "Algorithms and live coding cause stress even for experienced candidates."
+			},
+			"fourth": {
+				"title": "No System",
+				"description": "Preparation is chaotic and lacks a clear plan."
+			},
+			"fifth": {
+				"title": "Lack of Practice",
+				"description": "Without regular practice, it’s difficult to perform confidently in interviews."
+			},
+			"sixth": {
+				"title": "Weak resume",
+				"description": "Even strong candidates fail to pass ATS filters and miss out on responses."
+			}
+		}
+	},
+	"interview": {
+		"banner": {
+			"title": "Preparation for IT interview: questions, tasks and interview database",
+			"description": "Database of questions and tasks for IT interviews, interview simulator and live coding. Preparation for technical interviews and passing selection in IT companies."
+		},
+		"specialization": {
+			"title_new": "Preparation for IT Interview by Specialization",
+			"description": "Choose your direction and get structured preparation for real interviews.",
+			"button": "All specializations",
+			"card": {
+				"description": {
+					"frontend": "HTML, CSS, JavaScript and modern frameworks",
+					"python": "Python, Django, PostgreSQL, databases and API",
+					"java": "Java, Spring, microservices and SQL",
+					"nodeJs": "Node.js, Express, async, REST API and JavaScript",
+					"qaEngineer": "Testing, automation, Postman and SQL",
+					"golang": "Golang, concurrency, MongoDB, Redis and high loads"
+				}
+			}
+		},
+		"questions_tasks": {
+			"title": "Interview Questions and Tasks in IT",
+			"description": "A large database of questions, tasks and real interviews in IT companies with convenient filters and preparation structure.",
+			"card": {
+				"questions": {
+					"title": "Question Database",
+					"description": "Study questions by 100+ skills, difficulty level and popularity for interview preparation.",
+					"button": "Go to questions"
+				},
+				"tasks": {
+					"title": "Interview Tasks",
+					"description": "Solve real tasks from IT companies in a convenient code editor with different difficulty levels.",
+					"button": "Go to tasks"
+				},
+				"interviews": {
+					"title": "Real Interviews",
+					"description": "Study over 400 interviews in IT companies with questions, tasks and interview stages.",
+					"button": "Go to interviews"
+				},
+				"button": "Go to interviews"
+			}
+		},
+		"seo": {
+			"title": "IT Company Interview: Questions, Tasks, and Interview Preparation",
+			"description": "A database of questions and tasks for IT interviews, an interview simulator, and live coding practice. Preparation for technical interviews and selection processes at IT companies.",
+			"keywords": "IT interview questions, IT interview preparation, programmer interview tasks, technical interview, how to pass an IT interview, IT company interview stages, HR IT questions, interview practice, interview simulator, live coding tasks, developer questions database, junior developer preparation"
+		}
+	},
+	"resume": {
+		"title": "Resume and job search in IT",
+		"description": "Prepare a resume, optimize it for ATS systems and find real vacancies in IT companies.",
+		"soonText": "Soon",
+		"card": {
+			"ats": {
+				"title": "ATS resume",
+				"description": "Optimize your resume for automatic selection systems to pass company filters and get more feedback.",
+				"imgAlt": "Visual progress diagram: left empty To block, right filled After block",
+				"buttonLinkText": "Resume"
+			},
+			"keywords": {
+				"title": "Keywords",
+				"description": "Extract key skills and language from jobs to adapt resumes to real employer requirements.",
+				"imgAlt": "Keyword search interface visualization scheme",
+				"buttonLinkText": "Skills"
+			},
+			"vacancy": {
+				"title": "Job aggregator",
+				"description": "Find relevant IT vacancies and internships in different companies with convenient search and filtering.",
+				"imgAlt": "Job card template with photo space, title, description, and favorite button",
+				"buttonLinkText": "Vacancies"
+			}
+		}
+	},
+	"header": {
+		"title": "Preparing for an IT interview: questions, tasks, and interview database",
+		"subtitle": "Interview questions and tasks database for IT interviews, interview simulator, and live coding. Preparation for technical interviews and selection in IT companies.",
+		"button": "Join",
+		"statistics": {
+			"questions": {
+				"count": "10,000+",
+				"text": "questions"
+			},
+			"tasks": {
+				"count": "150+",
+				"text": "tasks"
+			},
+			"companies": {
+				"count": "300+",
+				"text": "компаний"
+			},
+			"specializations": {
+				"count": "20+",
+				"text": "specialization"
+			},
+			"skills": {
+				"count": "100+",
+				"text": "skills"
+			},
+			"info": {
+				"text": "Updated every week"
+			}
+		}
+	},
+	"training": {
+		"title": "Training and career advancement in IT",
+		"description": "If you're not ready for interviews yet, start with training, mentors, and a structured development plan.",
+		"card": {
+			"disabled": "Soon",
+			"roadmap": {
+				"title": "Roadmap",
+				"description": "A structured learning path and resource base for preparing for IT interviews.",
+				"imgAlt": "Front-end development courses"
+			},
+			"mentor": {
+				"title": "Mentoring",
+				"description": "Work with a mentor and participate in practical tasks to gain real-world experience.",
+				"imgAlt": "Mentor support"
+			},
+			"materials": {
+				"title": "Materials",
+				"description": "Articles and guides on preparation, technology, and passing IT interviews.",
+				"imgAlt": "IT Interview Preparation Materials"
+			}
+		}
 	}
 }
