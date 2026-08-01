@@ -80,41 +80,6 @@
 	content: '';
 }
 
-.badge-outline {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	margin-top: 85px;
-	width: 150px;
-	height: 150px;
-	box-shadow:
-		0 12px 30px 0 #6a0bff0d,
-		0 -4px 15px 0 #d8bfff33 inset,
-		0 2px 6px 0 #6a0bff12;
-	border-radius: 10px;
-	background: #fff;
-}
-
-.badge-outline::before {
-	position: absolute;
-	inset: 0;
-	padding: 1px;
-	border-radius: 10px;
-	background: linear-gradient(138.11deg, #6a0bff -27.99%, rgb(255 255 255 / 0%) 58.22%);
-	content: '';
-	mask:
-		linear-gradient(#fff 0 0) content-box,
-		linear-gradient(#fff 0 0);
-	mask-composite: xor;
-	mask-composite: exclude;
-	pointer-events: none;
-}
-
-.badge-outline-text {
-	font-weight: 700;
-}
 
 @media (width < 1280px) {
 	.wrapper {
@@ -134,27 +99,19 @@
 		height: 64px;
 	}
 
-	.badge-outline {
-		margin-top: 8px;
-		width: 80px;
-		height: 80px;
-	}
-	
+
+
 	h2.badge-red-text {
 		font-size: var(--font-size-h-xs);
 	}
 
-	h2.badge-outline-text {
-		font-size: var(--font-size-h-xs);
-	}
+	
 
 	p.badge-red-subtext {
 		font-size: var(--font-size-p-xss);
 	}
 
-	p.badge-outline-subtext {
-		font-size: var(--font-size-p-xss);
-	}
+
 }
 
 @media (width < 768px) {
