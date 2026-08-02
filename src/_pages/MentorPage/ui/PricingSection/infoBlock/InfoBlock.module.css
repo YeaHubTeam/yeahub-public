@@ -1,6 +1,6 @@
 .wrapper {
 	display: grid;
-	grid-template-columns: 1fr 2fr;
+	grid-template-columns: 392px 2fr;
 	gap: 20px;
 	width: 100%;
 	min-height: 357px;
@@ -16,10 +16,16 @@
 
 .description {
 	margin-top: 8px;
+	white-space: pre-line;
+}
+
+.description-width {
+	width: 370px;
 }
 
 .button {
 	margin-top: 20px;
+	padding: 0;
 	font-size: var(--font-size-p-l);
 }
 
@@ -30,8 +36,7 @@
 
 .background {
 	background:
-		linear-gradient(101.11deg, rgb(246 246 246 / 0%) 73.72%, rgb(142 120 255 / 67%) 95.19%),
-		#fff;
+		linear-gradient(101.11deg, rgb(246 246 246 / 0%) 73.72%, rgb(142 120 255 / 67%) 95.19%), #fff;
 }
 
 .badges {
@@ -64,9 +69,9 @@
 	width: 150%;
 	height: 2px;
 	border-radius: 21px;
-	background: #E84B4B;
+	background: #e84b4b;
 	transform: translate(-50%, -50%) rotate(45deg);
-	content: "";
+	content: '';
 }
 
 .badge-red::after {
@@ -76,9 +81,9 @@
 	width: 150%;
 	height: 2px;
 	border-radius: 21px;
-	background: #E84B4B;
+	background: #e84b4b;
 	transform: translate(-50%, -50%) rotate(-45deg);
-	content: "";
+	content: '';
 }
 
 .badge-outline {
@@ -121,14 +126,22 @@
 	.wrapper {
 		grid-template-columns: 1fr 1fr;
 	}
-	
+
+	.card {
+		width: auto;
+	}
+
+	.description-width {
+		width: 278px;
+	}
+
 	.badges {
 		position: absolute;
 		right: 20px;
 		z-index: -1;
 		gap: 16px;
 	}
-	
+
 	.badge-red {
 		margin-top: 8px;
 		width: 64px;
@@ -140,7 +153,7 @@
 		width: 80px;
 		height: 80px;
 	}
-	
+
 	h2.badge-red-text {
 		font-size: var(--font-size-h-xs);
 	}
@@ -162,11 +175,11 @@
 	.wrapper {
 		grid-template-columns: 1fr;
 	}
-	
+
 	p.title {
 		font-size: var(--font-size-h-xs);
 	}
-	
+
 	.card {
 		padding: 10px;
 		min-height: 337px;
