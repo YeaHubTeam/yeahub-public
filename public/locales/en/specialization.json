@@ -20,10 +20,11 @@
 		"link": "View all resources"
 	},
 	"keywords": {
-		"title": "Ключевые слова из вакансий"
+		"subtitle": "Keywords from vacancies"
 	},
 	"skills": {
-		"title": "Ключевые навыки"
+		"subtitle": "Key skills",
+		"link": "View all skills"
 	},
 	"tasks": {
 		"title": "Interview algorithms and tasks",

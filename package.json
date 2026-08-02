@@ -1,6 +1,6 @@
 {
 	"name": "yeahub-public",
-	"version": "1.0.15",
+	"version": "1.1.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --webpack",
@@ -13,6 +13,7 @@
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
 		"lint:css": "stylelint \"**/*.css\"",
 		"lint:css:fix": "stylelint \"**/*.css\" --fix",
+		"lint:fsd": "steiger ./src",
 		"prepare": "husky",
 		"test": "jest",
 		"test:watch": "jest --watch",
@@ -22,6 +23,7 @@
 		"@floating-ui/react": "^0.27.16",
 		"@monaco-editor/react": "^4.7.0",
 		"@reduxjs/toolkit": "^2.8.2",
+		"date-fns": "^4.4.0",
 		"dompurify": "^3.2.7",
 		"hast-util-to-html": "^9.0.5",
 		"jsdom": "^27.0.1",
@@ -71,7 +73,7 @@
 		"next-router-mock": "^1.0.2",
 		"next-svgr": "^0.0.2",
 		"prettier": "^3.6.2",
-		"steiger": "^0.5.11",
+		"steiger": "^0.6.0",
 		"stylelint": "^16.23.1",
 		"stylelint-config-css-modules": "^4.5.1",
 		"stylelint-config-standard": "^39.0.0",

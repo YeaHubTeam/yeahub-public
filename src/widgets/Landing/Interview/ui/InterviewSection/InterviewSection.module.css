@@ -1,0 +1,23 @@
+.cards-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	align-items: flex-end;
+	gap: 20px;
+}
+
+@media screen and (width < 1280px) {
+	.cards-list {
+		max-width: 100%;
+		scrollbar-width: none;
+	}
+}
+
+@media screen and (width < 850px) {
+	.cards-list {
+		grid-template-columns: 1fr;
+		overflow-x: unset;
+		scrollbar-width: unset;
+	}
+}
+
+

@@ -1,9 +1,15 @@
-.header-popover {
-  padding: 6px;
+div.header-popover {
+  padding: 0;
   overflow-y: hidden !important; /* important необходим для переопределения стилей портала */
+	box-shadow: 0 5px 10px -2px rgb(0 0 0 / 12%);
   border: none;
-  border-radius: 0 0 6px 6px;
-  transform: translateX(84px) translateY(17px);
+  border-radius: 0 0 20px 20px;
+	
+}
+
+.button.inverted {
+	background: var(--background-header);
+	color: var(--text-color-header);
 }
 
 .button:hover{
@@ -14,8 +20,15 @@
   transform: rotate(180deg);
 }
 
-@media screen and (width < 768px) {
-  .header-popover {
-    transform: translateX(0) translateY(12px);
-  }
+@media (width < 1200px) {
+	.header-popover {
+		transform: translateY(10px);
+	}
+}
+
+@media (width < 768px) {
+	.header-popover {
+		width: calc(100vw - 24px);
+		transform: translateY(6px);
+	}
 }

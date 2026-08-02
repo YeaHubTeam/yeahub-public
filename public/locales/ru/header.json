@@ -1,13 +1,19 @@
 {
 	"nav": {
-		"questions": "База вопросов",
-		"resources": "База ресурсов",
+		"interview": "Собеседование",
+		"learning": "Обучение",
+		"resume": "Резюме",
+		"questions": "Вопросы",
+		"resources": "Материалы",
 		"quiz": "Тренажёр",
 		"collections": "Собеседования",
 		"trainer": "Тренажёр",
 		"hhAnalytics": "Навыки",
 		"tasks": "Задачи",
-		"learning": "Обучение"
+		"mentors": "Менторы",
+		"ATS": "АТС",
+		"vacancies": "Вакансии",
+		"companies": "Компании"
 	},
 	"auth": {
 		"signIn": "Войти",

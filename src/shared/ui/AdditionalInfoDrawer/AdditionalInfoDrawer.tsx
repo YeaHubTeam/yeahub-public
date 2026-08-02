@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import classNames from 'classnames';
 
@@ -17,8 +17,14 @@ interface AdditionalInfoDrawerProps {
 }
 
 export const AdditionalInfoDrawer = ({ children }: AdditionalInfoDrawerProps) => {
-	const { isMobileS } = useScreenSize();
+	const { isMobileS, isLaptop } = useScreenSize();
 	const { isOpen, onToggle, onClose } = useModal();
+
+	useEffect(() => {
+		if (isLaptop && isOpen) {
+			onClose();
+		}
+	}, [isLaptop, isOpen, onClose]);
 
 	return (
 		<>

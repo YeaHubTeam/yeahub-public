@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getSpecializations } from '@/entities/specialization';
 import { SpecializationsPage } from '@/pages/SpecializationsPage';
 import { Specializations, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;

@@ -1,30 +1,27 @@
 import React, { ReactNode } from 'react';
 
-import Link from 'next/link';
-
 import classNames from 'classnames';
 
 import { Text } from '@/shared/ui/Text';
 
-import type { HeaderNavLinks } from '../../model/types/headerTypes';
 import styles from './HeaderNavLink.module.css';
 
-interface HeaderNavLinkProps extends Pick<HeaderNavLinks, 'link' | 'path'> {
+interface HeaderNavLinkProps {
 	children: ReactNode;
 	isActive?: boolean;
+	isInverted: boolean;
 }
 
-export const HeaderNavLink = ({ link, children, isActive }: HeaderNavLinkProps) => {
+export const HeaderNavLink = ({ children, isActive, isInverted }: HeaderNavLinkProps) => {
 	return (
-		<Link
-			href={link}
-			className={classNames(styles['nav-link'], styles.link, {
+		<div
+			className={classNames(styles['nav-link'], {
 				[styles.active]: Boolean(isActive),
 			})}
 		>
-			<Text variant="body3-accent" className={styles.text}>
+			<Text variant="body3-accent" color={isInverted ? 'white-900' : 'black-900'}>
 				{children}
 			</Text>
-		</Link>
+		</div>
 	);
 };
