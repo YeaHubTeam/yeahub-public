@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl';
 
 import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
-import { Flex } from '@/shared/ui/Flex';
 
 import { CommunityCard } from '../CommunityCard/CommunityCard';
 import styles from './CommunityList.module.css';
@@ -44,7 +43,7 @@ export const CommunityList = () => {
 	];
 
 	return (
-		<Flex className={styles['community-list']}>
+		<div className={styles['community-list']}>
 			{communityItems.map((item) => (
 				<CommunityCard
 					key={item.title}
@@ -54,6 +53,6 @@ export const CommunityList = () => {
 					linkUrl={item.linkUrl}
 				/>
 			))}
-		</Flex>
+		</div>
 	);
 };
