@@ -1,0 +1,13 @@
+.title,
+.count {
+	font-feature-settings:
+		'ss01' on,
+		'cv01' on,
+		'cv11' on;
+}
+
+@media screen and (width < 768px) {
+	p.title {
+		font-size: var(--font-size-h-xs);
+	}
+}

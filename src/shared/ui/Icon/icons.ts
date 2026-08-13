@@ -12,6 +12,7 @@ import Bar from '@/shared/assets/icons/bar.svg';
 import Behance from '@/shared/assets/icons/behance.svg';
 import Burger from '@/shared/assets/icons/burger.svg';
 import Calendar from '@/shared/assets/icons/calendar.svg';
+import CalendarNoDots from '@/shared/assets/icons/calendarNoDots.svg';
 import Check from '@/shared/assets/icons/check.svg';
 import CheckCircle from '@/shared/assets/icons/checkCircle.svg';
 import CheckList from '@/shared/assets/icons/checkList.svg';
@@ -106,6 +107,7 @@ export const icons: Record<IconName, IconComponent> = {
 	bar: Bar,
 	clock: Clock,
 	calendar: Calendar,
+	calendarNoDots: CalendarNoDots,
 	altArrowLeft: AltArrowLeft,
 	altArrowRight: AltArrowRight,
 	dotsThree: DotsThree,
