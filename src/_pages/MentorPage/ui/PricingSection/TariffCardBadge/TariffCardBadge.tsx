@@ -12,7 +12,7 @@ interface TariffCardBadgeProps {
 export const TariffCardBadge = ({ label, isInverted }: TariffCardBadgeProps) => {
 	return (
 		<Text
-			variant="body5-accent"
+			variant="body3-accent"
 			color="black-900"
 			className={classNames(styles.label, { [styles.inverted]: isInverted })}
 		>

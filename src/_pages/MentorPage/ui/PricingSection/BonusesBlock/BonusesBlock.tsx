@@ -24,7 +24,9 @@ export const BonusesBlock = () => {
 						{block.map((line, lineIndex) => (
 							<Flex key={lineIndex} gap="9" align="start">
 								<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} />
-								<Text variant="body3-accent">{line}</Text>
+								<Text variant="body3-accent" className={styles.description}>
+									{line}
+								</Text>
 							</Flex>
 						))}
 					</Flex>

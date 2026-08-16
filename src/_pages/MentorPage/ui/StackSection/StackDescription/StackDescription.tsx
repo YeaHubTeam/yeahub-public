@@ -10,7 +10,7 @@ export const StackDescription = () => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
-		<Flex direction="column" gap="26" className={styles['description-wrapper']}>
+		<Flex direction="column" gap="24" className={styles['description-wrapper']}>
 			<Text variant="body3-accent" className={styles.description}>
 				{t(Mentor.STACK_DESCRIPTION_1)}
 			</Text>
