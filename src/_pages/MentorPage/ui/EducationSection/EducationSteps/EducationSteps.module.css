@@ -65,6 +65,10 @@
 	}
 }
 
+.list {
+	gap: 20px;
+}
+
 @media (width < 1280px) {
 	.wrapper {
 		grid-template-columns: 1fr;
@@ -128,5 +132,9 @@
 		img {
 			max-width: 196px;
 		}
+	}
+
+	.list {
+		gap: 10px;
 	}
 }
