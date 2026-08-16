@@ -160,7 +160,7 @@
 
 	h2.badge-outline-text {
 		font-size: var(--font-size-h-xs);
-	}
+	}	
 
 	p.badge-red-subtext {
 		font-size: var(--font-size-p-xss);
@@ -175,7 +175,7 @@
 	.wrapper {
 		grid-template-columns: 1fr;
 	}
-
+	
 	p.title {
 		font-size: var(--font-size-h-xs);
 	}
