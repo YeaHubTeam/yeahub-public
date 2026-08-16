@@ -1,6 +1,7 @@
 .card {
 	padding: 20px;
 	width: calc(33% - 10px);
+	height: 528px;
 	border-radius: 20px;
 }
 
@@ -33,6 +34,7 @@
 @media (width < 1280px) {
 	.card {
 		width: calc(50% - 10px);
+		height: auto;
 	}
 
 	.title {
@@ -46,6 +48,7 @@
 
 @media (width < 768px) {
 	.card {
+		padding: 10px;
 		width: 100%;
 		min-height: unset;
 	}

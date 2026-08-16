@@ -6,9 +6,13 @@
 	margin-bottom: 30px;
 }
 
+h2.title {
+	line-height: 127%;
+}
 
 .description {
 	max-width: 493px;
+	white-space: pre-line;
 }
 
 @media (width < 1280px) {

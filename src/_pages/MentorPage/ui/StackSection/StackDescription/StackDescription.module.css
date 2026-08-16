@@ -1,10 +1,16 @@
 .description {
 	flex: 1;
+	white-space: pre-line;
+}
+
+.description-wrapper {
+	padding-top: 11px;
 }
 
 @media (width < 1280px) {
 	.description-wrapper {
 		flex-direction: row;
+		padding-top: 0;
 	}
 }
 
