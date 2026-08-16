@@ -53,7 +53,10 @@ export const InfoBlock = () => {
 						<Text variant="body6" className={styles.title}>
 							{t(Mentor.PRICING_INFO_EXPERIENCED_TITLE)}
 						</Text>
-						<Text variant="body3-accent" className={styles.description}>
+						<Text
+							variant="body3-accent"
+							className={classNames(styles.description, styles['description-width'])}
+						>
 							{t(Mentor.PRICING_INFO_EXPERIENCED_DESCRIPTION)}
 						</Text>
 						<Button
