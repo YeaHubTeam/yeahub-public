@@ -17,7 +17,7 @@ export const EducationSteps = () => {
 			<Text className={styles.title} variant="head2">
 				{t(Mentor.EDUCATION_SUBTITLE)}
 			</Text>
-			<Flex direction="column" gap="10">
+			<Flex direction="column" className={styles.list}>
 				{EDUCATION_STEPS.map((step) => (
 					<EducationStep
 						key={step.id}
