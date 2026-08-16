@@ -14,9 +14,3 @@
 		gap: 10px;
 	}
 }
-
-@media screen and (width < 368px) {
-	.content {
-		gap: 10px;
-	}
-}

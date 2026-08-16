@@ -17,10 +17,8 @@
 	.card-panel {
 		padding: 12px;
 	}
-}
-
-@media screen and (width < 368px) {
-	.list-item > p {
-		letter-spacing: -0.07rem;
+	
+	p.text {
+		font-size: var(--font-size-p-s);
 	}
 }
