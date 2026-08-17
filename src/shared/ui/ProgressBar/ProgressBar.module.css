@@ -1,97 +1,108 @@
 .label-small {
-  margin-top: 4px;
+	margin-top: 4px;
 }
 
 .label-large {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  background-color: var(--background-progress-bar);
+	position: absolute;
+	top: 8px;
+	left: 12px;
+	padding: 5px 12px;
+	border-radius: 6px;
+	background-color: var(--background-progress-bar);
 }
 
 .progress-bar {
-  position: relative;
+	position: relative;
 }
 
 .progress-bar-small {
-  width: 100%;
-  height: 3px;
-  border-radius: 50px;
+	width: 100%;
+	height: 3px;
+	border-radius: 50px;
 
-  &::-webkit-progress-value {
-    border-radius: 50px;
-    background-color: var(--text-color-link-active);
-  }
+	&::-webkit-progress-value {
+		border-radius: 50px;
+		background-color: var(--text-color-link-active);
+	}
 
-  &::-webkit-progress-bar {
-    border-radius: 50px;
-    background-color: var(--background-progress-bar);
-  }
+	&::-webkit-progress-bar {
+		border-radius: 50px;
+		background-color: var(--background-progress-bar);
+	}
 }
 
 .progress-bar-large {
-  width: 100%;
-  height: 42px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+	width: 100%;
+	height: 42px;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
 
-  &::-webkit-progress-value {
-    border-radius: 8px;
-    background-color: var(--text-color-link-active);
-  }
+	&::-webkit-progress-value {
+		border-radius: 8px;
+		background-color: var(--text-color-link-active);
+	}
 
-  &::-webkit-progress-bar {
-    border-radius: 8px;
-    background-color: transparent;
+	&::-webkit-progress-bar {
+		border-radius: 8px;
+		background-color: transparent;
 
-    /* border: 1px solid var(--color-border); */
-  }
+		/* border: 1px solid var(--color-border); */
+	}
 }
 
 .progress-bar-medium {
-  width: 100%;
-  height: 6px;
-  border-radius: 21px;
+	width: 100%;
+	height: 6px;
+	border-radius: 21px;
 }
 
 .progress-bar-green {
-  &::-webkit-progress-value {
-    border-radius: 50px;
-    background-color: var(--color-green-750);
-  }
+	&::-webkit-progress-value {
+		border-radius: 50px;
+		background-color: var(--color-green-750);
+	}
 
-  &::-webkit-progress-bar {
-    border-radius: 50px;
-    background-color:  var(--color-green-450);
-  }
+	&::-webkit-progress-bar {
+		border-radius: 50px;
+		background-color: var(--color-green-450);
+	}
 }
 
 .progress-bar-yellow {
-  &::-webkit-progress-value {
-    border-radius: 50px;
-    background-color: var(--color-yellow-800);
-  }
+	&::-webkit-progress-value {
+		border-radius: 50px;
+		background-color: var(--color-yellow-800);
+	}
 
-  &::-webkit-progress-bar {
-    border-radius: 50px;
-    background-color: var(--color-yellow-500);
-  }
+	&::-webkit-progress-bar {
+		border-radius: 50px;
+		background-color: var(--color-yellow-500);
+	}
 }
 
 .progress-bar-red {
-  &::-webkit-progress-value {
-    border-radius: 50px;
-    background-color: var(--color-red-700);
-  }
+	&::-webkit-progress-value {
+		border-radius: 50px;
+		background-color: var(--color-red-700);
+	}
 
-  &::-webkit-progress-bar {
-    border-radius: 50px;
-    background-color:  var(--color-red-100);
-  }
+	&::-webkit-progress-bar {
+		border-radius: 50px;
+		background-color: var(--color-red-100);
+	}
 }
 
+.progress-bar-purple {
+	&::-webkit-progress-value {
+		border-radius: 50px;
+		background-color: var(--color-purple-700);
+	}
+
+	&::-webkit-progress-bar {
+		border-radius: 50px;
+		background-color: var(--color-purple-200);
+	}
+}
 
 /* .progress-bar-large { */
 

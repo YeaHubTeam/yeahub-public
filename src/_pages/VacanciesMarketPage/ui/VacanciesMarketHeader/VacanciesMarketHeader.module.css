@@ -10,10 +10,6 @@ p.description {
 	width: 502px;
 	max-width: 100%;
 	color: var(--color-black-1000);
-	font-feature-settings:
-		'ss01' on,
-		'cv01' on,
-		'cv11' on;
 	letter-spacing: 0;
 }
 
