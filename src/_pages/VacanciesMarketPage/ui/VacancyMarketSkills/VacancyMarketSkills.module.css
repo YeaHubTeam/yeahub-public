@@ -9,20 +9,4 @@
 	overflow: hidden;
 	border: 0;
 	border-radius: 21px;
-	background-color: var(--background-progress-bar);
-}
-
-.progress progress::-webkit-progress-bar {
-	border-radius: 21px;
-	background-color: var(--background-progress-bar);
-}
-
-.progress progress::-webkit-progress-value {
-	border-radius: 21px;
-	background-color: var(--text-color-link-active);
-}
-
-.progress progress::-moz-progress-bar {
-	border-radius: 21px;
-	background-color: var(--text-color-link-active);
 }

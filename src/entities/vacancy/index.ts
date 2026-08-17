@@ -36,3 +36,4 @@ export { ChooseEmploymentTypeSkeleton } from '@/entities/vacancy/ui/ChooseEmploy
 
 export { ChooseEnglishLevel } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel';
 export { ChooseEnglishLevelSkeleton } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel.skeleton';
+export { VacancyKeywordsList } from './ui/VacancyKeywordsList/VacancyKeywordsList';
