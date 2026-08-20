@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 
-import { getVacanciesMarketOverview } from '@/entities/vacancyMarket';
+import { getVacanciesMarketOverview } from '@/entities/vacancy';
 import { VacanciesMarketPage } from '@/pages/VacanciesMarketPage';
 
 export const dynamic = 'auto';

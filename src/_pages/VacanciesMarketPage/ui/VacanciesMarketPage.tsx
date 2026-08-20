@@ -1,4 +1,4 @@
-import type { GetVacanciesMarketOverviewResponse } from '@/entities/vacancyMarket';
+import type { GetVacanciesMarketOverviewResponse } from '@/entities/vacancy';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
 

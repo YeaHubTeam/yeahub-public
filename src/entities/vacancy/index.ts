@@ -1,5 +1,6 @@
 export { getVacancies } from './api/getVacancies';
 export { getVacancyById } from './api/getVacancyById';
+export { getVacanciesMarketOverview } from './api/getVacanciesMarketOverview';
 
 export type {
 	GetVacanciesListResponse,
@@ -9,6 +10,12 @@ export type {
 	VacancyAiProfile,
 	VacancyPreparation,
 } from './model/types/vacancy';
+export type {
+	GetVacanciesMarketOverviewResponse,
+	VacancyMarketSpecialization,
+	VacancyMarketTopItem,
+} from './model/types/vacancyMarket';
+
 export { VacancyCard } from './ui/VacancyCard/VacancyCard';
 export { VacancyCardSkeleton } from './ui/VacancyCard/VacancyCard.skeleton';
 

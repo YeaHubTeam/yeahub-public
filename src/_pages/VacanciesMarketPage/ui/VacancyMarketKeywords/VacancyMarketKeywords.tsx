@@ -15,7 +15,7 @@ export const VacancyMarketKeywords = ({ keywords, title }: VacancyMarketKeywords
 				{title}
 			</Text>
 
-			<VacancyKeywordsList keywords={keywords.map(({ title }) => title)} topCount={1} />
+			<VacancyKeywordsList keywords={keywords.map(({ title }) => title)} topCount={3} />
 		</Flex>
 	);
 };

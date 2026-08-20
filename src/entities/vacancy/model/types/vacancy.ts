@@ -87,7 +87,6 @@ export interface Vacancy {
 	companyType: VacancyCompanyType | null;
 	specializationId: number;
 	salary: VacancySalary;
-	publishedAt: string;
 	sourcePublishedAt: string;
 	applyVacancyUrl: string;
 	company: VacancyCompany;
@@ -104,7 +103,6 @@ export type VacancyListItem = Omit<
 	| 'industry'
 	| 'companyType'
 	| 'specializationId'
-	| 'sourcePublishedAt'
 	| 'applyVacancyUrl'
 >;
 
