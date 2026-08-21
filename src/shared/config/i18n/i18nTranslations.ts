@@ -850,4 +850,13 @@ export enum Vacancies {
 	KEYWORDS_TITLE = 'keywords.title',
 	PRIORITY_TITLE = 'priority.title',
 	COLLECTIONS_SECTION_TITLE = 'collections.section.title',
+
+	MARKET_PAGE_TITLE = 'market_page.title',
+	MARKET_PAGE_DESCRIPTION = 'market_page.description',
+	MARKET_PAGE_UPDATED_AT = 'market_page.updated_at',
+	MARKET_PAGE_TOTAL_ANALYZED = 'market_page.total_analyzed',
+	MARKET_PAGE_DAILY_UPDATE = 'market_page.daily_update',
+	MARKET_PAGE_VACANCY_COUNT = 'market_page.vacancy_count',
+	MARKET_PAGE_TOP_SKILLS = 'market_page.top_skills',
+	MARKET_PAGE_DETAILED_PROFILE = 'market_page.detailed_profile',
 }
