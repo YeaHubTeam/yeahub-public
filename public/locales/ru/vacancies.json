@@ -18,6 +18,21 @@
 		"detailed_profile": "Подробный профиль",
 		"vacancy_count": "{count, plural, one {# вакансия} few {# вакансии} many {# вакансий} other {# вакансий}}"
 	},
+	"vacancy_profile": {
+		"title": "Профиль вакансии:",
+		"description": "Актуальные данные о навыках, задачах и требованиях на основе анализа реальных вакансий на рынке.",
+		"updated_at": "Обновлено {date}",
+		"all_industries": "Все",
+		"daily_update": "Данные обновляются каждый день",
+		"analyzed_vacancies": "Всего проанализировано вакансий",
+		"top_skills": "Топ навыков",
+		"frequent_tasks": "Частые задачи",
+		"keywords": "Ключевые слова",
+		"priority": "Особые требования и софт скиллы",
+		"show_all": "Показать все",
+		"hide": "Скрыть",
+		"all_vacancies": "Все вакансии"
+	},
 	"count": {
 		"skills": "+{count, plural, one {# навык} few {# навыка} many {# навыков} other {# навыков}}",
 		"collections": "{count, plural, one {# собеседование} few {# собеседования} many {# собеседований} other {# собеседований}}",

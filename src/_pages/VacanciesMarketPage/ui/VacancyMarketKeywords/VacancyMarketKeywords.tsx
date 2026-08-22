@@ -1,7 +1,7 @@
 import type { VacancyMarketTopItem } from '@/entities/vacancyMarket';
+import { KeywordChip } from '@/shared/ui/KeywordChip';
 import { Text } from '@/shared/ui/Text';
 
-import { KeywordChip } from '../KeywordChip';
 import styles from './VacancyMarketKeywords.module.css';
 
 interface VacancyMarketKeywordsProps {

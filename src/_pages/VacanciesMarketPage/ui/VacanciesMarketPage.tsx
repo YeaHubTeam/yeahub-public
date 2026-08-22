@@ -2,10 +2,10 @@ import { getTranslations } from 'next-intl/server';
 
 import type { GetVacanciesMarketOverviewResponse } from '@/entities/vacancyMarket';
 import { Vacancies, i18Namespace } from '@/shared/config';
+import { formatUpdatedAt } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
 
-import { formatUpdatedAt } from '../lib/formatUpdatedAt';
 import { VacanciesMarketHeader } from './VacanciesMarketHeader/VacanciesMarketHeader';
 import styles from './VacanciesMarketPage.module.css';
 import { VacanciesMarketSummary } from './VacanciesMarketSummary/VacanciesMarketSummary';
