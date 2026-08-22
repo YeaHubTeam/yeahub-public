@@ -17,5 +17,8 @@
 	.card-panel {
 		padding: 12px;
 	}
+	
+	p.text {
+		font-size: var(--font-size-p-s);
+	}
 }
-

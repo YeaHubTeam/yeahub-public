@@ -30,7 +30,6 @@ export const VacancyMarketSkills = ({ skills, title }: VacancyMarketSkillsProps)
 						<div key={`${skill.title}-${index}`}>
 							<Flex justify="between" align="center" gap="8">
 								<Text variant="body2">{skill.title}</Text>
-
 								<Text variant="body2">{displayedPercent}%</Text>
 							</Flex>
 
