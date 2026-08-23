@@ -21,10 +21,10 @@
 	"resume_analyzer_page": {
 		"title": "Сравнение с рынком",
 		"badge": {
-    	"specialization": "Frontend-разработчик",
-    	"industry": "FinTech",
-    	"vacancies_count": "420 вакансий"
-    }
+			"specialization": "Frontend-разработчик",
+			"industry": "FinTech",
+			"vacancies_count": "420 вакансий"
+		}
 	},
 	"count": {
 		"skills": "+{count, plural, one {# навык} few {# навыка} many {# навыков} other {# навыков}}",
