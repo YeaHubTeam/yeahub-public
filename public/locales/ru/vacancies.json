@@ -18,6 +18,14 @@
 		"detailed_profile": "Подробный профиль",
 		"vacancy_count": "{count, plural, one {# вакансия} few {# вакансии} many {# вакансий} other {# вакансий}}"
 	},
+	"resume_analyzer_page": {
+		"title": "Сравнение с рынком",
+		"badge": {
+    	"specialization": "Frontend-разработчик",
+    	"industry": "FinTech",
+    	"vacancies_count": "420 вакансий"
+    }
+	},
 	"count": {
 		"skills": "+{count, plural, one {# навык} few {# навыка} many {# навыков} other {# навыков}}",
 		"collections": "{count, plural, one {# собеседование} few {# собеседования} many {# собеседований} other {# собеседований}}",
