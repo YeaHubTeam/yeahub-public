@@ -1,7 +1,8 @@
-import { VacancyKeywordsList } from '@/entities/vacancy';
 import type { VacancyMarketTopItem } from '@/entities/vacancyMarket';
-import { Flex } from '@/shared/ui/Flex';
+import { KeywordChip } from '@/shared/ui/KeywordChip';
 import { Text } from '@/shared/ui/Text';
+
+import styles from './VacancyMarketKeywords.module.css';
 
 interface VacancyMarketKeywordsProps {
 	keywords: VacancyMarketTopItem[];
@@ -10,12 +11,20 @@ interface VacancyMarketKeywordsProps {
 
 export const VacancyMarketKeywords = ({ keywords, title }: VacancyMarketKeywordsProps) => {
 	return (
-		<Flex componentType="section" direction="column" gap="12">
+		<>
 			<Text variant="body3-accent" color="black-500">
 				{title}
 			</Text>
 
-			<VacancyKeywordsList keywords={keywords.map(({ title }) => title)} topCount={3} />
-		</Flex>
+			<div className={styles.keywords}>
+				{keywords.map((keyword, index) => (
+					<KeywordChip
+						key={`${keyword.title}-${index}`}
+						title={keyword.title}
+						variant={index === 0 ? 'accent' : 'default'}
+					/>
+				))}
+			</div>
+		</>
 	);
 };

@@ -5,15 +5,15 @@ import { Card } from '@/shared/ui/Card';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-import styles from './VacanciesMarketSummary.module.css';
+import styles from './VacancyMarketSummary.module.css';
 
-interface VacanciesMarketSummaryProps {
+interface VacancyMarketSummaryProps {
 	title: string;
 	total: number;
 	note: string;
 }
 
-export const VacanciesMarketSummary = ({ title, total, note }: VacanciesMarketSummaryProps) => {
+export const VacancyMarketSummary = ({ title, total, note }: VacancyMarketSummaryProps) => {
 	return (
 		<Card
 			size="small"

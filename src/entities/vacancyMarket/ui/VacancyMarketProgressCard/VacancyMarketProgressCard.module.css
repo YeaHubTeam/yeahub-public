@@ -1,5 +1,14 @@
+.container {
+	width: 100%;
+}
+
+.progress-container {
+	width: 100%;
+}
+
 .progress {
 	margin-top: 4px;
+	width: 100%;
 }
 
 .progress progress {

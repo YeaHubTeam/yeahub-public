@@ -3,6 +3,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { ProgressBar } from '@/shared/ui/ProgressBar';
 import { Text } from '@/shared/ui/Text';
 
+import { roundPercent } from '../../lib/roundPercent';
 import styles from './VacancyMarketSkills.module.css';
 
 interface VacancyMarketSkillsProps {
@@ -12,13 +13,11 @@ interface VacancyMarketSkillsProps {
 
 const TOP_SKILLS_LIMIT = 5;
 
-const roundPercent = (percent: number): number => Math.ceil(percent);
-
 export const VacancyMarketSkills = ({ skills, title }: VacancyMarketSkillsProps) => {
 	const visibleSkills = skills.slice(0, TOP_SKILLS_LIMIT);
 
 	return (
-		<Flex componentType="section" direction="column" gap="12">
+		<>
 			<Text variant="body3-accent" color="black-500">
 				{title}
 			</Text>
@@ -39,12 +38,11 @@ export const VacancyMarketSkills = ({ skills, title }: VacancyMarketSkillsProps)
 								currentCount={displayedPercent}
 								totalCount={100}
 								variant="medium"
-								color="purple"
 							/>
 						</div>
 					);
 				})}
 			</Flex>
-		</Flex>
+		</>
 	);
 };

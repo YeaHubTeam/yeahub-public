@@ -2,24 +2,28 @@ import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
-import styles from './VacanciesMarketHeader.module.css';
+import styles from './VacancyMarketHeader.module.css';
 
-interface VacanciesMarketHeaderProps {
+interface VacancyMarketHeaderProps {
 	title: string;
+	vacancyName: string;
 	description: string;
 	updatedAtText: string;
 }
 
-export const VacanciesMarketHeader = ({
+export const VacancyMarketHeader = ({
 	title,
+	vacancyName,
 	description,
 	updatedAtText,
-}: VacanciesMarketHeaderProps) => {
+}: VacancyMarketHeaderProps) => {
 	return (
 		<Flex direction="column" gap="12" className={styles.header}>
 			<Text variant="head2" isMainTitle className={styles.title}>
 				{title}
 			</Text>
+
+			<Text variant="body6">{vacancyName}</Text>
 
 			<Text variant="body3-accent" className={styles.description}>
 				{description}
