@@ -1,15 +1,12 @@
-import { setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
-import { CompanyCompactList } from '@/entities/company';
-import { ProgrammingLanguage, ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { Task, TaskCard, TaskCategory } from '@/entities/tasks';
-import { Card } from '@/shared/ui/Card';
-import { Flex } from '@/shared/ui/Flex';
-import { Stub } from '@/shared/ui/Stub';
+import { ProgrammingLanguage } from '@/entities/programmingLanguage';
+import { Task, TaskCategory } from '@/entities/tasks';
+import { Tasks, i18Namespace } from '@/shared/config';
+import { ListPageWrapper } from '@/widgets/ListPageWrapper';
+import { TasksList } from '@/widgets/task/TasksList';
 
 import { TasksFilterPanel } from '../TaskFilterPanel/TaskFilterPanel';
-import { TasksPageHeader } from '../TasksPageHeader/TasksPageHeader';
-import styles from './TasksPage.module.css';
 
 interface TasksPageProps {
 	locale: string;
@@ -20,38 +17,16 @@ interface TasksPageProps {
 }
 
 export const TasksPage = ({ locale, tasks, hasFilters, categories, languages }: TasksPageProps) => {
-	setRequestLocale(locale);
+	const t = useTranslations(i18Namespace.tasks);
+
 	const isEmptyWithFilters = tasks.length === 0 && hasFilters;
 
 	return (
-		<Flex gap="20" align="start">
-			<Card withOutsideShadow className={styles.main}>
-				<TasksPageHeader categories={categories} languages={languages} />
-				{isEmptyWithFilters ? (
-					<Stub type="filter-empty" />
-				) : (
-					<Flex direction="column" gap="16">
-						{tasks.map((task) => (
-							<TaskCard
-								slug={task.slug}
-								key={task.id}
-								id={task.id}
-								name={task.name}
-								difficulty={task.difficulty}
-								mainCategory={task.mainCategory}
-								canSolve={task.canSolve}
-								languagesSlot={
-									<ProgrammingLanguageList supportedLanguages={task.supportedLanguages} />
-								}
-								companiesSlot={<CompanyCompactList companies={task.companies} />}
-							/>
-						))}
-					</Flex>
-				)}
-			</Card>
-			<Card className={styles.filters}>
-				<TasksFilterPanel languages={languages} categories={categories} />
-			</Card>
-		</Flex>
+		<ListPageWrapper
+			locale={locale}
+			title={t(Tasks.TITLE_SHORT)}
+			itemsList={<TasksList isEmptyWithFilters={isEmptyWithFilters} tasks={tasks} />}
+			filterPanel={<TasksFilterPanel languages={languages} categories={categories} />}
+		/>
 	);
 };
