@@ -142,7 +142,11 @@
 			"fifth": "Основатель Reactify — крупного Frontend-сообщества",
 			"sixth": "Веду YouTube и Telegram каналы"
 		},
-		"link": "Весь мой путь в IT"
+		"link": "Весь мой путь в IT",
+		"video": {
+			"title": "Как я довожу Frontend-разработчиков до оффера",
+			"link": "Перейти на YouTube"
+		}
 	},
 	"stack": {
 		"label": "стек",
