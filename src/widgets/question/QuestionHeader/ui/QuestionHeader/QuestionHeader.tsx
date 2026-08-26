@@ -2,14 +2,13 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { Question, getQuestionImage } from '@/entities/question';
+import { Question, QuestionAdditionalInfo, getQuestionImage } from '@/entities/question';
 import { Questions, i18Namespace } from '@/shared/config';
 import { AdditionalInfoDrawer } from '@/shared/ui/AdditionalInfoDrawer';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
 import { Text } from '@/shared/ui/Text';
-import { QuestionAdditionalInfo } from '@/widgets/question/QuestionAdditionalInfo';
 
 import styles from './QuestionHeader.module.css';
 

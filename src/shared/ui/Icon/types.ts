@@ -11,6 +11,7 @@ export type IconName =
 	| 'arrowSelect'
 	| 'clock'
 	| 'calendar'
+	| 'calendarNoDots'
 	| 'check'
 	| 'compass'
 	| 'question'

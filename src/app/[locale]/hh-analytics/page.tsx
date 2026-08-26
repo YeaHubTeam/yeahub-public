@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { HhAnalyticsPage as HhAnalyticsPageComponent } from '@/pages/HhAnalyticsPage';
 import { Analytics, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	searchParams?: Promise<{

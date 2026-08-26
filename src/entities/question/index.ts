@@ -15,7 +15,7 @@ export { ChooseQuestionComplexity } from './ui/ChooseQuestionComplexity/ChooseQu
 export { ChooseQuestionComplexitySkeleton } from './ui/ChooseQuestionComplexity/ChooseQuestionComplexity.skeleton';
 export { RateFilterSection } from './ui/RateFilterSection/RateFilterSection';
 export { RateFilterSectionSkeleton } from './ui/RateFilterSection/RateFilterSection.skeleton';
-export { getQuestionImage } from './model/lib/getQuestionImage';
+export { getQuestionImage } from './model/helpers/getQuestionImage';
 export {
 	getQuestionsList,
 	getQuestionById,
@@ -26,3 +26,5 @@ export {
 } from './api/getQuestions';
 export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestionsItem';
 export { ChooseQuestionCount } from './ui/ChooseQuestionCount/ChooseQuestionCount';
+export { QuestionAdditionalInfo } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo';
+export { QuestionAdditionalInfoSkeleton } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo.skeleton';

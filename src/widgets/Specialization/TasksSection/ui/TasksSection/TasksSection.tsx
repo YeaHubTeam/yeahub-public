@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { getTasksList } from '@/entities/tasks';
+import { getTasksList } from '@/entities/task';
 import { ROUTES, Specializations, i18Namespace } from '@/shared/config';
 import { SectionWrapper } from '@/shared/ui/SectionWrapper';
 

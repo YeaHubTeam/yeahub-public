@@ -1,1 +1,1 @@
-export { SectionWrapper } from './ui/SectionWrapper';
+export { SectionWrapper } from './SectionWrapper';
