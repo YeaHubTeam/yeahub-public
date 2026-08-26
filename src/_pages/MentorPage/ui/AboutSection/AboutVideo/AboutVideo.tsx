@@ -16,7 +16,7 @@ export const AboutVideo = () => {
 	const t = useTranslations(i18Namespace.mentor);
 
 	return (
-		<Card>
+		<Card withShadow withOutsideShadow className={styles['wrapper-content']}>
 			<Flex direction="column" gap="10">
 				<Link
 					href={ROUTES.mentor.youtubeVideo}

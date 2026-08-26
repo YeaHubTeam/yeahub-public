@@ -43,4 +43,8 @@
 	.wrapper div:nth-child(2) {
 		grid-column: 1;
 	}
+
+	.wrapper div:nth-child(3) {
+		grid-column: 1;
+	}
 }
