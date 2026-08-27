@@ -24,6 +24,12 @@
 			"specialization": "Frontend-разработчик",
 			"industry": "FinTech",
 			"vacancies_count": "420 вакансий"
+		},
+		"tasks": {
+			"coverage": "{percent}% покрытие",
+			"matched": "Найденные задачи",
+			"missing": "Пропущенные задачи",
+			"recommendations": "Рекомендации"
 		}
 	},
 	"count": {

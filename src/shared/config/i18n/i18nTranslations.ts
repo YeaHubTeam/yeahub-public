@@ -863,4 +863,8 @@ export enum Vacancies {
 	RESUME_ANALYZER_SPECIALIZATION = 'resume_analyzer_page.badge.specialization',
 	RESUME_ANALYZER_INDUSTRY = 'resume_analyzer_page.badge.industry',
 	RESUME_ANALYZER_VACANCIES_COUNT = 'resume_analyzer_page.badge.vacancies_count',
+	RESUME_ANALYZER_TASKS_COVERAGE = 'resume_analyzer_page.tasks.coverage',
+	RESUME_ANALYZER_TASKS_MATCHED = 'resume_analyzer_page.tasks.matched',
+	RESUME_ANALYZER_TASKS_MISSING = 'resume_analyzer_page.tasks.missing',
+	RESUME_ANALYZER_TASKS_RECOMMENDATIONS = 'resume_analyzer_page.tasks.recommendations',
 }
