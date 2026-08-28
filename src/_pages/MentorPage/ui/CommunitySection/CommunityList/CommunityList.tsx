@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Mentor, ROUTES, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 
+import { BottomCommunityCard } from '../BottomCommunityCard/BottomCommunityCard';
 import { CommunityCard } from '../CommunityCard/CommunityCard';
 import styles from './CommunityList.module.css';
 
@@ -42,11 +43,39 @@ export const CommunityList = () => {
 			linkUrl: ROUTES.mentor.telegramChannel,
 		},
 	];
-
+	const bottomCommunityItems = [
+		{
+			title: t(Mentor.COMMUNITY_CARD_HONESTY_TITLE),
+			description: t(Mentor.COMMUNITY_CARD_HONESTY_DESC),
+			linkText: t(Mentor.COMMUNITY_CARD_HONESTY_LINK),
+			linkUrl: ROUTES.mentor.honesty,
+		},
+		{
+			title: t(Mentor.COMMUNITY_CARD_INTERNSHIP_TITLE),
+			description: t(Mentor.COMMUNITY_CARD_INTERNSHIP_DESC),
+			linkText: t(Mentor.COMMUNITY_CARD_INTERNSHIP_LINK),
+			linkUrl: ROUTES.mentor.internship,
+		},
+		{
+			title: t(Mentor.COMMUNITY_CARD_MEETUP_TITLE),
+			description: t(Mentor.COMMUNITY_CARD_MEETUP_DESC),
+			linkText: t(Mentor.COMMUNITY_CARD_MEETUP_LINK),
+			linkUrl: ROUTES.mentor.meetup,
+		},
+	];
 	return (
-		<Flex className={styles['community-list']}>
+		<Flex className={styles['community-list']} justify="center">
 			{communityItems.map((item) => (
 				<CommunityCard
+					key={item.title}
+					title={item.title}
+					description={item.description}
+					linkText={item.linkText}
+					linkUrl={item.linkUrl}
+				/>
+			))}
+			{bottomCommunityItems.map((item) => (
+				<BottomCommunityCard
 					key={item.title}
 					title={item.title}
 					description={item.description}
