@@ -1,8 +1,8 @@
 .card {
+	grid-column: span 4;
 	gap: 0 !important;
 	padding: 20px;
 	height: 161px;
-	grid-column: span 4;
 }
 
 .card-content {
@@ -25,10 +25,12 @@
 		grid-column: auto;
 		height: 161px;
 	}
+
 	.card:last-child {
 		grid-column: 1 / -1;
 		height: 121px;
 	}
+
 	h3.title {
 		font-size: var(--font-size-h-xs);
 	}
@@ -39,6 +41,7 @@
 		padding: 10px;
 		height: 141px;
 	}
+
 	.card:last-child {
 		height: 141px;
 	}
