@@ -91,6 +91,9 @@ export const ROUTES = {
 		news: 'https://t.me/mentor_reactify',
 		youtube: 'https://www.youtube.com/@reactify-it',
 		telegramChannel: 'https://t.me/reactify_IT',
+		honesty: 'https://t.me/mentor_reactify/389',
+		internship: 'https://t.me/mentor_reactify/348',
+		meetup: 'https://t.me/mentor_reactify/376',
 	},
 	wiki: {
 		questions: {
