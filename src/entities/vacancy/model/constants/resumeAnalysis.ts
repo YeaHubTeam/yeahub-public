@@ -386,4 +386,9 @@ export const resumeAnalysis: ResumeAnalysis = {
 		extraMatchPercent: 31.6,
 		profileQualityScore: 65,
 	},
+	skills: {
+		coveragePercent: 68,
+		totalMatched: 17,
+		totalSkills: 28,
+	},
 };

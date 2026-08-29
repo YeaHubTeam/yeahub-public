@@ -1,0 +1,31 @@
+.wrapper {
+  position: relative;
+  width: 99px;
+  height: 99px;
+}
+
+.circle {
+  transform: rotate(-90deg);
+}
+
+.background,
+.progress {
+  stroke-width: 7.5;
+  fill: none;
+}
+
+.background {
+  stroke: var(--color-purple-200);
+}
+
+.progress {
+  stroke: var(--color-purple-700);
+  stroke-linecap: round;
+}
+
+.value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

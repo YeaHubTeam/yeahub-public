@@ -46,9 +46,16 @@ export type Profile = {
 	profileQualityScore: number;
 };
 
+export type Skills = {
+	coveragePercent: number;
+	totalMatched: number;
+	totalSkills: number;
+};
+
 export type ResumeAnalysis = {
 	overall: Overall;
 	keywords: Keywords;
 	tasks: Tasks;
 	profile: Profile;
+	skills: Skills;
 };
