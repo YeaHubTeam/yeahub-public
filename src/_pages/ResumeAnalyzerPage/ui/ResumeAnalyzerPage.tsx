@@ -9,7 +9,9 @@ interface ResumeAnalyzerPageProps {
 	data: ResumeAnalysis;
 }
 
-export const ResumeAnalyzerPage = ({ _data }: ResumeAnalyzerPageProps) => {
+export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
+	console.log(data);
+
 	return (
 		<>
 			<Flex>
