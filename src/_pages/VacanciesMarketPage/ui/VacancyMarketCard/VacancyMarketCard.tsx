@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import type { VacancyMarketSpecialization } from '@/entities/vacancyMarket';
+import type { VacancyMarketSpecialization } from '@/entities/vacancy';
 import { Vacancies, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 
