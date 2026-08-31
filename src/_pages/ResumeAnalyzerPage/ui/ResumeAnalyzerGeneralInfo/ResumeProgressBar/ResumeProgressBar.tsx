@@ -1,3 +1,4 @@
+import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './ResumeProgressBar.module.css';
@@ -7,23 +8,21 @@ interface ResumeProgressBarProps {
 }
 
 export const ResumeProgressBar = ({ value }: ResumeProgressBarProps) => {
+	const labels = ['0%', '5%', '100%'];
+
 	return (
-		<div className={styles.progress}>
+		<Flex direction="column" gap="10">
 			<div className={styles.track}>
 				<div className={styles.fill} style={{ '--progress': `${value}%` } as React.CSSProperties} />
 			</div>
 
-			<div className={styles.labels}>
-				<Text variant="body5" color="black-500">
-					0%
-				</Text>
-				<Text variant="body5" color="black-500">
-					50%
-				</Text>
-				<Text variant="body5" color="black-500">
-					100%
-				</Text>
-			</div>
-		</div>
+			<Flex justify="between">
+				{labels.map((label) => (
+					<Text key={label} variant="body5" color="black-500">
+						{label}
+					</Text>
+				))}
+			</Flex>
+		</Flex>
 	);
 };

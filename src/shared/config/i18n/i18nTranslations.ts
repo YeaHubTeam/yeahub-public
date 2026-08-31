@@ -894,6 +894,8 @@ export enum Vacancies {
 	RESUME_ANALYZER_METRIC_TASKS = 'resume_analyzer_page.metric_title.tasks',
 	RESUME_ANALYZER_METRIC_KEYWORDS = 'resume_analyzer_page.metric_title.keywords',
 	RESUME_ANALYZER_METRIC_PRIORITY = 'resume_analyzer_page.metric_title.priority',
+	RESUME_ANALYZER_METRIC_COVERAGE = 'resume_analyzer_page.metric_label.coverage',
+	RESUME_ANALYZER_METRIC_MATCHED = 'resume_analyzer_page.metric_label.matched',
 	RESUME_ANALYZER_COVERAGE_TITLE = 'resume_analyzer_page.vacancy_coverage.title',
 	RESUME_ANALYZER_COVERAGE_DESCRIPTION = 'resume_analyzer_page.vacancy_coverage.description',
 	RESUME_ANALYZER_COVERAGE_RESULT = 'resume_analyzer_page.vacancy_coverage.result',

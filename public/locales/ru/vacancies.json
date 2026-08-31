@@ -39,6 +39,10 @@
 			"keywords": "Ключевые слова",
 			"priority": "Приоритет"
 		},
+		"metric_label": {
+			"coverage": "Покрытие требований",
+			"matched": "Совпало {matched} из {total}"
+		},
 		"vacancy_coverage": {
 			"title": "Общее покрытие вакансии",
 			"description": "Насколько ваше резюме соответствует с требованиями рынка",

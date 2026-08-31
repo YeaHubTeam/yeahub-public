@@ -5,8 +5,8 @@ import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 
+import { ResumeProgressBar } from '../ResumeProgressBar/ResumeProgressBar';
 import styles from './OverallVacancyCoverage.module.css';
-import { ResumeProgressBar } from './ResumeProgressBar/ResumeProgressBar';
 
 interface OverallVacancyCoverageProps {
 	percent: number;
@@ -14,6 +14,7 @@ interface OverallVacancyCoverageProps {
 
 export const OverallVacancyCoverage = ({ percent }: OverallVacancyCoverageProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
+
 	return (
 		<Card withOutsideShadow className={styles.container}>
 			<div className={styles.content}>
