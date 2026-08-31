@@ -86,28 +86,12 @@
 	}
 }
 
-@media (width < 768px) {
-	.card {
-		padding: 10px;
-		width: 100%;
-		min-height: unset;
-	}
-
-	.row {
-		flex-direction: column;
-	}
-}
-
-/* @media (width < 768px) { */
-
-/*	.card { */
-
-/*		padding: 10px; */
-
-/*		width: 100%; */
-
-/*		min-height: unset; */
-
-/*	} */
-
-/* } */
+ @media (width < 768px) { 
+	.card { 
+		padding: 10px; 
+		width: 100%; 
+		min-height: unset; 
+ 
+	} 
+ 
+ } 
