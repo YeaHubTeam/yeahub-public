@@ -693,6 +693,16 @@ export enum Mentor {
 	PRICING_DEEP_CHECKS = 'pricing.rates.deep.features.checks',
 	PRICING_DEEP_SUPPORT = 'pricing.rates.deep.features.support',
 
+	PRICING_BUYOUT_LABEL = 'pricing.rates.buyout.label',
+	PRICING_BUYOUT_PRICE = 'pricing.rates.buyout.price',
+	PRICING_BUYOUT_PAYMENT = 'pricing.rates.buyout.features.payment',
+	PRICING_BUYOUT_MODULES = 'pricing.rates.buyout.features.modules',
+	PRICING_BUYOUT_PROMO_TITLE = 'pricing.rates.buyout.promo.title',
+	PRICING_BUYOUT_PROMO_PRICE = 'pricing.rates.buyout.promo.price',
+
+	PRICING_BUYOUT_0R_POSTPAY_TITLE = 'pricing.rates.buyout_or_postpay.title',
+	PRICING_BUYOUT_0R_POSTPAY_DESCRIPTION = 'pricing.rates.buyout_or_postpay.description',
+	PRICING_BUYOUT_0R_POSTPAY_BADGE = 'pricing.rates.buyout_or_postpay.label',
 	PRICING_INFO_POSTPAY_TITLE = 'pricing.info.postpay.title',
 	PRICING_INFO_POSTPAY_DESCRIPTION = 'pricing.info.postpay.description',
 	PRICING_INFO_EXPERIENCED_TITLE = 'pricing.info.experienced.title',
