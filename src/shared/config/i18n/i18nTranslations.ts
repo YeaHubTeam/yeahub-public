@@ -561,6 +561,8 @@ export enum Mentor {
 	ABOUT_ACHIEVEMENTS_FIFTH = 'about.achievements.fifth',
 	ABOUT_ACHIEVEMENTS_SIXTH = 'about.achievements.sixth',
 	ABOUT_LINK = 'about.link',
+	ABOUT_VIDEO_TITLE = 'about.video.title',
+	ABOUT_VIDEO_LINK = 'about.video.link',
 	STACK_LABEL = 'stack.label',
 	STACK_TITLE = 'stack.title',
 	STACK_SUBTITLE = 'stack.subtitle',
@@ -868,4 +870,8 @@ export enum Vacancies {
 	MARKET_PAGE_VACANCY_COUNT = 'market_page.vacancy_count',
 	MARKET_PAGE_TOP_SKILLS = 'market_page.top_skills',
 	MARKET_PAGE_DETAILED_PROFILE = 'market_page.detailed_profile',
+	RESUME_ANALYZER_TITLE = 'resume_analyzer_page.title',
+	RESUME_ANALYZER_SPECIALIZATION = 'resume_analyzer_page.badge.specialization',
+	RESUME_ANALYZER_INDUSTRY = 'resume_analyzer_page.badge.industry',
+	RESUME_ANALYZER_VACANCIES_COUNT = 'resume_analyzer_page.badge.vacancies_count',
 }

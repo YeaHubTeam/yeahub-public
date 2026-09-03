@@ -1,4 +1,4 @@
-import type { VacancyMarketTopItem } from '@/entities/vacancyMarket';
+import type { VacancyMarketTopItem } from '@/entities/vacancy';
 import { Flex } from '@/shared/ui/Flex';
 import { ProgressBar } from '@/shared/ui/ProgressBar';
 import { Text } from '@/shared/ui/Text';
