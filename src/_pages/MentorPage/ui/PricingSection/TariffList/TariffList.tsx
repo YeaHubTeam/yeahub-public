@@ -82,8 +82,10 @@ export const TariffList = () => {
 			{rateCards.map((card) => (
 				<TariffCard key={card.label} {...card} />
 			))}
-			<TariffFullBuyoutCard {...fullBuyoutCard} />
-			<FeatureCard feature={featureCard} />
+			<Flex maxWidth gap="20" className={styles['extra-tariff']}>
+				<TariffFullBuyoutCard {...fullBuyoutCard} />
+				<FeatureCard feature={featureCard} />
+			</Flex>
 			<BonusesBlock />
 		</Flex>
 	);

@@ -1,9 +1,9 @@
 .card {
 	display: flex;
+	flex-basis: 66%;
 	gap: 24px;
 	padding: 20px;
-	width: 804px;
-	height: 384px;
+	height: 324px;
 	border-radius: 20px;
 }
 
@@ -24,14 +24,14 @@
 	min-width: 0;
 }
 
-.title {
-	margin-top: 60px;
+h2.title {
+	margin-top: 20px;
 	font-weight: 700;
-	font-size: 50px;
+	font-size: var(--font-size-h-xl);
 }
 
 .button {
-	margin-top: 40px;
+	margin-top: 20px;
 	padding: 0;
 	font-weight: 500;
 	font-size: 18px;
@@ -50,17 +50,11 @@
 	text-align: center;
 }
 
-@media (width < 1280px) {
+@media screen and (width < 1280px) {
 	.card {
-		flex-direction: column;
-		width: calc(50% - 10px);
-		height: auto;
+		flex-basis: 100%;
 	}
 	
-	.row {
-		flex-direction: column;
-	}
-
 	.title {
 		margin-top: 30px;
 	}
@@ -70,28 +64,20 @@
 	}
 }
 
+ @media screen and  (width < 768px) {
+	 .row {
+		 flex-direction: column;
+		 gap: 10px;
+	 }
+	 
+	 .card {
+		 flex-direction: column;
+		 padding: 10px;
+		 width: calc(50% - 10px);
+		 height: auto;
+	 }
 
-@media (width < 1280px) {
-	.card {
-		width: calc(50% - 10px);
-		height: auto;
-	}
-
-	.title {
-		margin-top: 30px;
-	}
-
-	.button {
-		margin-top: 20px;
-	}
-}
-
- @media (width < 768px) { 
-	.card { 
-		padding: 10px; 
-		width: 100%; 
-		min-height: unset; 
- 
-	} 
- 
+	 .banner {
+		 min-height: 284px;
+	 }
  } 
