@@ -561,6 +561,8 @@ export enum Mentor {
 	ABOUT_ACHIEVEMENTS_FIFTH = 'about.achievements.fifth',
 	ABOUT_ACHIEVEMENTS_SIXTH = 'about.achievements.sixth',
 	ABOUT_LINK = 'about.link',
+	ABOUT_VIDEO_TITLE = 'about.video.title',
+	ABOUT_VIDEO_LINK = 'about.video.link',
 	STACK_LABEL = 'stack.label',
 	STACK_TITLE = 'stack.title',
 	STACK_SUBTITLE = 'stack.subtitle',
