@@ -1,0 +1,41 @@
+div.wrapper {
+	padding: 20px;
+	width: calc(50% - 10px);
+	border-radius: 20px;
+}
+
+.container {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+}
+
+.img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 30px;
+	height: 30px;
+	transform: translate(-50%, -50%);
+}
+
+@media screen and (width < 1280px) {
+	div.wrapper {
+		width: 100%;
+	}
+}
+
+@media screen and (width < 768px) {
+	div.wrapper {
+		padding: 0;
+		width: 100%;
+		box-shadow: 0;
+		background-color: transparent;
+	}
+
+	.container {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		width: 100%;
+	}
+}
