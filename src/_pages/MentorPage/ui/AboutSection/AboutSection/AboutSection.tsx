@@ -5,6 +5,7 @@ import { Mentor, i18Namespace } from '@/shared/config';
 import { SectionHeader } from '../../SectionHeader';
 import { AboutAchievements } from '../AboutAchievements/AboutAchievements';
 import { AboutProfile } from '../AboutProfile/AboutProfile';
+import { AboutVideo } from '../AboutVideo/AboutVideo';
 import styles from './AboutSection.module.css';
 
 export const AboutSection = () => {
@@ -20,6 +21,7 @@ export const AboutSection = () => {
 			<div className={styles['wrapper']}>
 				<AboutProfile />
 				<AboutAchievements />
+				<AboutVideo />
 			</div>
 		</section>
 	);

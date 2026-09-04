@@ -1,8 +1,8 @@
 .card {
-	grid-column: span 3;
+	grid-column: span 4;
 	gap: 0 !important;
 	padding: 20px;
-	height: 361px;
+	height: 161px;
 }
 
 .card-content {
@@ -23,7 +23,12 @@
 @media (width < 1280px) {
 	.card {
 		grid-column: auto;
-		height: 278px;
+		height: 161px;
+	}
+
+	.card:last-child {
+		grid-column: 1 / -1;
+		height: 121px;
 	}
 
 	h3.title {
@@ -34,6 +39,10 @@
 @media (width < 768px) {
 	.card {
 		padding: 10px;
-		height: 257px;
+		height: 141px;
+	}
+
+	.card:last-child {
+		height: 141px;
 	}
 }
