@@ -1,4 +1,5 @@
 import { ResumeAnalysis } from '@/entities/vacancy';
+import { ResumeAnalyzerRecommendations } from '@/pages/ResumeAnalyzerPage/ui/ResumeAnalyzerRecommendations/ResumeAnalyzerRecommendations';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
 
@@ -20,6 +21,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 			<Flex componentType="section" direction="column" gap="20">
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
+				<ResumeAnalyzerRecommendations recommendations={data.profile.recommendations} />
 			</Flex>
 		</>
 	);
