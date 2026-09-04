@@ -19,7 +19,7 @@ div.wrapper {
 	transform: translate(-50%, -50%);
 }
 
-@media screen and (width < 1024px) {
+@media screen and (width < 1280px) {
 	div.wrapper {
 		width: 100%;
 	}
