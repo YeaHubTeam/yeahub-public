@@ -24,6 +24,29 @@
 			"specialization": "Frontend-разработчик",
 			"industry": "FinTech",
 			"vacancies_count": "420 вакансий"
+		},
+		"analysis_info": {
+			"title": "Загруженное резюме",
+			"file": "frontend_developer.pdf",
+			"uploaded": "Загружено 14 мая 2026",
+			"analyzed": "Проанализировано",
+			"count": "420 вакансий",
+			"updated": "Обновлено вчера"
+		},
+		"metric_title": {
+			"skills": "Навыки",
+			"tasks": "Задачи",
+			"keywords": "Ключевые слова",
+			"priority": "Приоритет"
+		},
+		"metric_label": {
+			"coverage": "Покрытие требований",
+			"matched": "Совпало {matched} из {total}"
+		},
+		"vacancy_coverage": {
+			"title": "Общее покрытие вакансии",
+			"description": "Насколько ваше резюме соответствует с требованиями рынка",
+			"result": "Ваше резюме соответствует {percent}% требований рынка"
 		}
 	},
 	"count": {

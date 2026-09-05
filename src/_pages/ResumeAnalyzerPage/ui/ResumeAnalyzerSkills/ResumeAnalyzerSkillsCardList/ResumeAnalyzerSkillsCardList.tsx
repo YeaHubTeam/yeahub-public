@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import type { Keyword } from '@/entities/vacancy';
+import type { PercentItem } from '@/entities/vacancy';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
@@ -12,7 +12,7 @@ import { Text } from '@/shared/ui/Text';
 import styles from './ResumeAlyzerSkillsCardList.module.css';
 
 type ResumeAnalyzerSkillsCardListProps = {
-	keywords: Keyword[];
+	keywords: PercentItem[];
 	color: 'purple' | 'red';
 	title: string;
 };

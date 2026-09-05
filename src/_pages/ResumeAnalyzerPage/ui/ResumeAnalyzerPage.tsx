@@ -3,6 +3,7 @@ import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
 
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
+import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
 import { ResumeAnalyzerSkillsCard } from './ResumeAnalyzerSkills/ResumeAnalyzerSkillsCard';
 
@@ -11,8 +12,6 @@ interface ResumeAnalyzerPageProps {
 }
 
 export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
-	console.log(data);
-
 	return (
 		<>
 			<Flex>
@@ -21,6 +20,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 			<Flex componentType="section" direction="column" gap="20">
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
+				<ResumeAnalyzerGeneralInfo data={data} />
 				<ResumeAnalyzerSkillsCard />
 			</Flex>
 		</>

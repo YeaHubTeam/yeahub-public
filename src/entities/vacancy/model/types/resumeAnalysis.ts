@@ -3,20 +3,22 @@ export type Overall = {
 	label: string;
 };
 
+export type PercentItem = {
+	title: string;
+	percent: number;
+};
+
 export type Keywords = {
 	coveragePercent: number;
-	matchedKeywords: Keyword[];
-	missingKeywords: Keyword[];
-	criticalKeywords: string[];
-	optionalKeywords: string[];
+	matchedKeywords: PercentItem[];
+	missingKeywords: PercentItem[];
+	criticalKeywords: PercentItem[];
+	optionalKeywords: PercentItem[];
 	totalVacancyKeywords: number;
 	totalMatched: number;
 	recommendations: string[];
 };
-export type Keyword = {
-	percent: number;
-	title: 'string';
-};
+
 export type MatchedTasks = {
 	title: string;
 	matchType: 'full' | 'none';
@@ -31,22 +33,44 @@ export type Tasks = {
 	coveragePercent: number;
 };
 
+export type EvidenceItem = {
+	title: string;
+	evidence: string;
+};
+
+export type CommentItem = {
+	text: string;
+	comment: string;
+};
+
 export type Profile = {
 	hasProjectScope: boolean;
 	projectScopeSignals: string[];
 	missingProjectElements: string[];
 	hasStackSection: boolean;
-	matchedExtraSignals: string[];
-	missingExtraSignals: string[];
-	weaklySupportedSignals: string[];
+	matchedExtraSignals: EvidenceItem[];
+	missingExtraSignals: EvidenceItem[];
+	weaklySupportedSignals: EvidenceItem[];
 	hasStructuredResume: boolean;
 	presentSections: string[];
 	missingSections: string[];
 	recommendations: string[];
+	quantifiedAchievements: CommentItem[];
+	unquantifiedAchievements: CommentItem[];
+	totalAchievements: number;
 	quantifiedAchievementsPercent: number;
-	unquantifiedAchievements: string[];
+	coveredExtraCount: number;
+	totalExtraCount: number;
 	extraMatchPercent: number;
 	profileQualityScore: number;
+};
+
+export type Skills = {
+	matchedSkills: PercentItem[];
+	missingSkills: PercentItem[];
+	coveragePercent: number;
+	totalMatched: number;
+	totalSkills: number;
 };
 
 export type ResumeAnalysis = {
@@ -54,4 +78,7 @@ export type ResumeAnalysis = {
 	keywords: Keywords;
 	tasks: Tasks;
 	profile: Profile;
+	skills: Skills;
+	analyzedVacancyCount: number;
+	skillsVacancyCount: number;
 };
