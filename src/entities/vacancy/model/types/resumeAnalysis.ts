@@ -5,15 +5,18 @@ export type Overall = {
 
 export type Keywords = {
 	coveragePercent: number;
-	matchedKeywords: string[];
-	missingKeywords: string[];
+	matchedKeywords: Keyword[];
+	missingKeywords: Keyword[];
 	criticalKeywords: string[];
 	optionalKeywords: string[];
 	totalVacancyKeywords: number;
 	totalMatched: number;
 	recommendations: string[];
 };
-
+export type Keyword = {
+	percent: number;
+	title: 'string';
+};
 export type MatchedTasks = {
 	title: string;
 	matchType: 'full' | 'none';

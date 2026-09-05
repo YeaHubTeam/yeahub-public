@@ -4,6 +4,7 @@ import { Flex } from '@/shared/ui/Flex';
 
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
+import { ResumeAnalyzerSkillsCard } from './ResumeAnalyzerSkills/ResumeAnalyzerSkillsCard';
 
 interface ResumeAnalyzerPageProps {
 	data: ResumeAnalysis;
@@ -20,6 +21,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 			<Flex componentType="section" direction="column" gap="20">
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
+				<ResumeAnalyzerSkillsCard />
 			</Flex>
 		</>
 	);
