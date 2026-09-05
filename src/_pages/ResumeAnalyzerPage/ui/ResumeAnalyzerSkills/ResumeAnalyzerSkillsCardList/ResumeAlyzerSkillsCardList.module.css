@@ -13,9 +13,9 @@
 
 .skill {
 	display: flex;
-	margin: 0;
 	flex-direction: column;
 	gap: 4px;
+	margin: 0;
 }
 
 .link {
