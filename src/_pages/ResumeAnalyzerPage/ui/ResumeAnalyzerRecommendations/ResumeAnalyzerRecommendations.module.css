@@ -1,0 +1,48 @@
+.card {
+	padding: 20px;
+}
+
+.layout {
+	flex-direction: row;
+	align-items: center;
+}
+
+.header {
+	margin-bottom: 8px;
+}
+
+.title {
+	line-height: 1.2;
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-h-xs);
+}
+
+.description {
+	margin-bottom: 12px;
+}
+
+.list {
+	padding-left: 16px;
+}
+
+.recommendation {
+	display: list-item;
+	list-style: disc;
+
+	&::marker {
+		color: var(--color-purple-700);
+	}
+}
+
+.image {
+	flex-shrink: 0;
+	width: 355px;
+	max-width: 100%;
+	height: auto;
+}
+
+@media (width < 1280px) {
+	.image {
+		display: none;
+	}
+}

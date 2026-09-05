@@ -5,12 +5,15 @@ import { Flex } from '@/shared/ui/Flex';
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
+import { ResumeAnalyzerRecommendations } from './ResumeAnalyzerRecommendations/ResumeAnalyzerRecommendations';
 
 interface ResumeAnalyzerPageProps {
 	data: ResumeAnalysis;
 }
 
 export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
+	console.log(data);
+
 	return (
 		<>
 			<Flex>
@@ -20,6 +23,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
 				<ResumeAnalyzerGeneralInfo data={data} />
+				<ResumeAnalyzerRecommendations recommendations={data.profile.recommendations} />
 			</Flex>
 		</>
 	);
