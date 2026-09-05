@@ -1,10 +1,10 @@
 import { ResumeAnalysis } from '@/entities/vacancy';
-import { ResumeAnalyzerRecommendations } from '@/pages/ResumeAnalyzerPage/ui/ResumeAnalyzerRecommendations/ResumeAnalyzerRecommendations';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
 
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
+import { ResumeAnalyzerRecommendations } from './ResumeAnalyzerRecommendations/ResumeAnalyzerRecommendations';
 
 interface ResumeAnalyzerPageProps {
 	data: ResumeAnalysis;
