@@ -18,6 +18,7 @@ export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';
 export { useModal } from './fp';
+export { capitalizeFirstLetter } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
 export { parseStringArray } from './fp/parseStringArray';

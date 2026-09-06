@@ -28,6 +28,7 @@ import Cursor from '@/shared/assets/icons/cursorSquare.svg';
 import Dislike from '@/shared/assets/icons/dislike.svg';
 import DotsThree from '@/shared/assets/icons/dotsThree.svg';
 import DotsThreeVertical from '@/shared/assets/icons/dotsThreeVertical.svg';
+import ErrorCircle from '@/shared/assets/icons/errorCircle.svg';
 import Eye from '@/shared/assets/icons/eye.svg';
 import EyeClosed from '@/shared/assets/icons/eyeClosed.svg';
 import Facebook from '@/shared/assets/icons/facebook.svg';
@@ -44,6 +45,7 @@ import ImageEdit from '@/shared/assets/icons/imageEdit.svg';
 import Info from '@/shared/assets/icons/info.svg';
 import Instagram from '@/shared/assets/icons/instagram.svg';
 import KeySquare from '@/shared/assets/icons/keySquare.svg';
+import LightBulb from '@/shared/assets/icons/lightBulb.svg';
 import Lightning from '@/shared/assets/icons/lightning.svg';
 import Like from '@/shared/assets/icons/like.svg';
 import Linkedin from '@/shared/assets/icons/linkedin.svg';
@@ -73,6 +75,7 @@ import SlidersHorizontal from '@/shared/assets/icons/slidersHorizontal.svg';
 import Specialization from '@/shared/assets/icons/specialization.svg';
 import StarFall from '@/shared/assets/icons/starFall.svg';
 import Student from '@/shared/assets/icons/student.svg';
+import SuccessCircle from '@/shared/assets/icons/successCircle.svg';
 import Target from '@/shared/assets/icons/target.svg';
 import Telegram from '@/shared/assets/icons/telegram.svg';
 import TelegramWithBackground from '@/shared/assets/icons/telegramWithBackground.svg';
@@ -83,6 +86,7 @@ import TikTok from '@/shared/assets/icons/tiktok.svg';
 import Trash from '@/shared/assets/icons/trash.svg';
 import TrendUp from '@/shared/assets/icons/trendUp.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
+import UploadFile from '@/shared/assets/icons/uploadFile.svg';
 import User from '@/shared/assets/icons/user.svg';
 import UserCheckWithBackground from '@/shared/assets/icons/userCheckWithBackground.svg';
 import UserSwitch from '@/shared/assets/icons/userSwitch.svg';
@@ -192,4 +196,8 @@ export const icons: Record<IconName, IconComponent> = {
 	list: ListMagnifyingGlass,
 	cursor: Cursor,
 	refferals: Referrals,
+	uploadFile: UploadFile,
+	errorCircle: ErrorCircle,
+	lightBulb: LightBulb,
+	successCircle: SuccessCircle,
 };

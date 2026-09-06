@@ -68,6 +68,7 @@ export type IconName =
 	| 'settings'
 	| 'sealCheck'
 	| 'sealCheckOutlined'
+	| 'uploadFile'
 	| 'userCheckWithBackground'
 	| 'userSwitch'
 	| 'trendUp'
@@ -95,6 +96,8 @@ export type IconName =
 	| 'quiz'
 	| 'list'
 	| 'cursor'
-	| 'refferals';
-
+	| 'refferals'
+	| 'successCircle'
+	| 'errorCircle'
+	| 'lightBulb';
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;
