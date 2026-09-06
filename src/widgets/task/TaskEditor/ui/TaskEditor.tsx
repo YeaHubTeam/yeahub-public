@@ -64,7 +64,7 @@ export const TaskEditor = ({ supportedLanguages, taskStructures }: TaskEditorPro
 			<Card size="small" withOutsideShadow className={styles.block} contentClassName={styles.block}>
 				<div className={styles.editor}>
 					<MonacoEditor
-						height={'100%'}
+						height={'500px'}
 						width={'100%'}
 						className={styles.editorItem}
 						defaultLanguage={currentLanguage?.monacoLangId}
