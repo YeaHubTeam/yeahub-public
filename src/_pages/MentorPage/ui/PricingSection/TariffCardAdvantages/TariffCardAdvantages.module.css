@@ -1,4 +1,4 @@
-.card-panel {
+div.card-panel {
 	margin-top: 20px;
 	padding: 14px;
 	border-radius: 20px;
@@ -14,7 +14,7 @@
 }
 
 @media (width < 1280px) {
-	.card-panel {
+	div.card-panel {
 		padding: 12px;
 	}
 	
