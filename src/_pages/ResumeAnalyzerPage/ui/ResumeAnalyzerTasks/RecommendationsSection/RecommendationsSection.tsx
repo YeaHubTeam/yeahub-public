@@ -1,9 +1,7 @@
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
-import { Indicator } from '@/shared/ui/Indicator';
 import { Text } from '@/shared/ui/Text';
 
-import { capitalizeFirstLetter } from '../capitalizeFirstLetter';
 import styles from './RecommendationsSection.module.css';
 
 interface RecommendationsSectionProps {
@@ -34,11 +32,15 @@ export const RecommendationsSection = ({ title, recommendations }: Recommendatio
 
 			<Flex componentType="ul" direction="column" gap="12" maxWidth>
 				{recommendations.map((recommendation, index) => (
-					<Flex key={`${recommendation}-${index}`} componentType="li" align="start" gap="12">
-						<Indicator variant="purple" className={styles.indicator} />
-
+					<Flex
+						key={`${recommendation}-${index}`}
+						componentType="li"
+						align="start"
+						gap="12"
+						className={styles.list}
+					>
 						<Text variant="body3-accent" color="black-500">
-							{capitalizeFirstLetter(recommendation)}
+							{recommendation}
 						</Text>
 					</Flex>
 				))}

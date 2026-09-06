@@ -8,16 +8,18 @@
 	flex-shrink: 0;
 }
 
-span.indicator {
-	margin-top: 8px;
-	margin-left: 0;
-	width: 4px;
-	height: 4px;
-	box-shadow: none;
-	border-radius: 6px;
-	background-color: var(--color-purple-700);
-}
-
 p.title {
 	line-height: 110%;
+}
+
+.list {
+	display: list-item;
+	margin-left: 16px;
+	list-style: disc;
+
+	&::marker {
+		width: 6px;
+		height: 6px;
+		color: var(--color-purple-700);
+	}
 }

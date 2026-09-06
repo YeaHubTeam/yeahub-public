@@ -1,9 +1,0 @@
-.icon {
-	flex-shrink: 0;
-	margin-top: 2px;
-}
-
-.icon path {
-	stroke: var(--color-white-900);
-	stroke-width: 1px;
-}

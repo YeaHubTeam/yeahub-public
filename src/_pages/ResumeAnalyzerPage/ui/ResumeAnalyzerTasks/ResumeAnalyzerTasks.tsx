@@ -9,8 +9,7 @@ import { Translation, Vacancies, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 
-import { MatchedTasksSection } from './MatchedTasksSection/MatchedTasksSection';
-import { MissingTasksSection } from './MissingTasksSection/MissingTasksSection';
+import { ComparisonList } from '../ComparisonList/ComparisonList';
 import { RecommendationsSection } from './RecommendationsSection/RecommendationsSection';
 import styles from './ResumeAnalyzerTasks.module.css';
 import { ResumeAnalyzerTasksHeader } from './ResumeAnalyzerTasksHeader/ResumeAnalyzerTasksHeader';
@@ -30,9 +29,9 @@ export const ResumeAnalyzerTasks = ({ tasks }: ResumeAnalyzerTasksProps) => {
 
 	const displayedCoveragePercent = Math.floor(tasks.coveragePercent);
 
-	const matchedTasks = tasks.matchedTasks.filter(({ matchType }) => matchType === 'full');
-
-	const visibleMatchedTasks = isExpanded ? matchedTasks : matchedTasks.slice(0, ITEMS_LIMIT);
+	const visibleMatchedTasks = isExpanded
+		? tasks.matchedTasks
+		: tasks.matchedTasks.slice(0, ITEMS_LIMIT);
 
 	const visibleMissingTasks = isExpanded
 		? tasks.missingTasks
@@ -43,7 +42,7 @@ export const ResumeAnalyzerTasks = ({ tasks }: ResumeAnalyzerTasksProps) => {
 		: tasks.recommendations.slice(0, ITEMS_LIMIT);
 
 	const shouldShowToggle =
-		matchedTasks.length > ITEMS_LIMIT ||
+		tasks.matchedTasks.length > ITEMS_LIMIT ||
 		tasks.missingTasks.length > ITEMS_LIMIT ||
 		tasks.recommendations.length > ITEMS_LIMIT;
 
@@ -63,21 +62,20 @@ export const ResumeAnalyzerTasks = ({ tasks }: ResumeAnalyzerTasksProps) => {
 			}
 		>
 			<Flex direction="column" align="start" gap="20">
-				<MatchedTasksSection
+				<ComparisonList
 					title={t(Vacancies.RESUME_ANALYZER_TASKS_MATCHED)}
-					tasks={visibleMatchedTasks}
+					variant="success"
+					items={visibleMatchedTasks}
 				/>
-
-				<MissingTasksSection
+				<ComparisonList
 					title={t(Vacancies.RESUME_ANALYZER_TASKS_MISSING)}
-					tasks={visibleMissingTasks}
+					variant="error"
+					items={visibleMissingTasks}
 				/>
-
 				<RecommendationsSection
 					title={t(Vacancies.RESUME_ANALYZER_TASKS_RECOMMENDATIONS)}
 					recommendations={visibleRecommendations}
 				/>
-
 				{shouldShowToggle && (
 					<ResumeAnalyzerTasksToggle
 						isExpanded={isExpanded}

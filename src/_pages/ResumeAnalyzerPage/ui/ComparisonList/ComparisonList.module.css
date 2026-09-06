@@ -1,0 +1,17 @@
+.icon {
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.icon-success path {
+	stroke: var(--color-white-900);
+	stroke-width: 1px;
+}
+
+.icon-error circle {
+	fill: var(--color-red-100);
+}
+
+.icon-error path {
+	stroke-width: 1px;
+}
