@@ -1,21 +1,20 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 
+import { Translation, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 
-import styles from './ResumeAnalyzerTasksToggle.module.css';
+import styles from './ShowToggleButton.module.css';
 
-interface ResumeAnalyzerTasksToggleProps {
+interface ShowToggleButtonProps {
 	isExpanded: boolean;
-	label: string;
 	onToggle: () => void;
 }
 
-export const ResumeAnalyzerTasksToggle = ({
-	isExpanded,
-	label,
-	onToggle,
-}: ResumeAnalyzerTasksToggleProps) => {
+export const ShowToggleButton = ({ isExpanded, onToggle }: ShowToggleButtonProps) => {
+	const t = useTranslations(i18Namespace.translation);
+
 	return (
 		<Button
 			variant="link"
@@ -34,7 +33,7 @@ export const ResumeAnalyzerTasksToggle = ({
 				/>
 			}
 		>
-			{label}
+			{isExpanded ? t(Translation.HIDE) : t(Translation.SHOW_ALL)}
 		</Button>
 	);
 };
