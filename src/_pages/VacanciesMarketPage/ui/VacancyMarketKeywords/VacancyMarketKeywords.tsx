@@ -1,5 +1,5 @@
 import { VacancyKeywordsList } from '@/entities/vacancy';
-import type { VacancyMarketTopItem } from '@/entities/vacancyMarket';
+import type { VacancyMarketTopItem } from '@/entities/vacancy';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 

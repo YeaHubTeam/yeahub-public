@@ -68,6 +68,7 @@ export type IconName =
 	| 'settings'
 	| 'sealCheck'
 	| 'sealCheckOutlined'
+	| 'uploadFile'
 	| 'userCheckWithBackground'
 	| 'userSwitch'
 	| 'trendUp'

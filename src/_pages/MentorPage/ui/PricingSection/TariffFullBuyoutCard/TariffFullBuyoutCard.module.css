@@ -1,0 +1,83 @@
+.card {
+	display: flex;
+	flex-basis: 66%;
+	gap: 24px;
+	padding: 20px;
+	height: 324px;
+	border-radius: 20px;
+}
+
+.inverted {
+	background: linear-gradient(180deg, #392d7e -1.02%, #8e79ff 16.39%, #e7e6ff 45.94%, #fff 94.66%);
+}
+
+.row {
+	display: flex;
+	gap: 34px;
+	height: 100%;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 0;
+}
+
+h2.title {
+	margin-top: 20px;
+	font-weight: 700;
+	font-size: var(--font-size-h-xl);
+}
+
+.button {
+	margin-top: 20px;
+	padding: 0;
+	font-weight: 500;
+	font-size: 18px;
+}
+
+.banner {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 24px;
+	border-radius: 16px;
+	background-image: url('../../../../../shared/assets/images/backgroundBannerMentor.png');
+	background-size: cover;
+	text-align: center;
+}
+
+@media screen and (width < 1280px) {
+	.card {
+		flex-basis: 100%;
+	}
+	
+	.title {
+		margin-top: 30px;
+	}
+
+	.button {
+		margin-top: 20px;
+	}
+}
+
+ @media screen and  (width < 768px) {
+	 .row {
+		 flex-direction: column;
+		 gap: 10px;
+	 }
+	 
+	 .card {
+		 flex-direction: column;
+		 padding: 10px;
+		 width: calc(50% - 10px);
+		 height: auto;
+	 }
+
+	 .banner {
+		 min-height: 284px;
+	 }
+ } 

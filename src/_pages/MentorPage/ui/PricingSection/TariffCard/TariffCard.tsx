@@ -11,10 +11,11 @@ import styles from './TariffCard.module.css';
 export interface RateCardProps {
 	label: string;
 	price: string;
-	note: string;
-	details: string;
+	note?: string;
+	details?: string;
 	features: string[];
 	buttonText: string;
+	isCompact?: boolean;
 	isInverted: boolean;
 	link: string;
 }
@@ -26,21 +27,32 @@ export const TariffCard = ({
 	details,
 	features,
 	buttonText,
+	isCompact,
 	isInverted,
 	link,
 }: RateCardProps) => {
 	return (
-		<Card className={classNames(styles.card, { [styles.inverted]: isInverted })} withOutsideShadow>
+		<Card
+			className={classNames(styles.card, {
+				[styles.inverted]: isInverted,
+				[styles.compact]: isCompact,
+			})}
+			withOutsideShadow
+		>
 			<TariffCardBadge label={label} isInverted={isInverted} />
 			<Text variant="head2" className={styles.title}>
 				{price}
 			</Text>
-			<Text variant="body3-strong" className={styles.note}>
-				{note}
-			</Text>
-			<Text variant="body3-accent" className={styles.details}>
-				{details}
-			</Text>
+			{note && (
+				<Text variant="body3-strong" className={styles.note}>
+					{note}
+				</Text>
+			)}
+			{details && (
+				<Text variant="body3-accent" className={styles.details}>
+					{details}
+				</Text>
+			)}
 			<TariffCardAdvantages advantages={features} isInverted={isInverted} />
 			<Button
 				variant="primary"

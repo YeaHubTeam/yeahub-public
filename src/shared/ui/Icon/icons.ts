@@ -86,6 +86,7 @@ import TikTok from '@/shared/assets/icons/tiktok.svg';
 import Trash from '@/shared/assets/icons/trash.svg';
 import TrendUp from '@/shared/assets/icons/trendUp.svg';
 import Twitter from '@/shared/assets/icons/twitter.svg';
+import UploadFile from '@/shared/assets/icons/uploadFile.svg';
 import User from '@/shared/assets/icons/user.svg';
 import UserCheckWithBackground from '@/shared/assets/icons/userCheckWithBackground.svg';
 import UserSwitch from '@/shared/assets/icons/userSwitch.svg';
@@ -195,6 +196,7 @@ export const icons: Record<IconName, IconComponent> = {
 	list: ListMagnifyingGlass,
 	cursor: Cursor,
 	refferals: Referrals,
+	uploadFile: UploadFile,
 	errorCircle: ErrorCircle,
 	lightBulb: LightBulb,
 	successCircle: SuccessCircle,
