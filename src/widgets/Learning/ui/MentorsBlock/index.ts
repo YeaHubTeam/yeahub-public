@@ -1,1 +1,1 @@
-export { MentorsBlock } from './ui/MentorsBlock/MentorsBlock';
+export { MentorsBlock } from './MentorsBlock/MentorsBlock';

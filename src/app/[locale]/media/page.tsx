@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { socialMediaLinks } from '@/entities/socialMedia';
 import { MediaPage as MediaPageComponent } from '@/pages/MediaPage';
 import { Media, i18Namespace } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 
 interface PageProps {
 	params: Promise<{ locale: string }>;

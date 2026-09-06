@@ -1,6 +1,6 @@
 'use client';
 
-import { useHhFilters } from '../../hooks/useHhFilters';
+import { useHhFilters } from '../../lib/hooks/useHhFilters';
 import { HhAnalyticsFilters } from '../HhAnalyticsFilters/HhAnalyticsFilters';
 
 interface HhAnalyticsFiltersWrapperProps {

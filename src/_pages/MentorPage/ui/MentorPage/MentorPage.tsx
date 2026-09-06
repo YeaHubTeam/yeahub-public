@@ -1,17 +1,17 @@
 import { Flex } from '@/shared/ui/Flex';
-import { AboutSection } from '@/widgets/Mentor/AboutSection';
-import { BannerSection } from '@/widgets/Mentor/BannerSection';
-import { CommunitySection } from '@/widgets/Mentor/CommunitySection';
-import { EducationSection } from '@/widgets/Mentor/EducationSection';
-import { FaqSection } from '@/widgets/Mentor/FaqSection';
-import { FeaturesSection } from '@/widgets/Mentor/FeaturesSection';
-import { FullPathSection } from '@/widgets/Mentor/FullPathSection';
-import { InternshipSection } from '@/widgets/Mentor/InternshipSection';
-import { PricingSection } from '@/widgets/Mentor/PricingSection';
-import { StackSection } from '@/widgets/Mentor/StackSection';
-import { StrategySection } from '@/widgets/Mentor/StrategySection';
-import { TagsCloud } from '@/widgets/Mentor/TagsCloud';
 
+import { AboutSection } from '../AboutSection';
+import { BannerSection } from '../BannerSection';
+import { CommunitySection } from '../CommunitySection';
+import { EducationSection } from '../EducationSection';
+import { FaqSection } from '../FaqSection';
+import { FeaturesSection } from '../FeaturesSection';
+import { FullPathSection } from '../FullPathSection';
+import { InternshipSection } from '../InternshipSection';
+import { PricingSection } from '../PricingSection';
+import { StackSection } from '../StackSection';
+import { StrategySection } from '../StrategySection';
+import { TagsCloud } from '../TagsCloud';
 import styles from './MentorPage.module.css';
 
 interface MentorPageProps {

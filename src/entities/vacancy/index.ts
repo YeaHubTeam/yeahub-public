@@ -1,5 +1,6 @@
 export { getVacancies } from './api/getVacancies';
 export { getVacancyById } from './api/getVacancyById';
+export { getVacanciesMarketOverview } from './api/getVacanciesMarketOverview';
 
 export type {
 	GetVacanciesListResponse,
@@ -9,6 +10,12 @@ export type {
 	VacancyAiProfile,
 	VacancyPreparation,
 } from './model/types/vacancy';
+export type {
+	GetVacanciesMarketOverviewResponse,
+	VacancyMarketSpecialization,
+	VacancyMarketTopItem,
+} from './model/types/vacancyMarket';
+
 export { VacancyCard } from './ui/VacancyCard/VacancyCard';
 export { VacancyCardSkeleton } from './ui/VacancyCard/VacancyCard.skeleton';
 
@@ -36,3 +43,8 @@ export { ChooseEmploymentTypeSkeleton } from '@/entities/vacancy/ui/ChooseEmploy
 
 export { ChooseEnglishLevel } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel';
 export { ChooseEnglishLevelSkeleton } from '@/entities/vacancy/ui/ChooseEnglishLevel/ChooseEnglishLevel.skeleton';
+export { VacancyKeywordsList } from './ui/VacancyKeywordsList/VacancyKeywordsList';
+
+export { resumeAnalysis } from '@/entities/vacancy/model/constants/resumeAnalysis';
+export type { ResumeAnalysis, EvidenceItem } from '@/entities/vacancy/model/types/resumeAnalysis';
+export { mapResumeAnalysis } from './libs/mapResumeAnalysis';
