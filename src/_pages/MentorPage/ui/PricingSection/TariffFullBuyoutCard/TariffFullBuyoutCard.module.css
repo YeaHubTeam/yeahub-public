@@ -1,4 +1,4 @@
-.card {
+div.card {
 	display: flex;
 	flex-basis: 66%;
 	gap: 24px;
@@ -51,7 +51,7 @@ h2.title {
 }
 
 @media screen and (width < 1280px) {
-	.card {
+	div.card {
 		flex-basis: 100%;
 	}
 	
@@ -70,7 +70,7 @@ h2.title {
 		 gap: 10px;
 	 }
 	 
-	 .card {
+	 div.card {
 		 flex-direction: column;
 		 padding: 10px;
 		 width: calc(50% - 10px);

@@ -19,17 +19,24 @@ export type Keywords = {
 	recommendations: string[];
 };
 
-export type MatchedTasks = {
+export type MatchedTasksExternal = {
 	title: string;
 	matchType: 'full' | 'none';
 	evidence: string;
 	score: number;
 };
 
-export type Tasks = {
-	matchedTasks: MatchedTasks[];
+export type TasksExternal = {
+	matchedTasks: MatchedTasksExternal[];
 	recommendations: string[];
 	missingTasks: string[];
+	coveragePercent: number;
+};
+
+export type Tasks = {
+	matchedTasks: EvidenceItem[];
+	recommendations: string[];
+	missingTasks: EvidenceItem[];
 	coveragePercent: number;
 };
 
@@ -43,7 +50,7 @@ export type CommentItem = {
 	comment: string;
 };
 
-export type Profile = {
+export type ProfileExternal = {
 	hasProjectScope: boolean;
 	projectScopeSignals: string[];
 	missingProjectElements: string[];
@@ -65,12 +72,39 @@ export type Profile = {
 	profileQualityScore: number;
 };
 
+export type Profile = Omit<
+	ProfileExternal,
+	| 'projectScopeSignals'
+	| 'missingProjectElements'
+	| 'presentSections'
+	| 'missingSections'
+	| 'quantifiedAchievements'
+	| 'unquantifiedAchievements'
+> & {
+	projectScopeSignals: EvidenceItem[];
+	missingProjectElements: EvidenceItem[];
+	presentSections: EvidenceItem[];
+	missingSections: EvidenceItem[];
+	quantifiedAchievements: EvidenceItem[];
+	unquantifiedAchievements: EvidenceItem[];
+};
+
 export type Skills = {
 	matchedSkills: PercentItem[];
 	missingSkills: PercentItem[];
 	coveragePercent: number;
 	totalMatched: number;
 	totalSkills: number;
+};
+
+export type ResumeAnalysisExternal = {
+	overall: Overall;
+	keywords: Keywords;
+	tasks: TasksExternal;
+	profile: ProfileExternal;
+	skills: Skills;
+	analyzedVacancyCount: number;
+	skillsVacancyCount: number;
 };
 
 export type ResumeAnalysis = {

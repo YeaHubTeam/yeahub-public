@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 
-import { resumeAnalysis } from '@/entities/vacancy';
+import { mapResumeAnalysis, resumeAnalysis } from '@/entities/vacancy';
 import { ResumeAnalyzerPage } from '@/pages/ResumeAnalyzerPage';
 
 interface ResumeAnalyzerRouteProps {
@@ -14,7 +14,7 @@ const ResumeAnalyzerRoute = async ({ params }: ResumeAnalyzerRouteProps) => {
 
 	setRequestLocale(locale);
 
-	return <ResumeAnalyzerPage data={resumeAnalysis} />;
+	return <ResumeAnalyzerPage data={mapResumeAnalysis(resumeAnalysis)} />;
 };
 
 export default ResumeAnalyzerRoute;

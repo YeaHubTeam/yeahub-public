@@ -6,24 +6,29 @@ import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
 import { ResumeAnalyzerRecommendations } from './ResumeAnalyzerRecommendations/ResumeAnalyzerRecommendations';
+import styles from './ResumeAnalyzerPage.module.css';
+import { ResumeAnalyzerTasks } from './ResumeAnalyzerTasks/ResumeAnalyzerTasks';
 
 interface ResumeAnalyzerPageProps {
 	data: ResumeAnalysis;
 }
 
 export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
-	console.log(data);
-
 	return (
 		<>
 			<Flex>
 				<BackButton />
 			</Flex>
+
 			<Flex componentType="section" direction="column" gap="20">
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
 				<ResumeAnalyzerGeneralInfo data={data} />
 				<ResumeAnalyzerRecommendations recommendations={data.profile.recommendations} />
+
+				<div className={styles.grid}>
+					<ResumeAnalyzerTasks tasks={data.tasks} />
+				</div>
 			</Flex>
 		</>
 	);

@@ -1,6 +1,6 @@
-import type { ResumeAnalysis } from '../types/resumeAnalysis';
+import type { ResumeAnalysisExternal } from '../types/resumeAnalysis';
 
-export const resumeAnalysis: ResumeAnalysis = {
+export const resumeAnalysis: ResumeAnalysisExternal = {
 	overall: {
 		score: 65,
 		label: 'good',
