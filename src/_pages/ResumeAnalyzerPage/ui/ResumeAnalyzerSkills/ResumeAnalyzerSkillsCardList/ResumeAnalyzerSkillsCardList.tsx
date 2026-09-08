@@ -7,9 +7,11 @@ import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { ProgressBar, ProgressBarColor } from '@/shared/ui/ProgressBar';
+import { ShowToggleButton } from '@/shared/ui/ShowToggleButton';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './ResumeAlyzerSkillsCardList.module.css';
+import { ResumeAnalyzerSkillsCardListItem } from './ResumeAnalyzerSkillsCardListItem/ResumeAnalyzerSkillsCardListItem';
 
 type ResumeAnalyzerSkillsCardListProps = {
 	skills: ResumeAnalysis['skills']['matchedSkills'];
@@ -30,32 +32,21 @@ export const ResumeAnalyzerSkillsCardList = ({
 			<Text variant="body3-accent">{title}</Text>
 			<>
 				{visibleSkills.map((skill, index) => (
-					<Flex key={`${skill.title}-${index}`} gap="4" direction="column">
-						<Flex justify="between" align="center" gap="8">
-							<Text variant="body3-accent">{skill.title}</Text>
-							<Text variant="body3-accent">{Math.ceil(skill.percent)}%</Text>
-						</Flex>
-						<ProgressBar
-							className={styles.progress}
-							currentCount={skill.percent}
-							totalCount={100}
-							variant="medium"
-							color={color}
-						/>
-					</Flex>
+					<ResumeAnalyzerSkillsCardListItem
+						key={`${skill.title}-${index}`}
+						color={color}
+						skill={skill}
+					/>
 				))}
 			</>
-			{skills.length > defaultAmountToShow ? (
-				<Button
-					variant="link"
-					size="medium"
-					suffix={<Icon icon="arrowShortDown" size={24} color="purple-700" aria-hidden />}
-					className={styles.link}
-					onClick={() => setIsExpanded((value) => !value)}
-				>
-					Показать все
-				</Button>
-			) : null}
+			{skills.length > defaultAmountToShow && (
+				<Flex align="start">
+					<ShowToggleButton
+						isExpanded={isExpanded}
+						onToggle={() => setIsExpanded((prev) => !prev)}
+					/>
+				</Flex>
+			)}
 		</Flex>
 	);
 };

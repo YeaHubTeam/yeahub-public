@@ -48,11 +48,18 @@
 			"description": "Насколько ваше резюме соответствует с требованиями рынка",
 			"result": "Ваше резюме соответствует {percent}% требований рынка"
 		},
+
 		"skills_coverage": {
 			"title": "Навыки",
 			"matched_overall": "{matched}/{total} совпало",
 			"matched": "Есть в резюме ({matched})",
 			"missing": "Не хватает ({missing})"
+		},
+		"tasks": {
+			"coverage": "{percent}% покрытие",
+			"matched": "Найденные задачи",
+			"missing": "Пропущенные задачи",
+			"recommendations": "Рекомендации"
 		}
 	},
 	"count": {

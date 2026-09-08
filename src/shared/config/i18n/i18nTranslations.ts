@@ -903,4 +903,8 @@ export enum Vacancies {
 	RESUME_ANALYZER_SKILLS_COVERAGE_MATCHED_OVERALL = 'resume_analyzer_page.skills_coverage.matched_overall',
 	RESUME_ANALYZER_SKILLS_COVERAGE_MATCHED = 'resume_analyzer_page.skills_coverage.matched',
 	RESUME_ANALYZER_SKILLS_COVERAGE_MISSING = 'resume_analyzer_page.skills_coverage.missing',
+	RESUME_ANALYZER_TASKS_COVERAGE = 'resume_analyzer_page.tasks.coverage',
+	RESUME_ANALYZER_TASKS_MATCHED = 'resume_analyzer_page.tasks.matched',
+	RESUME_ANALYZER_TASKS_MISSING = 'resume_analyzer_page.tasks.missing',
+	RESUME_ANALYZER_TASKS_RECOMMENDATIONS = 'resume_analyzer_page.tasks.recommendations',
 }
