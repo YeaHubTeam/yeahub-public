@@ -3,14 +3,11 @@
 import { useState } from 'react';
 
 import type { ResumeAnalysis } from '@/entities/vacancy';
-import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
-import { Icon } from '@/shared/ui/Icon';
-import { ProgressBar, ProgressBarColor } from '@/shared/ui/ProgressBar';
+import { ProgressBarColor } from '@/shared/ui/ProgressBar';
 import { ShowToggleButton } from '@/shared/ui/ShowToggleButton';
 import { Text } from '@/shared/ui/Text';
 
-import styles from './ResumeAlyzerSkillsCardList.module.css';
 import { ResumeAnalyzerSkillsCardListItem } from './ResumeAnalyzerSkillsCardListItem/ResumeAnalyzerSkillsCardListItem';
 
 type ResumeAnalyzerSkillsCardListProps = {
