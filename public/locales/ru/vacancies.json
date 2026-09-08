@@ -53,6 +53,15 @@
 			"matched": "Найденные задачи",
 			"missing": "Пропущенные задачи",
 			"recommendations": "Рекомендации"
+		},
+		"keywords": {
+			"groups": {
+				"matched": "Найденные ({count})",
+				"missing": "Пропущенные ({count})",
+				"optional": "Дополнительные ({count})",
+				"critical": "Критичные ({count})"
+			},
+			"coverage": "{matched}/{total} совпало"
 		}
 	},
 	"count": {

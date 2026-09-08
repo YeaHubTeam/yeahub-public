@@ -903,4 +903,10 @@ export enum Vacancies {
 	RESUME_ANALYZER_TASKS_MATCHED = 'resume_analyzer_page.tasks.matched',
 	RESUME_ANALYZER_TASKS_MISSING = 'resume_analyzer_page.tasks.missing',
 	RESUME_ANALYZER_TASKS_RECOMMENDATIONS = 'resume_analyzer_page.tasks.recommendations',
+	RESUME_ANALYZER_KEYWORDS_MISSING = 'resume_analyzer_page.keywords.',
+	RESUME_ANALYZER_KEYWORDS_GROUP_MATCHED = 'resume_analyzer_page.keywords.groups.matched',
+	RESUME_ANALYZER_KEYWORDS_GROUP_MISSING = 'resume_analyzer_page.keywords.groups.missing',
+	RESUME_ANALYZER_KEYWORDS_GROUP_OPTIONAL = 'resume_analyzer_page.keywords.groups.optional',
+	RESUME_ANALYZER_KEYWORDS_GROUP_CRITICAL = 'resume_analyzer_page.keywords.groups.critical',
+	RESUME_ANALYZER_KEYWORDS_COVERAGE = 'resume_analyzer_page.keywords.coverage',
 }

@@ -6,9 +6,23 @@
 	width: 100%;
 }
 
+.grid-two-columns {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
+	gap: 20px;
+	width: 100%;
+}
+
 @media screen and (width < 1280px) {
 	.grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media screen and (width < 1024px) {
+	.grid-two-columns {
+		grid-template-columns: 1fr;
 	}
 }
 

@@ -5,6 +5,7 @@ import { Flex } from '@/shared/ui/Flex';
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
+import { ResumeAnalyzerKeywords } from './ResumeAnalyzerKeywords/ResumeAnalyzerKeywords';
 import styles from './ResumeAnalyzerPage.module.css';
 import { ResumeAnalyzerTasks } from './ResumeAnalyzerTasks/ResumeAnalyzerTasks';
 
@@ -22,7 +23,9 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
 				<ResumeAnalyzerGeneralInfo data={data} />
-
+				<div className={styles['grid-two-columns']}>
+					<ResumeAnalyzerKeywords keywords={data.keywords} />
+				</div>
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />
 				</div>

@@ -1,0 +1,21 @@
+.keyword-group.keyword {
+	padding: 6px 12px;
+	min-width: 0;
+	border: none;
+	color: var(--color-black-800);
+}
+
+.keyword-group.keyword.purple {
+	background-color: var(--color-purple-100, #f0e7ff);
+}
+
+.keyword-group.keyword.red,
+.keyword-group.keyword.critical {
+	--keyword-color-red: #ffecf5;
+
+	background-color: var(--keyword-color-red);
+}
+
+.keyword-group.keyword.critical > p {
+	color: var(--color-red-700, #d50b3e);
+}
