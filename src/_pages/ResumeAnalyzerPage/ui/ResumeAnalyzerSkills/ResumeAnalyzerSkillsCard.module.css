@@ -1,11 +1,5 @@
 .card {
-	width: 550px;
-}
-
-.flex {
-	display: flex;
-	justify-content: space-between;
-	gap: 20px;
+	width: 50%;
 }
 
 @media (width < 1280px) {

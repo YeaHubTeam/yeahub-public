@@ -2,51 +2,50 @@
 
 import { useState } from 'react';
 
-import type { PercentItem } from '@/entities/vacancy';
+import type { ResumeAnalysis } from '@/entities/vacancy';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
-import { ProgressBar } from '@/shared/ui/ProgressBar';
+import { ProgressBar, ProgressBarColor } from '@/shared/ui/ProgressBar';
 import { Text } from '@/shared/ui/Text';
 
 import styles from './ResumeAlyzerSkillsCardList.module.css';
 
 type ResumeAnalyzerSkillsCardListProps = {
-	keywords: PercentItem[];
-	color: 'purple' | 'red';
+	skills: ResumeAnalysis['skills']['matchedSkills'];
+	color: ProgressBarColor;
 	title: string;
 };
 
 export const ResumeAnalyzerSkillsCardList = ({
-	keywords,
+	skills,
 	color,
 	title,
 }: ResumeAnalyzerSkillsCardListProps) => {
 	const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
+	const defaultAmountToShow = 8;
+	const visibleSkills = isExpanded ? skills : skills.slice(0, defaultAmountToShow);
 	return (
 		<Flex direction="column" gap="12" maxWidth>
-			<Text variant="body3-accent">{`${title} (${keywords.length})`}</Text>
+			<Text variant="body3-accent">{title}</Text>
 			<>
-				{keywords.length !== 0
-					? keywords.slice(0, isExpanded ? keywords.length : 8).map((keyword, index) => (
-							<div key={`${keyword.title}-${index}`} className={styles.skill}>
-								<Flex justify="between" align="center" gap="8">
-									<Text variant="body3-accent">{keyword.title}</Text>
-									<Text variant="body3-accent">{Math.ceil(keyword.percent)}%</Text>
-								</Flex>
-								<ProgressBar
-									className={styles.progress}
-									currentCount={keyword.percent}
-									totalCount={100}
-									variant="medium"
-									color={color}
-								/>
-							</div>
-						))
-					: null}
+				{visibleSkills.map((skill, index) => (
+					<Flex key={`${skill.title}-${index}`} gap="4" direction="column">
+						<Flex justify="between" align="center" gap="8">
+							<Text variant="body3-accent">{skill.title}</Text>
+							<Text variant="body3-accent">{Math.ceil(skill.percent)}%</Text>
+						</Flex>
+						<ProgressBar
+							className={styles.progress}
+							currentCount={skill.percent}
+							totalCount={100}
+							variant="medium"
+							color={color}
+						/>
+					</Flex>
+				))}
 			</>
-			{keywords.length > 8 ? (
+			{skills.length > defaultAmountToShow ? (
 				<Button
 					variant="link"
 					size="medium"

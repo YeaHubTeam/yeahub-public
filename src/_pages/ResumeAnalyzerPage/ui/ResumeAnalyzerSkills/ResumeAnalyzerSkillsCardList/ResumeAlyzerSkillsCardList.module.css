@@ -11,13 +11,6 @@
 	border-radius: 21px;
 }
 
-.skill {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	margin: 0;
-}
-
 .link {
 	align-self: start;
 	font-size: 16px;

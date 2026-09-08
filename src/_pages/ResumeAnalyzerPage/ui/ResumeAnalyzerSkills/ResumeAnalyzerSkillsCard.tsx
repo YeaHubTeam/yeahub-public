@@ -1,6 +1,8 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 
-import { resumeAnalysis } from '@/entities/vacancy';
+import type { ResumeAnalysis } from '@/entities/vacancy';
+import { Vacancies, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 
@@ -8,27 +10,43 @@ import styles from './ResumeAnalyzerSkillsCard.module.css';
 import { ResumeAnalyzerSkillsCardHeader } from './ResumeAnalyzerSkillsCardHeader/ResumeAnalyzerSkillsCardHeader';
 import { ResumeAnalyzerSkillsCardList } from './ResumeAnalyzerSkillsCardList/ResumeAnalyzerSkillsCardList';
 
-export const ResumeAnalyzerSkillsCard = () => {
+interface ResumeAnalyzerSkillsCardProps {
+	data: ResumeAnalysis;
+}
+
+export const ResumeAnalyzerSkillsCard = ({ data }: ResumeAnalyzerSkillsCardProps) => {
+	const t = useTranslations(i18Namespace.vacancies);
+
 	return (
 		<Card className={classNames(styles.card)} withOutsideShadow>
 			<Flex direction="column" gap="10">
 				<ResumeAnalyzerSkillsCardHeader
-					totalMatched={resumeAnalysis.keywords.totalMatched}
-					totalKeywords={resumeAnalysis.keywords.totalVacancyKeywords}
-					title={'Навыки'}
+					title={t(Vacancies.RESUME_ANALYZER_SKILLS_COVERAGE_TITLE)}
+					text={t(Vacancies.RESUME_ANALYZER_SKILLS_COVERAGE_MATCHED_OVERALL, {
+						matched: data.skills.totalMatched,
+						total: data.skills.totalSkills,
+					})}
 				/>
-				<div className={styles.flex}>
-					<ResumeAnalyzerSkillsCardList
-						keywords={resumeAnalysis.keywords.matchedKeywords}
-						color={'purple'}
-						title={'Есть в резюме'}
-					/>
-					<ResumeAnalyzerSkillsCardList
-						keywords={resumeAnalysis.keywords.missingKeywords}
-						color={'red'}
-						title={'Не хватает'}
-					/>
-				</div>
+				<Flex className={styles.flex} justify="between" gap="20">
+					{data.skills.matchedSkills.length > 0 && (
+						<ResumeAnalyzerSkillsCardList
+							skills={data.skills.matchedSkills}
+							color="purple"
+							title={t(Vacancies.RESUME_ANALYZER_SKILLS_COVERAGE_MATCHED, {
+								matched: data.skills.matchedSkills.length,
+							})}
+						/>
+					)}
+					{data.skills.missingSkills.length > 0 && (
+						<ResumeAnalyzerSkillsCardList
+							skills={data.skills.missingSkills}
+							color="red"
+							title={t(Vacancies.RESUME_ANALYZER_SKILLS_COVERAGE_MISSING, {
+								missing: data.skills.missingSkills.length,
+							})}
+						/>
+					)}
+				</Flex>
 			</Flex>
 		</Card>
 	);
