@@ -22,27 +22,26 @@ export const ResumeAnalyzerSkillsCardList = ({
 	title,
 }: ResumeAnalyzerSkillsCardListProps) => {
 	const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
 	const defaultAmountToShow = 8;
 	const visibleSkills = isExpanded ? skills : skills.slice(0, defaultAmountToShow);
+
 	return (
-		<Flex direction="column" gap="12" maxWidth>
-			<Text variant="body3-accent">{title}</Text>
-			<>
-				{visibleSkills.map((skill, index) => (
-					<ResumeAnalyzerSkillsCardListItem
-						key={`${skill.title}-${index}`}
-						color={color}
-						skill={skill}
-					/>
-				))}
-			</>
-			{skills.length > defaultAmountToShow && (
-				<Flex align="start">
-					<ShowToggleButton
-						isExpanded={isExpanded}
-						onToggle={() => setIsExpanded((prev) => !prev)}
-					/>
+		<Flex direction="column" gap="20" maxWidth align="start">
+			<Flex direction="column" gap="12" maxWidth>
+				<Text variant="body3-accent">{title}</Text>
+				<Flex direction="column" gap="12">
+					{visibleSkills.map((skill, index) => (
+						<ResumeAnalyzerSkillsCardListItem
+							key={`${skill.title}-${index}`}
+							color={color}
+							skill={skill}
+						/>
+					))}
 				</Flex>
+			</Flex>
+			{skills.length > defaultAmountToShow && (
+				<ShowToggleButton isExpanded={isExpanded} onToggle={() => setIsExpanded((prev) => !prev)} />
 			)}
 		</Flex>
 	);

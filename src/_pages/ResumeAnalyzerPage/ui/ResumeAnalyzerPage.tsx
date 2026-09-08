@@ -23,7 +23,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
 				<ResumeAnalyzerGeneralInfo data={data} />
-				<ResumeAnalyzerSkillsCard data={data} />
+				<ResumeAnalyzerSkillsCard skills={data.skills} />
 
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />

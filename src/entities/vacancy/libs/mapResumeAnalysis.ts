@@ -5,6 +5,17 @@ import { ResumeAnalysis, ResumeAnalysisExternal } from '../model/types/resumeAna
 export const mapResumeAnalysis = (resumeAnalysis: ResumeAnalysisExternal): ResumeAnalysis => {
 	return {
 		...resumeAnalysis,
+		skills: {
+			...resumeAnalysis.skills,
+			matchedSkills: resumeAnalysis.skills.matchedSkills.map((skill) => ({
+				...skill,
+				title: capitalizeFirstLetter(skill.title),
+			})),
+			missingSkills: resumeAnalysis.skills.missingSkills.map((skill) => ({
+				...skill,
+				title: capitalizeFirstLetter(skill.title),
+			})),
+		},
 		tasks: {
 			...resumeAnalysis.tasks,
 			matchedTasks: resumeAnalysis.tasks.matchedTasks

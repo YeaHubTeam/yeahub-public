@@ -3,6 +3,11 @@ export type Overall = {
 	label: string;
 };
 
+export type PercentItem = {
+	title: string;
+	percent: number;
+};
+
 export type Keywords = {
 	coveragePercent: number;
 	matchedKeywords: PercentItem[];
