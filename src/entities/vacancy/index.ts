@@ -46,5 +46,11 @@ export { ChooseEnglishLevelSkeleton } from '@/entities/vacancy/ui/ChooseEnglishL
 export { VacancyKeywordsList } from './ui/VacancyKeywordsList/VacancyKeywordsList';
 
 export { resumeAnalysis } from '@/entities/vacancy/model/constants/resumeAnalysis';
-export type { ResumeAnalysis, EvidenceItem } from '@/entities/vacancy/model/types/resumeAnalysis';
+export type {
+	ResumeAnalysis,
+	EvidenceItem,
+	PercentItem,
+	Keywords,
+} from '@/entities/vacancy/model/types/resumeAnalysis';
+
 export { mapResumeAnalysis } from './libs/mapResumeAnalysis';

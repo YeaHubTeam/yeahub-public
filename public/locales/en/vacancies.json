@@ -8,6 +8,17 @@
 			"to": "to"
 		}
 	},
+	"resume_analyzer_page": {
+		"keywords": {
+			"groups": {
+				"matched": "Matched ({count})",
+				"missing": "Missing ({count})",
+				"optional": "Optional ({count})",
+				"critical": "Critical ({count})"
+			},
+			"coverage": "{matched}/{total} matched"
+		}
+	},
 	"count": {
 		"skills": "+{count, plural, one {# skill} other {# skills}}",
 		"collections": "{count, plural, one {# interview} other {# interviews}}",
