@@ -6,6 +6,7 @@ import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
 import styles from './ResumeAnalyzerPage.module.css';
+import { ResumeAnalyzerSkillsCard } from './ResumeAnalyzerSkills/ResumeAnalyzerSkillsCard';
 import { ResumeAnalyzerTasks } from './ResumeAnalyzerTasks/ResumeAnalyzerTasks';
 
 interface ResumeAnalyzerPageProps {
@@ -22,6 +23,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 				<ResumeAnalyzerHeader />
 				<ResumeAnalyzerBadge />
 				<ResumeAnalyzerGeneralInfo data={data} />
+				<ResumeAnalyzerSkillsCard skills={data.skills} />
 
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />
