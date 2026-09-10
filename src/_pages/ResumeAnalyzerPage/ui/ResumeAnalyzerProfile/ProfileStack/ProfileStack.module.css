@@ -9,6 +9,25 @@
 	min-width: 0;
 }
 
+.icon {
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.icon-success path {
+	stroke: var(--color-white-900);
+	stroke-width: 1px;
+}
+
+.icon-error circle {
+	fill: var(--color-red-100);
+}
+
+.icon-error path {
+	stroke: var(--color-red-800);
+	stroke-width: 1px;
+}
+
 @media screen and (width < 768px) {
 	.card {
 		padding: 20px 10px;

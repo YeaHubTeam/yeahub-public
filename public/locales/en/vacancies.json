@@ -87,7 +87,8 @@
 			"title": "Tech stack in work experience",
 			"subtitle": "Tech stack is specified",
 			"description": "The work experience includes the main technologies, tools, and libraries used in projects",
-			"matched": "Key technologies are present in the experience"
+			"matched": "Key technologies are present in the experience",
+			"missing": "It is recommended to add the technology stack to the project descriptions"
 		},
 
 		"context": {

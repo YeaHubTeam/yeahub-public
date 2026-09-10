@@ -47,7 +47,9 @@ export const ProfileStack = ({ profile }: ProfileStackProps) => {
 					/>
 
 					<Text variant="body3-accent" color="black-900">
-						{t(Vacancies.RESUME_ANALYZER_PROFILE_STACK_MATCHED)}
+						{isStackMatched
+							? t(Vacancies.RESUME_ANALYZER_PROFILE_STACK_MATCHED)
+							: t(Vacancies.RESUME_ANALYZER_PROFILE_STACK_MISSING)}
 					</Text>
 				</Flex>
 			</Flex>

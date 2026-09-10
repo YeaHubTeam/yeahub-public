@@ -909,6 +909,7 @@ export enum Vacancies {
 	RESUME_ANALYZER_PROFILE_STACK_SUBTITLE = 'resume_analyzer_page.profile.stack.subtitle',
 	RESUME_ANALYZER_PROFILE_STACK_DESCRIPTION = 'resume_analyzer_page.profile.stack.description',
 	RESUME_ANALYZER_PROFILE_STACK_MATCHED = 'resume_analyzer_page.profile.stack.matched',
+	RESUME_ANALYZER_PROFILE_STACK_MISSING = 'resume_analyzer_page.profile.stack.missing',
 	RESUME_ANALYZER_PROFILE_MATCHED = 'resume_analyzer_page.profile.context.matched',
 	RESUME_ANALYZER_PROFILE_CONTEXT_MISSING = 'resume_analyzer_page.profile.context.missing',
 	RESUME_ANALYZER_PROFILE_STRUCTURE_MATCHED = 'resume_analyzer_page.profile.structure.matched',
