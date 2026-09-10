@@ -82,6 +82,27 @@
 			"title": "Algorithms and tasks in {company}"
 		}
 	},
+	"profile": {
+		"stack": {
+			"title": "Tech stack in work experience",
+			"subtitle": "Tech stack is specified",
+			"description": "The work experience includes the main technologies, tools, and libraries used in projects",
+			"matched": "Key technologies are present in the experience",
+			"missing": "It is recommended to add the technology stack to the project descriptions"
+		},
+
+		"context": {
+			"title": "Project Context",
+			"matched": "Signals found",
+			"missing": "Missing elements"
+		},
+
+		"structure": {
+			"title": "Resume Structure",
+			"matched": "What's included",
+			"missing": "What's missing"
+		}
+	},
 	"skills": {
 		"title": "Key Skills"
 	},
