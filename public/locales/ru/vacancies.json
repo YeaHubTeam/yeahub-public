@@ -60,6 +60,13 @@
 			"matched": "Найденные задачи",
 			"missing": "Пропущенные задачи",
 			"recommendations": "Рекомендации"
+		},
+		"priorities": {
+			"title": "Приоритеты",
+			"coverage": "{percent}% покрытие",
+			"matched": "Покрыто",
+			"missing": "Не покрыто",
+			"weak": "Слабый сигнал"
 		}
 	},
 	"count": {
