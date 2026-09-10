@@ -903,4 +903,9 @@ export enum Vacancies {
 	RESUME_ANALYZER_TASKS_MATCHED = 'resume_analyzer_page.tasks.matched',
 	RESUME_ANALYZER_TASKS_MISSING = 'resume_analyzer_page.tasks.missing',
 	RESUME_ANALYZER_TASKS_RECOMMENDATIONS = 'resume_analyzer_page.tasks.recommendations',
+	RESUME_ANALYZER_PRIORITIES_TITLE = 'resume_analyzer_page.priorities.title',
+	RESUME_ANALYZER_PRIORITIES_MATCHED = 'resume_analyzer_page.priorities.matched',
+	RESUME_ANALYZER_PRIORITIES_MISSING = 'resume_analyzer_page.priorities.missing',
+	RESUME_ANALYZER_PRIORITIES_WEAK = 'resume_analyzer_page.priorities.weak',
+	RESUME_ANALYZER_PRIORITIES_COVERAGE = 'resume_analyzer_page.priorities.coverage',
 }
