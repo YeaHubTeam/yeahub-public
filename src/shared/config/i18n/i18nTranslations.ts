@@ -871,6 +871,7 @@ export enum Vacancies {
 	KEYWORDS_TITLE = 'keywords.title',
 	PRIORITY_TITLE = 'priority.title',
 	COLLECTIONS_SECTION_TITLE = 'collections.section.title',
+	ACHIEVEMENTS_TITLE = 'resume_analyzer_page.achievements.title',
 
 	MARKET_PAGE_TITLE = 'market_page.title',
 	MARKET_PAGE_DESCRIPTION = 'market_page.description',
@@ -907,4 +908,7 @@ export enum Vacancies {
 	RESUME_ANALYZER_TASKS_MATCHED = 'resume_analyzer_page.tasks.matched',
 	RESUME_ANALYZER_TASKS_MISSING = 'resume_analyzer_page.tasks.missing',
 	RESUME_ANALYZER_TASKS_RECOMMENDATIONS = 'resume_analyzer_page.tasks.recommendations',
+	RESUME_ANALYZER_ACHIEVEMENTS_COVERAGE = 'resume_analyzer_page.achievements.coverage',
+	RESUME_ANALYZER_ACHIEVEMENTS_GOOD = 'resume_analyzer_page.achievements.good',
+	RESUME_ANALYZER_ACHIEVEMENTS_IMPROVE = 'resume_analyzer_page.achievements.improve',
 }

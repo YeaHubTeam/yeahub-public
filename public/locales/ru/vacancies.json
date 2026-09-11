@@ -60,6 +60,12 @@
 			"matched": "Найденные задачи",
 			"missing": "Пропущенные задачи",
 			"recommendations": "Рекомендации"
+		},
+		"achievements": {
+			"title": "Достижение",
+			"coverage": "{percent} найдено",
+			"good": "Хорошие достижения",
+			"improve": "Требуют доработки"
 		}
 	},
 	"count": {

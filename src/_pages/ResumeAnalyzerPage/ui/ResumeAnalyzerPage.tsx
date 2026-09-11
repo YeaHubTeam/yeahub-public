@@ -2,6 +2,7 @@ import { ResumeAnalysis } from '@/entities/vacancy';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
 
+import { ResumeAnalyzerAchievements } from './ResumeAnalyzerAchievements/ResumeAnalyzerAchievements';
 import { ResumeAnalyzerBadge } from './ResumeAnalyzerBadge/ResumeAnalyzerBadge';
 import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAnalyzerGeneralInfo';
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
@@ -27,6 +28,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />
+					<ResumeAnalyzerAchievements profile={data.profile} />
 				</div>
 			</Flex>
 		</>
