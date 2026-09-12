@@ -39,7 +39,7 @@ export const QuestionPage = ({ question }: QuestionPageProps) => {
 				<BackButton />
 			</Flex>
 			<Flex gap="20" maxWidth>
-				<Flex gap="20" direction="column" flex={1} maxWidth>
+				<Flex gap="20" direction="column" flex={1} className={styles.main}>
 					<QuestionHeader question={question} />
 					<QuestionBody shortAnswer={shortAnswer} longAnswer={longAnswer} />
 					<div className={styles.banner}>

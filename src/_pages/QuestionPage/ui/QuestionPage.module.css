@@ -3,6 +3,10 @@
   height: auto;
 }
 
+.main {
+	width: calc(100% - 380px);
+}
+
 .back-button {
   margin-bottom: 24px;
 }
@@ -15,6 +19,10 @@
   .back-button {
     margin-bottom: 20px;
   }
+
+	.main {
+		width: 100%;
+	}
 	
 	.additional {
 		display: none;
