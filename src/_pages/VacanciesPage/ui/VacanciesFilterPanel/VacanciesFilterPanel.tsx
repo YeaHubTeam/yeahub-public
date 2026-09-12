@@ -21,7 +21,7 @@ import { Vacancies, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useVacanciesFiter } from '../../model/api/useVacanciesFilter';
+import { useVacanciesFiter } from '../../api/useVacanciesFilter';
 
 interface VacanciesFilterPanelProps {
 	initialSpecializations?: GetSpecializationsListResponse | null;

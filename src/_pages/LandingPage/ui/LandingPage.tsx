@@ -1,29 +1,22 @@
-import { Collection } from '@/entities/collection';
-import { Company } from '@/entities/company';
-import { Skill } from '@/entities/skill';
-import { AboutQuestionsBlock } from '@/widgets/Landing/AboutQuestionsBlock';
-import { BannerBlock } from '@/widgets/Landing/BannerBlock';
-import { CollectionBlock } from '@/widgets/Landing/CollectionBlock';
-import { HistoryBlock } from '@/widgets/Landing/HistoryBlock';
-import { InterviewTrainerBlock } from '@/widgets/Landing/InterviewTrainerBlock';
-import { SpecializationBlock } from '@/widgets/Landing/SpecialityBlock';
+import { Flex } from '@/shared/ui/Flex';
+import { DifficultySection } from '@/widgets/Landing/Difficulty';
+import { HeaderSection } from '@/widgets/Landing/Header';
+import { InterviewSection } from '@/widgets/Landing/Interview';
+import { PrepareForInterviewSection } from '@/widgets/Landing/PrepareForInterview';
+import { ResumeSection } from '@/widgets/Landing/Resume';
+import { TrainerProgressSection } from '@/widgets/Landing/TrainerProgress';
+import { TrainingSection } from '@/widgets/Landing/Training';
 
-interface LandingPageProps {
-	skills: Skill[];
-	companies: Company[];
-	collections: Collection[];
-	locale: string;
-}
-
-export const LandingPage = ({ skills, companies, collections, locale }: LandingPageProps) => {
+export const LandingPage = () => {
 	return (
-		<>
-			<BannerBlock />
-			<SpecializationBlock locale={locale} />
-			<AboutQuestionsBlock skills={skills} locale={locale} />
-			<InterviewTrainerBlock />
-			<CollectionBlock companies={companies} collections={collections} locale={locale} />
-			<HistoryBlock />
-		</>
+		<Flex direction="column" gap="80">
+			<HeaderSection />
+			<DifficultySection />
+			<PrepareForInterviewSection />
+			<InterviewSection />
+			<TrainerProgressSection />
+			<ResumeSection />
+			<TrainingSection />
+		</Flex>
 	);
 };

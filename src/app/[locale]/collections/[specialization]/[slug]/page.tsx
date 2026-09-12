@@ -10,7 +10,7 @@ import { getSpecializationSlugs } from '@/entities/specialization';
 import { CollectionPage as CollectionPageComponent } from '@/pages/CollectionPage';
 import { Translation, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { DEFAULT_SPECIALIZATION_SLUG } from '@/shared/libs';
 
 interface PageProps {

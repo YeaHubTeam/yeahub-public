@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import { InterviewQuiz, i18Namespace } from '@/shared/config';
-import { useScreenSize } from '@/shared/libs/dom/useScreenSize';
+import { useScreenSize } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';

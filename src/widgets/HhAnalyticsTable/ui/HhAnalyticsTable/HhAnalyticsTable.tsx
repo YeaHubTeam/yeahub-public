@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import { Analytics, i18Namespace } from '@/shared/config';
-import { SelectedEntity } from '@/shared/libs/app';
+import { SelectedEntity } from '@/shared/libs';
 import { Table } from '@/shared/ui/Table';
 import { Text } from '@/shared/ui/Text';
 

@@ -12,7 +12,7 @@ import {
 import { MAX_CHOOSE_QUESTION_COUNT, removeFromLS } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 
-import { useCreateQuizFilter } from '../../model/api/useCreateQuizFilter';
+import { useCreateQuizFilter } from '../../api/useCreateQuizFilter';
 import { CreateQuizLink } from '../CreateQuizLink/CreateQuizLink';
 import styles from './CreateQuizFilterPanel.module.css';
 

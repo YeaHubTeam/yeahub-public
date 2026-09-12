@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Translation, i18Namespace } from '@/shared/config';
-import { Companies } from '@/shared/config/i18n/i18nTranslations';
+import { Companies } from '@/shared/config';
 import { BaseFilterItem, BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';

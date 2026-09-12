@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { ProgrammingLanguage } from '@/entities/programmingLanguage';
-import { TaskCategory } from '@/entities/tasks';
+import { TaskCategory } from '@/entities/task';
 import { Tasks as TasksTranslations, i18Namespace } from '@/shared/config';
 import { FiltersDrawer } from '@/shared/ui/FiltersDrawer';
 import { Flex } from '@/shared/ui/Flex';

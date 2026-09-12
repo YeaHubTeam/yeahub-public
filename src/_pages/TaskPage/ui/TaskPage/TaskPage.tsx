@@ -1,4 +1,4 @@
-import { Task } from '@/entities/tasks';
+import { Task } from '@/entities/task';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';

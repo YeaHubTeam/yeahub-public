@@ -1,4 +1,4 @@
-import { TaskCategoryCode, TaskDifficulty } from '@/entities/tasks';
+import { TaskCategoryCode, TaskDifficulty } from '@/entities/task';
 
 export interface TasksFilterParams {
 	page?: number;

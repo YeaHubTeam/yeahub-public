@@ -1,0 +1,16 @@
+.container {
+	width: 100%;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+	width: 100%;
+}
+
+@media screen and (width < 1024px) {
+	.grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

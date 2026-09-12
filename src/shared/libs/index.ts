@@ -1,4 +1,5 @@
 export { type Pallete, type Response, type Author, type SortOrder } from './types';
+export { type SelectedEntity } from './app';
 
 export {
 	COUNT_TO_GET_QUESTIONS_FOR_SSG,
@@ -17,6 +18,7 @@ export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';
 export { useModal } from './fp';
+export { capitalizeFirstLetter } from './fp';
 export { useScreenSize } from './dom/useScreenSize';
 export { parseNumberArray } from './fp/parseNumberArray';
 export { parseStringArray } from './fp/parseStringArray';

@@ -2,4 +2,4 @@ export { HhAnalyticsFiltersWrapper } from './ui/HhAnalyticsFiltersWrapper/HhAnal
 export type { HhAnalyticsMode } from './model/types/types';
 export { HhAnalyticsModeTabs } from './ui/HhAnalyticsModeTabs/HhAnalyticsModeTabs';
 export { HhAnalyticsFilters } from './ui/HhAnalyticsFilters/HhAnalyticsFilters';
-export { useHhFilters } from './hooks/useHhFilters';
+export { useHhFilters } from './lib/hooks/useHhFilters';

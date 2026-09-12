@@ -15,7 +15,7 @@ import { Collections, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useCollectionsFilters } from '../../model/api/useCollectionsFilters';
+import { useCollectionsFilters } from '../../api/useCollectionsFilters';
 
 interface CollectionsFilterPanelProps {
 	currentSpecialization: Specialization;

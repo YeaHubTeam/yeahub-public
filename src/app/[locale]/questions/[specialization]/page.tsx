@@ -13,7 +13,7 @@ import {
 import { QuestionsPage } from '@/pages/QuestionsPage';
 import { Landing, Questions, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
-import { APP_ROUTE } from '@/shared/config/router/constants';
+import { APP_ROUTE } from '@/shared/config';
 import { QUESTIONS_PER_PAGE } from '@/shared/libs';
 
 interface PageProps {

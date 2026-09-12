@@ -1,0 +1,105 @@
+import { Company } from '@/entities/company/@x/task';
+import { ProgrammingLanguage } from '@/entities/programmingLanguage/@x/task';
+import { Response, SortOrder } from '@/shared/libs';
+
+export type TaskDifficulty = 1 | 2 | 3 | 4 | 5;
+
+export type TaskSubscriptionLevel = 'free' | 'premium';
+
+export interface Task {
+	id: string;
+	name: string;
+	difficulty: TaskDifficulty;
+	supportedLanguages: ProgrammingLanguage[];
+	taskStructures: TaskStructure[];
+	categories: TaskCategoryCode[];
+	canSolve: boolean;
+	slug: string;
+	description: string;
+	companies: Company[];
+}
+
+export interface TaskStructure {
+	languageId: number;
+	solutionStub: string;
+	testFixture: string;
+	preloadedCode?: string | null;
+	isActive: boolean;
+}
+
+export type TaskCategoryCode =
+	| 'algorithms'
+	| 'data-structures'
+	| 'databases'
+	| 'strings'
+	| 'arrays'
+	| 'dynamic-programming'
+	| 'lists'
+	| 'matrices'
+	| 'objects'
+	| 'dictionaries'
+	| 'stack'
+	| 'queue'
+	| 'linked-lists'
+	| 'trees'
+	| 'graphs'
+	| 'sorting'
+	| 'search'
+	| 'greedy'
+	| 'recursion'
+	| 'conditions'
+	| 'loops'
+	| 'functions'
+	| 'iterators'
+	| 'generators'
+	| 'parsing'
+	| 'filtering'
+	| 'grouping'
+	| 'aggregation'
+	| 'serialization'
+	| 'async'
+	| 'caching'
+	| 'pointers'
+	| 'patterns';
+
+export interface TaskCategory {
+	id: number;
+	name: string;
+	code: TaskCategoryCode;
+	description: string;
+	parentCode: string | null;
+	childrenCodes: TaskCategoryCode[];
+	isActive: boolean;
+}
+
+export type GetTaskCategoriesResponse = TaskCategory[];
+
+export interface GetTasksListParams {
+	page?: number;
+	limit?: number;
+	id?: string;
+	title?: string;
+	slug?: string;
+	difficulty?: TaskDifficulty;
+	category?: TaskCategoryCode;
+	langIds?: number[];
+	isActive?: boolean;
+	search?: string;
+	sortBy?: 'name' | 'difficulty' | 'createdAt' | 'updatedAt';
+	sortOrder?: SortOrder;
+	canSolve?: boolean;
+	collectionId?: number;
+	companyId?: string;
+}
+
+export type GetTasksListResponse = Response<Task[]>;
+
+export type GetTaskByIdResponse = Task;
+
+export interface TaskSlug {
+	id: number;
+	slug: string;
+	title: string;
+}
+
+export type GetTasksSlugsResponse = Response<TaskSlug[]>;

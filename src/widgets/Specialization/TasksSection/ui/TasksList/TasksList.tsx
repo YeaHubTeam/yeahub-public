@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 
 import { CompanyCompactList } from '@/entities/company';
 import { ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { Task, TaskCard } from '@/entities/tasks';
+import { Task, TaskCard } from '@/entities/task';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';

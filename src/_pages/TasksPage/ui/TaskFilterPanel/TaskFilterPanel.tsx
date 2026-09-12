@@ -8,12 +8,12 @@ import {
 	CompaniesFilterSection,
 	DifficultFilterSection,
 	TaskCategory,
-} from '@/entities/tasks';
+} from '@/entities/task';
 import { Tasks, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-import { useTasksFilter } from '../../model/api/useTasksFilter';
+import { useTasksFilter } from '../../api/useTasksFilter';
 
 interface TasksFilterPanelProps {
 	categories: TaskCategory[];

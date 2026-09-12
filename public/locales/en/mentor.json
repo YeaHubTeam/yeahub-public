@@ -371,6 +371,23 @@
 					"checks": "Regular knowledge checks",
 					"support": "High level of support"
 				}
+			},
+			"buyout": {
+				"label": "Full mentorship buyout",
+				"price": "200 000 ₽",
+				"promo": {
+					"title": "Lock in the full course cost in advance —",
+					"price": "200 000 ₽"
+				},
+				"features": {
+					"modules": "8 modules with practice and exams",
+					"payment": "Full upfront payment, no post-payment"
+				}
+			},
+			"buyout_or_postpay": {
+				"label": "How to choose",
+				"title": "Buyout or postpayment?",
+				"description": "If you want to lock in the price, choose the full buyout. If you're not ready to pay upfront yet, postpayment spreads the cost after you get a job."
 			}
 		}
 	},

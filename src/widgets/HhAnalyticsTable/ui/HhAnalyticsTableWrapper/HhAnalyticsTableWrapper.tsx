@@ -1,6 +1,6 @@
 'use client';
 
-import { useHhFilters } from '@/features/hhAnalyticsFilters/hooks/useHhFilters';
+import { useHhFilters } from '@/features/hhAnalyticsFilters';
 import { TablePagination } from '@/shared/ui/TablePagination';
 
 import { HhAnalyticsRow, HhAnalyticsTable } from '../HhAnalyticsTable/HhAnalyticsTable';

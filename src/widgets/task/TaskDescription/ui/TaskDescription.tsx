@@ -4,8 +4,8 @@ import { useTranslations } from 'next-intl';
 
 import { Company, CompanyCompactList } from '@/entities/company';
 import { ProgrammingLanguage, ProgrammingLanguageList } from '@/entities/programmingLanguage';
-import { TaskCategoryCode, TaskDifficulty, taskCategories } from '@/entities/tasks';
-import { TaskDifficultyChip } from '@/entities/tasks/index';
+import { TaskCategoryCode, TaskDifficulty, taskCategories } from '@/entities/task';
+import { TaskDifficultyChip } from '@/entities/task/index';
 import { i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
