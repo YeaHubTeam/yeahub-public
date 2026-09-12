@@ -1,16 +1,13 @@
-import { setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 import { Collection } from '@/entities/collection';
 import { GetCompaniesResponse } from '@/entities/company';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import { Card } from '@/shared/ui/Card';
-import { Flex } from '@/shared/ui/Flex';
-import { CollectionsList, InterviewRecordingsBanner } from '@/widgets/Collection';
+import { Collections, i18Namespace } from '@/shared/config';
+import { CollectionsList } from '@/widgets/Collection';
+import { ListPageWrapper } from '@/widgets/ListPageWrapper';
 
 import { CollectionsFilterPanel } from '../CollectionsFilterPanel/CollectionsFilterPanel';
-import { CollectionsPageHeader } from '../CollectionsPageHeader/CollectionsPageHeader';
-import { CollectionsPagePagination } from '../CollectionsPagePagination/CollectionsPagePagination';
-import styles from './CollectionsPage.module.css';
 
 interface CollectionsPageProps {
 	locale: string;
@@ -36,34 +33,36 @@ export const CollectionsPage = ({
 	initialSpecializations,
 	initialCompanies,
 }: CollectionsPageProps) => {
-	setRequestLocale(locale);
+	const t = useTranslations(i18Namespace.collection);
+
+	const title = t(Collections.COLLECTIONS_TITLE, {
+		specialization: currentSpecialization.title,
+	});
 
 	return (
-		<Flex gap="20" align="start">
-			<Card className={styles.main}>
-				<CollectionsPageHeader
-					currentSpecialization={currentSpecialization}
-					initialSpecializations={initialSpecializations}
-					initialCompanies={initialCompanies}
-				/>
+		<ListPageWrapper
+			locale={locale}
+			paginationProps={{
+				currentPage: page,
+				limit,
+				total,
+			}}
+			title={title}
+			itemsList={
 				<CollectionsList
 					collections={collections}
 					specialization={specialization}
 					hasFilters={hasFilters}
 					locale={locale}
 				/>
-				<CollectionsPagePagination total={total} limit={limit} currentPage={page} />
-			</Card>
-			<Flex gap="20" direction="column" className={styles.filters}>
-				<Card>
-					<CollectionsFilterPanel
-						currentSpecialization={currentSpecialization}
-						initialSpecializations={initialSpecializations}
-						initialCompanies={initialCompanies}
-					/>
-				</Card>
-				<InterviewRecordingsBanner />
-			</Flex>
-		</Flex>
+			}
+			filterPanel={
+				<CollectionsFilterPanel
+					currentSpecialization={currentSpecialization}
+					initialSpecializations={initialSpecializations}
+					initialCompanies={initialCompanies}
+				/>
+			}
+		/>
 	);
 };

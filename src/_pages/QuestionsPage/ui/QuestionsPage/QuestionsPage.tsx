@@ -1,18 +1,13 @@
-import React from 'react';
-
-import { setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 import { Question } from '@/entities/question';
 import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import { Card } from '@/shared/ui/Card';
-import { Flex } from '@/shared/ui/Flex';
+import { Questions as QuestionsTranslations, i18Namespace } from '@/shared/config';
+import { ListPageWrapper } from '@/widgets/ListPageWrapper';
 import { FullQuestionsList } from '@/widgets/question/QuestionsList';
 
 import { QuestionsFilterPanel } from '../QuestionsFilterPanel/QuestionsFilterPanel';
-import { QuestionsPageHeader } from '../QuestionsPageHeader/QuestionsPageHeader';
-import { QuestionPagePagination } from '../QuestionsPagePagination/QuestionPagePagination';
-import styles from './QuestionsPage.module.css';
 
 interface QuestionsPageProps {
 	locale: string;
@@ -39,31 +34,35 @@ export const QuestionsPage = ({
 	initialSkills,
 	currentSpecialization,
 }: QuestionsPageProps) => {
-	setRequestLocale(locale);
+	const t = useTranslations(i18Namespace.questions);
+	const title = t(QuestionsTranslations.QUESTIONS_TITLE, {
+		specialization: currentSpecialization.title,
+	});
 
 	return (
-		<Flex gap="20" align="start">
-			<Card className={styles.main}>
-				<QuestionsPageHeader
-					currentSpecialization={currentSpecialization}
-					initialSpecializations={initialSpecializations}
-					initialSkills={initialSkills}
-				/>
+		<ListPageWrapper
+			locale={locale}
+			paginationProps={{
+				currentPage: page,
+				limit,
+				total,
+			}}
+			title={title}
+			itemsList={
 				<FullQuestionsList
 					questions={questions}
 					specialization={specialization}
 					hasFilters={hasFilters}
 					locale={locale}
 				/>
-				<QuestionPagePagination total={total} limit={limit} currentPage={page} />
-			</Card>
-			<Card className={styles.filters}>
+			}
+			filterPanel={
 				<QuestionsFilterPanel
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
 					currentSpecialization={currentSpecialization}
 				/>
-			</Card>
-		</Flex>
+			}
+		/>
 	);
 };
