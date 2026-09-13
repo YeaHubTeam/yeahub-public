@@ -3,7 +3,8 @@
 	margin-top: 2px;
 }
 
-.icon-success path {
+.icon-success path,
+.icon-warning path {
 	stroke: var(--color-white-900);
 	stroke-width: 1px;
 }
