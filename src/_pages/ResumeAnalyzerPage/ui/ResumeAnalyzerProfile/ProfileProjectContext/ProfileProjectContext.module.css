@@ -1,0 +1,16 @@
+div.card {
+	gap: 20px;
+	padding: 20px;
+	min-width: 0;
+	border-radius: 20px;
+}
+
+div.content {
+	min-width: 0;
+}
+
+@media screen and (width < 768px) {
+	div.card {
+		padding: 20px 10px;
+	}
+}

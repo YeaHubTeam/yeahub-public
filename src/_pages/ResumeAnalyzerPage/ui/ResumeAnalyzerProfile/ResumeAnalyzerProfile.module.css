@@ -1,0 +1,17 @@
+div.container > div {
+	flex: 1;
+}
+
+@media screen and (width < 1280px) {
+	div.container {
+		flex-basis: 50%;
+		flex-direction: column;
+	}
+}
+
+@media screen and (width < 768px) {
+	div.container {
+		flex-basis: 100%;
+		gap: 10px;
+	}
+}

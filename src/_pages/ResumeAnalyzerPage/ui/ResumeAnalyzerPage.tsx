@@ -7,6 +7,7 @@ import { ResumeAnalyzerGeneralInfo } from './ResumeAnalyzerGeneralInfo/ResumeAna
 import { ResumeAnalyzerHeader } from './ResumeAnalyzerHeader/ResumeAnalyzerHeader';
 import styles from './ResumeAnalyzerPage.module.css';
 import { ResumeAnalyzerPriorities } from './ResumeAnalyzerPriorities/ResumeAnalyzerPriorities';
+import { ResumeAnalyzerProfile } from './ResumeAnalyzerProfile/ResumeAnalyzerProfile';
 import { ResumeAnalyzerSkillsCard } from './ResumeAnalyzerSkills/ResumeAnalyzerSkillsCard';
 import { ResumeAnalyzerTasks } from './ResumeAnalyzerTasks/ResumeAnalyzerTasks';
 
@@ -29,6 +30,7 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />
 					<ResumeAnalyzerPriorities profile={data.profile} />
+					<ResumeAnalyzerProfile profile={data.profile} />
 				</div>
 			</Flex>
 		</>
