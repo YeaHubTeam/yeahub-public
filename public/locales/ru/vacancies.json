@@ -64,7 +64,7 @@
 		"priorities": {
 			"title": "Приоритеты",
 			"coverage": "{percent}% покрытие",
-			"matched": "Покрыто",
+			"matched": "покрыто",
 			"missing": "Не покрыто",
 			"weak": "Слабый сигнал"
 		}

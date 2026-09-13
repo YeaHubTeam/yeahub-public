@@ -44,9 +44,9 @@ export const ResumeAnalyzerPriorities = ({ profile }: ResumeAnalyzerPrioritiesPr
 		profile.weaklySupportedSignals.length > ITEMS_LIMIT;
 
 	const coverageText = t(Vacancies.RESUME_ANALYZER_PRIORITIES_COVERAGE, {
-		percent: profile.extraMatchPercent,
+		percent: Math.floor(profile.extraMatchPercent),
 	});
-	const matchedText = `${profile.coveredExtraCount} / ${profile.totalExtraCount}`;
+	const matchedText = `${profile.coveredExtraCount} / ${profile.totalExtraCount} ${t(Vacancies.RESUME_ANALYZER_PRIORITIES_MATCHED)}`;
 
 	return (
 		<Card
