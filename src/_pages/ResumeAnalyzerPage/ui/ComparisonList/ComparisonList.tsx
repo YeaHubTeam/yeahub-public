@@ -8,7 +8,7 @@ import { Text } from '@/shared/ui/Text';
 
 import styles from './ComparisonList.module.css';
 
-type ComparisonListVariant = 'success' | 'error';
+type ComparisonListVariant = 'success' | 'error' | 'warning';
 
 interface ComparisonListProps {
 	title: string;
@@ -21,11 +21,13 @@ export const ComparisonList = ({ title, description, items, variant }: Compariso
 	const iconName: Record<ComparisonListVariant, IconName> = {
 		success: 'successCircle',
 		error: 'errorCircle',
+		warning: 'successCircle',
 	};
 
 	const iconColor: Record<ComparisonListVariant, Pallete> = {
 		success: 'green-700',
 		error: 'red-800',
+		warning: 'yellow-800',
 	};
 
 	return (

@@ -89,6 +89,13 @@
 				"matched": "Что есть",
 				"missing": "Чего не хватает"
 			}
+		},
+		"priorities": {
+			"title": "Приоритеты",
+			"coverage": "{percent}% покрытие",
+			"matched": "покрыто",
+			"missing": "Не покрыто",
+			"weak": "Слабый сигнал"
 		}
 	},
 	"count": {
