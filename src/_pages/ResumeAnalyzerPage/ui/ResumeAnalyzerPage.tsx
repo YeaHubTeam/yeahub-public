@@ -28,8 +28,8 @@ export const ResumeAnalyzerPage = ({ data }: ResumeAnalyzerPageProps) => {
 
 				<div className={styles.grid}>
 					<ResumeAnalyzerTasks tasks={data.tasks} />
+					<ResumeAnalyzerProfile profile={data.profile} />
 				</div>
-				<ResumeAnalyzerProfile profile={data.profile} />
 			</Flex>
 		</>
 	);

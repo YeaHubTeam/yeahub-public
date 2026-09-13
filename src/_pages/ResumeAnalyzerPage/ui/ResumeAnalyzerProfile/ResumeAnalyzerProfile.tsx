@@ -1,4 +1,5 @@
 import { ResumeAnalysis } from '@/entities/vacancy';
+import { Flex } from '@/shared/ui/Flex';
 
 import { ProfileProjectContext } from './ProfileProjectContext/ProfileProjectContext';
 import { ProfileResumeStructure } from './ProfileResumeStructure/ProfileResumeStructure';
@@ -11,10 +12,10 @@ interface ResumeAnalyzerProfileProps {
 
 export const ResumeAnalyzerProfile = ({ profile }: ResumeAnalyzerProfileProps) => {
 	return (
-		<div className={styles.container}>
+		<Flex gap="20" className={styles.container}>
 			<ProfileStack profile={profile} />
 			<ProfileProjectContext profile={profile} />
 			<ProfileResumeStructure profile={profile} />
-		</div>
+		</Flex>
 	);
 };
