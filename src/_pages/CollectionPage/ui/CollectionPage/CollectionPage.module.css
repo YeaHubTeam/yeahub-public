@@ -31,7 +31,7 @@
 
 @media screen and (width < 1024px) {
 	.additional {
-		display: none;
+		display: none !important;
 	}
 	
 	.banner {
