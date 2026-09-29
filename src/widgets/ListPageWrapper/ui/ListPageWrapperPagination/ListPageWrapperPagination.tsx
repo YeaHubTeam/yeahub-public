@@ -1,22 +1,20 @@
 'use client';
 
-import React from 'react';
-
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { TablePagination } from '@/shared/ui/TablePagination';
 
-interface QuestionPagePaginationProps {
+export interface ListPageWrapperPaginationProps {
 	total: number;
 	limit: number;
 	currentPage: number;
 }
 
-export const CollectionsPagePagination = ({
+export const ListPageWrapperPagination = ({
 	total,
 	limit,
 	currentPage,
-}: QuestionPagePaginationProps) => {
+}: ListPageWrapperPaginationProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();

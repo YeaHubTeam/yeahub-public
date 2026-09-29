@@ -1,16 +1,13 @@
-import { setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 import { type Resource, ResourceType } from '@/entities/resource';
 import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import { Card } from '@/shared/ui/Card';
-import { Flex } from '@/shared/ui/Flex';
+import { Resources, i18Namespace } from '@/shared/config';
+import { ListPageWrapper } from '@/widgets/ListPageWrapper';
 import { ResourcesList } from '@/widgets/resources/ResourcesList';
 
 import { ResourcesFilterPanel } from '../ResourcesFilterPanel/ResourcesFilterPanel';
-import { ResourcesPageHeader } from '../ResourcesPageHeader/ResourcesPageHeader';
-import { ResourcesPagePagination } from '../ResourcesPagePagination/ResourcesPagePagination';
-import styles from './ResourcesPage.module.css';
 
 interface ResourcesPageProps {
 	locale: string;
@@ -37,27 +34,26 @@ export const ResourcesPage = ({
 	initialSkills,
 	resourcesTypes,
 }: ResourcesPageProps) => {
-	setRequestLocale(locale);
+	const t = useTranslations(i18Namespace.resources);
+
 	return (
-		<Flex gap="20" align="start">
-			<Card className={styles.main}>
-				<ResourcesPageHeader
-					currentSpecialization={currentSpecialization}
-					initialSpecializations={initialSpecializations}
-					initialSkills={initialSkills}
-					resourcesTypes={resourcesTypes}
-				/>
-				<ResourcesList resources={resources} hasFilters={hasFilters} />
-				<ResourcesPagePagination total={total} limit={limit} currentPage={page} />
-			</Card>
-			<Card className={styles.filters}>
+		<ListPageWrapper
+			locale={locale}
+			paginationProps={{
+				currentPage: page,
+				limit,
+				total,
+			}}
+			title={t(Resources.HEADER_TITLE)}
+			itemsList={<ResourcesList resources={resources} hasFilters={hasFilters} />}
+			filterPanel={
 				<ResourcesFilterPanel
 					currentSpecialization={currentSpecialization}
 					initialSpecializations={initialSpecializations}
 					initialSkills={initialSkills}
 					resourcesTypes={resourcesTypes}
 				/>
-			</Card>
-		</Flex>
+			}
+		/>
 	);
 };

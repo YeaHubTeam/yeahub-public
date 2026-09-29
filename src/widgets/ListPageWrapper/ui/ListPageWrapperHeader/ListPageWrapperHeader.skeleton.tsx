@@ -2,9 +2,9 @@ import { Flex } from '@/shared/ui/Flex';
 import { IconSkeleton } from '@/shared/ui/Icon';
 import { TextSkeleton } from '@/shared/ui/Text';
 
-import styles from './CollectionsPageHeader.module.css';
+import styles from './ListPageWrapperHeader.module.css';
 
-export const CollectionsPageHeaderSkeleton = () => {
+export const ListPageWrapperHeaderSkeleton = () => {
 	return (
 		<>
 			<Flex align="center" justify="between" className={styles.header}>
