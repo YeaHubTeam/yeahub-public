@@ -25,7 +25,7 @@
 	}
 	
 	.additional {
-		display: none;
+		display: none !important;
 	}
 
 	.banner {
