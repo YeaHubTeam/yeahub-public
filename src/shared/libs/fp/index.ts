@@ -3,3 +3,4 @@ export { getArrayFromTwoNumbers } from './getArrayFromTwoNumbers';
 export { useModal } from './useModal';
 export { useCopy } from './useCopy';
 export { parseStringArray } from './parseStringArray';
+export { capitalizeFirstLetter } from './capitalizeFirstLetter';

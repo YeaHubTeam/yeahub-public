@@ -1,0 +1,25 @@
+.recommendations {
+	padding: 12px;
+	border-radius: 12px;
+	background-color: var(--color-purple-100);
+}
+
+.icon {
+	flex-shrink: 0;
+}
+
+p.title {
+	line-height: 110%;
+}
+
+.list {
+	display: list-item;
+	margin-left: 16px;
+	list-style: disc;
+
+	&::marker {
+		width: 6px;
+		height: 6px;
+		color: var(--color-purple-700);
+	}
+}

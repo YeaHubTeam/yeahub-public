@@ -7,7 +7,7 @@ export interface FeatureItem {
 	description: string;
 	imageSrc?: string | StaticImageData;
 	imgAlt?: string;
-	link: string;
-	to: string;
+	link?: string;
+	to?: string;
 	isHighlighted?: boolean;
 }

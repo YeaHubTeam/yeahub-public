@@ -24,6 +24,7 @@ export const CommunityCard = ({ title, description, linkText, linkUrl }: Communi
 				target: '_blank',
 				rel: 'noopener noreferrer',
 			}}
+			withOutsideShadow
 		>
 			<Badge icon="lightning" wrapperClassName={styles['icon-wrapper']} className={styles.icon} />
 			<Text variant="head3" className={styles.title}>

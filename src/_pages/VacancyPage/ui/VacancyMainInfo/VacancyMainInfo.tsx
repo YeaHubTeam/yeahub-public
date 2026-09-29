@@ -26,7 +26,7 @@ export const VacancyMainInfo = ({ vacancy }: VacancyInfoProps) => {
 			<VacancyStats preparation={vacancy.preparation} />
 			<VacancySource
 				source={vacancy.source}
-				publishDate={vacancy.sourcePublishedAt}
+				sourcePublishedAt={vacancy.sourcePublishedAt}
 				internship={vacancy.internship}
 				workFormat={vacancy.workFormat}
 			/>

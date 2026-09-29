@@ -17,20 +17,20 @@ import styles from './VacancySource.module.css';
 
 interface VacancySourceProps {
 	source: Vacancy['source'];
-	publishDate: Vacancy['publishedAt'];
+	sourcePublishedAt: Vacancy['sourcePublishedAt'];
 	workFormat: Vacancy['workFormat'];
 	internship: Vacancy['internship'];
 }
 
 export const VacancySource = ({
 	source,
-	publishDate,
+	sourcePublishedAt,
 	internship,
 	workFormat,
 }: VacancySourceProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
 
-	const formattedDate = useGetCurrentDay(publishDate);
+	const formattedDate = useGetCurrentDay(sourcePublishedAt);
 
 	const sourceImg: Record<Vacancy['source'], StaticImageData | ''> = {
 		hh: Hh,

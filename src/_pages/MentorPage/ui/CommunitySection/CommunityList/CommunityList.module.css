@@ -1,6 +1,6 @@
 .community-list {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	display: grid !important;
+	grid-template-columns: repeat(12, 1fr);
 	gap: 20px;
 }
 

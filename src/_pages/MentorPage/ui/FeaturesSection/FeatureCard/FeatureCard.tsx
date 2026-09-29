@@ -26,7 +26,7 @@ export const FeatureCard = ({ feature }: FeatureCardProps) => {
 			className={styles.card}
 			contentClassName={classNames(styles['card-content'], imageSrc && styles['card-with-image'])}
 			actionRoute={to}
-			actionTitle={t(link)}
+			actionTitle={link && t(link)}
 			isActionPositionBottom
 			actionPositionX="start"
 		>

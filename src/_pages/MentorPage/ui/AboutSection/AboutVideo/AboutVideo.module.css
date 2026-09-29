@@ -1,0 +1,70 @@
+div.wrapper-content {
+	padding: 10px;
+	border-radius: 20px;
+}
+
+.video {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 16px 16px 0 0;
+}
+
+.video-image {
+	object-fit: cover;
+}
+
+.play-icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 53px;
+	height: 53px;
+	border: 1px solid var(--color-purple-700);
+	border-radius: 50%;
+	background: var(--color-purple-50);
+	transform: translate(-50%, -50%);
+}
+
+.play-icon span {
+	width: 13px;
+	height: 12px;
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+	background: var(--color-purple-700);
+}
+
+.content {
+	padding: 20px;
+}
+
+.youtube-link {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 8px;
+	text-decoration: none;
+}
+
+.youtube-image {
+	width: 49px;
+	height: 29px;
+	border-radius: 7px;
+}
+
+.icon {
+	transition: 0.3s ease-in-out;
+}
+
+.youtube-link:hover .icon {
+	transform: translateX(5px);
+}
+
+@media screen and (width < 768px) {
+	.content {
+		padding: 10px;
+	}
+}

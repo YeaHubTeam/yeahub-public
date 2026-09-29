@@ -1,5 +1,6 @@
 .card {
-	gap: 0;
+	grid-column: span 3;
+	gap: 0 !important;
 	padding: 20px;
 	height: 361px;
 }
@@ -21,9 +22,10 @@
 
 @media (width < 1280px) {
 	.card {
+		grid-column: auto;
 		height: 278px;
 	}
-	
+
 	h3.title {
 		font-size: var(--font-size-h-xs);
 	}

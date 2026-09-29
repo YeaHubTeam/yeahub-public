@@ -90,7 +90,11 @@ export const ROUTES = {
 		community: 'https://t.me/+R_GawEiT-sMzNjYy',
 		news: 'https://t.me/mentor_reactify',
 		youtube: 'https://www.youtube.com/@reactify-it',
+		youtubeVideo: 'https://youtu.be/ZIl3kHEL0XQ?si=PPP9uOtRTlQlM6Pn',
 		telegramChannel: 'https://t.me/reactify_IT',
+		honesty: 'https://t.me/mentor_reactify/389',
+		internship: 'https://t.me/mentor_reactify/348',
+		meetup: 'https://t.me/mentor_reactify/376',
 	},
 	wiki: {
 		questions: {

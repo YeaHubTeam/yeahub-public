@@ -8,6 +8,96 @@
 			"to": "до"
 		}
 	},
+	"market_page": {
+		"title": "ИИ Анализ рынка вакансий",
+		"description": "Мы собираем требования из реальных вакансий и превращаем их в понятный профиль — чтобы вы знали, какие навыки прокачивать и чего ждать от рынка.",
+		"updated_at": "Обновлено {date}",
+		"total_analyzed": "Всего проанализировано вакансий",
+		"daily_update": "Данные обновляются каждый день",
+		"top_skills": "Топ 5 навыков",
+		"detailed_profile": "Подробный профиль",
+		"vacancy_count": "{count, plural, one {# вакансия} few {# вакансии} many {# вакансий} other {# вакансий}}"
+	},
+	"resume_analyzer_page": {
+		"title": "Сравнение с рынком",
+		"badge": {
+			"specialization": "Frontend-разработчик",
+			"industry": "FinTech",
+			"vacancies_count": "420 вакансий"
+		},
+		"analysis_info": {
+			"title": "Загруженное резюме",
+			"file": "frontend_developer.pdf",
+			"uploaded": "Загружено 14 мая 2026",
+			"analyzed": "Проанализировано",
+			"count": "420 вакансий",
+			"updated": "Обновлено вчера"
+		},
+		"metric_title": {
+			"skills": "Навыки",
+			"tasks": "Задачи",
+			"keywords": "Ключевые слова",
+			"priority": "Приоритет"
+		},
+		"metric_label": {
+			"coverage": "Покрытие требований",
+			"matched": "Совпало {matched} из {total}"
+		},
+		"vacancy_coverage": {
+			"title": "Общее покрытие вакансии",
+			"description": "Насколько ваше резюме соответствует с требованиями рынка",
+			"result": "Ваше резюме соответствует {percent}% требований рынка"
+		},
+
+		"skills_coverage": {
+			"title": "Навыки",
+			"matched_overall": "{matched}/{total} совпало",
+			"matched": "Есть в резюме ({matched})",
+			"missing": "Не хватает ({missing})"
+		},
+		"tasks": {
+			"coverage": "{percent}% покрытие",
+			"matched": "Найденные задачи",
+			"missing": "Пропущенные задачи",
+			"recommendations": "Рекомендации"
+		},
+		"profile": {
+			"stack": {
+				"title": "Стек в опыте",
+				"subtitle": {
+					"matched": "Технологический стек указан",
+					"missing": "Технологический стек не указан"
+				},
+				"description": {
+					"matched": "В опыте работы найдены основные технологии, инструменты и библиотеки, используемые в проектах",
+					"missing": "В опыте работы не найдены основные технологии, инструменты и библиотеки, используемые в проектах"
+				},
+				"result": {
+					"matched": "Основные технологии присутствуют в опыте",
+					"missing": "Рекомендуется добавить стек технологий в описание проектов"
+				}
+			},
+
+			"context": {
+				"title": "Контекст проектов",
+				"matched": "Найденные сигналы",
+				"missing": "Пропущенные элементы"
+			},
+
+			"structure": {
+				"title": "Структура резюме",
+				"matched": "Что есть",
+				"missing": "Чего не хватает"
+			}
+		},
+		"priorities": {
+			"title": "Приоритеты",
+			"coverage": "{percent}% покрытие",
+			"matched": "покрыто",
+			"missing": "Не покрыто",
+			"weak": "Слабый сигнал"
+		}
+	},
 	"count": {
 		"skills": "+{count, plural, one {# навык} few {# навыка} many {# навыков} other {# навыков}}",
 		"collections": "{count, plural, one {# собеседование} few {# собеседования} many {# собеседований} other {# собеседований}}",

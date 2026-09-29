@@ -10,6 +10,7 @@ export { default as BeforAfter } from './images/landing-page/BeforAfter.png';
 export { default as KeywordsContainer } from './images/landing-page/KeywordsContainer.png';
 export { default as CardVacancyOne } from './images/landing-page/CardVacancyOne.png';
 export { default as CardVacancyTwo } from './images/landing-page/CardVacancyTwo.png';
+export { default as GrowthChart } from './images/growthChart.png';
 
 export { default as mentorPhone } from './images/mentor/icon/mentorPhone.png';
 export { default as mentorQuestions } from './images/mentor/icon/mentorQuestions.png';

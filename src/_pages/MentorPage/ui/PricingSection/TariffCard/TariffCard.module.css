@@ -1,18 +1,22 @@
-.card {
+div.card {
 	padding: 20px;
 	width: calc(33% - 10px);
 	height: 528px;
 	border-radius: 20px;
 }
 
+.card.compact {
+	height: 384px;
+}
+
 .inverted {
 	background: linear-gradient(180deg, #392d7e -1.02%, #8e79ff 16.39%, #e7e6ff 45.94%, #fff 94.66%);
 }
 
-.title {
+h2.title {
 	margin-top: 60px;
 	font-weight: 700;
-	font-size: 50px;
+	font-size: var(--font-size-h-xl);
 }
 
 .note {
@@ -32,7 +36,7 @@
 }
 
 @media (width < 1280px) {
-	.card {
+	div.card {
 		width: calc(50% - 10px);
 		height: auto;
 	}
@@ -47,7 +51,7 @@
 }
 
 @media (width < 768px) {
-	.card {
+	div.card {
 		padding: 10px;
 		width: 100%;
 		min-height: unset;
