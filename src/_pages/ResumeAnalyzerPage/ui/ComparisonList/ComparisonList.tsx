@@ -8,33 +8,40 @@ import { Text } from '@/shared/ui/Text';
 
 import styles from './ComparisonList.module.css';
 
-type ComparisonListVariant = 'success' | 'error';
+type ComparisonListVariant = 'success' | 'error' | 'warning';
 
 interface ComparisonListProps {
 	title: string;
+	description?: string;
 	items: EvidenceItem[];
 	variant: ComparisonListVariant;
 }
 
-export const ComparisonList = ({ title, items, variant }: ComparisonListProps) => {
+export const ComparisonList = ({ title, description, items, variant }: ComparisonListProps) => {
 	const iconName: Record<ComparisonListVariant, IconName> = {
 		success: 'successCircle',
 		error: 'errorCircle',
+		warning: 'successCircle',
 	};
 
 	const iconColor: Record<ComparisonListVariant, Pallete> = {
 		success: 'green-700',
 		error: 'red-800',
+		warning: 'yellow-800',
 	};
 
 	return (
 		<Flex componentType="section" direction="column" gap="20" maxWidth>
-			<Flex align="center" gap="8">
+			<Flex gap="8" direction="column">
 				<Text variant="body3-accent" color="black-900">
 					{title}
 				</Text>
+				{description && (
+					<Text variant="body3-accent" color="black-500">
+						{description}
+					</Text>
+				)}
 			</Flex>
-
 			<Flex componentType="ul" direction="column" gap="20" maxWidth>
 				{items.map((item, index) => (
 					<Flex key={`${item.title}-${index}`} componentType="li" align="start" gap="8">

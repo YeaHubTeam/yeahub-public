@@ -5,15 +5,15 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import type { ResumeAnalysis } from '@/entities/vacancy';
-import { Translation, Vacancies, i18Namespace } from '@/shared/config';
+import { Vacancies, i18Namespace } from '@/shared/config';
 import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
+import { ShowToggleButton } from '@/shared/ui/ShowToggleButton';
 
 import { ComparisonList } from '../ComparisonList/ComparisonList';
 import { RecommendationsSection } from './RecommendationsSection/RecommendationsSection';
 import styles from './ResumeAnalyzerTasks.module.css';
 import { ResumeAnalyzerTasksHeader } from './ResumeAnalyzerTasksHeader/ResumeAnalyzerTasksHeader';
-import { ResumeAnalyzerTasksToggle } from './ResumeAnalyzerTasksToggle/ResumeAnalyzerTasksToggle';
 
 const ITEMS_LIMIT = 3;
 
@@ -23,7 +23,6 @@ interface ResumeAnalyzerTasksProps {
 
 export const ResumeAnalyzerTasks = ({ tasks }: ResumeAnalyzerTasksProps) => {
 	const t = useTranslations(i18Namespace.vacancies);
-	const tCommon = useTranslations(i18Namespace.translation);
 
 	const [isExpanded, setIsExpanded] = useState(false);
 
@@ -77,9 +76,8 @@ export const ResumeAnalyzerTasks = ({ tasks }: ResumeAnalyzerTasksProps) => {
 					recommendations={visibleRecommendations}
 				/>
 				{shouldShowToggle && (
-					<ResumeAnalyzerTasksToggle
+					<ShowToggleButton
 						isExpanded={isExpanded}
-						label={isExpanded ? tCommon(Translation.HIDE) : tCommon(Translation.SHOW_ALL)}
 						onToggle={() => setIsExpanded((value) => !value)}
 					/>
 				)}
