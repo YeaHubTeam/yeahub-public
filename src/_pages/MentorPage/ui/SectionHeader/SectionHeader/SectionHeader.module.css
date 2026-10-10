@@ -19,6 +19,7 @@ h2.title {
 	.wrapper {
 		grid-template-columns: 1fr;
 		gap: 20px;
+		margin-bottom: 20px;
 	}
 
 	h2.title {
