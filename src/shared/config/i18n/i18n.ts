@@ -20,6 +20,7 @@ export const i18Namespace = {
 	company: 'company',
 	interviewQuiz: 'interviewQuiz',
 	interviewQuizCreate: 'interviewQuizCreate',
+	testCreate: 'testCreate',
 	interviewQuizResult: 'interviewQuizResult',
 	analytics: 'analytics',
 	resources: 'resources',

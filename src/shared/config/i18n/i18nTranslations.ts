@@ -300,6 +300,19 @@ export enum InterviewQuizCreate {
 	MODE_SELECT_TOOLTIP_UNAUTHORIZED = 'mode.select.tooltip.unauthorized',
 }
 
+export enum TestCreate {
+	TITLE = 'title',
+	CREATE_BUTTON = 'create.button',
+	SKILLS = 'skills',
+	COMPLEXITY = 'complexity',
+	MODE = 'mode',
+	COUNT = 'count',
+	ERROR_QUESTIONS_NOT_FOUND = 'error.questionsNotFound',
+	ERROR_UNAUTHORIZED = 'error.unauthorized',
+	ERROR_REQUEST = 'error.request',
+	ERROR_STORAGE = 'error.storage',
+}
+
 export enum InterviewQuizResult {
 	TITLE_QUESTIONS_ANSWERS = 'title.questions.answers',
 	TITLE_STAT = 'title.stat',
