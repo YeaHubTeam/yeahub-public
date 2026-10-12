@@ -13,13 +13,13 @@ div.card-content {
 	margin: 8px;
 }
 
-.info-block {
+div.info-block {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 20px;
 }
 
-.image-wrapper {
+div.image-wrapper {
 	position: absolute;
 	bottom: -10px;
 	left: 56%;
@@ -51,11 +51,11 @@ div.card-content {
 		height: 358px;
 	}
 
-	.info-block {
+	div.info-block {
 		grid-template-columns: 1fr;
 	}
-	
-	.info-block-main {
+
+	div.info-block-main {
 		justify-content: flex-end;
 	}
 
@@ -63,7 +63,7 @@ div.card-content {
 		display: none;
 	}
 
-	.image-wrapper {
+	div.image-wrapper {
 		bottom: auto;
 		left: 50%;
 		height: 183px;
