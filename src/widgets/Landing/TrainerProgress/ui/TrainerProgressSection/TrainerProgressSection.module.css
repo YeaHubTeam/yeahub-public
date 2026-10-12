@@ -1,4 +1,4 @@
-.list {
+div.list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: stretch;
@@ -14,7 +14,7 @@
 }
 
 @media (width < 1280px) {
-	.list {
+	div.list {
 		grid-template-columns: 1fr;
 	}
 }
