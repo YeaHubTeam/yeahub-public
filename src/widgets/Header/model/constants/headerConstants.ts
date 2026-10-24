@@ -26,12 +26,6 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 				title: Header.NAV_TASKS,
 				icon: 'collection',
 			},
-		],
-	},
-	{
-		id: 'training',
-		title: Header.NAV_LEARNING,
-		subitems: [
 			{
 				link: ROUTES.quiz.new.page,
 				path: '/quiz',
@@ -44,11 +38,23 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 				title: Header.NAV_RESOURCES,
 				icon: 'list',
 			},
+		],
+	},
+	{
+		id: 'training',
+		title: Header.NAV_LEARNING,
+		subitems: [
 			{
-				link: ROUTES.learning.page,
-				path: '/learning',
-				title: Header.NAV_MENTORS,
+				link: ROUTES.mentor.page,
+				path: '/mentor',
+				title: Header.NAV_FRONTEND,
 				icon: 'user',
+			},
+			{
+				link: ROUTES['mentor-fullstack'].page,
+				path: '/mentor-fullstack',
+				title: Header.NAV_FULLSTACK,
+				icon: 'list',
 			},
 		],
 	},

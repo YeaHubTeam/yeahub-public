@@ -96,6 +96,10 @@ export const ROUTES = {
 		internship: 'https://t.me/mentor_reactify/348',
 		meetup: 'https://t.me/mentor_reactify/376',
 	},
+	'mentor-fullstack': {
+		route: 'mentor-fullstack',
+		page: '/mentor-fullstack',
+	},
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',
