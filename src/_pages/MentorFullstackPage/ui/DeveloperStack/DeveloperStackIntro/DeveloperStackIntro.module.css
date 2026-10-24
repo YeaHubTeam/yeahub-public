@@ -1,0 +1,81 @@
+div.card {
+	padding: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	overflow: visible;
+	border-radius: 24px;
+}
+
+div.body {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+.terminal {
+	width: 100%;
+	height: auto;
+}
+
+.copy {
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+.text {
+	width: 100%;
+	min-width: 0;
+	overflow-wrap: break-word;
+}
+
+a.button {
+	margin-top: auto;
+	width: 100%;
+}
+
+@media (width < 1280px) {
+	div.body {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.terminal {
+		order: 2;
+		width: 49%;
+	}
+
+	.copy {
+		flex: 1;
+		order: 1;
+	}
+}
+
+@media (width < 768px) {
+	div.card {
+		padding: 10px;
+		height: auto;
+		border-radius: 20px;
+	}
+
+	div.body {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
+	}
+
+	.terminal,
+	.copy {
+		order: 0;
+		width: 100%;
+	}
+
+	.terminal {
+		margin: 0 auto;
+		max-width: 400px;
+	}
+}

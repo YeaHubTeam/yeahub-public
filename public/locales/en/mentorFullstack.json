@@ -62,6 +62,57 @@
 					"image": "Frontend developers community"
 				}
 			}
+		},
+		"developerStack": {
+			"label": "stack",
+			"title": "The full stack of a modern Fullstack engineer.",
+			"description": "The program adapts to your goals and starting level. We don't memorize everything — we assemble a focused, production-ready set of technologies.",
+			"intro": {
+				"first": "You reinforce every technology by hand: build the interface, write the API, raise the database, and deploy the service.",
+				"second": "We use AI tools as part of an engineer's daily work — for code, tests, and automation.",
+				"button": "Contact me",
+				"imageAlt": "Terminal with docker compose and a GitHub Actions deploy"
+			},
+			"frontend": {
+				"title": "Frontend",
+				"html": "HTML5/CSS3",
+				"javascript": "JavaScript (ES6+)",
+				"typescript": "TypeScript",
+				"react": "React",
+				"redux": "Redux Toolkit",
+				"fsd": "FSD",
+				"next": "Next.js"
+			},
+			"backend": {
+				"title": "Backend",
+				"node": "Node.js",
+				"express": "Express",
+				"nest": "NestJS",
+				"postgres": "PostgreSQL",
+				"redis": "Redis",
+				"kafka": "Kafka",
+				"microservices": "Microservices",
+				"jwt": "JWT"
+			},
+			"devops": {
+				"title": "DevOps & Infra",
+				"docker": "Docker",
+				"compose": "Docker Compose",
+				"cicd": "CI/CD (GitHub Actions)",
+				"nginx": "Nginx",
+				"linux": "Linux CLI",
+				"kubernetes": "Kubernetes",
+				"gitops": "GitOps"
+			},
+			"ai": {
+				"title": "AI & Automation",
+				"codex": "Codex",
+				"claude": "Claude",
+				"copilot": "Copilot",
+				"llm": "LLM integrations",
+				"automation": "Code automation",
+				"tests": "Writing tests"
+			}
 		}
 	}
 }

@@ -31,8 +31,8 @@
 		},
 		"strategy": {
 			"indicator": "стратегия",
-			"title": "Мы не ждём хороший рынок.\u2028Мы побеждаем на любом.",
-			"description": "Поиск работы — это отдельный навык, который требует активных действий.",
+			"title": "Мы не ждём хороший рынок. Мы побеждаем на любом.",
+			"description": "Поиск работы — это отдельный навык, который требует активных действий.",
 			"advantages": {
 				"pack": {
 					"title": "Упаковка опыта",
@@ -61,6 +61,57 @@
 					"description": "Будь в окружении людей с одной целью — оффер.",
 					"image": "Сообщество frontend разработчиков"
 				}
+			}
+		},
+		"developerStack": {
+			"label": "стек",
+			"title": "Полный стек современного Fullstack-инженера.",
+			"description": "Программа адаптируется под твои цели и стартовый уровень.\n Мы не заучиваем всё подряд, а фокусно собираем боевой набор технологий.",
+			"intro": {
+				"first": "Каждую технологию закрепляешь руками: верстаешь интерфейс, пишешь API, поднимаешь базу и деплоишь сервис.",
+				"second": "AI-инструменты используем как часть ежедневной работы инженера — для кода, тестов и автоматизации.",
+				"button": "Связаться со мной",
+				"imageAlt": "Терминал: docker compose и деплой через GitHub Actions"
+			},
+			"frontend": {
+				"title": "Frontend",
+				"html": "HTML5/CSS3",
+				"javascript": "JavaScript (ES6+)",
+				"typescript": "TypeScript",
+				"react": "React",
+				"redux": "Redux Toolkit",
+				"fsd": "FSD",
+				"next": "Next.js"
+			},
+			"backend": {
+				"title": "Backend",
+				"node": "Node.js",
+				"express": "Express",
+				"nest": "NestJS",
+				"postgres": "PostgreSQL",
+				"redis": "Redis",
+				"kafka": "Kafka",
+				"microservices": "Микросервисы",
+				"jwt": "JWT"
+			},
+			"devops": {
+				"title": "DevOps & Infra",
+				"docker": "Docker",
+				"compose": "Docker Compose",
+				"cicd": "CI/CD (GitHub Actions)",
+				"nginx": "Nginx",
+				"linux": "Linux CLI",
+				"kubernetes": "Kubernetes",
+				"gitops": "GitOps"
+			},
+			"ai": {
+				"title": "AI & Automation",
+				"codex": "Codex",
+				"claude": "Claude",
+				"copilot": "Copilot",
+				"llm": "LLM-интеграции",
+				"automation": "Автоматизация кода",
+				"tests": "Написание тестов"
 			}
 		}
 	}

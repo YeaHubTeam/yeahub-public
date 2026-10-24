@@ -1,0 +1,19 @@
+.section {
+	width: 100%;
+	min-width: 0;
+}
+
+.title {
+	max-width: 500px;
+	line-height: 127%;
+}
+
+.description {
+	max-width: 700px;
+}
+
+@media screen and (width < 1280px) {
+	.description {
+		line-height: 120%;
+	}
+}
