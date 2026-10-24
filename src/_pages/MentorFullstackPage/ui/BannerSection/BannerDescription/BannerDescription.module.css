@@ -1,0 +1,15 @@
+.description {
+	margin-top: 10px;
+	width: 100%;
+	min-width: 0;
+	max-width: 520px;
+	text-align: center;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+@media screen and (width < 768px) {
+	.description {
+		max-width: 320px;
+	}
+}

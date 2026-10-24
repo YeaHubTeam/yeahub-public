@@ -746,6 +746,15 @@ export enum Mentor {
 	SEO_KEYWORDS = 'seo.keywords',
 }
 
+export enum MentorFullstack {
+	SEO_TITLE = 'mentorFullstack.seo.title',
+	SEO_DESCRIPTION = 'mentorFullstack.seo.description',
+	BANNER_STICKER = 'mentorFullstack.banner.sticker',
+	BANNER_TITLE = 'mentorFullstack.banner.title',
+	BANNER_DESCRIPTION = 'mentorFullstack.banner.description',
+	BANNER_BUTTON = 'mentorFullstack.banner.button',
+}
+
 export enum Tasks {
 	NOT_AVAILABLE = 'not_available',
 	TITLE_SHORT = 'title.short',

@@ -1,3 +1,5 @@
 .page {
-	padding: 40px 0;
+	gap: 80px;
+	width: 100%;
+	min-width: 0;
 }
