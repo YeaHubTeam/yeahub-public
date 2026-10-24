@@ -1,0 +1,18 @@
+.list {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	min-width: 0;
+	list-style: none;
+}
+
+.item {
+	width: 100%;
+	min-width: 0;
+}
+
+p.text {
+	width: 100%;
+	min-width: 0;
+	overflow-wrap: break-word;
+}

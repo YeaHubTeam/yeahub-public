@@ -753,6 +753,19 @@ export enum MentorFullstack {
 	BANNER_TITLE = 'mentorFullstack.banner.title',
 	BANNER_DESCRIPTION = 'mentorFullstack.banner.description',
 	BANNER_BUTTON = 'mentorFullstack.banner.button',
+	BANNER_ADVANTAGES_LABEL = 'mentorFullstack.bannerAdvantages.label',
+	BANNER_ADVANTAGES_TITLE = 'mentorFullstack.bannerAdvantages.title',
+	BANNER_ADVANTAGES_DESCRIPTION = 'mentorFullstack.bannerAdvantages.description',
+	BANNER_ADVANTAGES_MARKET_VALUE = 'mentorFullstack.bannerAdvantages.marketValue',
+	BANNER_ADVANTAGES_FRONTEND_TITLE = 'mentorFullstack.bannerAdvantages.frontend.title',
+	BANNER_ADVANTAGES_FRONTEND_SALARY = 'mentorFullstack.bannerAdvantages.frontend.salary',
+	BANNER_ADVANTAGES_FRONTEND_COMPETITION = 'mentorFullstack.bannerAdvantages.frontend.competition',
+	BANNER_ADVANTAGES_FRONTEND_VALUE = 'mentorFullstack.bannerAdvantages.frontend.value',
+	BANNER_ADVANTAGES_FULLSTACK_TITLE = 'mentorFullstack.bannerAdvantages.fullstack.title',
+	BANNER_ADVANTAGES_FULLSTACK_TEAM = 'mentorFullstack.bannerAdvantages.fullstack.team',
+	BANNER_ADVANTAGES_FULLSTACK_SYSTEMS = 'mentorFullstack.bannerAdvantages.fullstack.systems',
+	BANNER_ADVANTAGES_FULLSTACK_PRICE = 'mentorFullstack.bannerAdvantages.fullstack.price',
+	BANNER_ADVANTAGES_FULLSTACK_VALUE = 'mentorFullstack.bannerAdvantages.fullstack.value',
 }
 
 export enum Tasks {
