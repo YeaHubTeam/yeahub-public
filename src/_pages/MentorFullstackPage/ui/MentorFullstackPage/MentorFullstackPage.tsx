@@ -2,6 +2,7 @@ import { Flex } from '@/shared/ui/Flex';
 
 import { BannerSection } from '../BannerSection';
 import { DeveloperStack } from '../DeveloperStack';
+import { EducationSection } from '../EducationSection';
 import { FullPathSection } from '../FullPathSection';
 import { PracticeSection } from '../PracticeSection';
 import { StrategySection } from '../StrategySection';
@@ -15,6 +16,7 @@ export const MentorFullstackPage = () => {
 			<DeveloperStack />
 			<PracticeSection />
 			<FullPathSection />
+			<EducationSection />
 		</Flex>
 	);
 };
