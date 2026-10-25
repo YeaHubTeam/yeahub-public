@@ -79,6 +79,68 @@
 					"description": "You don't need to memorize a stack and accumulate years of experience. In the AI era it matters to learn quickly in practice — and we help with that."
 				}
 			}
+		},
+		"education": {
+			"label": "education",
+			"title": "All-inclusive in education.",
+			"subtitle": "Path to the offer",
+			"description": "You come, and everything is taken care of for you: from the first steps to finding a job. You immerse yourself in an environment focused on results. I guide you at every stage.",
+			"steps": {
+				"01": {
+					"title": "Audit and a personal track",
+					"description": "We review your background, find the growth points, and build a plan for entering the international market.",
+					"image": "Ruslan Kuyanets and Sveta Ogar"
+				},
+				"02": {
+					"title": "Packaging an international legend",
+					"description": "We shape a strong “new me”: repackage experience, formulate achievements, and position you for foreign companies."
+				},
+				"03": {
+					"title": "LinkedIn optimization and warm-up",
+					"description": "We package the profile to international standards and prepare scripts for reaching out to hiring managers.",
+					"image": "Anastasia's profile card"
+				},
+				"04": {
+					"title": "A fast boost of IT English",
+					"description": "We remove the language barrier, teach you to present your legend with STAR, and pass soft-skill sections with confidence."
+				},
+				"05": {
+					"title": "Additional training and adaptation",
+					"description": "We add backend, architecture, System Design, and AI tools up to a Senior level.",
+					"image": "Growth chart: breakthrough +40%"
+				},
+				"06": {
+					"title": "Live mock interviews",
+					"description": "We run you through technical and behavioral mocks with experts, until the answers become automatic."
+				},
+				"07": {
+					"title": "A systematic funnel launch",
+					"description": "We build an application funnel and reach the people who make the decisions directly.",
+					"image": "Application funnel: Spotify, N26, Revolut, and Booking.com"
+				},
+				"08": {
+					"title": "Access to the community and knowledge base",
+					"description": "A closed base of foreign interview recordings, test assignments, referrals, and support from like-minded people."
+				},
+				"09": {
+					"title": "Personal support",
+					"description": "We prepare you for each company, review feedback, and refine your self-presentation.",
+					"image": "A mentor message on a phone screen"
+				},
+				"10": {
+					"title": "Salary negotiations",
+					"description": "We help you negotiate the offer, raise the range with arguments, and get the maximum in $/€."
+				},
+				"11": {
+					"title": "Contracts and B2B/Deel",
+					"description": "We advise on B2B contracts, a safe currency withdrawal, and tax legalization.",
+					"image": "Deel · B2B payout, €6,500"
+				},
+				"12": {
+					"title": "Probation-period insurance",
+					"description": "We do not leave after the offer is signed: we help you adapt in the team and get through the first 3 months."
+				}
+			}
 		}
 	}
 }

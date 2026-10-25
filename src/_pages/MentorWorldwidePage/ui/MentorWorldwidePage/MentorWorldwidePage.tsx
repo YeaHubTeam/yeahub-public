@@ -1,6 +1,7 @@
 import { Flex } from '@/shared/ui/Flex';
 
 import { BannerSection } from '../BannerSection';
+import { EducationSection } from '../EducationSection';
 import { MarketSection } from '../MarketSection';
 import { StrategySection } from '../StrategySection';
 import styles from './MentorWorldwidePage.module.css';
@@ -11,6 +12,7 @@ export const MentorWorldwidePage = () => {
 			<BannerSection />
 			<StrategySection />
 			<MarketSection />
+			<EducationSection />
 		</Flex>
 	);
 };
