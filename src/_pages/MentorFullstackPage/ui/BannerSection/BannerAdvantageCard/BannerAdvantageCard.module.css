@@ -1,0 +1,45 @@
+div.card {
+	padding: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	box-shadow: 0 4px 10px 0 #6a63761a;
+	border: 1px solid #ece8f4;
+	border-radius: 20px;
+	background: var(--color-white-900);
+}
+
+div.card.accent {
+	border: none;
+	background:
+		linear-gradient(180deg, #392d7e -1.02%, #8e79ff 16.39%, #e7e6ff 45.94%, #fff 94.66%),
+		linear-gradient(0deg, var(--white-100, #fff), var(--white-100, #fff));
+}
+
+div.body {
+	justify-content: flex-start;
+	gap: 12px;
+	width: 100%;
+	min-width: 0;
+	height: 182px;
+}
+
+h3.title,
+p.title {
+	width: 100%;
+	min-width: 0;
+	overflow-wrap: break-word;
+}
+
+@media screen and (width < 768px) {
+	div.card {
+		flex: 1;
+		padding: 10px;
+		border-radius: 16px;
+	}
+
+	div.body {
+		flex: 1;
+		height: auto;
+	}
+}

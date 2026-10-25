@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { useModal } from '@/shared/libs';
+import { isNavPathActive, useModal } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
 
@@ -22,7 +22,7 @@ export const HeaderNavDesktop = ({ items }: HeaderNavDesktopProps) => {
 
 	const isInverted = INVERTED_THEME_URLS.some((url) => pathname.slice(3) === url);
 	const activeNavLink = items.find((item) =>
-		item.subitems?.some((column) => pathname.includes(column.path)),
+		item.subitems?.some((column) => isNavPathActive(pathname, column.path)),
 	);
 
 	const handleMouseEnter = () => {

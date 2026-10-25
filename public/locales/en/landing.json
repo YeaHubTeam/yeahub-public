@@ -190,6 +190,15 @@
 				"description": "Articles and guides on preparation, technology, and passing IT interviews.",
 				"imgAlt": "IT Interview Preparation Materials"
 			}
+		},
+		"learning": {
+			"title": "Learning"
+		},
+		"frontend": {
+			"title": "Frontend Developer"
+		},
+		"fullstack": {
+			"title": "Fullstack Developer"
 		}
 	}
 }
