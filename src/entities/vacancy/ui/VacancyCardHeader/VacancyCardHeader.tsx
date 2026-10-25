@@ -24,7 +24,7 @@ export const VacancyCardHeader = ({
 
 	return (
 		<Flex gap="12" wrap="wrap" justify="between">
-			<Flex gap="9" align="end">
+			<Flex gap="9" align="end" className={styles.company}>
 				<ImageWithWrapper
 					src={imageSrc ?? undefined}
 					alt={companyTitle}

@@ -8,7 +8,7 @@ import styles from './VacancyCardHeader.module.css';
 export const VacancyCardHeaderSkeleton = () => {
 	return (
 		<Flex gap="12" wrap="wrap" justify="between">
-			<Flex gap="9" align="end">
+			<Flex gap="9" align="end" className={styles.company}>
 				<ImageWithWrapperSkeleton className={styles['image-wrapper']} />
 				<TextSkeleton variant="body3" width={200} />
 			</Flex>

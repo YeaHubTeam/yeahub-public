@@ -28,3 +28,20 @@ div.container {
 	background-color: var(--color-black-100);
 }
 
+@media (width < 768px) {
+	div.items {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 16px;
+	}
+
+	.item {
+		padding-left: 0;
+		min-width: 0;
+	}
+
+	.item:not(:first-child)::before {
+		display: none;
+	}
+}
+

@@ -1,5 +1,8 @@
 .filter {
   display: none;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
 }
 
 button.filter-button {
@@ -28,12 +31,16 @@ button.filter-button {
 @media (width < 1024px) {
 	.filter {
 		display: flex;
-		flex-direction: column;
-		gap: 24px;
-		padding: 24px;
 	}
 
 	button.filter-button {
+		display: flex;
+	}
+}
+
+@media (width < 1280px) {
+	.filter.breakpoint-1280,
+	button.filter-button.breakpoint-1280 {
 		display: flex;
 	}
 }

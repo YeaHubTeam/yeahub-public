@@ -27,13 +27,13 @@ export const HhAnalyticsTable = ({ rows, mode }: HhAnalyticsTableProps) => {
 
 	const renderTableColumnWidths = () => {
 		const column = {
-			index: '48px',
-			title: 'auto',
-			count: '120px',
+			index: styles['index-column'],
+			title: undefined,
+			count: styles['count-width'],
 		};
 
-		return Object.values(column).map((width, idx) => {
-			return <col key={idx} style={{ width }} />;
+		return Object.values(column).map((className, idx) => {
+			return <col key={idx} className={className} />;
 		});
 	};
 
@@ -74,12 +74,14 @@ export const HhAnalyticsTable = ({ rows, mode }: HhAnalyticsTableProps) => {
 	};
 
 	return (
-		<Table
-			items={rows}
-			renderTableColumnWidths={renderTableColumnWidths}
-			renderTableHeader={renderTableHeader}
-			renderTableBody={renderTableBody}
-			hasCopyButton={true}
-		/>
+		<div className={styles.wrapper}>
+			<Table
+				items={rows}
+				renderTableColumnWidths={renderTableColumnWidths}
+				renderTableHeader={renderTableHeader}
+				renderTableBody={renderTableBody}
+				hasCopyButton={true}
+			/>
+		</div>
 	);
 };
