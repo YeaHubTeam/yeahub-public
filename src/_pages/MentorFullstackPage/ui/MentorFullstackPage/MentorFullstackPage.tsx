@@ -6,6 +6,7 @@ import { DeveloperStack } from '../DeveloperStack';
 import { EducationSection } from '../EducationSection';
 import { FullPathSection } from '../FullPathSection';
 import { PracticeSection } from '../PracticeSection';
+import { PricingSection } from '../PricingSection';
 import { StrategySection } from '../StrategySection';
 import styles from './MentorFullstackPage.module.css';
 
@@ -19,6 +20,7 @@ export const MentorFullstackPage = () => {
 			<FullPathSection />
 			<EducationSection />
 			<AboutSection />
+			<PricingSection />
 		</Flex>
 	);
 };
