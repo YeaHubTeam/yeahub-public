@@ -113,6 +113,65 @@
 				"automation": "Автоматизация кода",
 				"tests": "Написание тестов"
 			}
+		},
+		"practice": {
+			"label": "Практика",
+			"title": "Практика: проектируем и строим сервис от Node.js до микросервисов и Kafka.",
+			"description": "Никаких учебных пет-проектов из двух файлов. На практике ты руками создашь полноценный backend и frontend архитектурно сложного сервиса.",
+			"steps": {
+				"monolith": {
+					"title": "Монолит → Микросервисы",
+					"description": "Проектируем архитектуру, пишем чистый API на NestJS и PostgreSQL, разбиваем сервисы."
+				},
+				"queues": {
+					"title": "Асинхронные очереди",
+					"description": "Kafka / RabbitMQ: настраиваем шину данных, обрабатываем фоновые задачи и отказоустойчивость."
+				},
+				"infra": {
+					"title": "Инфраструктура",
+					"description": "Docker Compose, CI/CD и деплой на сервер — плюс клиентская часть на React / Next.js."
+				}
+			},
+			"architecture": {
+				"title": "Архитектура учебного сервиса",
+				"description": "Упрощённая схема того, что соберёшь на практике",
+				"client": {
+					"title": "Клиент",
+					"subtitle": "React / Next.js"
+				},
+				"cicd": {
+					"title": "CI/CD",
+					"subtitle": "GitHub Actions → деплой"
+				},
+				"docker": "Docker Compose",
+				"gateway": {
+					"title": "API Gateway",
+					"subtitle": "Nginx"
+				},
+				"auth": {
+					"title": "Auth service",
+					"subtitle": "NestJS · JWT"
+				},
+				"orders": {
+					"title": "Orders service",
+					"subtitle": "NestJS · REST API"
+				},
+				"postgres": "PostgreSQL",
+				"authDb": "БД сервиса Auth",
+				"authDbShort": "БД Auth",
+				"ordersDb": "БД сервиса Orders",
+				"ordersDbShort": "БД Orders",
+				"bus": "Kafka / RabbitMQ — асинхронная шина событий",
+				"busShort": "Kafka / RabbitMQ — шина событий",
+				"notifications": {
+					"title": "Notifications",
+					"subtitle": "NestJS"
+				},
+				"worker": {
+					"title": "Worker",
+					"subtitle": "фоновые задачи"
+				}
+			}
 		}
 	}
 }

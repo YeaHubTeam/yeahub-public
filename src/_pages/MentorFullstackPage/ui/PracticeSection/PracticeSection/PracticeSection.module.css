@@ -1,0 +1,16 @@
+.section {
+	width: 100%;
+	min-width: 0;
+}
+
+h2.title {
+	width: 100%;
+	min-width: 0;
+	max-width: 740px;
+}
+
+p.description {
+	width: 100%;
+	min-width: 0;
+	max-width: 640px;
+}

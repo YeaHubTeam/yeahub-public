@@ -113,6 +113,65 @@
 				"automation": "Code automation",
 				"tests": "Writing tests"
 			}
+		},
+		"practice": {
+			"label": "Practice",
+			"title": "Practice: we design and build a service from Node.js to microservices and Kafka.",
+			"description": "No toy pet projects made of two files. In practice you will build a complete backend and frontend of an architecturally complex service by hand.",
+			"steps": {
+				"monolith": {
+					"title": "Monolith → Microservices",
+					"description": "We design the architecture, write a clean API with NestJS and PostgreSQL, and split the services."
+				},
+				"queues": {
+					"title": "Async queues",
+					"description": "Kafka / RabbitMQ: set up the data bus, process background jobs, and resilience."
+				},
+				"infra": {
+					"title": "Infrastructure",
+					"description": "Docker Compose, CI/CD, and deploy to a server — plus the client on React / Next.js."
+				}
+			},
+			"architecture": {
+				"title": "Architecture of the training service",
+				"description": "A simplified diagram of what you will build in practice",
+				"client": {
+					"title": "Client",
+					"subtitle": "React / Next.js"
+				},
+				"cicd": {
+					"title": "CI/CD",
+					"subtitle": "GitHub Actions → deploy"
+				},
+				"docker": "Docker Compose",
+				"gateway": {
+					"title": "API Gateway",
+					"subtitle": "Nginx"
+				},
+				"auth": {
+					"title": "Auth service",
+					"subtitle": "NestJS · JWT"
+				},
+				"orders": {
+					"title": "Orders service",
+					"subtitle": "NestJS · REST API"
+				},
+				"postgres": "PostgreSQL",
+				"authDb": "Auth service database",
+				"authDbShort": "Auth DB",
+				"ordersDb": "Orders service database",
+				"ordersDbShort": "Orders DB",
+				"bus": "Kafka / RabbitMQ — async event bus",
+				"busShort": "Kafka / RabbitMQ — event bus",
+				"notifications": {
+					"title": "Notifications",
+					"subtitle": "NestJS"
+				},
+				"worker": {
+					"title": "Worker",
+					"subtitle": "background jobs"
+				}
+			}
 		}
 	}
 }
