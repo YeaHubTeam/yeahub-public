@@ -141,6 +141,76 @@
 					"description": "We do not leave after the offer is signed: we help you adapt in the team and get through the first 3 months."
 				}
 			}
+		},
+		"pricing": {
+			"label": "tariffs",
+			"title": "Transparent terms and payment for the result.",
+			"description": "We share the financial risks with you: we work under a contract, and you pay the main part only after you get an offer.",
+			"audience": "For specialists with experience",
+			"button": "Book a consultation",
+			"flexible": {
+				"label": "Flexible",
+				"price": "70 000 ₽",
+				"note": "+150% of the salary after the offer",
+				"details": "The minimum entry into the program",
+				"features": {
+					"start": "Pay less at the start",
+					"parts": "Post-payment in parts after the offer",
+					"all": "Full all-inclusive",
+					"insurance": "Probation-period insurance"
+				}
+			},
+			"standard": {
+				"label": "Standard",
+				"price": "100 000 ₽",
+				"note": "+100% of the salary after the offer",
+				"details": "The optimal balance for most people",
+				"features": {
+					"less": "Less post-payment after the offer",
+					"all": "Full all-inclusive",
+					"support": "Support until the offer",
+					"insurance": "Probation-period insurance"
+				}
+			},
+			"buyout": {
+				"label": "Buyout",
+				"price": "350 000 ₽",
+				"note": "one-time payment · 0% post-payment",
+				"details": "You lock in the cost in advance",
+				"features": {
+					"none": "No post-payment",
+					"all": "Full all-inclusive",
+					"support": "Support until the offer",
+					"insurance": "Probation-period insurance"
+				}
+			},
+			"note": "* What 100% post-payment means: you get an offer of $4,000 — you pay $1,333 a month from the first three salaries.",
+			"postpay": {
+				"title": "What is 100% post-payment?",
+				"description": "You get an offer of $4,000 — you pay $1,333 a month, from the first three salaries."
+			},
+			"start": {
+				"badge": "If you start without commercial experience",
+				"title": "Basic program + international block",
+				"description": "The international career block costs 70 000 ₽. You can add it right away or buy it during the training."
+			},
+			"example": {
+				"title": "Calculation example",
+				"program": "“Sequential” program",
+				"programPrice": "65 000 ₽",
+				"block": "International career block",
+				"blockPrice": "+ 70 000 ₽",
+				"prepay": "Prepayment",
+				"prepayPrice": "135 000 ₽",
+				"postpay": "Post-payment after the offer",
+				"postpayValue": "150% of the salary"
+			},
+			"banner": {
+				"title": "No commercial development experience yet?",
+				"description": "First complete the basic training and an internship on a real production project, then enter the international market.",
+				"button": "Start learning from scratch and get experience",
+				"buttonShort": "Start learning"
+			}
 		}
 	}
 }

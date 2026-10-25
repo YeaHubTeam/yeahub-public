@@ -1,0 +1,23 @@
+.content {
+	gap: 16px;
+	width: 100%;
+	min-width: 0;
+}
+
+.audience.audience {
+	padding: 4px 16px;
+	height: 32px;
+	border: none;
+	border-radius: 47px;
+	background-color: var(--color-green-007) !important;
+}
+
+.audience p {
+	color: var(--color-green-750);
+}
+
+@media screen and (width < 768px) {
+	.content {
+		gap: 10px;
+	}
+}
