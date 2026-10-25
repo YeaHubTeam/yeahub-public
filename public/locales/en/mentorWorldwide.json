@@ -284,6 +284,41 @@
 				"swift": "Swift",
 				"css": "CSS"
 			}
+		},
+		"faq": {
+			"indicator": "faq",
+			"title": "Frequently Asked Questions.",
+			"description": "Answers to the most common questions about the learning format, post-payment, and the program process.",
+			"steps": {
+				"01": {
+					"title": "What if my English is weak or I have a language barrier?",
+					"description": "Our whole ecosystem is built for fast adaptation. You don't need to study the language for years before you start. While you prepare technically, you build up professional IT vocabulary in parallel, attend speaking clubs, and run mock interviews. The speaking barrier comes down during the process itself."
+				},
+				"02": {
+					"title": "What if I only have 1 year of commercial experience?",
+					"description": "That is more than enough. We will deeply repackage your real experience, build a strong story, fill in the hard skills you need (backend, infrastructure, AI tools), and bring your positioning to a level valued on the international market."
+				},
+				"03": {
+					"title": "Which specializations is the program designed for?",
+					"description": "The program is built for Frontend and Fullstack developers. We constantly adapt it to the current market: we add targeted training in backend, databases, architecture, and infrastructure, turning you into a versatile, in-demand specialist."
+				},
+				"04": {
+					"title": "Roughly how long does preparation take, and what makes it fast?",
+					"description": "On average the path takes from 2 to 5 months. The speed comes from a team of specialists working with you in parallel: while you strengthen hard skills and architecture, your LinkedIn is packaged, soft skills are trained, and English mocks are run at the same time. Everything runs in parallel instead of stretching over years."
+				},
+				"05": {
+					"title": "Will I need to buy anything extra along the way?",
+					"description": "No. It is fully all-inclusive. The program price already covers everything: personal mentoring, specialists for LinkedIn and soft skills, technical and language mocks, a System Design review, access to a closed community, and support during the probation period. No hidden payments."
+				},
+				"06": {
+					"title": "What if I get an offer before I finish the whole program?",
+					"description": "The post-payment terms stay the same. The main goal of our work is your signed offer. If the right strategy gets you an offer in 1.5–2 months instead of 4, that means we worked as effectively as possible."
+				},
+				"07": {
+					"title": "If I completed the program but could not find a job, do I have to pay the post-payment?",
+					"description": "No, you don't. We split the financial risk in half. All the work the mentor team does is worth far more than the prepayment, but we are ready to risk our time for the result.\n\nThe only requirement is a good-faith job search without sabotage (following the recommendations, applying regularly, and going through interviews). This protects the mentors' work and makes sure the format is not used as a half-price intensive without a real intention to enter the market."
+				}
+			}
 		}
 	}
 }

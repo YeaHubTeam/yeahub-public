@@ -1221,6 +1221,23 @@ export enum MentorWorldwide {
 	TAGS_CLOUD_PYTHON = 'mentorWorldwide.tags-cloud.title.python',
 	TAGS_CLOUD_SWIFT = 'mentorWorldwide.tags-cloud.title.swift',
 	TAGS_CLOUD_CSS = 'mentorWorldwide.tags-cloud.title.css',
+	FAQ_INDICATOR = 'mentorWorldwide.faq.indicator',
+	FAQ_TITLE = 'mentorWorldwide.faq.title',
+	FAQ_DESCRIPTION = 'mentorWorldwide.faq.description',
+	FAQ_STEPS_01_TITLE = 'mentorWorldwide.faq.steps.01.title',
+	FAQ_STEPS_01_DESCRIPTION = 'mentorWorldwide.faq.steps.01.description',
+	FAQ_STEPS_02_TITLE = 'mentorWorldwide.faq.steps.02.title',
+	FAQ_STEPS_02_DESCRIPTION = 'mentorWorldwide.faq.steps.02.description',
+	FAQ_STEPS_03_TITLE = 'mentorWorldwide.faq.steps.03.title',
+	FAQ_STEPS_03_DESCRIPTION = 'mentorWorldwide.faq.steps.03.description',
+	FAQ_STEPS_04_TITLE = 'mentorWorldwide.faq.steps.04.title',
+	FAQ_STEPS_04_DESCRIPTION = 'mentorWorldwide.faq.steps.04.description',
+	FAQ_STEPS_05_TITLE = 'mentorWorldwide.faq.steps.05.title',
+	FAQ_STEPS_05_DESCRIPTION = 'mentorWorldwide.faq.steps.05.description',
+	FAQ_STEPS_06_TITLE = 'mentorWorldwide.faq.steps.06.title',
+	FAQ_STEPS_06_DESCRIPTION = 'mentorWorldwide.faq.steps.06.description',
+	FAQ_STEPS_07_TITLE = 'mentorWorldwide.faq.steps.07.title',
+	FAQ_STEPS_07_DESCRIPTION = 'mentorWorldwide.faq.steps.07.description',
 }
 
 export enum Tasks {
