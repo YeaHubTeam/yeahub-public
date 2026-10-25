@@ -15,6 +15,40 @@
 				"third": "Students work in 15+ countries worldwide.",
 				"fourth": "A clear system of mocks and oversight."
 			}
+		},
+		"strategy": {
+			"indicator": "Adaptation",
+			"title": "Not consultations, but a full IT adaptation.",
+			"description": "Full support through to the result, with constant adaptation to the market. We change the stack, teach the missing technologies, and rebuild the strategy until we get the long-awaited offer.",
+			"advantages": {
+				"pack": {
+					"title": "Packaging experience",
+					"description": "Any experience can be sold as strong — we will show you how."
+				},
+				"ats": {
+					"title": "English and Soft Skills",
+					"description": "Remove the language barrier, prepare with STAR, and pass the soft-skill sections.",
+					"image": "Phone with English levels and soft skills topics"
+				},
+				"search": {
+					"title": "Search strategy",
+					"description": "How to look for a job the right way and act in the market."
+				},
+				"preparation": {
+					"title": "Interview preparation",
+					"description": "Practice with people, take mocks, and watch real interviews.",
+					"image": "A Virtual DOM question card with a rating and difficulty"
+				},
+				"experience": {
+					"title": "Additional training",
+					"description": "We add backend, architecture, AI, and infrastructure — and close the gaps."
+				},
+				"motivation": {
+					"title": "Community",
+					"description": "Like-minded people, networking, and mentor help at every step.",
+					"image": "A grid of community members"
+				}
+			}
 		}
 	}
 }
