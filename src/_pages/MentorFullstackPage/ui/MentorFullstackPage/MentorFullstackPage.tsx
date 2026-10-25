@@ -8,6 +8,7 @@ import { EducationSection } from '../EducationSection';
 import { FaqSection } from '../FaqSection';
 import { FeaturesSection } from '../FeaturesSection';
 import { FullPathSection } from '../FullPathSection';
+import { InternationalTrackSection } from '../InternationalTrackSection';
 import { PracticeSection } from '../PracticeSection';
 import { PricingSection } from '../PricingSection';
 import { StrategySection } from '../StrategySection';
@@ -31,6 +32,7 @@ export const MentorFullstackPage = ({ locale }: MentorFullstackPageProps) => {
 			<CommunitySection />
 			<FaqSection />
 			<FeaturesSection locale={locale} />
+			<InternationalTrackSection />
 		</Flex>
 	);
 };

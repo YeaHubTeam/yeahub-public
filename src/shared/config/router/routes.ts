@@ -100,6 +100,10 @@ export const ROUTES = {
 		route: 'mentor-fullstack',
 		page: '/mentor-fullstack',
 	},
+	'mentor-worldwide': {
+		route: 'mentor-worldwide',
+		page: '/mentor-worldwide',
+	},
 	wiki: {
 		questions: {
 			page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'wiki/questions/:questionId',

@@ -467,6 +467,11 @@
 					"link": "Resume analytics"
 				}
 			}
+		},
+		"internationalTrack": {
+			"title": "Ready to take your Fullstack experience to companies abroad?",
+			"description": "International track: packaging for the foreign market, LinkedIn, English mocks, and support through to a foreign-currency offer.",
+			"button": "See the International track"
 		}
 	}
 }

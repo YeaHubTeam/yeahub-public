@@ -1038,6 +1038,9 @@ export enum MentorFullstack {
 	PRICING_BONUSES_INTENSIVE_NOTE = 'mentorFullstack.pricing.bonuses.intensive_note',
 	PRICING_BONUSES_MENTOR_INVOLVEMENT = 'mentorFullstack.pricing.bonuses.mentor_involvement',
 	PRICING_BONUSES_MENTOR_INTEREST = 'mentorFullstack.pricing.bonuses.mentor_interest',
+	INTERNATIONAL_TRACK_TITLE = 'mentorFullstack.internationalTrack.title',
+	INTERNATIONAL_TRACK_DESCRIPTION = 'mentorFullstack.internationalTrack.description',
+	INTERNATIONAL_TRACK_BUTTON = 'mentorFullstack.internationalTrack.button',
 }
 
 export enum Tasks {
