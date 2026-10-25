@@ -3,7 +3,13 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { MentorFullstackPage } from '@/pages/MentorFullstackPage';
-import { MentorFullstack, i18Namespace } from '@/shared/config';
+import { MentorFullstack, i18Namespace, locales } from '@/shared/config';
+
+export const dynamic = 'force-static';
+
+export function generateStaticParams() {
+	return locales.map((locale) => ({ locale }));
+}
 
 interface PageProps {
 	params: Promise<{ locale: string }>;

@@ -18,7 +18,7 @@ export const InternationalTrackSection = () => {
 			<span className={`${styles.glow} ${styles.lavender}`} aria-hidden="true" />
 			<span className={`${styles.glow} ${styles.violet}`} aria-hidden="true" />
 			<Flex direction="column" align="start" gap="10" flex={1} className={styles.text}>
-				<Text variant="head3" color="white-900" className={styles.title}>
+				<Text variant="head2" color="white-900" className={styles.title}>
 					{t(MentorFullstack.INTERNATIONAL_TRACK_TITLE)}
 				</Text>
 				<Text variant="body3" color="white-900" className={styles.description}>

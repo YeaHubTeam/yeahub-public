@@ -17,7 +17,7 @@ export const BannerAdvantagesContent = () => {
 				</Text>
 			</Flex>
 			<Flex direction="column" gap="12" className={styles.text}>
-				<Text variant="head3" className={styles.title}>
+				<Text variant="head2" className={styles.title}>
 					{t(MentorFullstack.BANNER_ADVANTAGES_TITLE)}
 				</Text>
 				<Text variant="body3" color="black-500" className={styles.description}>
