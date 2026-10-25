@@ -1,8 +1,14 @@
 div.skills {
+	flex-shrink: 0;
 	padding: 4px 10px;
+	max-width: 100%;
 	border-radius: 68px;
 }
 
 .skill {
 	font-size: var(--font-size-p-s);
+}
+
+.hidden-skills {
+	white-space: nowrap;
 }

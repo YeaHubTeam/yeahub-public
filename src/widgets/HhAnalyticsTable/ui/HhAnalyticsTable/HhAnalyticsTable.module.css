@@ -1,3 +1,20 @@
+.wrapper {
+	max-width: 100%;
+	overflow-x: auto;
+}
+
+.wrapper table td {
+	overflow-wrap: normal;
+}
+
+.index-column {
+	width: 48px;
+}
+
+.count-width {
+	width: 120px;
+}
+
 .top-row-cell {
   color: var(--color-purple-700);
 }
@@ -8,6 +25,23 @@
 
 .cell {
   height: 71px;
-  overflow-wrap: anywhere;
+}
+
+@media (width < 768px) {
+	.wrapper table td {
+		padding: 12px 6px;
+	}
+
+	.wrapper thead {
+		white-space: nowrap;
+	}
+
+	.index-column {
+		width: 32px;
+	}
+
+	.count-width {
+		width: auto;
+	}
 }
 

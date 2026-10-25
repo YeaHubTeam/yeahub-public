@@ -1,6 +1,12 @@
+.conditions {
+	flex-wrap: wrap;
+}
+
 .format {
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
+	max-width: 100%;
 }
 
 .format::after {

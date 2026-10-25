@@ -85,7 +85,7 @@
 }
 
 @media (width < 1280px) {
-	.card-wrapper {
+	div.card-wrapper {
 		flex-direction: row;
 		justify-content: space-between;
 		height: 310px;
@@ -135,13 +135,13 @@
 }
 
 @media (width < 768px) {
-	.card-wrapper {
+	div.card-wrapper {
 		flex-direction: column;
 		padding: 16px 0;
 		height: auto;
 	}
 
-	.reverse {
+	div.reverse {
 		flex-direction: column-reverse;
 	}
 
