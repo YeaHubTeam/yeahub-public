@@ -2,6 +2,7 @@ import { Flex } from '@/shared/ui/Flex';
 
 import { AboutSection } from '../AboutSection';
 import { BannerSection } from '../BannerSection';
+import { CommunitySection } from '../CommunitySection';
 import { DeveloperStack } from '../DeveloperStack';
 import { EducationSection } from '../EducationSection';
 import { FullPathSection } from '../FullPathSection';
@@ -21,6 +22,7 @@ export const MentorFullstackPage = () => {
 			<EducationSection />
 			<AboutSection />
 			<PricingSection />
+			<CommunitySection />
 		</Flex>
 	);
 };
