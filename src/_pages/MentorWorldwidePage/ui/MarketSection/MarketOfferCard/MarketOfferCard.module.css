@@ -1,0 +1,124 @@
+div.card {
+	padding: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+div.content {
+	justify-content: space-between;
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+.top {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		'badge'
+		'image'
+		'salary';
+	gap: 41px;
+	width: 100%;
+	min-width: 0;
+}
+
+.icon-wrapper {
+	grid-area: badge;
+	width: 29px;
+	height: 29px;
+}
+
+.image {
+	grid-area: image;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+.salary {
+	grid-area: salary;
+	width: 100%;
+	min-width: 0;
+}
+
+.price.price {
+	width: 100%;
+	min-width: 0;
+	line-height: 52px;
+	font-weight: var(--font-weight-700);
+	font-size: var(--font-size-h-l);
+	overflow-wrap: break-word;
+}
+
+.note {
+	width: 100%;
+	min-width: 0;
+	line-height: 130%;
+	font-size: var(--font-size-p-s);
+}
+
+.texts {
+	width: 100%;
+	min-width: 0;
+}
+
+.title,
+.description {
+	width: 100%;
+	min-width: 0;
+	overflow-wrap: break-word;
+}
+
+@media screen and (width < 1280px) {
+	div.card {
+		height: auto;
+	}
+
+	div.content {
+		justify-content: flex-start;
+		height: auto;
+	}
+
+	.top {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-areas:
+			'badge image'
+			'salary image';
+		align-items: center;
+		column-gap: 16px;
+	}
+
+	.image {
+		justify-self: end;
+		width: 100%;
+	}
+
+	.price.price {
+		font-size: var(--font-size-large-30);
+	}
+
+	.description {
+		max-width: calc(50% - 20px);
+	}
+}
+
+@media screen and (width < 768px) {
+	div.card {
+		padding: 10px;
+	}
+
+	.top {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			'badge'
+			'image'
+			'salary';
+	}
+
+		.description {
+		max-width: 100%;
+	}
+}

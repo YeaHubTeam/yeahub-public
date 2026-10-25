@@ -49,6 +49,36 @@
 					"image": "A grid of community members"
 				}
 			}
+		},
+		"market": {
+			"indicator": "Market",
+			"title": "The global IT market is closer than you think.",
+			"description": "Entering the international market is not about a perfect C1 or luck. It is about a clear funnel, the ability to adapt, and systematic work.",
+			"offer": {
+				"image": "Offer card: Senior Frontend Engineer in Berlin, 6,500 € per month",
+				"price": "3,000–10,000+",
+				"note": "per month on the international market",
+				"title": "A financial shield in $/€",
+				"description": "Income in foreign currency covers inflation and gives confidence regardless of local crises."
+			},
+			"cards": {
+				"english": {
+					"title": "Perfect English is not required",
+					"description": "Preparing for interviews in English does not take years. The speaking barrier comes down quickly — through mocks, conversation, and practice."
+				},
+				"funnel": {
+					"title": "An application funnel x10",
+					"description": "You are no longer limited to the local market: Europe, the USA, the UAE, and international startups."
+				},
+				"freedom": {
+					"title": "Freedom of choice and relocation",
+					"description": "Work from anywhere through B2B/Deel contracts, or use an offer as a legal track for relocation."
+				},
+				"myth": {
+					"title": "“I'm not good enough” is the main myth",
+					"description": "You don't need to memorize a stack and accumulate years of experience. In the AI era it matters to learn quickly in practice — and we help with that."
+				}
+			}
 		}
 	}
 }

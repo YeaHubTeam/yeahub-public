@@ -1073,6 +1073,22 @@ export enum MentorWorldwide {
 	STRATEGY_ADVANTAGES_MOTIVATION_TITLE = 'mentorWorldwide.strategy.advantages.motivation.title',
 	STRATEGY_ADVANTAGES_MOTIVATION_DESCRIPTION = 'mentorWorldwide.strategy.advantages.motivation.description',
 	STRATEGY_ADVANTAGES_MOTIVATION_IMAGE_ALT = 'mentorWorldwide.strategy.advantages.motivation.image',
+	MARKET_INDICATOR = 'mentorWorldwide.market.indicator',
+	MARKET_TITLE = 'mentorWorldwide.market.title',
+	MARKET_DESCRIPTION = 'mentorWorldwide.market.description',
+	MARKET_OFFER_IMAGE_ALT = 'mentorWorldwide.market.offer.image',
+	MARKET_OFFER_PRICE = 'mentorWorldwide.market.offer.price',
+	MARKET_OFFER_NOTE = 'mentorWorldwide.market.offer.note',
+	MARKET_OFFER_TITLE = 'mentorWorldwide.market.offer.title',
+	MARKET_OFFER_DESCRIPTION = 'mentorWorldwide.market.offer.description',
+	MARKET_ENGLISH_TITLE = 'mentorWorldwide.market.cards.english.title',
+	MARKET_ENGLISH_DESCRIPTION = 'mentorWorldwide.market.cards.english.description',
+	MARKET_FUNNEL_TITLE = 'mentorWorldwide.market.cards.funnel.title',
+	MARKET_FUNNEL_DESCRIPTION = 'mentorWorldwide.market.cards.funnel.description',
+	MARKET_FREEDOM_TITLE = 'mentorWorldwide.market.cards.freedom.title',
+	MARKET_FREEDOM_DESCRIPTION = 'mentorWorldwide.market.cards.freedom.description',
+	MARKET_MYTH_TITLE = 'mentorWorldwide.market.cards.myth.title',
+	MARKET_MYTH_DESCRIPTION = 'mentorWorldwide.market.cards.myth.description',
 }
 
 export enum Tasks {

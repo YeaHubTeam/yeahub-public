@@ -1,6 +1,7 @@
 import { Flex } from '@/shared/ui/Flex';
 
 import { BannerSection } from '../BannerSection';
+import { MarketSection } from '../MarketSection';
 import { StrategySection } from '../StrategySection';
 import styles from './MentorWorldwidePage.module.css';
 
@@ -9,6 +10,7 @@ export const MentorWorldwidePage = () => {
 		<Flex direction="column" className={styles.page}>
 			<BannerSection />
 			<StrategySection />
+			<MarketSection />
 		</Flex>
 	);
 };
