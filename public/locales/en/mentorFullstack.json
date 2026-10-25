@@ -472,6 +472,16 @@
 			"title": "Ready to take your Fullstack experience to companies abroad?",
 			"description": "International track: packaging for the foreign market, LinkedIn, English mocks, and support through to a foreign-currency offer.",
 			"button": "See the International track"
+		},
+		"tags-cloud": {
+			"title": {
+				"javascript": "JavaScript",
+				"html": "HTML",
+				"react": "React",
+				"python": "Python",
+				"swift": "Swift",
+				"css": "CSS"
+			}
 		}
 	}
 }

@@ -492,6 +492,16 @@
 			"title": "Готов выводить свой Fullstack-опыт на заграничные компании?",
 			"description": "Международный трек: упаковка под зарубежный рынок, LinkedIn, английские моки и сопровождение до валютного оффера.",
 			"button": "Смотреть Международный трек"
+		},
+		"tags-cloud": {
+			"title": {
+				"javascript": "JavaScript",
+				"html": "HTML",
+				"react": "React",
+				"python": "Python",
+				"swift": "Swift",
+				"css": "CSS"
+			}
 		}
 	}
 }

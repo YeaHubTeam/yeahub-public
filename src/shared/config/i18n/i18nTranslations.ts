@@ -1041,6 +1041,12 @@ export enum MentorFullstack {
 	INTERNATIONAL_TRACK_TITLE = 'mentorFullstack.internationalTrack.title',
 	INTERNATIONAL_TRACK_DESCRIPTION = 'mentorFullstack.internationalTrack.description',
 	INTERNATIONAL_TRACK_BUTTON = 'mentorFullstack.internationalTrack.button',
+	TAGS_CLOUD_JAVASCRIPT = 'mentorFullstack.tags-cloud.title.javascript',
+	TAGS_CLOUD_HTML = 'mentorFullstack.tags-cloud.title.html',
+	TAGS_CLOUD_REACT = 'mentorFullstack.tags-cloud.title.react',
+	TAGS_CLOUD_PYTHON = 'mentorFullstack.tags-cloud.title.python',
+	TAGS_CLOUD_SWIFT = 'mentorFullstack.tags-cloud.title.swift',
+	TAGS_CLOUD_CSS = 'mentorFullstack.tags-cloud.title.css',
 }
 
 export enum Tasks {

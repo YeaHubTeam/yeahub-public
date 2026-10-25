@@ -12,6 +12,7 @@ import { InternationalTrackSection } from '../InternationalTrackSection';
 import { PracticeSection } from '../PracticeSection';
 import { PricingSection } from '../PricingSection';
 import { StrategySection } from '../StrategySection';
+import { TagsCloud } from '../TagsCloud';
 import styles from './MentorFullstackPage.module.css';
 
 interface MentorFullstackPageProps {
@@ -32,6 +33,7 @@ export const MentorFullstackPage = ({ locale }: MentorFullstackPageProps) => {
 			<CommunitySection />
 			<FaqSection />
 			<FeaturesSection locale={locale} />
+			<TagsCloud />
 			<InternationalTrackSection />
 		</Flex>
 	);
