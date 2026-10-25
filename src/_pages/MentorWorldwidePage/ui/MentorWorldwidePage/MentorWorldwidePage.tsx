@@ -5,7 +5,9 @@ import { EducationSection } from '../EducationSection';
 import { FeaturesSection } from '../FeaturesSection';
 import { MarketSection } from '../MarketSection';
 import { PricingSection } from '../PricingSection';
+import { ProgramsSection } from '../ProgramsSection';
 import { StrategySection } from '../StrategySection';
+import { TagsCloud } from '../TagsCloud';
 import styles from './MentorWorldwidePage.module.css';
 
 interface MentorWorldwidePageProps {
@@ -21,6 +23,8 @@ export const MentorWorldwidePage = ({ locale }: MentorWorldwidePageProps) => {
 			<EducationSection />
 			<PricingSection />
 			<FeaturesSection locale={locale} />
+			<ProgramsSection />
+			<TagsCloud />
 		</Flex>
 	);
 };

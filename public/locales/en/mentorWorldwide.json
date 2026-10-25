@@ -250,6 +250,40 @@
 					"link": "Resume analytics"
 				}
 			}
+		},
+		"programs": {
+			"label": "programs",
+			"title": "Not planning to enter the international market right now?",
+			"description": "If your goal is to learn development from scratch and focus on the CIS market at the start, we have proven programs for the Russian market with mentoring and a product internship.",
+			"badge": "From scratch or with experience",
+			"frontend": {
+				"title": "Frontend development with a mentor",
+				"description": "Enter the local CIS (Russia) market with salaries from 150 000 ₽.",
+				"chip1": "Internship at YeaHub",
+				"chip2": "Our courses",
+				"chip3": "Mocks and interviews",
+				"chip4": "Support until the offer",
+				"button": "More about Frontend"
+			},
+			"fullstack": {
+				"title": "Fullstack development with a mentor",
+				"description": "Full Frontend + Backend + AI stack for fast career growth on the Russian market.",
+				"chip1": "React / Next.js",
+				"chip2": "Node.js and databases",
+				"chip3": "Service design",
+				"chip4": "AI tools",
+				"button": "More about Fullstack"
+			}
+		},
+		"tags-cloud": {
+			"title": {
+				"javascript": "JavaScript",
+				"html": "HTML",
+				"react": "React",
+				"python": "Python",
+				"swift": "Swift",
+				"css": "CSS"
+			}
 		}
 	}
 }
