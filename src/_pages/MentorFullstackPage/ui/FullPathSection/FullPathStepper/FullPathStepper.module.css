@@ -17,6 +17,7 @@
 }
 
 .level {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-self: end;
@@ -76,4 +77,33 @@
 	left: 50%;
 	transform: translate(-50%);
 	white-space: nowrap;
+}
+
+@media (width < 1280px) {
+	.wrapper-level {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		width: calc(100% - 30px);
+	}
+
+	.wrapper-level::after {
+		top: 7px;
+		transform: none;
+	}
+
+	.level {
+		position: relative;
+		flex: none;
+		justify-self: auto;
+		transform: none;
+	}
+
+	.level-text.level-text {
+		position: static;
+		left: auto;
+		line-height: 14px;
+		font-size: 12px;
+		transform: none;
+	}
 }

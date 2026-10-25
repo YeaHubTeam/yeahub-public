@@ -20,3 +20,16 @@
 		max-width: 372px;
 	}
 }
+
+@media (width < 768px) {
+	.level-right {
+		padding-right: 0;
+		padding-bottom: 0;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.level-subtitle {
+		max-width: 200px;
+	}
+}

@@ -18,7 +18,9 @@ const FullPathStepperBlock = () => {
 					{t(MentorFullstack.FULLPATH_LEVELS_TITLE)}
 				</Text>
 				<Flex direction="column" className={styles['level-right']}>
-					<Text variant="body3-accent">{t(MentorFullstack.FULLPATH_LEVELS_SUBTITLE)}</Text>
+					<Text variant="body3-accent" className={styles['level-subtitle']}>
+						{t(MentorFullstack.FULLPATH_LEVELS_SUBTITLE)}
+					</Text>
 					<FullPathStepper />
 				</Flex>
 			</div>

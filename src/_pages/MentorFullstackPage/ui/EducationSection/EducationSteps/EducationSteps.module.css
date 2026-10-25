@@ -81,6 +81,11 @@
 	.media01 {
 		top: 44px;
 		right: -5px;
+		width: 280px;
+
+		img {
+			max-width: 280px;
+		}
 	}
 
 	.media03 {
