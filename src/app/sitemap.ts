@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		'/learning',
 		'/mentor',
 		'/mentor-fullstack',
+		'/mentor-worldwide',
 		'/quiz',
 		'/quiz/new',
 		'/quiz/result',
