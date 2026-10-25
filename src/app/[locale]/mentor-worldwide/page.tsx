@@ -34,7 +34,7 @@ const Page = async ({ params }: PageProps) => {
 
 	setRequestLocale(locale);
 
-	return <MentorWorldwidePage />;
+	return <MentorWorldwidePage locale={locale} />;
 };
 
 export default Page;
