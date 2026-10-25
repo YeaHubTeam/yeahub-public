@@ -319,6 +319,33 @@
 					"description": "No, you don't. We split the financial risk in half. All the work the mentor team does is worth far more than the prepayment, but we are ready to risk our time for the result.\n\nThe only requirement is a good-faith job search without sabotage (following the recommendations, applying regularly, and going through interviews). This protects the mentors' work and makes sure the format is not used as a half-price intensive without a real intention to enter the market."
 				}
 			}
+		},
+		"community": {
+			"indicator": "community",
+			"title": "Free materials and community.",
+			"description": "You can learn development for free — I already have the environment, materials, and an active community.",
+			"cards": {
+				"frontend": {
+					"title": "Frontend Community",
+					"description": "Frontend Elite — a free chat with mentoring materials. Feel free to join, introduce yourself, and chat.",
+					"link": "Join the community"
+				},
+				"news": {
+					"title": "News",
+					"description": "News, announcements, and student results. Offers, reviews, mentoring insights, and internships.",
+					"link": "Results and news"
+				},
+				"youtube": {
+					"title": "YouTube",
+					"description": "YouTube — videos about architecture, React, interview preparation, and the IT market.",
+					"link": "Go to YouTube"
+				},
+				"telegram": {
+					"title": "Telegram channel",
+					"description": "Personal blog: thoughts on the market, IT career growth, insights, and useful materials.",
+					"link": "Read Telegram"
+				}
+			}
 		}
 	}
 }

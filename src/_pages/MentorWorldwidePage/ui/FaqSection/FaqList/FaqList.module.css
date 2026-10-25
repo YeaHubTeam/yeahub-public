@@ -1,26 +1,29 @@
-.wrapper {
+.wrapper.wrapper {
 	display: grid;
 	grid-template-columns: 1fr 2fr;
-	grid-template-areas: '. list';
+	align-items: start;
+	gap: 10px;
+	width: 100%;
+	min-width: 0;
 }
 
-.wrapper div:nth-child(1) {
-	grid-area: list;
+.content {
+	grid-column: 2;
+	width: 100%;
+	min-width: 0;
 }
 
 .answer {
 	white-space: pre-line;
 }
 
-@media (width < 1280px) {
-	.wrapper {
+@media screen and (width < 1280px) {
+	.wrapper.wrapper {
 		grid-template-columns: 1fr;
-		grid-template-areas: 'list';
 	}
-}
 
-@media (width < 1280px) {
 	.content {
+		grid-column: 1;
 		gap: 10px;
 	}
 }

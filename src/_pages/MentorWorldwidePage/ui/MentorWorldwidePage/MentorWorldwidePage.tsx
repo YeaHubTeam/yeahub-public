@@ -1,6 +1,7 @@
 import { Flex } from '@/shared/ui/Flex';
 
 import { BannerSection } from '../BannerSection';
+import { CommunitySection } from '../CommunitySection';
 import { EducationSection } from '../EducationSection';
 import { FaqSection } from '../FaqSection';
 import { FeaturesSection } from '../FeaturesSection';
@@ -23,6 +24,7 @@ export const MentorWorldwidePage = ({ locale }: MentorWorldwidePageProps) => {
 			<MarketSection />
 			<EducationSection />
 			<PricingSection />
+			<CommunitySection />
 			<FaqSection />
 			<FeaturesSection locale={locale} />
 			<ProgramsSection />
