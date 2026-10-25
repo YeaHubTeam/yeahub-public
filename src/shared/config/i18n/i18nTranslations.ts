@@ -903,6 +903,22 @@ export enum MentorFullstack {
 	EDUCATION_STEPS_09_TITLE = 'mentorFullstack.education.steps.09.title',
 	EDUCATION_STEPS_09_DESCRIPTION = 'mentorFullstack.education.steps.09.description',
 	EDUCATION_STEPS_09_IMAGE_ALT = 'mentorFullstack.education.steps.09.image',
+	ABOUT_INDICATOR = 'mentorFullstack.about.indicator',
+	ABOUT_TITLE = 'mentorFullstack.about.title',
+	ABOUT_IMAGE = 'mentorFullstack.about.image',
+	ABOUT_DESCRIPTION = 'mentorFullstack.about.description',
+	ABOUT_PROFILE_NAME = 'mentorFullstack.about.profile.name',
+	ABOUT_PROFILE_ROLE = 'mentorFullstack.about.profile.role',
+	ABOUT_ACHIEVEMENTS_FIRST = 'mentorFullstack.about.achievements.first',
+	ABOUT_ACHIEVEMENTS_SECOND = 'mentorFullstack.about.achievements.second',
+	ABOUT_ACHIEVEMENTS_THIRD = 'mentorFullstack.about.achievements.third',
+	ABOUT_ACHIEVEMENTS_FOURTH = 'mentorFullstack.about.achievements.fourth',
+	ABOUT_ACHIEVEMENTS_FIFTH = 'mentorFullstack.about.achievements.fifth',
+	ABOUT_ACHIEVEMENTS_SIXTH = 'mentorFullstack.about.achievements.sixth',
+	ABOUT_LINK = 'mentorFullstack.about.link',
+	ABOUT_VIDEO_TITLE = 'mentorFullstack.about.video.title',
+	ABOUT_VIDEO_LINK = 'mentorFullstack.about.video.link',
+	COMMUNITY_CARD_YOUTUBE_TITLE = 'mentorFullstack.community.cards.youtube.title',
 }
 
 export enum Tasks {
