@@ -1,0 +1,13 @@
+.content {
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+}
+
+.column,
+.text {
+	width: 100%;
+	min-width: 0;
+}

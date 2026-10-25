@@ -1,0 +1,20 @@
+{
+	"mentorWorldwide": {
+		"seo": {
+			"title": "Employment on the international market ($/€)",
+			"description": "Full support through to a currency offer, guided by two mentors and a team of experts. We package an international CV, drill System Design, and break through the foreign hiring funnel."
+		},
+		"banner": {
+			"sticker": "Currency offer with support",
+			"title": "Employment on the international market ($/€)",
+			"description": "Full support through to a currency offer, guided by two mentors and a team of experts. We package an international CV, drill System Design, and break through the foreign hiring funnel.",
+			"button": "Contact me",
+			"advantages": {
+				"first": "The main payment only after the offer.",
+				"second": "Strong stack: Frontend + Backend + AI.",
+				"third": "Students work in 15+ countries worldwide.",
+				"fourth": "A clear system of mocks and oversight."
+			}
+		}
+	}
+}

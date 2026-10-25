@@ -1,0 +1,12 @@
+.banner-button.banner-button {
+	width: 285px;
+	line-height: 25px;
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-p-l);
+}
+
+@media screen and (width < 768px) {
+	.banner-button.banner-button {
+		width: 100%;
+	}
+}

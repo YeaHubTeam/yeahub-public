@@ -47,6 +47,7 @@ export enum Header {
 	NAV_COMPANIES = 'nav.companies',
 	NAV_FRONTEND = 'nav.frontend',
 	NAV_FULLSTACK = 'nav.fullstack',
+	NAV_WORLDWIDE = 'nav.worldwide',
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
@@ -1041,6 +1042,19 @@ export enum MentorFullstack {
 	INTERNATIONAL_TRACK_TITLE = 'mentorFullstack.internationalTrack.title',
 	INTERNATIONAL_TRACK_DESCRIPTION = 'mentorFullstack.internationalTrack.description',
 	INTERNATIONAL_TRACK_BUTTON = 'mentorFullstack.internationalTrack.button',
+}
+
+export enum MentorWorldwide {
+	SEO_TITLE = 'mentorWorldwide.seo.title',
+	SEO_DESCRIPTION = 'mentorWorldwide.seo.description',
+	BANNER_STICKER = 'mentorWorldwide.banner.sticker',
+	BANNER_TITLE = 'mentorWorldwide.banner.title',
+	BANNER_DESCRIPTION = 'mentorWorldwide.banner.description',
+	BANNER_BUTTON = 'mentorWorldwide.banner.button',
+	BANNER_ADVANTAGE_FIRST = 'mentorWorldwide.banner.advantages.first',
+	BANNER_ADVANTAGE_SECOND = 'mentorWorldwide.banner.advantages.second',
+	BANNER_ADVANTAGE_THIRD = 'mentorWorldwide.banner.advantages.third',
+	BANNER_ADVANTAGE_FOURTH = 'mentorWorldwide.banner.advantages.fourth',
 }
 
 export enum Tasks {

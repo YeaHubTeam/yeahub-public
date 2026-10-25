@@ -1,0 +1,11 @@
+.wrapper {
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+}
+
+@media screen and (width < 768px) {
+	.wrapper {
+		gap: 10px;
+	}
+}
