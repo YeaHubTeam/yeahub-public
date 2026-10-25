@@ -5,6 +5,7 @@ import { BannerSection } from '../BannerSection';
 import { CommunitySection } from '../CommunitySection';
 import { DeveloperStack } from '../DeveloperStack';
 import { EducationSection } from '../EducationSection';
+import { FaqSection } from '../FaqSection';
 import { FullPathSection } from '../FullPathSection';
 import { PracticeSection } from '../PracticeSection';
 import { PricingSection } from '../PricingSection';
@@ -23,6 +24,7 @@ export const MentorFullstackPage = () => {
 			<AboutSection />
 			<PricingSection />
 			<CommunitySection />
+			<FaqSection />
 		</Flex>
 	);
 };
