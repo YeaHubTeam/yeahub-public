@@ -6,13 +6,18 @@ import { CommunitySection } from '../CommunitySection';
 import { DeveloperStack } from '../DeveloperStack';
 import { EducationSection } from '../EducationSection';
 import { FaqSection } from '../FaqSection';
+import { FeaturesSection } from '../FeaturesSection';
 import { FullPathSection } from '../FullPathSection';
 import { PracticeSection } from '../PracticeSection';
 import { PricingSection } from '../PricingSection';
 import { StrategySection } from '../StrategySection';
 import styles from './MentorFullstackPage.module.css';
 
-export const MentorFullstackPage = () => {
+interface MentorFullstackPageProps {
+	locale: string;
+}
+
+export const MentorFullstackPage = ({ locale }: MentorFullstackPageProps) => {
 	return (
 		<Flex direction="column" className={styles.page}>
 			<BannerSection />
@@ -25,6 +30,7 @@ export const MentorFullstackPage = () => {
 			<PricingSection />
 			<CommunitySection />
 			<FaqSection />
+			<FeaturesSection locale={locale} />
 		</Flex>
 	);
 };

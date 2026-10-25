@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl';
 
+import { FeatureCard } from '@/pages/MentorFullstackPage/ui/FeaturesSection/FeatureCard/FeatureCard';
 import { MentorFullstack, ROUTES, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 
 import { BonusesBlock } from '../BonusesBlock/BonusesBlock';
-import { FeatureCard } from '../FeatureCard/FeatureCard';
 import { TariffCard } from '../TariffCard/TariffCard';
 import { TariffFullBuyoutCard } from '../TariffFullBuyoutCard/TariffFullBuyoutCard';
 import styles from './TariffList.module.css';
