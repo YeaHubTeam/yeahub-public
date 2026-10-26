@@ -277,12 +277,12 @@
 		},
 		"tags-cloud": {
 			"title": {
-				"javascript": "JavaScript",
-				"html": "HTML",
-				"react": "React",
-				"python": "Python",
-				"swift": "Swift",
-				"css": "CSS"
+				"mentor": "IT ментор",
+				"web-development": "Обучение веб разработке",
+				"interview": "Подготовка к собеседованию",
+				"employment-abroad": "Трудоустройство за рубежом",
+				"currency-remote": "Валютные удаленки",
+				"employment-europe": "Трудоустройство в Европе"
 			}
 		},
 		"faq": {

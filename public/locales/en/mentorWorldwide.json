@@ -277,12 +277,12 @@
 		},
 		"tags-cloud": {
 			"title": {
-				"javascript": "JavaScript",
-				"html": "HTML",
-				"react": "React",
-				"python": "Python",
-				"swift": "Swift",
-				"css": "CSS"
+				"mentor": "IT mentor",
+				"web-development": "Web development training",
+				"interview": "Interview preparation",
+				"employment-abroad": "Employment abroad",
+				"currency-remote": "Foreign-currency remote jobs",
+				"employment-europe": "Employment in Europe"
 			}
 		},
 		"faq": {

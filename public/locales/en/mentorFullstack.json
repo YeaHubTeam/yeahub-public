@@ -475,12 +475,15 @@
 		},
 		"tags-cloud": {
 			"title": {
-				"javascript": "JavaScript",
-				"html": "HTML",
-				"react": "React",
-				"python": "Python",
-				"swift": "Swift",
-				"css": "CSS"
+				"mentor": "IT mentor",
+				"fullstack-mentor": "Fullstack mentor",
+				"training": "Fullstack training",
+				"web-development": "Web development training",
+				"internship": "Fullstack internship",
+				"interview": "Interview preparation",
+				"employment": "Employment",
+				"courses": "Fullstack development courses",
+				"fullstack-ai": "Fullstack and AI training"
 			}
 		}
 	}

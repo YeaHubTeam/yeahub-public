@@ -1,27 +1,31 @@
 import { MentorWorldwide } from '@/shared/config';
 
-const tagsCloudTitles = [
-	MentorWorldwide.TAGS_CLOUD_JAVASCRIPT,
-	MentorWorldwide.TAGS_CLOUD_HTML,
-	MentorWorldwide.TAGS_CLOUD_REACT,
-	MentorWorldwide.TAGS_CLOUD_PYTHON,
-	MentorWorldwide.TAGS_CLOUD_SWIFT,
-	MentorWorldwide.TAGS_CLOUD_CSS,
-	MentorWorldwide.TAGS_CLOUD_REACT,
-	MentorWorldwide.TAGS_CLOUD_JAVASCRIPT,
-	MentorWorldwide.TAGS_CLOUD_REACT,
-	MentorWorldwide.TAGS_CLOUD_JAVASCRIPT,
-	MentorWorldwide.TAGS_CLOUD_PYTHON,
-	MentorWorldwide.TAGS_CLOUD_SWIFT,
-	MentorWorldwide.TAGS_CLOUD_PYTHON,
-	MentorWorldwide.TAGS_CLOUD_SWIFT,
-	MentorWorldwide.TAGS_CLOUD_HTML,
+export const tagsCloudList = [
+	{
+		id: 'mentor',
+		title: MentorWorldwide.TAGS_CLOUD_MENTOR,
+	},
+	{
+		id: 'web-development',
+		title: MentorWorldwide.TAGS_CLOUD_WEB_DEVELOPMENT,
+	},
+	{
+		id: 'interview',
+		title: MentorWorldwide.TAGS_CLOUD_INTERVIEW,
+	},
+	{
+		id: 'employment-abroad',
+		title: MentorWorldwide.TAGS_CLOUD_EMPLOYMENT_ABROAD,
+	},
+	{
+		id: 'currency-remote',
+		title: MentorWorldwide.TAGS_CLOUD_CURRENCY_REMOTE,
+	},
+	{
+		id: 'employment-europe',
+		title: MentorWorldwide.TAGS_CLOUD_EMPLOYMENT_EUROPE,
+	},
 ];
-
-export const tagsCloudList = tagsCloudTitles.map((title, index) => ({
-	id: String(index),
-	title,
-}));
 
 export const tagsCloudSliderSettings = {
 	slidesToShow: 5,
