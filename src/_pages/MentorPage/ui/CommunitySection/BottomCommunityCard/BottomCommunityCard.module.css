@@ -39,10 +39,10 @@
 @media (width < 768px) {
 	.card {
 		padding: 10px;
-		height: 141px;
+		height: 160px;
 	}
 
 	.card:last-child {
-		height: 141px;
+		height: 160px;
 	}
 }

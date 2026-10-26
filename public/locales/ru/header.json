@@ -15,7 +15,8 @@
 		"vacancies": "Вакансии",
 		"companies": "Компании",
 		"frontend": "Frontend Разработчик",
-		"fullstack": "Fullstack Разработчик"
+		"fullstack": "Fullstack Разработчик",
+		"worldwide": "Международный рынок"
 	},
 	"auth": {
 		"signIn": "Войти",

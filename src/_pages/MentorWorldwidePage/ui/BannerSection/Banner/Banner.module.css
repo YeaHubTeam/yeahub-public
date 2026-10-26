@@ -1,0 +1,102 @@
+.banner {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	height: 637px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px 0 rgb(106 99 118 / 10%);
+	border-radius: 20px;
+	background: linear-gradient(143.13deg, #150b45 14.29%, #1d0e62 57.14%, #2a1290 85.71%);
+	isolation: isolate;
+}
+
+.background {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.top-band {
+	position: absolute;
+	top: -18.84%;
+	left: 74.01%;
+	width: 41.12%;
+	height: 37.68%;
+	opacity: 0.45;
+	border: 200px solid rgb(106 11 255 / 60%);
+	border-radius: 50%;
+	filter: blur(65px);
+}
+
+.swirl-body {
+	position: absolute;
+	top: 14.13%;
+	left: -13.16%;
+	width: 118.91%;
+	height: 93.52%;
+	opacity: 0.55;
+	background:
+		radial-gradient(32% 46% at 18% 78%, rgb(167 140 255 / 95%) 0%, rgb(167 140 255 / 0%) 72%),
+		radial-gradient(28% 40% at 52% 58%, rgb(106 11 255 / 70%) 0%, rgb(106 11 255 / 0%) 70%),
+		radial-gradient(26% 42% at 84% 22%, rgb(198 176 255 / 90%) 0%, rgb(198 176 255 / 0%) 68%);
+	filter: blur(55px);
+}
+
+.swirl-fold {
+	position: absolute;
+	top: 21.35%;
+	left: -12.01%;
+	width: 118.91%;
+	height: 93.52%;
+	opacity: 0.4;
+	border: 70px solid rgb(43 15 158 / 55%);
+	border-radius: 46%;
+	filter: blur(25px);
+	transform: rotate(-18deg);
+}
+
+.swirl-light {
+	position: absolute;
+	top: 9.42%;
+	left: -13.98%;
+	width: 118.91%;
+	height: 93.52%;
+	opacity: 0.3;
+	background:
+		radial-gradient(22% 34% at 20% 84%, rgb(226 214 255 / 95%) 0%, rgb(226 214 255 / 0%) 72%),
+		radial-gradient(20% 30% at 86% 16%, rgb(236 228 255 / 90%) 0%, rgb(236 228 255 / 0%) 70%);
+	filter: blur(30px);
+}
+
+.vortex-eye {
+	position: absolute;
+	top: 39.25%;
+	left: 66.18%;
+	width: 24.67%;
+	height: 34.54%;
+	background: rgb(26 11 92 / 90%);
+	opacity: 0.7;
+	filter: blur(30px);
+	transform: rotate(20deg);
+}
+
+.text-calm {
+	position: absolute;
+	top: 17.27%;
+	left: 13.98%;
+	width: 70.72%;
+	height: 51.81%;
+	background: rgb(23 11 79 / 70%);
+	filter: blur(40px);
+}
+
+@media screen and (width < 768px) {
+	.banner {
+		padding: 48px 16px;
+		height: auto;
+		min-height: 637px;
+	}
+}

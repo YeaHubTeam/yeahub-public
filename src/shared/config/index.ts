@@ -18,6 +18,7 @@ export {
 	Media,
 	Mentor,
 	MentorFullstack,
+	MentorWorldwide,
 	Questions,
 	Resources,
 	Skills,

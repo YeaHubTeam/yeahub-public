@@ -1,0 +1,14 @@
+.description.description {
+	width: 100%;
+	min-width: 0;
+	max-width: 680px;
+	text-align: center;
+	opacity: 0.8;
+	overflow-wrap: break-word;
+}
+
+@media screen and (width < 768px) {
+	.description.description {
+		max-width: 100%;
+	}
+}
