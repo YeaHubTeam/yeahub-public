@@ -28,7 +28,7 @@ export const ZeroExperienceBanner = () => {
 				variant="primary-inverse"
 				size="large"
 				className={styles.button}
-				href={ROUTES['mentor-fullstack'].page}
+				href={ROUTES.mentor.page}
 				suffix={<Icon icon="arrowRight" size={24} color="purple-700" />}
 			>
 				<span className={styles['button-full']}>{t(MentorWorldwide.PRICING_BANNER_BUTTON)}</span>
