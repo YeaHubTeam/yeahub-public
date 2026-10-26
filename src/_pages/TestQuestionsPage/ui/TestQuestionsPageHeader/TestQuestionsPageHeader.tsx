@@ -4,8 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { GetSkillsListResponse } from '@/entities/skill';
 import { GetSpecializationsListResponse, Specialization } from '@/entities/specialization';
-import { i18Namespace } from '@/shared/config';
-import { TestQuestions } from '@/shared/config/i18n/i18nTranslations';
+import { TestQuestions, i18Namespace } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 

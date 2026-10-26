@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { TestQuestion, TestQuestionGradeList } from '@/entities/testQuestion';
-import { ROUTES, i18Namespace } from '@/shared/config';
-import { TestQuestions } from '@/shared/config/i18n/i18nTranslations';
+import { ROUTES, TestQuestions, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';

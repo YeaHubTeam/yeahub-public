@@ -3,8 +3,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { TestQuestion } from '@/entities/testQuestion';
-import { i18Namespace } from '@/shared/config';
-import { TestQuestions } from '@/shared/config/i18n/i18nTranslations';
+import { TestQuestions, i18Namespace } from '@/shared/config';
 import { Accordion } from '@/shared/ui/Accordion';
 import { Flex } from '@/shared/ui/Flex';
 import { Stub } from '@/shared/ui/Stub';
