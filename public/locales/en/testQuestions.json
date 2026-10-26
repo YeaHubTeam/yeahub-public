@@ -1,0 +1,42 @@
+{
+	"title": "Tests",
+	"questions_title": "Tests {specialization}",
+	"questions": {
+		"rate_title": "Tests rate",
+		"rate": "Rate",
+		"complexity": "Complexity",
+		"link": "More"
+	},
+	"register": "Register",
+	"search": {
+		"placeholder": "Enter question..."
+	},
+	"image-alt": "Test about {skill}: {keywords}",
+	"additional": {
+		"info": {
+			"level": "Level",
+			"skills": "Skills",
+			"keywords": "Keywords"
+		}
+	},
+	"preview": {
+		"title": "Tests list",
+		"empty": {
+			"specialization": "Tests for the selected specialization will appear soon",
+			"collection": "The tests for this collection will appear soon"
+		},
+		"locked": {
+			"collection": "The tests list will appear for community members"
+		}
+	},
+	"community": {
+		"join": "Become a community member"
+	},
+	"count": "Tests count",
+	"stub": {
+		"empty": {
+			"title": "No tests found yet",
+			"subtitle": "tests are added periodically, just wait a bit"
+		}
+	}
+}

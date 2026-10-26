@@ -9,6 +9,7 @@ export const i18Namespace = {
 	footer: 'footer',
 	main: 'main',
 	questions: 'questions',
+	testQuestions: 'testQuestions',
 	media: 'media',
 	mentor: 'mentor',
 	specialization: 'specialization',

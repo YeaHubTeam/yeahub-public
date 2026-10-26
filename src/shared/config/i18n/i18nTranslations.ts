@@ -35,6 +35,7 @@ export enum Header {
 	NAV_LEARNING = 'nav.learning',
 	NAV_RESUME = 'nav.resume',
 	NAV_QUESTIONS = 'nav.questions',
+	NAV_TEST_QUESTIONS = 'nav.testQuestions',
 	NAV_RESOURCES = 'nav.resources',
 	NAV_QUIZ = 'nav.quiz',
 	NAV_COLLECTIONS = 'nav.collections',
@@ -87,6 +88,36 @@ export enum Footer {
 }
 
 export enum Questions {
+	IMAGE_ALT = 'image-alt',
+	SHORT_ANSWER_TITLE = 'short.answer.title',
+	LONG_ANSWER_TITLE = 'long.answer.title',
+	ADDITIONAL_INFO_LEVEL = 'additional.info.level',
+	ADDITIONAL_INFO_SKILLS = 'additional.info.skills',
+	ADDITIONAL_INFO_KEYWORDS = 'additional.info.keywords',
+	REGISTER = 'register',
+	QUESTIONS_TITLE = 'questions_title',
+	QUESTIONS_RATE = 'questions.rate',
+	QUESTIONS_COMPLEXITY = 'questions.complexity',
+	QUESTIONS_LINK = 'questions.link',
+	QUESTIONS_RATE_TITLE = 'questions.rate_title',
+	QUESTIONS_SEARCH_PLACEHOLDER = 'search.placeholder',
+	QUESTIONS_STATUS_UNLEARNED = 'questions.status.unlearned',
+	QUESTIONS_STATUS_LEARNED = 'questions.status.learned',
+	QUESTIONS_STATUS_ALL = 'questions.status.all',
+	QUESTIONS_STATUS_FAVORITE = 'questions.status.favorite',
+	QUESTIONS_STATUS_TITLE = 'questions.status.title',
+	PREVIEW_TITLE = 'preview.title',
+	COMMUNITY_JOIN = 'community.join',
+	PREVIEW_LOCKED_COLLECTION = 'preview.locked.collection',
+	PREVIEW_EMPTY_COLLECTION = 'preview.empty.collection',
+	COUNT = 'count',
+
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+	STUB_NOT_AUTH_TITLE = 'stub.not_auth.title',
+}
+
+export enum TestQuestions {
 	IMAGE_ALT = 'image-alt',
 	SHORT_ANSWER_TITLE = 'short.answer.title',
 	LONG_ANSWER_TITLE = 'long.answer.title',
