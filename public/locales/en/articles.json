@@ -1,0 +1,18 @@
+{
+	"title": "Articles",
+	"description": "Guides, breakdowns, and interview preparation — from basics to advanced topics",
+	"reading_time": "{count} min read",
+	"content_type": {
+		"theory": "Theory",
+		"practice": "Practice",
+		"interview": "Interview",
+		"roadmap": "Roadmap",
+		"case_study": "Case Study"
+	},
+	"stub": {
+		"empty": {
+			"title": "No articles found yet",
+			"subtitle": "Articles are added periodically, just wait a bit"
+		}
+	}
+}
