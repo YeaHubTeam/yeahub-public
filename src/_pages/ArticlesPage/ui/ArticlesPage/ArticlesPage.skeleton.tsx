@@ -1,8 +1,8 @@
 import { Flex } from '@/shared/ui/Flex';
+import { TablePaginationSkeleton } from '@/shared/ui/TablePagination';
 import { ArticlesListSkeleton } from '@/widgets/Article';
 
 import { ArticlesPageHeaderSkeleton } from '../ArticlesPageHeader/ArticlesPageHeader.skeleton';
-import { ArticlesPagePaginationSkeleton } from '../ArticlesPagePagination/ArticlesPagePagination.skeleton';
 import styles from './ArticlesPage.module.css';
 
 export const ArticlesPageSkeleton = () => {
@@ -11,7 +11,7 @@ export const ArticlesPageSkeleton = () => {
 			<Flex gap="20" direction="column" className={styles.main}>
 				<ArticlesPageHeaderSkeleton />
 				<ArticlesListSkeleton />
-				<ArticlesPagePaginationSkeleton />
+				<TablePaginationSkeleton />
 			</Flex>
 		</Flex>
 	);
