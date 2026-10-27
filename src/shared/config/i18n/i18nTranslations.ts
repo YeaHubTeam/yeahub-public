@@ -926,3 +926,18 @@ export enum Vacancies {
 	RESUME_ANALYZER_PRIORITIES_WEAK = 'resume_analyzer_page.priorities.weak',
 	RESUME_ANALYZER_PRIORITIES_COVERAGE = 'resume_analyzer_page.priorities.coverage',
 }
+
+export enum Articles {
+	TITLE = 'title',
+	DESCRIPTION = 'description',
+	READING_TIME = 'reading_time',
+
+	CONTENT_TYPE_THEORY = 'content_type.theory',
+	CONTENT_TYPE_PRACTICE = 'content_type.practice',
+	CONTENT_TYPE_INTERVIEW = 'content_type.interview',
+	CONTENT_TYPE_ROADMAP = 'content_type.roadmap',
+	CONTENT_TYPE_CASE_STUDY = 'content_type.case_study',
+
+	STUB_EMPTY_TITLE = 'stub.empty.title',
+	STUB_EMPTY_SUBTITLE = 'stub.empty.subtitle',
+}

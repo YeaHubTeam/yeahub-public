@@ -1,0 +1,21 @@
+.container {
+  width: 100%;
+}
+
+.title {
+  text-transform: uppercase;
+}
+
+.subtitle {
+  max-width: 403px;
+}
+
+@media screen and (width < 480px) {
+  .container {
+    gap: 12px;
+  }
+
+  .title {
+    font-size: var(--font-size-h-xs);
+  }
+}

@@ -109,4 +109,12 @@ export const ROUTES = {
 			page: '/:locale/vacancies/:specialization/:vacancyId',
 		},
 	},
+	articles: {
+		route: 'articles',
+		page: '/articles',
+		detail: {
+			route: 'articles/:slug',
+			page: '/:locale/articles/:slug',
+		},
+	},
 } as const;
