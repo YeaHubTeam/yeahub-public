@@ -1,0 +1,1 @@
+export { TagsCloud } from './TagsCloud';

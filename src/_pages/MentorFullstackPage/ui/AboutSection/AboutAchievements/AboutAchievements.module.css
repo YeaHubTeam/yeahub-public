@@ -1,0 +1,18 @@
+.wrapper-content {
+	margin-top: auto;
+}
+
+.wrapper {
+	padding: 20px;
+}
+
+.icon-wrapper {
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (width < 768px) {
+	.wrapper {
+		padding: 10px;
+	}
+}

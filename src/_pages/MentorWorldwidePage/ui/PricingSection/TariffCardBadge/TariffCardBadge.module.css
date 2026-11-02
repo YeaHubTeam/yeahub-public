@@ -1,0 +1,17 @@
+.chip.chip {
+	padding: 4px 20px;
+	height: 30px;
+	border: none;
+	border-radius: 47px;
+	background: linear-gradient(92.04deg, #eae6ff 15.59%, #8e78ff 47.22%, #1e1454 111.13%);
+}
+
+.chip p {
+	color: var(--color-black-900);
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.inverted.inverted {
+	background: var(--color-white-900);
+}

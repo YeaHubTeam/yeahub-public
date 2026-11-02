@@ -13,7 +13,7 @@ export {
 	DEFAULT_SPECIALIZATION_SLUG,
 	RESOURCES_PER_PAGE,
 } from './query';
-export { route } from './query';
+export { route, isNavPathActive } from './query';
 export { slugifyQuestionTitle } from './query/slugifyQuestionTitle';
 export { useDebounce } from './fp';
 export { getArrayFromTwoNumbers } from './fp';

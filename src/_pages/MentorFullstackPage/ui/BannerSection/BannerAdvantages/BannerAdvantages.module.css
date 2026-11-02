@@ -1,0 +1,58 @@
+.section {
+	width: 100%;
+	min-width: 0;
+}
+
+div.panel {
+	padding: 24px;
+	width: 100%;
+	min-width: 0;
+	border: 1px solid #efeaf6;
+	border-radius: 24px;
+}
+
+div.body {
+	width: 100%;
+	min-width: 0;
+}
+
+.layout {
+	align-items: stretch;
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+}
+
+.cards {
+	flex: 2;
+	align-items: stretch;
+	gap: 16px;
+	width: 100%;
+	min-width: 0;
+}
+
+@media screen and (width < 1280px) {
+	.layout {
+		flex-direction: column;
+	}
+
+	.cards {
+		flex: none;
+	}
+}
+
+@media screen and (width < 768px) {
+	div.panel {
+		padding: 16px;
+		border-radius: 20px;
+	}
+
+	.layout {
+		gap: 16px;
+	}
+
+	.cards {
+		flex-direction: column;
+		gap: 12px;
+	}
+}

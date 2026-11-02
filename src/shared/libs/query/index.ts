@@ -12,3 +12,4 @@ export {
 } from './queryConstants';
 
 export { route } from './route';
+export { isNavPathActive } from './isNavPathActive';

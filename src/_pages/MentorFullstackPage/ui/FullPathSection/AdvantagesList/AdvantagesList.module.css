@@ -1,0 +1,52 @@
+.advantages-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: 'materials community plan';
+	gap: 20px;
+}
+
+.advantages-list div:nth-child(3) {
+	grid-area: plan;
+}
+
+.advantages-list div:nth-child(1) {
+	grid-area: materials;
+}
+
+.advantages-list div:nth-child(2) {
+	grid-area: community;
+}
+
+@media (width < 1280px) {
+	.advantages-list {
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas:
+			'plan plan'
+			'materials community';
+	}
+
+	.advantages-list div:nth-child(3) div {
+		flex-direction: row;
+		align-items: flex-end;
+	}
+
+	.advantages-list div:nth-child(1) div, 
+	.advantages-list div:nth-child(2) div {
+		align-items: center;
+	}
+}
+
+@media (width < 768px) {
+	.advantages-list {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'plan'
+			'materials'
+			'community';
+	}
+
+	.advantages-list div:nth-child(3) div {
+		flex-direction: column;
+		align-items: center;
+	}
+}

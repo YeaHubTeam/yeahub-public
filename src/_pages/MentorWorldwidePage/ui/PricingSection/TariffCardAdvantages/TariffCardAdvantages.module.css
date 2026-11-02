@@ -1,0 +1,25 @@
+.panel.panel {
+	margin-top: 20px;
+	padding: 14px;
+	border-radius: 20px;
+	background: #f8f8f8;
+}
+
+.inverted.inverted {
+	background: var(--color-white-900);
+}
+
+.item {
+	width: 100%;
+	min-width: 0;
+}
+
+.text {
+	min-width: 0;
+}
+
+@media screen and (width < 1280px) {
+	.panel.panel {
+		padding: 12px;
+	}
+}

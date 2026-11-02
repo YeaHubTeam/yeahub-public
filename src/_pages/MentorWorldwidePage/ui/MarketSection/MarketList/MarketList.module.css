@@ -1,0 +1,35 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+}
+
+.offer {
+	grid-row: span 2;
+	min-width: 0;
+}
+
+.item {
+	min-width: 0;
+	height: 100%;
+}
+
+@media screen and (width < 1280px) {
+	.grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.offer {
+		grid-row: auto;
+		grid-column: 1 / -1;
+	}
+}
+
+@media screen and (width < 768px) {
+	.grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+}

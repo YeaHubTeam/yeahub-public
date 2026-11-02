@@ -30,10 +30,10 @@ export const FullPathStepper = () => {
 								</div>
 							</div>
 						)}
-						<Text variant="body3-accent" color="black-400" className={styles['level-text']}>
-							{t(level)}
-						</Text>
 					</div>
+					<Text variant="body3-accent" color="black-400" className={styles['level-text']}>
+						{t(level)}
+					</Text>
 				</div>
 			))}
 		</div>

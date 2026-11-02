@@ -1,0 +1,29 @@
+.wrapper.wrapper {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	align-items: start;
+	gap: 10px;
+	width: 100%;
+	min-width: 0;
+}
+
+.content {
+	grid-column: 2;
+	width: 100%;
+	min-width: 0;
+}
+
+.answer {
+	white-space: pre-line;
+}
+
+@media screen and (width < 1280px) {
+	.wrapper.wrapper {
+		grid-template-columns: 1fr;
+	}
+
+	.content {
+		grid-column: 1;
+		gap: 10px;
+	}
+}

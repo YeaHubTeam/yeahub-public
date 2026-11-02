@@ -11,7 +11,18 @@ export const Header = () => {
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'SiteNavigationElement',
-		name: ['База вопросов', 'Тренажёр', 'Собеседования', 'Курсы', 'Менторы', 'Резюме', 'Вакансии'],
+		name: [
+			'База вопросов',
+			'Тренажёр',
+			'Собеседования',
+			'Курсы',
+			'Обучение',
+			'Frontend Разработчик',
+			'Fullstack Разработчик',
+			'Международный рынок',
+			'Резюме',
+			'Вакансии',
+		],
 
 		url: [
 			'/ru/questions/react-frontend-developer',
@@ -19,6 +30,9 @@ export const Header = () => {
 			'/ru/quiz/new',
 			'/ru/resources/react-frontend-developer',
 			'/ru/learning',
+			'/ru/mentor',
+			'/ru/mentor-fullstack',
+			'/ru/mentor-worldwide',
 			'/ru/hh-analytics',
 			'/ru/vacancies',
 		],

@@ -26,7 +26,7 @@
 		font-size: var(--font-size-h-xs);
 	}
  
-	.column-columns {
-		gap: 10px;
+	div.column-columns {
+		gap: 12px;
 	}
 }

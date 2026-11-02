@@ -13,7 +13,10 @@
 		"mentors": "Менторы",
 		"ATS": "АТС",
 		"vacancies": "Вакансии",
-		"companies": "Компании"
+		"companies": "Компании",
+		"frontend": "Frontend Разработчик",
+		"fullstack": "Fullstack Разработчик",
+		"worldwide": "Международный рынок"
 	},
 	"auth": {
 		"signIn": "Войти",

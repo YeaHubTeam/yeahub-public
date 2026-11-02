@@ -1,0 +1,15 @@
+.content {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+}
+
+.content > * {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.column {
+	width: 100%;
+	min-width: 0;
+}

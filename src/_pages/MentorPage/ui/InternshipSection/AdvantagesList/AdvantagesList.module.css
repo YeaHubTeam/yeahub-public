@@ -68,7 +68,7 @@
 
 
 
-.advantage {
+.list > .advantage {
 	gap: 0;
 	padding: 20px;
 	overflow: hidden;
@@ -144,7 +144,7 @@
 		gap: 10px;
 	}
 
-	.advantage {
+	.list > .advantage {
 		padding: 10px;
 	}
 
