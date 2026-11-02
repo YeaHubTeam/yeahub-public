@@ -495,12 +495,15 @@
 		},
 		"tags-cloud": {
 			"title": {
-				"javascript": "JavaScript",
-				"html": "HTML",
-				"react": "React",
-				"python": "Python",
-				"swift": "Swift",
-				"css": "CSS"
+				"mentor": "IT ментор",
+				"fullstack-mentor": "Ментор fullstack",
+				"training": "Fullstack обучение",
+				"web-development": "Обучение веб разработке",
+				"internship": "Стажировка fullstack",
+				"interview": "Подготовка к собеседованию",
+				"employment": "Трудоустройство",
+				"courses": "Курсы fullstack разработки",
+				"fullstack-ai": "Обучение Fullstack и AI"
 			}
 		}
 	}

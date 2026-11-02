@@ -12,6 +12,7 @@ export const i18Namespace = {
 	media: 'media',
 	mentor: 'mentor',
 	mentorFullstack: 'mentorFullstack',
+	mentorWorldwide: 'mentorWorldwide',
 	specialization: 'specialization',
 	translation: 'translation',
 	skill: 'skill',

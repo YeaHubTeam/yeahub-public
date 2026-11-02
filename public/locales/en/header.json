@@ -15,7 +15,8 @@
 		"vacancies": "Vacancies",
 		"companies": "Companies",
 		"frontend": "Frontend Developer",
-		"fullstack": "Fullstack Developer"
+		"fullstack": "Fullstack Developer",
+		"worldwide": "Worldwide Job Market"
 	},
 	"auth": {
 		"signIn": "Sign in",

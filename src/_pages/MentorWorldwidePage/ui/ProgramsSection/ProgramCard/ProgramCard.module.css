@@ -1,0 +1,127 @@
+.card.card {
+	padding: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	border-radius: 20px;
+}
+
+.content {
+	flex: 1;
+	gap: 16px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+.cover {
+	position: relative;
+	width: 100%;
+	height: 170px;
+	overflow: hidden;
+	border-radius: 16px;
+}
+
+.fill-base,
+.fill-glow,
+.fill-violet {
+	position: absolute;
+	top: -88.235%;
+	left: 0;
+	width: 100%;
+	height: 211.765%;
+	border-radius: 20px;
+	pointer-events: none;
+}
+
+.fill-base {
+	background: linear-gradient(180deg, #fff 0%, #eae6ff 22.6%, #8e78ff 54.33%, #1e1454 100%);
+}
+
+.fill-glow {
+	background: radial-gradient(50% 50% at 50% 50%, rgb(255 255 255 / 60%) 0%, rgb(255 255 255 / 0%) 100%);
+	opacity: 0.4;
+}
+
+.fill-violet {
+	background: radial-gradient(
+		20.43% 39.9% at 24.05% -7.14%,
+		rgb(110 85 255 / 60%) 0%,
+		rgb(142 123 255 / 0%) 68.94%
+	);
+	opacity: 0.4;
+}
+
+.react-shape {
+	position: absolute;
+	top: 50%;
+	right: -220px;
+	width: 293px;
+	height: auto;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+
+.fullstack-shape {
+	position: absolute;
+	top: -23%;
+	right: -48px;
+	width: 256px;
+	height: auto;
+	pointer-events: none;
+}
+
+.badge.badge {
+	align-self: flex-start;
+	padding: 4px 16px;
+	height: 32px;
+	border: none;
+	border-radius: 47px;
+	background-color: var(--color-green-007);
+}
+
+.badge p {
+	color: var(--color-green-750);
+}
+
+.copy {
+	width: 100%;
+	min-width: 0;
+}
+
+.title.title {
+	width: 100%;
+	min-width: 0;
+}
+
+.description.description {
+	width: 100%;
+	min-width: 0;
+}
+
+.chips {
+	width: 100%;
+	min-width: 0;
+}
+
+.chip.chip {
+	padding: 8px 14px;
+	max-width: 100%;
+	height: auto;
+	min-height: 36px;
+	border-radius: 12px;
+}
+
+.chip p {
+	white-space: normal;
+}
+
+.button {
+	margin-top: auto;
+}
+
+@media screen and (width < 768px) {
+	.card.card {
+		padding: 10px;
+	}
+}

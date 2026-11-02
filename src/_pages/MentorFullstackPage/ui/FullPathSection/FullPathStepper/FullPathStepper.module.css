@@ -84,11 +84,11 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		width: calc(100% - 30px);
 	}
 
 	.wrapper-level::after {
 		top: 7px;
+		width: calc(100% - 30px);
 		transform: none;
 	}
 

@@ -56,6 +56,12 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 				title: Header.NAV_FULLSTACK,
 				icon: 'list',
 			},
+			{
+				link: ROUTES['mentor-worldwide'].page,
+				path: '/mentor-worldwide',
+				title: Header.NAV_WORLDWIDE,
+				icon: 'list',
+			},
 		],
 	},
 	{

@@ -1,0 +1,22 @@
+.sticker {
+	position: relative;
+	padding: 6px;
+	box-sizing: border-box;
+	max-width: 100%;
+	border-radius: 47px;
+	background: rgb(255 255 255 / 24%);
+	backdrop-filter: blur(10.05px);
+}
+
+.icon-wrapper {
+	width: 20px;
+	height: 20px;
+}
+
+.icon {
+	display: block;
+}
+
+.text {
+	min-width: 0;
+}
