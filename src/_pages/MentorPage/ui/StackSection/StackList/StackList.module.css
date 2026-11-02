@@ -15,18 +15,20 @@
 	background-color: var(--color-black-30);
 }
 
-@media (width < 1280px) {
-	.column-wrapper {
-			margin-top: 20px;
-	}
-}
-
 @media (width < 768px) {
 	h3.column-title {
 		font-size: var(--font-size-h-xs);
 	}
+
+	.column-wrapper{
+		gap: 20px;
+	}
  
 	.column-columns {
-		gap: 10px;
+		gap: 12px;
+	}
+
+	.column-rows{
+		gap: 12px;
 	}
 }
