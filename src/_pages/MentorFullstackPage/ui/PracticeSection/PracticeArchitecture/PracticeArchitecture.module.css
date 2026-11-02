@@ -1,0 +1,456 @@
+div.card {
+	margin-top: 20px;
+	padding: 24px;
+	width: 100%;
+	min-width: 0;
+	border-radius: 24px;
+}
+
+div.body {
+	gap: 32px;
+	width: 100%;
+	min-width: 0;
+}
+
+.heading,
+.heading-title,
+.heading-description {
+	width: 100%;
+	min-width: 0;
+}
+
+.heading-title,
+.heading-description,
+.node-title,
+.node-subtitle,
+.bus-text {
+	overflow-wrap: break-word;
+}
+
+.diagram {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-width: 0;
+}
+
+.top {
+	position: relative;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 18.08% minmax(0, 1fr);
+	align-items: start;
+	margin-bottom: -30px;
+	width: 100%;
+	min-width: 0;
+}
+
+.stack {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
+.client-stack {
+	grid-column: 2;
+}
+
+.cicd-desktop {
+	grid-column: 3;
+	justify-self: end;
+	margin-right: 40px;
+}
+
+.vertical-arrow {
+	position: relative;
+	display: block;
+	flex-shrink: 0;
+	width: 12px;
+	height: 32px;
+	overflow: hidden;
+}
+
+.vertical-arrow-image {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 12px;
+	height: 72px;
+}
+
+.dashed .vertical-arrow-image {
+	height: 32px;
+}
+
+.client-arrow {
+	height: 71px;
+}
+
+.vertical-arrow.arrow-up {
+	transform: rotate(180deg);
+}
+
+.cicd-desktop .vertical-arrow {
+	height: 31px;
+}
+
+.docker {
+	position: relative;
+	z-index: 1;
+	padding: 40px 40px 19px;
+	width: 100%;
+	min-width: 0;
+	border-radius: 20px;
+	background-color: var(--color-purple-50);
+}
+
+.docker-border {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	color: var(--color-purple-300);
+	pointer-events: none;
+}
+
+.docker-label {
+	position: absolute;
+	top: 12px;
+	left: 16px;
+}
+
+.flow {
+	--services-columns:
+		minmax(0, 1.1fr) minmax(24px, 0.35fr) minmax(0, 1fr) minmax(24px, 0.45fr)
+		minmax(0, 1fr) minmax(24px, 0.35fr) minmax(0, 1.1fr);
+
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-width: 0;
+}
+
+div.node {
+	margin: 0;
+	padding: 14px 12px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	border: 1px solid var(--color-black-50);
+	border-radius: 12px;
+}
+
+div.node-center {
+	margin-right: auto;
+	margin-left: auto;
+	width: 18.08%;
+}
+
+.client-stack div.node-center {
+	width: 100%;
+}
+
+.cicd-desktop div.node {
+	width: 246px;
+	max-width: 100%;
+}
+
+div.node-accent {
+	border-color: var(--color-purple-200);
+	background-color: var(--color-purple-100);
+}
+
+div.node-body {
+	align-items: stretch;
+	gap: 2px;
+	width: 100%;
+	min-width: 0;
+	text-align: center;
+}
+
+.node-title,
+.node-subtitle,
+.bus-text {
+	width: 100%;
+	min-width: 0;
+}
+
+.desktop-fork {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 101px));
+	justify-content: center;
+	gap: 76px;
+	padding: 6px 0;
+	height: 69px;
+}
+
+.desktop-fork svg {
+	width: 101px;
+	height: 57px;
+}
+
+.diagram svg path {
+	fill: var(--color-purple-700);
+}
+
+.mobile-fork {
+	display: none;
+}
+
+.services,
+.service-arrows,
+.results {
+	display: grid;
+	grid-template-columns: var(--services-columns);
+}
+
+.services {
+	align-items: stretch;
+	width: 100%;
+	min-width: 0;
+}
+
+.horizontal-arrow-left,
+.horizontal-arrow-right {
+	position: relative;
+	margin: 0 6px;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.horizontal-arrow-image {
+	position: absolute;
+	top: calc(50% - 36px);
+	width: 12px;
+	height: 72px;
+}
+
+.horizontal-arrow-left .horizontal-arrow-image {
+	left: 30px;
+	transform: rotate(90deg);
+}
+
+.horizontal-arrow-right .horizontal-arrow-image {
+	left: calc(100% - 42px);
+	transform: rotate(-90deg);
+}
+
+.service-arrows {
+	--connector-height: 51px;
+
+	padding: 6px 0;
+	height: calc(var(--connector-height) + 12px);
+}
+
+.service-arrows .vertical-arrow {
+	justify-self: center;
+	height: var(--connector-height);
+}
+
+.service-arrows .vertical-arrow:first-child {
+	grid-column: 3;
+}
+
+.service-arrows .vertical-arrow:last-child {
+	grid-column: 5;
+}
+
+.service-arrows.compact {
+	--connector-height: 36px;
+}
+
+.bus {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 6.2%;
+	padding: 14px 16px;
+	border-radius: 999px;
+	background-color: var(--color-purple-700);
+	text-align: center;
+}
+
+.results {
+	width: 100%;
+	min-width: 0;
+}
+
+.results > :first-child {
+	grid-column: 3;
+}
+
+.results > :last-child {
+	grid-column: 5;
+}
+
+.pg-inline,
+.short,
+.cicd-mobile {
+	display: none;
+}
+
+.pg-inline {
+	align-self: center;
+	margin-top: 4px;
+	padding: 2px 8px;
+	width: fit-content;
+	border-radius: 8px;
+	background-color: var(--color-purple-100);
+}
+
+.cicd-mobile {
+	position: relative;
+	z-index: 2;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+}
+
+@media (width < 1280px) {
+	div.card {
+		padding: 16px;
+	}
+
+	div.body {
+		gap: 8px;
+	}
+
+	.top {
+		grid-template-columns: minmax(0, 1fr) 28.5% minmax(0, 1fr);
+		margin-bottom: -24px;
+	}
+
+	.client-arrow {
+		height: 56px;
+	}
+
+	.cicd-desktop {
+		margin-right: 12px;
+		width: 80%;
+	}
+
+	.cicd-desktop .vertical-arrow {
+		height: 24px;
+	}
+
+	.cicd-desktop div.node {
+		width: 100%;
+	}
+
+	.docker {
+		padding: 32px 12px 20px;
+	}
+
+	div.node-center {
+		width: 26%;
+	}
+
+	.flow {
+		--services-columns:
+			minmax(0, 198fr) minmax(24px, 47fr) minmax(0, 229fr) minmax(24px, 38fr)
+			minmax(0, 229fr) minmax(24px, 47fr) minmax(0, 198fr);
+	}
+
+	.service-arrows,
+	.service-arrows.compact {
+		--connector-height: 24px;
+	}
+
+	.desktop-fork {
+		gap: 16px;
+	}
+
+	.full {
+		display: none;
+	}
+
+	.short {
+		display: inline;
+	}
+}
+
+@media (width < 768px) {
+	div.card {
+		margin-top: 12px;
+		padding: 12px;
+		border-radius: 20px;
+	}
+
+	.top {
+		display: flex;
+		justify-content: center;
+		margin-bottom: -30px;
+	}
+
+	.client-stack {
+		width: 100%;
+	}
+
+	.client-arrow {
+		height: 48px;
+	}
+
+	.cicd-desktop,
+	.desktop-fork,
+	div.node-side,
+	.horizontal-arrow-left,
+	.horizontal-arrow-right,
+	.services-gap {
+		display: none;
+	}
+
+	.mobile-fork {
+		display: block;
+		align-self: center;
+		margin: 6px 0;
+		width: min(166px, 100%);
+		height: 32px;
+	}
+
+	.docker {
+		padding: 40px 6px 12px;
+	}
+
+	div.node {
+		padding: 12px 8px;
+		border-radius: 16px;
+	}
+
+	div.node-center,
+	.client-stack div.node-center {
+		width: min(220px, 66%);
+	}
+
+	.flow {
+		--services-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.services,
+	.service-arrows,
+	.results {
+		gap: 8px;
+	}
+
+	.service-arrows .vertical-arrow:first-child,
+	.service-arrows .vertical-arrow:last-child,
+	.results > :first-child,
+	.results > :last-child {
+		grid-column: auto;
+	}
+
+	.bus {
+		margin: 0;
+		padding: 9px 8px;
+	}
+
+	.pg-inline {
+		display: block;
+	}
+
+	.cicd-mobile {
+		display: flex;
+	}
+}

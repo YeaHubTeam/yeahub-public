@@ -1,0 +1,47 @@
+div.card {
+	padding: 20px;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+	border-radius: 20px;
+}
+
+div.body {
+	justify-content: flex-start;
+	gap: 16px;
+	width: 100%;
+	min-width: 0;
+}
+
+.header {
+	width: 100%;
+	min-width: 0;
+}
+
+.icon {
+	width: 29px;
+	height: 29px;
+}
+
+.title {
+	width: 100%;
+	min-width: 0;
+	overflow-wrap: break-word;
+}
+
+.chips {
+	width: 100%;
+	min-width: 0;
+}
+
+.chip {
+	max-width: 100%;
+}
+
+@media (width < 768px) {
+	div.card {
+		padding: 10px;
+		height: auto;
+		border-radius: 16px;
+	}
+}

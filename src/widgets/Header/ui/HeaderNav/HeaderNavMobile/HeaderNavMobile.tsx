@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
 import { Header, i18Namespace } from '@/shared/config';
+import { isNavPathActive } from '@/shared/libs';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
@@ -25,7 +26,7 @@ export const HeaderNavMobile = ({ items }: HeaderNavMobileProps) => {
 
 	const isInverted = INVERTED_THEME_URLS.some((url) => pathname.slice(3) === url);
 	const activeNavLink = items.find((item) =>
-		item.subitems?.some((column) => pathname.includes(column.path)),
+		item.subitems?.some((column) => isNavPathActive(pathname, column.path)),
 	);
 
 	const popoverMenuItems: PopoverMenuItem[] = [

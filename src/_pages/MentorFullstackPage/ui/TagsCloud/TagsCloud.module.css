@@ -1,0 +1,34 @@
+.list {
+  position: relative;
+	margin-top: -60px;
+  width: 100%;
+  overflow: hidden
+}
+
+.chip {
+	width: fit-content;
+	border: none;
+	pointer-events: none;
+}
+
+@media (width < 768px) {
+	.list {
+		margin-top: -70px;
+	}
+}
+
+/* stylelint-disable selector-pseudo-class-no-unknown */
+.slider-container-tags-cloud :global(.slick-slide) > div {
+	margin: 0 8px;
+	width: auto;
+}
+
+.slider-container-tags-cloud :global(.slick-list) {
+	margin-left: -8px;
+	overflow: visible;
+}
+
+.slider-container-tags-cloud :global(.slick-track) {
+	display: flex;
+	flex-direction: row;
+}

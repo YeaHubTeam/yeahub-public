@@ -13,7 +13,9 @@
 		"mentors": "Mentors",
 		"ATS": "ATS",
 		"vacancies": "Vacancies",
-		"companies": "Companies"
+		"companies": "Companies",
+		"frontend": "Frontend Developer",
+		"fullstack": "Fullstack Developer"
 	},
 	"auth": {
 		"signIn": "Sign in",

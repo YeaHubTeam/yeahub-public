@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import classNames from 'classnames';
 
+import { isNavPathActive } from '@/shared/libs';
 import { Flex } from '@/shared/ui/Flex';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
@@ -37,7 +38,7 @@ export const NavMenuPopover = ({ columns, onItemClick, isInverted }: NavMenuPopo
 									onClick={onItemClick}
 									className={classNames(styles['menu-item'], {
 										[styles.inverted]: isInverted,
-										[styles.active]: pathname.includes(subitem.path),
+										[styles.active]: isNavPathActive(pathname, subitem.path),
 									})}
 								>
 									<Flex gap="8">
