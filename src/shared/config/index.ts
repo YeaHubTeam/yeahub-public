@@ -27,6 +27,7 @@ export {
 	Vacancies,
 	Tasks,
 	Translation,
+	Articles,
 } from './i18n/i18nTranslations';
 export { API_VERSION } from './query/apiConstants';
 
