@@ -15,6 +15,12 @@ export const HEADER_NAV_LINKS: NavLink[] = [
 				icon: 'question',
 			},
 			{
+				link: route(ROUTES.testQuestions.page, DEFAULT_SPECIALIZATION_SLUG),
+				path: '/test-questions',
+				title: Header.NAV_TEST_QUESTIONS,
+				icon: 'question',
+			},
+			{
 				link: route(ROUTES.collections.page, DEFAULT_SPECIALIZATION_SLUG),
 				path: '/collections',
 				title: Header.NAV_COMPANIES,
