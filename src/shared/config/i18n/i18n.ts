@@ -4,6 +4,7 @@ import { getRequestConfig } from 'next-intl/server';
 import { routing } from '../routing';
 
 export const i18Namespace = {
+	auth: 'auth',
 	docs: 'docs',
 	header: 'header',
 	footer: 'footer',

@@ -10,9 +10,9 @@ export const HeaderAuthDesktop = async () => {
 	const t = await getTranslations(i18Namespace.header);
 
 	return (
-		<Flex justify="between" align="center" gap="26">
+		<Flex className={styles['auth-actions']} justify="between" align="center" gap="26">
 			<Button
-				variant="link"
+				variant="primary"
 				size="large"
 				className={styles['register-button']}
 				href={AUTH_LINKS.login}

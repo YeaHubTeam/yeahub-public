@@ -1,7 +1,9 @@
+import { AUTH_LINKS } from './constants';
+
 export const ROUTES = {
 	appRoute: '/',
-	login: `${process.env.NEXT_PUBLIC_APP_SITE_URL}auth/login`,
-	register: `${process.env.NEXT_PUBLIC_APP_SITE_URL}auth/register`,
+	login: AUTH_LINKS.login,
+	register: AUTH_LINKS.register,
 	questions: {
 		route: 'questions',
 		page: '/questions/:specialization',
