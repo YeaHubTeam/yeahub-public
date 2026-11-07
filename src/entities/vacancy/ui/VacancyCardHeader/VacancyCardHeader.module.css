@@ -1,9 +1,27 @@
-.image-wrapper {
-	width: 40px;
-	height: 40px;
-	border-radius: 10px;
+.company {
+	min-width: 0;
+	max-width: 100%;
+}
+
+div.image-wrapper {
+	width: 70px;
+	height: 70px;
 }
 
 .title {
 	flex-basis: 100%;
+}
+
+@media (width <= 480px) {
+	.company {
+		flex-basis: 100%;
+		flex-wrap: wrap;
+	}
+
+	div.image-wrapper {
+		aspect-ratio: 268 / 193;
+		width: 268px;
+		max-width: 100%;
+		height: auto;
+	}
 }

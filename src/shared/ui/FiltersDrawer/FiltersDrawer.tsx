@@ -15,11 +15,18 @@ interface FiltersDrawerProps {
 	children: ReactNode;
 	hasFilters?: boolean;
 	className?: string;
+	breakpoint?: 1024 | 1280;
 }
 
-export const FiltersDrawer = ({ children, hasFilters, className }: FiltersDrawerProps) => {
+export const FiltersDrawer = ({
+	children,
+	hasFilters,
+	className,
+	breakpoint = 1024,
+}: FiltersDrawerProps) => {
 	const { isOpen, onToggle, onClose } = useModal();
 	const { isMobileS } = useScreenSize();
+	const breakpointClass = breakpoint === 1280 && styles['breakpoint-1280'];
 
 	return (
 		<>
@@ -30,7 +37,7 @@ export const FiltersDrawer = ({ children, hasFilters, className }: FiltersDrawer
 				variant="tertiary"
 				onClick={onToggle}
 				isActive={hasFilters}
-				className={classNames(styles['filter-button'], className)}
+				className={classNames(styles['filter-button'], breakpointClass, className)}
 			/>
 
 			{isOpen && (
@@ -43,7 +50,7 @@ export const FiltersDrawer = ({ children, hasFilters, className }: FiltersDrawer
 					onClose={onClose}
 					position="right"
 				>
-					<section className={styles['filter']}>{children}</section>
+					<section className={classNames(styles.filter, breakpointClass)}>{children}</section>
 				</Drawer>
 			)}
 		</>

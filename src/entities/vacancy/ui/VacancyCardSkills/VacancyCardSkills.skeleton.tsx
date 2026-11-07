@@ -6,7 +6,7 @@ import styles from './VacancyCardSkills.module.css';
 
 export const VacancyCardSkillsSkeleton = () => {
 	return (
-		<Flex gap="10" align="center">
+		<Flex gap="10" align="center" wrap="wrap">
 			{Array.from({ length: 4 }).map((_, index) => (
 				<CardSkeleton className={styles.skills} key={index}>
 					<TextSkeleton variant="body1-accent" className={styles.skill} width={100} />

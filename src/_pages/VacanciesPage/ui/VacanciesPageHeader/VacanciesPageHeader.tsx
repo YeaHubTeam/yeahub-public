@@ -35,7 +35,7 @@ export const VacanciesPageHeader = ({
 				<Text variant="body6" isMainTitle maxRows={1}>
 					{title}
 				</Text>
-				<FiltersDrawer>
+				<FiltersDrawer breakpoint={1280} className={styles['filter-button']}>
 					<VacanciesFilterPanel
 						initialSpecializations={initialSpecializations}
 						initialSkills={initialSkills}

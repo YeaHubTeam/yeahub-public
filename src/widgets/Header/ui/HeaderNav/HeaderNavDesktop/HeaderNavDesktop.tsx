@@ -57,11 +57,17 @@ export const HeaderNavDesktop = ({ items }: HeaderNavDesktopProps) => {
 	return (
 		<Popover
 			isOpen={isOpen}
+			onClickOutside={onClose}
 			placement="bottom-start"
 			menuItems={popoverMenuItems}
 			className={styles['nav-popover']}
 		>
-			<Flex gap="40" onMouseEnter={handleMouseEnter} className={styles['nav-wrapper']}>
+			<Flex
+				gap="40"
+				onMouseEnter={handleMouseEnter}
+				onClick={onOpen}
+				className={styles['nav-wrapper']}
+			>
 				{items.map((item) => (
 					<HeaderNavLink
 						key={item.id}

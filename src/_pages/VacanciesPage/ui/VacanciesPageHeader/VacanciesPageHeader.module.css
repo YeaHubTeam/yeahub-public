@@ -1,5 +1,10 @@
 .header {
+	gap: 16px;
 	margin-bottom: 16px;
+}
+
+.header button.filter-button {
+	flex-shrink: 0;
 }
 
 .divider {
