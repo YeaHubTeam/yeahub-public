@@ -40,6 +40,7 @@ export const useLazyFetchData = <T, P>({
 	};
 
 	useEffect(() => {
+		controllerRef.current = true;
 		return () => {
 			controllerRef.current = false;
 		};

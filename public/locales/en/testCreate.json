@@ -1,0 +1,16 @@
+{
+	"title": "Test creation",
+	"skills": "Skills",
+	"complexity": "Difficulty level",
+	"mode": "Selection mode",
+	"count": "Number of tests",
+	"create": {
+		"button": "Start test"
+	},
+	"error": {
+		"questionsNotFound": "No questions were found for the selected parameters. Try changing the filters.",
+		"unauthorized": "Sign in to create a test.",
+		"request": "Unable to create the test. Please try again.",
+		"storage": "Unable to save the test in your browser. Check that local storage is available and try again."
+	}
+}
