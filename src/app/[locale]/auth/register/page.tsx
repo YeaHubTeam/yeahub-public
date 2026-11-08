@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { setRequestLocale } from 'next-intl/server';
 
+import { getTelegramBotName } from '@/entities/session/server';
 import { Registration } from '@/features/authentication/register';
 import { AuthPage } from '@/widgets/AuthLayout';
 
@@ -20,7 +21,7 @@ const RegistrationPage = async ({
 	const { returnPage, refId } = await searchParams;
 	return (
 		<AuthPage variant="register">
-			<Registration returnPage={returnPage} refId={refId} />
+			<Registration telegramBotName={getTelegramBotName()} returnPage={returnPage} refId={refId} />
 		</AuthPage>
 	);
 };

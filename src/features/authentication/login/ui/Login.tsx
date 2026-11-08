@@ -10,14 +10,15 @@ import {
 	LoginErrors,
 	LoginValues,
 	WebSession,
+	acceptSession,
 	authPageUrl,
-	endSession,
-	restoreSession,
-	safeReturnUrl,
+	beginSessionChange,
+	publicReturnUrl,
+	useSession,
 	validateLogin,
 } from '@/entities/session';
+import { TelegramAuth } from '@/features/authentication/telegram';
 import { AuthField, AuthPasswordField } from '@/shared/ui/AuthField';
-import { AuthTelegram } from '@/shared/ui/AuthTelegram';
 import { Button } from '@/shared/ui/Button';
 import { Text } from '@/shared/ui/Text';
 
@@ -25,72 +26,37 @@ import styles from './Login.module.css';
 
 export const Login = ({
 	returnPage,
-	legacyOrigin,
-	registered = false,
+	telegramBotName,
 }: {
 	returnPage?: string;
-	legacyOrigin?: string;
-	registered?: boolean;
+	telegramBotName?: string;
 }) => {
 	const t = useTranslations('auth');
 	const router = useRouter();
-	const [session, setSession] = useState<WebSession | null>(null);
-	const [pending, setPending] = useState(true);
+	const { session, loading, unavailable } = useSession();
+	const [pending, setPending] = useState(false);
+	const [telegramPending, setTelegramPending] = useState(false);
 	const [message, setMessage] = useState('');
 	const [values, setValues] = useState<LoginValues>({ username: '', password: '' });
 	const [errors, setErrors] = useState<LoginErrors>({});
 	const [touched, setTouched] = useState<Partial<Record<keyof LoginValues, boolean>>>({});
-	const hadSession = useRef(false);
 	const submitting = useRef(false);
 
 	useEffect(() => {
-		let active = true;
-		const check = () => {
-			void restoreSession()
-				.then((current) => {
-					if (active) {
-						setSession(current);
-						if (current) {
-							hadSession.current = true;
-							setMessage('');
-						} else if (hadSession.current) {
-							hadSession.current = false;
-							setMessage(t('expired'));
-						}
-					}
-				})
-				.catch(() => {
-					if (active) setMessage(t('unavailable'));
-				})
-				.finally(() => {
-					if (active) setPending(false);
-				});
-		};
-		check();
-		const onVisibility = () => {
-			if (document.visibilityState === 'visible') check();
-		};
-		const timer = window.setInterval(check, 60000);
-		window.addEventListener('focus', check);
-		document.addEventListener('visibilitychange', onVisibility);
-		return () => {
-			active = false;
-			clearInterval(timer);
-			window.removeEventListener('focus', check);
-			document.removeEventListener('visibilitychange', onVisibility);
-		};
-	}, [t]);
+		if (session) router.replace(publicReturnUrl(returnPage));
+	}, [session, router, returnPage]);
 
 	const onLogin = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const form = event.currentTarget;
-		if (submitting.current) return;
+		if (submitting.current || telegramPending) return;
 		const invalid = validateLogin(values);
 		setErrors(invalid);
 		setTouched({ username: true, password: true });
 		if (Object.keys(invalid).length) return;
 		submitting.current = true;
 		setPending(true);
+		beginSessionChange();
 		setMessage('');
 		try {
 			const operation = async () => {
@@ -106,41 +72,24 @@ export const Login = ({
 					}),
 				});
 				if (!response.ok) {
+					acceptSession(null);
 					setMessage(t(response.status === 401 ? 'invalidCredentials' : 'unavailable'));
 					return;
 				}
 				const result = (await response.json()) as { session: WebSession; returnUrl: string };
-				setSession(result.session);
-				hadSession.current = true;
+				acceptSession(result.session);
 				setValues({ username: '', password: '' });
 				form.reset();
-				const target = safeReturnUrl(result.returnUrl);
-				if (target !== '/ru/auth/login') {
-					router.replace(target);
-					router.refresh();
-				}
+				router.replace(publicReturnUrl(result.returnUrl));
+				router.refresh();
 			};
 			if (navigator.locks) await navigator.locks.request('yh-web-session', operation);
 			else await operation();
 		} catch {
+			acceptSession(null);
 			setMessage(t('unavailable'));
 		} finally {
 			submitting.current = false;
-			setPending(false);
-		}
-	};
-
-	const onLogout = async () => {
-		setPending(true);
-		try {
-			const revoked = await endSession();
-			setSession(null);
-			hadSession.current = false;
-			setMessage(t(revoked ? 'signedOut' : 'localSignOut'));
-			router.refresh();
-		} catch {
-			setMessage(t('unavailable'));
-		} finally {
 			setPending(false);
 		}
 	};
@@ -156,113 +105,102 @@ export const Login = ({
 		setErrors((current) => ({ ...current, [field]: validateLogin(values)[field] }));
 	};
 
+	if (session || loading)
+		return (
+			<div role="status">
+				<Text variant="body2">{t('loading')}</Text>
+			</div>
+		);
+
 	return (
 		<div className={styles.wrapper}>
 			<Text variant="head2" isMainTitle className={styles.title}>
-				{session ? `${t('hello')} ${session.user.username}` : t('title')}
+				{t('title')}
 			</Text>
-			{registered && session && (
-				<div role="status">
-					<Text variant="body2">{t('registrationSuccess')}</Text>
-				</div>
-			)}
 			{pending && (
 				<div role="status" className={styles.loading}>
 					<Text variant="body2">{t('loading')}</Text>
 				</div>
 			)}
-			{message && (
+			{(message || unavailable) && (
 				<div role="alert" className={styles.message}>
 					<Text variant="body1" color="red-700">
-						{message}
+						{message || t('unavailable')}
 					</Text>
 				</div>
 			)}
-			{session ? (
-				<Button
-					onClick={() => {
-						void onLogout();
-					}}
-					disabled={pending}
-					size="large"
-				>
-					{t('logout')}
-				</Button>
-			) : (
-				<div className={styles['create-form']}>
-					<div className={styles['form-content']}>
-						<form
-							noValidate
-							className={styles.form}
-							onSubmit={(event) => {
-								void onLogin(event);
-							}}
+			<div className={styles['create-form']}>
+				<div className={styles['form-content']}>
+					<form
+						noValidate
+						className={styles.form}
+						onSubmit={(event) => {
+							void onLogin(event);
+						}}
+					>
+						<div className={styles['input-wrapper']}>
+							<AuthField
+								id="auth-email"
+								name="username"
+								type="email"
+								autoComplete="username"
+								label={t('loginEmailLabel')}
+								placeholder={t('loginEmailPlaceholder')}
+								value={values.username}
+								onChange={(event) => change('username', event.target.value)}
+								onBlur={() => blur('username')}
+								error={errors.username ? t(errors.username) : undefined}
+								disabled={pending || telegramPending}
+								required
+								maxLength={320}
+							/>
+						</div>
+						<div className={styles['input-wrapper']}>
+							<AuthPasswordField
+								id="auth-password"
+								name="password"
+								autoComplete="current-password"
+								label={t('password')}
+								placeholder={t('loginPasswordPlaceholder')}
+								value={values.password}
+								onChange={(event) => change('password', event.target.value)}
+								onBlur={() => blur('password')}
+								error={errors.password ? t(errors.password) : undefined}
+								showLabel={t('showPassword')}
+								hideLabel={t('hidePassword')}
+								disabled={pending || telegramPending}
+								required
+								maxLength={1024}
+							/>
+							<div className={styles['forgot-password']}>
+								<Button variant="link" href={authPageUrl('forgot-password', returnPage)}>
+									{t('loginForgot')}
+								</Button>
+							</div>
+						</div>
+						<Button
+							type="submit"
+							variant="primary"
+							className={styles['submit-button']}
+							disabled={pending || telegramPending}
 						>
-							<div className={styles['input-wrapper']}>
-								<AuthField
-									id="auth-email"
-									name="username"
-									type="email"
-									autoComplete="username"
-									label={t('loginEmailLabel')}
-									placeholder={t('loginEmailPlaceholder')}
-									value={values.username}
-									onChange={(event) => change('username', event.target.value)}
-									onBlur={() => blur('username')}
-									error={errors.username ? t(errors.username) : undefined}
-									disabled={pending}
-									required
-									maxLength={320}
-								/>
-							</div>
-							<div className={styles['input-wrapper']}>
-								<AuthPasswordField
-									id="auth-password"
-									name="password"
-									autoComplete="current-password"
-									label={t('password')}
-									placeholder={t('loginPasswordPlaceholder')}
-									value={values.password}
-									onChange={(event) => change('password', event.target.value)}
-									onBlur={() => blur('password')}
-									error={errors.password ? t(errors.password) : undefined}
-									showLabel={t('showPassword')}
-									hideLabel={t('hidePassword')}
-									disabled={pending}
-									required
-									maxLength={1024}
-								/>
-								<div className={styles['forgot-password']}>
-									<Button
-										variant="link"
-										href={legacyOrigin ? `${legacyOrigin}/auth/forgot-password` : undefined}
-										disabled={!legacyOrigin}
-										aria-disabled={!legacyOrigin}
-										title={!legacyOrigin ? t('forgotUnavailable') : undefined}
-									>
-										{t('loginForgot')}
-									</Button>
-								</div>
-							</div>
-							<Button
-								type="submit"
-								variant="primary"
-								className={styles['submit-button']}
-								disabled={pending}
-							>
-								{t('submit')}
-							</Button>
-						</form>
-						<AuthTelegram caption={t('socialMedia')} unavailable={t('telegramUnavailable')} />
-					</div>
-					<div className={styles['registration-label']}>
-						<Text variant="body2">{t('noAccount')}</Text>
-						<Button href={authPageUrl('register', returnPage)} variant="link">
-							{t('register')}
+							{t('submit')}
 						</Button>
-					</div>
+					</form>
+					<TelegramAuth
+						botName={telegramBotName}
+						returnPage={returnPage}
+						disabled={pending}
+						onPendingChange={setTelegramPending}
+					/>
 				</div>
-			)}
+				<div className={styles['registration-label']}>
+					<Text variant="body2">{t('noAccount')}</Text>
+					<Button href={authPageUrl('register', returnPage)} variant="link">
+						{t('register')}
+					</Button>
+				</div>
+			</div>
 		</div>
 	);
 };

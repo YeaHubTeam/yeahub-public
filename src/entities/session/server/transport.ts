@@ -29,7 +29,8 @@ export const configuration = () => {
 		web.pathname !== '/' ||
 		web.search ||
 		web.hash ||
-		(process.env.NODE_ENV !== 'production' && (!local(api) || !local(web))) ||
+		(process.env.NODE_ENV !== 'production' &&
+			(!local(api) || (!local(web) && web.protocol !== 'https:'))) ||
 		(process.env.NODE_ENV === 'production' &&
 			(api.protocol !== 'https:' || web.protocol !== 'https:'))
 	)
@@ -47,14 +48,30 @@ export const trustedMutation = (request: NextRequest): boolean => {
 
 // Только явно перечисленные auth endpoints. Redirect не переносит credentials на другой host.
 export const upstream = (
-	path: 'login' | 'signUp' | 'profile' | 'logout' | 'refresh',
+	path:
+		| 'login'
+		| 'signUp'
+		| 'telegram'
+		| 'profile'
+		| 'logout'
+		| 'refresh'
+		| 'send-reset-password'
+		| 'reset-password',
 	token?: string,
 	body?: unknown,
 	refreshToken?: string,
+	query?: Record<string, string>,
 ) => {
 	const { api } = configuration();
-	return fetch(new URL(`auth/${path}`, `${api.href.replace(/\/$/, '')}/`), {
-		method: path === 'login' || path === 'signUp' ? 'POST' : 'GET',
+	const url = new URL(`auth/${path}`, `${api.href.replace(/\/$/, '')}/`);
+	if (query) url.search = new URLSearchParams(query).toString();
+	return fetch(url, {
+		method:
+			path === 'reset-password'
+				? 'PATCH'
+				: path === 'login' || path === 'signUp' || path === 'telegram'
+					? 'POST'
+					: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 			...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -72,13 +89,25 @@ const object = (value: unknown): Record<string, unknown> => {
 	return value as Record<string, unknown>;
 };
 
+const safeAvatar = (value: unknown): string | null => {
+	if (typeof value !== 'string' || value.length > 2048) return null;
+	try {
+		const url = new URL(value);
+		return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password
+			? url.href
+			: null;
+	} catch {
+		return null;
+	}
+};
+
 // Allowlist вместо пересылки backend DTO: новые поля/credentials не попадут в browser JSON.
 export const publicSession = (value: unknown): WebSession => {
 	const user = object(value);
 	if (
 		typeof user.id !== 'string' ||
 		typeof user.username !== 'string' ||
-		typeof user.email !== 'string'
+		(typeof user.email !== 'string' && user.email !== null)
 	) {
 		throw new Error('AUTH_CONTRACT');
 	}
@@ -98,6 +127,7 @@ export const publicSession = (value: unknown): WebSession => {
 			username: user.username,
 			email: user.email,
 			isVerified: user.isVerified === true,
+			avatarUrl: safeAvatar(user.avatarUrl),
 		},
 		roles: (Array.isArray(user.userRoles) ? user.userRoles : []).flatMap((entry: unknown) => {
 			const role = object(entry);

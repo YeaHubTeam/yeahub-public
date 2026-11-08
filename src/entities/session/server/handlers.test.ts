@@ -235,3 +235,17 @@ it('BFF использует предоставленные API_URL/LANDING_URL 
 	expect(fetchMock.mock.calls[0][0].href).toBe('http://localhost:4002/auth/login');
 	expect(response.headers.getSetCookie()).toHaveLength(2);
 });
+
+it.each([
+	'javascript:alert(1)',
+	'data:image/svg+xml,test',
+	'//external.invalid/avatar',
+	'https://user:secret@example.invalid/avatar',
+])('avatar rejects unsafe URL %s', (avatarUrl) => {
+	expect(publicSession({ ...profile(), avatarUrl }).user.avatarUrl).toBeNull();
+});
+it('avatar allows a public image without exposing other backend fields', () => {
+	const session = publicSession({ ...profile(), avatarUrl: 'https://example.invalid/avatar.png' });
+	expect(session.user.avatarUrl).toBe('https://example.invalid/avatar.png');
+	expect(JSON.stringify(session)).not.toContain('must-not-leak');
+});

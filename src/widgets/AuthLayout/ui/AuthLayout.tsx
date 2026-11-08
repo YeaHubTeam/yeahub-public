@@ -53,5 +53,5 @@ export const AuthPage = ({
 	variant = 'login',
 }: {
 	children: ReactNode;
-	variant?: 'login' | 'register';
-}) => <div className={`${styles.page} ${variant === 'login' ? styles.login : ''}`}>{children}</div>;
+	variant?: 'login' | 'register' | 'forgot' | 'recovery';
+}) => <div className={`${styles.page} ${styles[variant] || ''}`}>{children}</div>;

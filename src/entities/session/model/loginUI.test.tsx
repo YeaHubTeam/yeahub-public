@@ -1,5 +1,5 @@
 /** @jest-environment jsdom */
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { validateLogin } from './loginValidation';
 
@@ -7,10 +7,9 @@ const router = { replace: jest.fn(), refresh: jest.fn() };
 const translate = (key: string) => key;
 jest.mock('next/navigation', () => ({ useRouter: () => router }));
 jest.mock('next-intl', () => ({ useTranslations: () => translate }));
+jest.mock('./client', () => ({ restoreSession: jest.fn(), endSession: jest.fn() }));
 jest.mock('@/entities/session', () => ({
 	...jest.requireActual<typeof import('../index')>('../index'),
-	restoreSession: jest.fn(),
-	endSession: jest.fn(),
 }));
 const api: jest.Mocked<typeof import('../index')> = jest.requireMock('@/entities/session');
 const { Login } = jest.requireActual<
@@ -24,7 +23,7 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 const ready = async () => {
-	const button = screen.getByRole<HTMLButtonElement>('button', { name: 'submit' });
+	const button = await screen.findByRole<HTMLButtonElement>('button', { name: 'submit' });
 	await waitFor(() => expect(button.disabled).toBe(false));
 	return button;
 };
@@ -83,14 +82,33 @@ it('успех login ведёт на безопасный returnPage, без п�
 	await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/ru/questions/react/example'));
 	expect(fetch).toHaveBeenCalledTimes(1);
 });
-it('restoration показывает профиль и logout завершает сессию', async () => {
+it('restoration redirects to public home without technical profile panel', async () => {
 	api.restoreSession.mockResolvedValue(session as Awaited<ReturnType<typeof api.restoreSession>>);
-	api.endSession.mockResolvedValue(true);
 	render(<Login />);
-	const button = await screen.findByRole('button', { name: 'logout' });
-	await waitFor(() => expect((button as HTMLButtonElement).disabled).toBe(false));
-	fireEvent.click(button);
-	await screen.findByText('signedOut');
-	expect(api.endSession).toHaveBeenCalledTimes(1);
-	expect(screen.getByRole('button', { name: 'submit' })).toBeTruthy();
+	await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/ru'));
+	expect(screen.queryByText('Tester')).toBeNull();
+	expect(screen.queryByRole('button', { name: 'logout' })).toBeNull();
+});
+
+it('Telegram success publishes session and redirects to public home', async () => {
+	(fetch as jest.Mock).mockResolvedValue({
+		ok: true,
+		json: () => Promise.resolve({ session, returnUrl: '/ru/auth/login' }),
+	});
+	render(<Login telegramBotName="example_test_bot" />);
+	await ready();
+	const cb = Object.values(window.YeaHubTelegramCallbacks!)[0];
+	await act(() =>
+		Promise.resolve(
+			cb({
+				id: 123456,
+				first_name: 'Synthetic',
+				auth_date: Math.floor(Date.now() / 1000),
+				hash: 'a'.repeat(64),
+			}),
+		),
+	);
+	await waitFor(() => expect(router.replace).toHaveBeenCalledWith('/ru'));
+	expect(screen.queryByRole('button', { name: 'logout' })).toBeNull();
+	expect(fetch).toHaveBeenCalledTimes(1);
 });

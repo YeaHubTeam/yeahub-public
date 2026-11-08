@@ -1,0 +1,20 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.widget {
+  max-width: 100%;
+}
+
+.widget[aria-disabled='true'] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.widget iframe {
+  max-width: 100%;
+}

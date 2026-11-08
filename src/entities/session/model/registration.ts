@@ -1,6 +1,6 @@
 // Правила существующего React registerSchema/regexp; максимум пароля — NestJS DTO.
-const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const passwordRule =
+export const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const passwordRule =
 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};:'",./?\\|~])[A-Za-z\d!@#$%^&*()_+\-=[\]{};:'",./?\\|~]{8,}$/;
 
 export interface RegistrationValues {

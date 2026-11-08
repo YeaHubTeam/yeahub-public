@@ -84,7 +84,9 @@ it('auth page wrappers оставляют те же формы для login и r
 const expectedPaths: string[] = [
 	'/ru',
 	'/ru/[...rest]',
+	'/ru/auth/forgot-password',
 	'/ru/auth/login',
+	'/ru/auth/password-recovery',
 	'/ru/auth/register',
 	'/ru/avos',
 	'/ru/collections',

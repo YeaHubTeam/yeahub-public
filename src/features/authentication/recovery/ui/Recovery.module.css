@@ -1,0 +1,156 @@
+.forgot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.forgot .forgot-title {
+  margin-top: 228.5px;
+  margin-bottom: 30px;
+  color: var(--text-color-bright);
+  text-align: center;
+  font-size: var(--font-size-h-l);
+}
+
+.forgot-subtitle {
+  margin-right: 54px;
+  margin-bottom: 20px;
+  color: var(--text-color-lighter);
+}
+
+.email-field {
+  margin-bottom: 40px;
+}
+
+.forgot .full-button,
+.recovery .save-button {
+  width: 100%;
+}
+
+.register-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 48px 0 70px;
+  padding: 16px;
+  width: 100%;
+  border-radius: 20px;
+  background-color: var(--color-label-bg);
+  font-size: var(--font-size-p-s);
+}
+
+.recovery {
+  width: 100%;
+}
+
+.recovery .recovery-title {
+  margin: 0 0 30px;
+  color: var(--text-color-bright);
+  text-align: center;
+  font-size: var(--font-size-h-xs);
+}
+
+.recovery-subtitle {
+  margin-bottom: 20px;
+  color: var(--text-color-bright);
+}
+
+.password-field {
+  margin-bottom: 16px;
+}
+
+.recovery .save-button {
+  margin-top: 40px;
+}
+
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.email-modal[data-testid='Modal'] {
+  width: 448px;
+  min-width: 0;
+  max-width: calc(100% - 40px);
+  max-height: calc(100dvh - 80px);
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.email-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.email-content img {
+  margin-bottom: 20px;
+}
+
+.modal-subtitle {
+  margin-bottom: 16px;
+  text-align: center;
+  line-height: 120%;
+  font-size: var(--font-size-p-s);
+  white-space: pre-wrap;
+}
+
+.modal-error {
+  color: var(--error-color-red);
+  font-size: var(--font-size-p-xs);
+}
+
+.timer {
+  margin: 16px 0;
+  min-height: 23px;
+}
+
+@media (width <= 768px) {
+  .forgot .forgot-title {
+    margin-top: 109.5px;
+  }
+
+  .register-strip {
+    margin-bottom: 40px;
+  }
+}
+
+@media (width <= 480px) {
+  .forgot .forgot-title {
+    margin-top: 68px;
+    margin-bottom: 24px;
+    font-size: var(--font-size-h-s);
+  }
+
+  .forgot-subtitle {
+    margin-right: 0;
+  }
+
+  .email-field {
+    margin-bottom: 20px;
+  }
+
+  .register-strip {
+    margin-bottom: 20px;
+  }
+}
+
+.email-content .resend {
+  padding: 0;
+  width: auto;
+  height: 24px;
+  color: var(--link-text-color-primary);
+  font-weight: var(--font-weight-400);
+  font-size: var(--font-size-p-s);
+}
+
+.email-content .resend:hover {
+  background-color: transparent;
+  color: var(--link-text-color-primary-hover);
+}
+
+.email-content .resend:disabled {
+  color: var(--text-color-link-disabled);
+}

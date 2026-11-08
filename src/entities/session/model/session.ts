@@ -1,5 +1,11 @@
 export interface WebSession {
-	user: { id: string; username: string; email: string; isVerified: boolean };
+	user: {
+		id: string;
+		username: string;
+		email: string | null;
+		isVerified: boolean;
+		avatarUrl?: string | null;
+	};
 	roles: string[];
 	profiles: { id: string; specializationId: number | null; isActive: boolean }[];
 	activeProfile: { id: string; specializationId: number | null; isActive: boolean } | null;
@@ -31,10 +37,19 @@ export const safeReturnUrl = (value: unknown): string => {
 	}
 };
 
-export const authPageUrl = (page: 'login' | 'register', returnPage?: unknown): string => {
+export const authPageUrl = (
+	page: 'login' | 'register' | 'forgot-password',
+	returnPage?: unknown,
+): string => {
 	const path = `/ru/auth/${page}`;
 	const target = safeReturnUrl(returnPage);
 	return target === '/ru/auth/login'
 		? path
 		: `${path}?${new URLSearchParams({ returnPage: target })}`;
+};
+
+// Auth pages are never a successful-login destination.
+export const publicReturnUrl = (value: unknown): string => {
+	const target = safeReturnUrl(value);
+	return target === '/ru/auth/login' ? '/ru' : target;
 };

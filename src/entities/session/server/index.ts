@@ -10,3 +10,8 @@ export const getCurrentSession = async () =>
 export { login, logout, session, refresh } from './handlers';
 
 export { register } from './registration';
+
+export { forgotPassword, resetPassword, recoveryContext } from './recovery';
+export { RECOVERY_COOKIE } from './recoveryLink';
+
+export { telegramLogin, getTelegramBotName } from './telegram';

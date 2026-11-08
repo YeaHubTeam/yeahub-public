@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { setRequestLocale } from 'next-intl/server';
 
+import { getTelegramBotName } from '@/entities/session/server';
 import { Login } from '@/features/authentication/login';
 import { AuthPage } from '@/widgets/AuthLayout';
 
@@ -13,22 +14,14 @@ const LoginPage = async ({
 	searchParams,
 }: {
 	params: Promise<{ locale: string }>;
-	searchParams: Promise<{ returnPage?: string; registered?: string }>;
+	searchParams: Promise<{ returnPage?: string }>;
 }) => {
 	const { locale } = await params;
 	setRequestLocale(locale);
-	const { returnPage, registered } = await searchParams;
-	let legacyOrigin: string | undefined;
-	try {
-		const legacy = new URL(process.env.NEXT_PUBLIC_APP_SITE_URL || 'invalid:');
-		if (['http:', 'https:'].includes(legacy.protocol) && !legacy.username && !legacy.password)
-			legacyOrigin = legacy.origin;
-	} catch {
-		/* Без настроенного legacy origin не создаём неработающие ссылки. */
-	}
+	const { returnPage } = await searchParams;
 	return (
 		<AuthPage>
-			<Login returnPage={returnPage} legacyOrigin={legacyOrigin} registered={registered === '1'} />
+			<Login telegramBotName={getTelegramBotName()} returnPage={returnPage} />
 		</AuthPage>
 	);
 };

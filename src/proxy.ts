@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 import createMiddleware from 'next-intl/middleware';
 
+import { captureRecoveryLink } from './entities/session/server/recoveryLink';
 import { routing } from './shared/config';
 
 const intlMiddleware = createMiddleware(routing);
@@ -17,7 +18,14 @@ export default function proxy(request: NextRequest) {
 		return NextResponse.redirect(url, 301);
 	}
 
-	return intlMiddleware(request);
+	const recovery = captureRecoveryLink(request);
+	if (recovery) return recovery;
+	const response = intlMiddleware(request);
+	if (request.nextUrl.pathname.includes('/auth/')) {
+		response.headers.set('Referrer-Policy', 'no-referrer');
+		response.headers.set('Cache-Control', 'private, no-store');
+	}
+	return response;
 }
 
 export const config = {

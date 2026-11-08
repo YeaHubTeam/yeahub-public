@@ -10,14 +10,16 @@ import {
 	RegistrationErrors,
 	RegistrationField,
 	RegistrationValues,
+	acceptSession,
 	authPageUrl,
+	beginSessionChange,
+	publicReturnUrl,
 	registerAccount,
-	restoreSession,
-	safeReturnUrl,
+	useSession,
 	validateRegistration,
 } from '@/entities/session';
+import { TelegramAuth } from '@/features/authentication/telegram';
 import { AuthField, AuthPasswordField } from '@/shared/ui/AuthField';
-import { AuthTelegram } from '@/shared/ui/AuthTelegram';
 import { Button } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Flex } from '@/shared/ui/Flex';
@@ -38,7 +40,15 @@ const documents = {
 		'https://docs.google.com/document/d/1SaCHcZZhb9da-yOePEur3wv2C47ie2R8rPnkkxrxPqA/edit?tab=t.0',
 };
 
-export const Registration = ({ returnPage, refId }: { returnPage?: string; refId?: string }) => {
+export const Registration = ({
+	returnPage,
+	refId,
+	telegramBotName,
+}: {
+	returnPage?: string;
+	refId?: string;
+	telegramBotName?: string;
+}) => {
 	const t = useTranslations('auth');
 	const router = useRouter();
 	const [values, setValues] = useState<RegistrationValues>({
@@ -53,34 +63,17 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 	});
 	const [errors, setErrors] = useState<RegistrationErrors>({});
 	const [touched, setTouched] = useState<Partial<Record<RegistrationField, boolean>>>({});
-	const [checking, setChecking] = useState(true);
+	const { session, loading: checking, unavailable } = useSession();
 	const [pending, setPending] = useState(false);
+	const [telegramPending, setTelegramPending] = useState(false);
 	const [message, setMessage] = useState('');
 	const submitting = useRef(false);
-	const target = safeReturnUrl(returnPage);
+	const target = publicReturnUrl(returnPage);
 	const loginUrl = authPageUrl('login', returnPage);
 
 	useEffect(() => {
-		let active = true;
-		void restoreSession()
-			.then((session) => {
-				if (!active) return;
-				if (session) {
-					router.replace(target);
-					return;
-				}
-				setChecking(false);
-			})
-			.catch(() => {
-				if (active) {
-					setChecking(false);
-					setMessage(t('unavailable'));
-				}
-			});
-		return () => {
-			active = false;
-		};
-	}, [router, target, t]);
+		if (session) router.replace(target);
+	}, [session, router, target]);
 
 	const update = (field: RegistrationField, value: string | boolean) => {
 		const next = { ...values, [field]: value };
@@ -100,7 +93,7 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 	};
 	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (submitting.current || checking) return;
+		if (submitting.current || checking || telegramPending) return;
 		const validation = validateRegistration(values);
 		const formErrors = registrationFormErrors(values);
 		setErrors(formErrors);
@@ -116,10 +109,12 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 		if (!validation.values || Object.keys(formErrors).length) return;
 		submitting.current = true;
 		setPending(true);
+		beginSessionChange();
 		setMessage('');
 		try {
 			const result = await registerAccount(validation.values, target);
 			if (!result.ok) {
+				acceptSession(null);
 				setErrors(result.fields ?? {});
 				const key =
 					result.error === 'ACCOUNT_CONFLICT'
@@ -136,12 +131,11 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 			}
 			setValues((current) => ({ ...current, password: '', passwordConfirmation: '' }));
 			setMessage(t('registrationSuccess'));
-			const destination = safeReturnUrl(result.returnUrl);
-			router.replace(
-				destination === '/ru/auth/login' ? '/ru/auth/login?registered=1' : destination,
-			);
+			acceptSession(result.session);
+			router.replace(publicReturnUrl(result.returnUrl));
 			router.refresh();
 		} catch {
+			acceptSession(null);
 			setMessage(t('registrationUnavailable'));
 		} finally {
 			submitting.current = false;
@@ -149,7 +143,7 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 		}
 	};
 
-	const disabled = pending || checking;
+	const disabled = pending || checking || telegramPending;
 	const fields = ['username', 'email', 'password', 'passwordConfirmation'] as const;
 	const consents = ['privacyConsent', 'offerConsent', 'adConsent'] as const;
 	const consentKeys = {
@@ -178,6 +172,13 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 			),
 		]),
 	);
+	if (session || checking)
+		return (
+			<div role="status">
+				<Text variant="body2">{t('loading')}</Text>
+			</div>
+		);
+
 	return (
 		<Flex direction="column" justify="between" align="center" className={styles.wrapper}>
 			<Flex direction="column" gap="24" className={styles.content}>
@@ -197,7 +198,7 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 							<Text variant="body3">{t('loading')}</Text>
 						</div>
 					)}
-					{message && (
+					{(message || unavailable) && (
 						<div
 							role={message === t('registrationSuccess') ? 'status' : 'alert'}
 							className={styles.message}
@@ -206,7 +207,7 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 								variant="body1"
 								color={message === t('registrationSuccess') ? 'black-900' : 'red-700'}
 							>
-								{message}
+								{message || t('unavailable')}
 							</Text>
 						</div>
 					)}
@@ -288,7 +289,12 @@ export const Registration = ({ returnPage, refId }: { returnPage?: string; refId
 						))}
 					</div>
 				</form>
-				<AuthTelegram caption={t('socialMedia')} unavailable={t('telegramUnavailable')} />
+				<TelegramAuth
+					botName={telegramBotName}
+					returnPage={returnPage}
+					disabled={pending || checking}
+					onPendingChange={setTelegramPending}
+				/>
 			</Flex>
 			<div className={styles['login-label']}>
 				<Text variant="body2">{t('registrationHaveAccount')}</Text>

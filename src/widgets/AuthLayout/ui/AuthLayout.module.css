@@ -143,3 +143,13 @@
     font-size: var(--font-size-h-s);
   }
 }
+
+.forgot {
+  margin: 0;
+}
+
+.recovery {
+  margin: auto 0;
+  padding: 70px 0;
+  max-width: 448px;
+}

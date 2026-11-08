@@ -5,6 +5,8 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 
 import messages from '../../../../public/locales/ru/auth.json';
 
+jest.mock('./client', () => ({ restoreSession: jest.fn(), endSession: jest.fn() }));
+
 const { registrationFormErrors } = jest.requireActual<
 	typeof import('../../../features/authentication/register/model/validation')
 >('../../../features/authentication/register/model/validation');
@@ -31,7 +33,6 @@ jest.mock('next-intl', () => ({
 }));
 jest.mock('@/entities/session', () => ({
 	...jest.requireActual<typeof import('../index')>('../index'),
-	restoreSession: jest.fn(),
 	registerAccount: jest.fn(),
 }));
 const api: jest.Mocked<typeof import('../index')> = jest.requireMock('@/entities/session');
@@ -80,7 +81,7 @@ it('confirmation проверяется на strength, рассылка необ
 });
 it('восстанавливает source тексты/placeholder/order, 4 документа внутри согласий, link не переключает checkbox', async () => {
 	render(<Registration returnPage="/ru/questions/react/example?page=2#answer" />);
-	const name = screen.getByLabelText<HTMLInputElement>('Никнейм');
+	const name = await screen.findByLabelText<HTMLInputElement>('Никнейм');
 	await waitFor(() => expect(name.disabled).toBe(false));
 	expect(screen.getByRole('heading', { name: 'Регистрация' })).toBeTruthy();
 	expect(screen.getByPlaceholderText('Введите никнейм')).toBe(name);
@@ -129,7 +130,8 @@ it('восстанавливает source тексты/placeholder/order, 4 до
 });
 it('onTouched errors обновляются при вводе и изменении исходного пароля', async () => {
 	render(<Registration />);
-	const name = screen.getByLabelText<HTMLInputElement>('Никнейм');
+	await screen.findByLabelText('Никнейм');
+	const name = await screen.findByLabelText<HTMLInputElement>('Никнейм');
 	await waitFor(() => expect(name.disabled).toBe(false));
 	expect(screen.queryByText('Это поле обязательно для заполнения')).toBeNull();
 	fireEvent.blur(name);
