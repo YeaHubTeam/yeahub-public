@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding: 16px;
+  width: 100%;
+  border-radius: 20px;
+  background-color: var(--color-label-bg);
+  font-weight: var(--font-weight-400);
+  font-size: var(--font-size-p-s);
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btn span {
+  margin-left: auto;
+}

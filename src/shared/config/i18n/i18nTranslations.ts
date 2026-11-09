@@ -28,6 +28,15 @@ export enum Translation {
 	ERROR_404_BUTTON = 'error-404.button',
 	DATE_TODAY = 'date.today',
 	DATE_YESTERDAY = 'date.yesterday',
+
+	/* Validation */
+	VALIDATION_EMAIL = 'validation.email',
+	VALIDATION_REQUIRED = 'validation.required',
+	VALIDATION_LENGTH_MIN = 'validation.length.min',
+	VALIDATION_LENGTH_MAX = 'validation.length.max',
+	VALIDATION_PASSWORD_WEAK = 'validation.password.weak',
+	VALIDATION_PASSWORD_SIMILAR = 'validation.password.similar',
+	VALIDATION_PRIVACY = 'validation.privacy',
 }
 
 export enum Header {
@@ -348,6 +357,26 @@ export enum Analytics {
 }
 
 export enum Auth {
+	REGISTRATION_TITLE = 'registration.title',
+	REGISTRATION_SUBMIT = 'registration.submit',
+	REGISTRATION_HAVE_ACCOUNT = 'registration.have.account',
+	REGISTRATION_LOGIN_LINK = 'registration.login.link',
+	FORM_USERNAME_LABEL = 'form.username.label',
+	FORM_USERNAME_PLACEHOLDER = 'form.username.placeholder',
+	FORM_PASSWORD_REPEAT_LABEL = 'form.password.repeat.label',
+	REGISTRATION_PRIVACY_TITLE = 'registration.privacy.title',
+	REGISTRATION_PRIVACY_POLICY = 'registration.privacy.policy',
+	REGISTRATION_PRIVACY_OFFER_AGREEMENT = 'registration.privacy.offer.agreement',
+	REGISTRATION_PRIVACY_ADD_CONSENT = 'registration.privacy.add.consent',
+	LOGIN_TITLE = 'login.title',
+	FORM_EMAIL_LABEL = 'form.email.label',
+	FORM_EMAIL_PLACEHOLDER = 'form.email.placeholder',
+	FORM_PASSWORD_LABEL = 'form.password.label',
+	FORM_PASSWORD_PLACEHOLDER = 'form.password.placeholder',
+	LOGIN_FORGOT_PASSWORD_LINK = 'login.forgot.password.link',
+	LOGIN_SUBMIT = 'login.submit',
+	LOGIN_NO_ACCOUNT = 'login.no.account',
+	LOGIN_REGISTER_LINK = 'login.register.link',
 	LOGO_TEXT = 'logo.text',
 	BENEFITS_TITLE = 'benefits.title',
 	BENEFITS_STEP_PLAN = 'benefits.step.plan',

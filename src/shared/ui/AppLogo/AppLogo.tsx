@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
 import classNames from 'classnames';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -10,16 +9,19 @@ import { LogoText } from '@/shared/assets';
 import { logoDark } from '@/shared/assets';
 import { logoLight } from '@/shared/assets';
 import { Header, i18Namespace } from '@/shared/config';
+import { Link } from '@/shared/config/navigation';
 
 import styles from './AppLogo.module.css';
 
 export interface AppLogoProps {
+	navigateTo?: string;
 	logoType?: 'light' | 'dark';
 	navigationFooter?: boolean;
 	disabled?: boolean;
 }
 
 export const AppLogo = async ({
+	navigateTo,
 	logoType = 'dark',
 	navigationFooter = false,
 	disabled = false,
@@ -27,7 +29,7 @@ export const AppLogo = async ({
 	const locale = await getLocale();
 	const t = await getTranslations(i18Namespace.header);
 
-	const targetHref = disabled ? '#' : `/${locale}`;
+	const targetHref = disabled ? '#' : (navigateTo ?? '/');
 
 	const logoSrc = logoType === 'dark' ? logoDark : logoLight;
 
@@ -71,6 +73,7 @@ export const AppLogo = async ({
 
 	return (
 		<Link
+			locale={locale}
 			data-testid="AppLogo_Link"
 			href={targetHref}
 			className={classNames(styles['home-link'], { [styles.center]: navigationFooter })}

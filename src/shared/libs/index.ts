@@ -34,3 +34,10 @@ export { SELECT_TARIFF_SETTINGS_TAB } from './app/customRoutes';
 export { getFormatSalary } from './salary/getFormatSalary';
 export { useGetCurrentDay } from './date/useGetCurrentDay';
 export { getQuestionSpecializationTitle } from './seo';
+export { emailRule, passwordRules } from './app';
+export {
+	CONSENT_PROCESSING_LINK,
+	AD_CONSENT_LINK,
+	OFFER_AGREEMENT_LINK,
+	PRIVACY_POLICY_LINK,
+} from './app';
