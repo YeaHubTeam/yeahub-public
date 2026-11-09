@@ -53,22 +53,11 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 	setRequestLocale(locale);
 
 	const messages = await getMessages({ locale });
-	const t = await getTranslations({ locale, namespace: i18Namespace.main });
-
-	const jsonLd = {
-		'@context': 'http://schema.org/',
-		'@type': 'WPHeader',
-		headline: t(Main.PROJECT_TITLE),
-	};
 
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
 			{children}
 			<div id="drawer-root" />
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-			></script>
 		</NextIntlClientProvider>
 	);
 };
