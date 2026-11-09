@@ -2,6 +2,7 @@ export { i18Namespace } from './i18n/i18n';
 export { locales, type Locale } from './i18n/i18n.locales';
 export {
 	Analytics,
+	Auth,
 	Avos,
 	Collections,
 	Companies,

@@ -347,6 +347,16 @@ export enum Analytics {
 	HH_ANALYTICS_TABLE_COUNT = 'hhAnalytics.table.count',
 }
 
+export enum Auth {
+	LOGO_TEXT = 'logo.text',
+	BENEFITS_TITLE = 'benefits.title',
+	BENEFITS_STEP_PLAN = 'benefits.step.plan',
+	BENEFITS_CAREER_GROWTH = 'benefits.career.growth',
+	BENEFITS_BIG_COMMUNITY = 'benefits.big.community',
+	BENEFITS_MENTOR_TRAINING = 'benefits.mentor.training',
+	BENEFITS_INTERNSHIP_OPPORTUNITIES = 'benefits.internship.opportunities',
+}
+
 export enum Resources {
 	HEADER_TITLE = 'header.title',
 	SEO_TITLE = 'seo.title',
