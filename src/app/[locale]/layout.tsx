@@ -7,10 +7,6 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Main, i18Namespace, routing } from '@/shared/config';
-import { Footer } from '@/widgets/Footer';
-import { Header } from '@/widgets/Header';
-
-import styles from './layout.module.css';
 
 interface LocaleLayoutProps {
 	children: React.ReactNode;
@@ -67,11 +63,7 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
-			<Header />
-			<main className={styles.main}>
-				<div className={styles['main-content']}>{children}</div>
-			</main>
-			<Footer />
+			{children}
 			<div id="drawer-root" />
 			<script
 				type="application/ld+json"
