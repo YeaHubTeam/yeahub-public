@@ -12,6 +12,7 @@ type BackendSession = {
 	userId: string;
 	username: string;
 	avatarUrl: string | null;
+	email?: string | null;
 	accessToken: string;
 	refreshToken: string;
 	accessExpiresAt: number;
@@ -29,10 +30,15 @@ const isBackendSession = (value: unknown): value is BackendSession =>
 		(key) => typeof value[key] === 'string' && value[key].length > 0,
 	) &&
 	(value.avatarUrl === null || typeof value.avatarUrl === 'string') &&
+	(value.email === undefined || value.email === null || typeof value.email === 'string') &&
 	(value.refreshRetryRequired === undefined || typeof value.refreshRetryRequired === 'boolean') &&
 	['accessExpiresAt', 'refreshExpiresAt', 'sessionExpiresAt'].every(
 		(key) => typeof value[key] === 'number' && Number.isSafeInteger(value[key]),
 	);
+
+// Pick only the optional, server-confirmed field; never copy client update data.
+const emailField = (email: unknown): { email?: string | null } =>
+	typeof email === 'string' || email === null ? { email } : {};
 
 const deadline = (session: BackendSession) =>
 	Math.min(session.refreshExpiresAt, session.sessionExpiresAt);
@@ -95,6 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 						userId: result.user.id,
 						username: result.user.username,
 						avatarUrl: result.user.avatarUrl,
+						...emailField(result.user.email),
 						accessToken: result.access_token,
 						refreshToken: result.refreshToken,
 						accessExpiresAt,
@@ -114,6 +121,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 			},
 		}),
 	],
+	events: {
+		async signOut(message) {
+			if (!('token' in message) || !isBackendSession(message.token?.backendSession)) return;
+			const controller = new AbortController();
+			let timer: ReturnType<typeof setTimeout> | undefined;
+			try {
+				const timeout = new Promise<never>((_, reject) => {
+					timer = setTimeout(() => {
+						controller.abort();
+						reject(new Error('Backend logout timed out'));
+					}, 3000);
+				});
+				const backend = createBackendAuthTransport({
+					...getAuthBackendConfig(),
+					fetch: (input, init) => fetch(input, { ...init, signal: controller.signal }),
+				});
+				await Promise.race([backend.logout(message.token.backendSession.accessToken), timeout]);
+			} catch {
+				// Backend revocation is best effort; always allow Auth.js to clear its cookies.
+			} finally {
+				clearTimeout(timer);
+			}
+		},
+	},
 	callbacks: {
 		async jwt({ token, user, trigger }) {
 			const stored = user && 'backendSession' in user ? user.backendSession : token.backendSession;
@@ -132,6 +163,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 						userId: data.userId,
 						username: refreshed.user.username,
 						avatarUrl: refreshed.user.avatarUrl,
+						...emailField(refreshed.user.email === undefined ? stored.email : refreshed.user.email),
 						accessToken: refreshed.access_token,
 						refreshToken: refreshed.refreshToken,
 						accessExpiresAt: getTokenExpiry(refreshed.access_token),
@@ -156,6 +188,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 					userId: data.userId,
 					username: data.username,
 					avatarUrl: data.avatarUrl,
+					...emailField(data.email),
 					accessToken: data.accessToken,
 					refreshToken: data.refreshToken,
 					accessExpiresAt: data.accessExpiresAt,
@@ -171,7 +204,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 				throw new Error('Backend authentication expired or unavailable');
 			}
 			return {
-				user: { id: data.userId, username: data.username, image: data.avatarUrl },
+				user: {
+					id: data.userId,
+					username: data.username,
+					image: data.avatarUrl,
+					...emailField(data.email),
+				},
 				expires: new Date(deadline(data) * 1000).toISOString(),
 				// Identity persists for refresh; this does not make an expired access token usable.
 				requiresRefresh:

@@ -29,6 +29,7 @@ const loginResult = {
 	user: identity,
 	refreshToken: 'synthetic-refresh',
 };
+const fullLoginResult = { ...loginResult, user: { ...identity, email: user.email } };
 const authBody = { access_token: 'synthetic-access', user };
 const json = (body: unknown, status = 200, cookies: string[] = []) => {
 	const headers = new Headers({ 'Content-Type': 'application/json' });
@@ -45,6 +46,52 @@ const setup = () => {
 	});
 	return { fetcher, transport };
 };
+
+describe.each(['login', 'refresh'] as const)('%s optional identity email', (operation) => {
+	it.each([
+		{ label: 'string', email: 'server@example.invalid', expected: 'server@example.invalid' },
+		{
+			label: 'string preserved verbatim',
+			email: ' server@example.invalid ',
+			expected: ' server@example.invalid ',
+		},
+		{ label: 'empty string', email: '', expected: '' },
+		{ label: 'null', email: null, expected: null },
+		{ label: 'missing' },
+		{ label: 'number', email: 42 },
+		{ label: 'boolean', email: false },
+		{ label: 'object', email: { value: 'must-not-copy' } },
+		{ label: 'array', email: ['must-not-copy'] },
+	])('projects only a string or null: $label', async (testCase) => {
+		const { transport, fetcher } = setup();
+		const responseUser = {
+			...identity,
+			...('email' in testCase ? { email: testCase.email } : {}),
+			privateExtra: 'must-not-copy',
+		};
+		fetcher.mockResolvedValue(
+			json(
+				{ access_token: authBody.access_token, user: responseUser },
+				operation === 'login' ? 201 : 200,
+				['refresh_token=synthetic-refresh'],
+			),
+		);
+		const result =
+			operation === 'login'
+				? await transport.login({
+						username: 'input@example.invalid',
+						password: 'synthetic-password',
+					})
+				: await transport.refresh('synthetic-old-refresh');
+		expect(result).toEqual({
+			...loginResult,
+			user: { ...identity, ...('expected' in testCase ? { email: testCase.expected } : {}) },
+		});
+		expect(Object.prototype.hasOwnProperty.call(result.user, 'email')).toBe('expected' in testCase);
+		expect(result.user).not.toHaveProperty('privateExtra');
+		expect(fetcher).toHaveBeenCalledTimes(1);
+	});
+});
 
 describe('backend auth server transport', () => {
 	it('returns no diagnostic for a valid response', () => {
@@ -199,7 +246,7 @@ describe('backend auth server transport', () => {
 			);
 			await expect(
 				transport.login({ username: 'sample@example.com', password: 'synthetic-password' }),
-			).resolves.toEqual(loginResult);
+			).resolves.toEqual(fullLoginResult);
 			expect(fetcher).toHaveBeenCalledTimes(1);
 		},
 	);
@@ -234,7 +281,7 @@ describe('backend auth server transport', () => {
 		);
 		await expect(
 			transport.login({ username: 'sample@example.com', password: 'synthetic-password' }),
-		).resolves.toEqual(loginResult);
+		).resolves.toEqual(fullLoginResult);
 	});
 
 	it.each([200, 201])('accepts minimal login identity at HTTP %s', async (status) => {
@@ -268,6 +315,7 @@ describe('backend auth server transport', () => {
 				id: user.id,
 				username: user.username,
 				avatarUrl: 'avatarUrl' in loginUser ? loginUser.avatarUrl : null,
+				...('email' in loginUser ? { email: loginUser.email } : {}),
 			},
 		});
 	});
@@ -351,6 +399,7 @@ describe('backend auth server transport', () => {
 				id: user.id,
 				username: user.username,
 				avatarUrl: 'avatarUrl' in refreshUser ? refreshUser.avatarUrl : null,
+				...('email' in refreshUser ? { email: refreshUser.email } : {}),
 			},
 		});
 	});
@@ -458,7 +507,7 @@ describe('backend auth server transport', () => {
 		fetcher.mockResolvedValue(success());
 		expect(
 			await transport.login({ username: 'sample@example.com', password: 'synthetic-password' }),
-		).toEqual(loginResult);
+		).toEqual(fullLoginResult);
 		expect(fetcher).toHaveBeenCalledWith(`${origin}/auth/login`, {
 			method: 'POST',
 			body: JSON.stringify({ username: 'sample@example.com', password: 'synthetic-password' }),

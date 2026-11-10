@@ -46,6 +46,7 @@ const password = 'synthetic-password';
 const sessionCookieName = '__Secure-authjs.session-token';
 let logs: jest.SpyInstance[];
 let expectedRefreshCalls = 0;
+let expectedLogoutCalls = 0;
 let issuedCookies: string[] = [];
 let originalEnvironment: NodeJS.ProcessEnv;
 
@@ -127,6 +128,7 @@ beforeEach(() => {
 	jest.mocked(refreshAuthCredentials).mockImplementation(createAuthRefreshCoordinator({ refresh }));
 	profile.mockReset();
 	logout.mockReset();
+	expectedLogoutCalls = 0;
 	jest.mocked(createBackendAuthTransport).mockReturnValue({ login, refresh, profile, logout });
 	jest.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network forbidden'));
 	logs = [
@@ -139,7 +141,7 @@ afterEach(() => {
 	try {
 		expect(refresh).toHaveBeenCalledTimes(expectedRefreshCalls);
 		expect(profile).not.toHaveBeenCalled();
-		expect(logout).not.toHaveBeenCalled();
+		expect(logout).toHaveBeenCalledTimes(expectedLogoutCalls);
 		expect(globalThis.fetch).not.toHaveBeenCalled();
 		const logged = logs
 			.flatMap((spy) => spy.mock.calls)
@@ -457,5 +459,203 @@ describe('real Auth.js encrypted session restoration', () => {
 		);
 		expect(await response.json()).toBeNull();
 		expect(refresh).not.toHaveBeenCalled();
+	});
+	it.each([
+		{ label: 'string', email: { email: 'server@example.invalid' } },
+		{ label: 'null', email: { email: null } },
+		{ label: 'missing', email: {} },
+	])('persists server login email ($label) and ignores client email updates', async ({ email }) => {
+		login.mockResolvedValue({
+			access_token: token(now + 3600),
+			refreshToken: token(now + 7200),
+			user: {
+				id: 'user-id',
+				username: 'sample',
+				avatarUrl: null,
+				...email,
+			},
+		});
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		expect(decoded?.backendSession).toMatchObject({ ...email, sessionExpiresAt: now + 7200 });
+		expect(Object.prototype.hasOwnProperty.call(decoded?.backendSession, 'email')).toBe(
+			'email' in email,
+		);
+		const publicResponse = await handlers.GET(
+			new NextRequest(`${origin}/api/auth/session`, { headers: { cookie } }),
+		);
+		const publicSession = await publicResponse.json();
+		expect(publicSession.user).toEqual({
+			id: 'user-id',
+			username: 'sample',
+			image: null,
+			...email,
+		});
+		expect(JSON.stringify(publicSession)).not.toMatch(
+			/accessToken|refreshToken|access_token|refresh_token|backendSession|password|synthetic/,
+		);
+		const updated = await updateSession(cookie, {
+			email: 'client@example.invalid',
+			user: { email: 'client@example.invalid' },
+			backendSession: { email: 'client@example.invalid', sessionExpiresAt: now + 999999 },
+		});
+		const output = await updated.json();
+		expect(output.user).toEqual(publicSession.user);
+		expect(output.expires).toBe(new Date((now + 7200) * 1000).toISOString());
+		const nextCookie = cookiesFrom(updated);
+		const restored = await restore(nextCookie);
+		expect(restored?.user).toEqual(publicSession.user);
+		expect((await decodeSession(nextCookie))?.exp).toBe(now + 7200);
+		expect(refresh).not.toHaveBeenCalled();
+	});
+	it.each([
+		{
+			label: 'replaces from server string',
+			returned: { email: 'after@example.invalid' },
+			expected: { email: 'after@example.invalid' },
+		},
+		{ label: 'clears with server null', returned: { email: null }, expected: { email: null } },
+		{
+			label: 'retains confirmed email when missing',
+			returned: {},
+			expected: { email: 'before@example.invalid' },
+		},
+	])('refresh email: $label', async ({ returned, expected }) => {
+		login.mockResolvedValue({
+			access_token: token(now + 3600),
+			refreshToken: token(now + 7200),
+			user: {
+				id: 'user-id',
+				username: 'sample',
+				avatarUrl: null,
+				email: 'before@example.invalid',
+			},
+		});
+		const cookie = await signIn();
+		jest.setSystemTime((now + 3601) * 1000);
+		expectedRefreshCalls = 1;
+		refresh.mockResolvedValue({
+			access_token: token(now + 10000),
+			refreshToken: token(now + 20000),
+			user: {
+				id: 'user-id',
+				username: 'sample',
+				avatarUrl: null,
+				...returned,
+			},
+		});
+		const response = await updateSession(cookie, {
+			email: 'client@example.invalid',
+			user: { email: 'client@example.invalid' },
+			backendSession: { email: 'client@example.invalid', sessionExpiresAt: now + 999999 },
+		});
+		const output = await response.json();
+		expect(output.user).toEqual({ id: 'user-id', username: 'sample', image: null, ...expected });
+		expect(output.requiresRefresh).toBe(false);
+		expect(JSON.stringify(output)).not.toMatch(
+			/accessToken|refreshToken|access_token|refresh_token|backendSession|password|synthetic|client@example/,
+		);
+		const nextCookie = cookiesFrom(response);
+		const decoded = await decodeSession(nextCookie);
+		expect(decoded?.backendSession).toMatchObject({ ...expected, sessionExpiresAt: now + 7200 });
+		expect(decoded?.exp).toBe(now + 7200);
+		expect((await restore(nextCookie))?.user).toEqual(output.user);
+	});
+	it('accepts a legacy encrypted JWT without email and enriches it only on a necessary refresh', async () => {
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			maxAge: 7200,
+			token: {
+				sub: 'user-id',
+				backendSession: {
+					userId: 'user-id',
+					username: 'sample',
+					avatarUrl: null,
+					accessToken: token(now + 3600),
+					refreshToken: token(now + 7200),
+					accessExpiresAt: now + 3600,
+					refreshExpiresAt: now + 7200,
+					sessionExpiresAt: now + 7200,
+				},
+			},
+		});
+		const cookie = `${sessionCookieName}=${value}`;
+		issuedCookies.push(cookie);
+		const session = await restore(cookie);
+		expect(session?.user).toEqual({ id: 'user-id', username: 'sample', image: null });
+		const unchanged = await updateSession(cookie, { user: { email: 'client@example.invalid' } });
+		expect((await unchanged.json()).user).not.toHaveProperty('email');
+		expect(refresh).not.toHaveBeenCalled();
+		jest.setSystemTime((now + 3601) * 1000);
+		expectedRefreshCalls = 1;
+		refresh.mockResolvedValue({
+			access_token: token(now + 10000),
+			refreshToken: token(now + 20000),
+			user: { id: 'user-id', username: 'sample', avatarUrl: null, email: 'server@example.invalid' },
+		});
+		const enriched = await updateSession(cookie);
+		expect((await enriched.json()).user.email).toBe('server@example.invalid');
+	});
+});
+
+describe('real Auth.js signout', () => {
+	const signOutRequest = async (cookie: string) => {
+		const csrf = await handlers.GET(new NextRequest(`${origin}/api/auth/csrf`));
+		const { csrfToken } = await csrf.json();
+		return handlers.POST(
+			new NextRequest(`${origin}/api/auth/signout`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					cookie: `${cookie}; ${cookiesFrom(csrf)}`,
+				},
+				body: new URLSearchParams({ csrfToken, callbackUrl: `${origin}/ru/auth/login` }),
+			}),
+		);
+	};
+	const expectCleared = async (response: Response) => {
+		expect(response.status).toBe(302);
+		const cleared = response.headers
+			.getSetCookie()
+			.filter((value) => value.startsWith(sessionCookieName));
+		expect(cleared.length).toBeGreaterThan(0);
+		for (const value of cleared) expect(value).toContain('Max-Age=0');
+		expect(await restore(cookiesFrom(response))).toBeNull();
+	};
+	it.each(['success', '401', '500', 'network', 'timeout'])(
+		'clears session after backend %s',
+		async (outcome) => {
+			const cookie = await signIn();
+			const session = JSON.stringify(await restore(cookie));
+			expect(session).not.toContain(token(now + 3600));
+			expect(session).not.toContain(token(now + 7200));
+			expectedLogoutCalls = 1;
+			if (outcome === 'timeout') logout.mockImplementation(() => new Promise(() => {}));
+			else if (outcome !== 'success')
+				logout.mockRejectedValue(
+					new BackendAuthError(
+						outcome === 'network' ? 'network' : 'http',
+						Number(outcome) || undefined,
+					),
+				);
+			const response = signOutRequest(cookie);
+			if (outcome === 'timeout') {
+				while (logout.mock.calls.length === 0)
+					await new Promise<void>((resolve) => setImmediate(resolve));
+				await jest.advanceTimersByTimeAsync(3001);
+			}
+			await expectCleared(await response);
+			expect(logout).toHaveBeenCalledWith(token(now + 3600));
+		},
+	);
+	it('clears a JWT without backend credentials without calling NestJS', async () => {
+		const jwt = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: { sub: 'user-id', backendSession: { accessToken: 'untrusted' } },
+			maxAge: 3600,
+		});
+		await expectCleared(await signOutRequest(`${sessionCookieName}=${jwt}`));
 	});
 });

@@ -249,6 +249,9 @@ export const createBackendAuthTransport = (config: BackendAuthConfig) => {
 				id: data.user.id,
 				username: data.user.username,
 				avatarUrl: data.user.avatarUrl ?? null,
+				...(typeof data.user.email === 'string' || data.user.email === null
+					? { email: data.user.email }
+					: {}),
 			},
 			refreshToken: getRefreshToken(response),
 		};

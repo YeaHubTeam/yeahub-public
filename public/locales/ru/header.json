@@ -23,6 +23,12 @@
 		"signUp": "Регистрация",
 		"menuAria": "Меню авторизации"
 	},
+	"user": {
+		"profile": "Мой профиль",
+		"membership": "Выбрать членство",
+		"settings": "Настройки",
+		"logout": "Выйти"
+	},
 	"logoAlt": "Логотип YeaHub",
 	"menu": "Меню"
 }

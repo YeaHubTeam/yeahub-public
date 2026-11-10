@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { TariffsModal } from '@/entities/subscription';
-import { AUTH_LINKS, Header, Subscription, i18Namespace } from '@/shared/config';
+import { Header, ROUTES, Subscription, i18Namespace } from '@/shared/config';
+import { useRouter } from '@/shared/config/navigation';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';
@@ -15,6 +16,7 @@ import styles from './HeaderAuthMobile.module.css';
 
 export const HeaderAuthMobile = () => {
 	const [isTariffsOpen, setIsTariffsOpen] = useState(false);
+	const router = useRouter();
 	const tHeader = useTranslations(i18Namespace.header);
 	const tSubscription = useTranslations(i18Namespace.subscription);
 
@@ -48,7 +50,7 @@ export const HeaderAuthMobile = () => {
 		{
 			icon: <UserPlusIcon isCurrentColor />,
 			title: tHeader(Header.AUTH_SIGN_IN),
-			link: AUTH_LINKS.login,
+			onClick: () => router.push(ROUTES.auth.login.page),
 		},
 		{
 			icon: <Icon icon="checkList" />,

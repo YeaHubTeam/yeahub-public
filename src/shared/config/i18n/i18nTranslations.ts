@@ -60,6 +60,10 @@ export enum Header {
 	AUTH_SIGN_IN = 'auth.signIn',
 	AUTH_SIGN_UP = 'auth.signUp',
 	AUTH_MENU_ARIA = 'auth.menuAria',
+	USER_PROFILE = 'user.profile',
+	USER_MEMBERSHIP = 'user.membership',
+	USER_SETTINGS = 'user.settings',
+	USER_LOGOUT = 'user.logout',
 	LOGO_ALT = 'logoAlt',
 	MENU = 'menu',
 }
@@ -357,6 +361,14 @@ export enum Analytics {
 }
 
 export enum Auth {
+	FORGOT_PASSWORD_TITLE = 'forgot.password.title',
+	FORGOT_PASSWORD_SUBTITLE = 'forgot.password.subtitle',
+	FORGOT_PASSWORD_SUBMIT = 'forgot.password.submit',
+	FORGOT_PASSWORD_MODAL_TITLE = 'forgot.password.modal.title',
+	FORGOT_PASSWORD_MODAL_SUBTITLE = 'forgot.password.modal.subtitle',
+	FORGOT_PASSWORD_MODAL_SUBMIT = 'forgot.password.modal.submit',
+	FORGOT_PASSWORD_MODAL_WAIT = 'forgot.password.modal.wait',
+	FORGOT_PASSWORD_ERROR = 'forgot.password.error',
 	REGISTRATION_TITLE = 'registration.title',
 	REGISTRATION_SUBMIT = 'registration.submit',
 	REGISTRATION_HAVE_ACCOUNT = 'registration.have.account',

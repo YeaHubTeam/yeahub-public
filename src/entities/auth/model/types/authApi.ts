@@ -42,6 +42,7 @@ export type LoginIdentity = {
 	id: string;
 	username: string;
 	avatarUrl: string | null;
+	email?: string | null;
 };
 
 export type LoginResponse = {
