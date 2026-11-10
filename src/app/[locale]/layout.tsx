@@ -8,6 +8,8 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 
 import { Main, i18Namespace, routing } from '@/shared/config';
 
+import { AuthRefreshProvider } from './_providers/AuthRefreshProvider';
+
 interface LocaleLayoutProps {
 	children: React.ReactNode;
 	params: Promise<{ locale: string }>;
@@ -56,8 +58,10 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
 
 	return (
 		<NextIntlClientProvider locale={locale} messages={messages}>
-			{children}
-			<div id="drawer-root" />
+			<AuthRefreshProvider>
+				{children}
+				<div id="drawer-root" />
+			</AuthRefreshProvider>
 		</NextIntlClientProvider>
 	);
 };

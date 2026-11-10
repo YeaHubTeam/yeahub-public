@@ -1,5 +1,8 @@
 'use client';
 
+import { useRef, useSyncExternalStore } from 'react';
+
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -13,17 +16,56 @@ import { PasswordInput } from '@/shared/ui/PasswordInput';
 
 import styles from './LoginForm.module.css';
 
+const subscribeToHydration = () => () => {};
+
 export const LoginForm = () => {
+	const hydrated = useSyncExternalStore(
+		subscribeToHydration,
+		() => true,
+		() => false,
+	);
 	const router = useRouter();
 	const t = useTranslations(i18Namespace.auth);
+	const submitting = useRef(false);
 	const {
 		handleSubmit,
 		control,
-		formState: { errors },
+		setError,
+		clearErrors,
+		resetField,
+		formState: { errors, isSubmitting },
 	} = useFormContext<LoginFormValues>();
 
-	const onLogin = (_data: LoginFormValues) => {
-		// Auth API integration is deferred; validation only.
+	const onLogin = async ({ username, password }: LoginFormValues) => {
+		clearErrors('password');
+		try {
+			const result = await signIn('credentials', {
+				username: username.trim(),
+				password,
+				redirect: false,
+			});
+			if (result?.ok && !result.error) {
+				resetField('password', { defaultValue: '' });
+				router.replace(ROUTES.appRoute);
+				router.refresh();
+				return;
+			}
+			const message =
+				result?.error === 'CredentialsSignin'
+					? t('login.error.credentials')
+					: result &&
+						  (result.status >= 500 ||
+								result.error === 'Configuration' ||
+								result.error === 'CallbackRouteError')
+						? t('login.error.temporary')
+						: t('login.error.unexpected');
+			setError('password', { type: 'server', message });
+		} catch (error) {
+			setError('password', {
+				type: 'server',
+				message: t(error instanceof TypeError ? 'login.error.temporary' : 'login.error.unexpected'),
+			});
+		}
 	};
 
 	const handeleForgotPassword = () => {
@@ -32,8 +74,14 @@ export const LoginForm = () => {
 
 	return (
 		<form
+			method="post"
 			onSubmit={(event) => {
-				void handleSubmit(onLogin)(event);
+				event.preventDefault();
+				if (submitting.current) return;
+				submitting.current = true;
+				void handleSubmit(onLogin)(event).finally(() => {
+					submitting.current = false;
+				});
 			}}
 			className={styles['form-wrapper']}
 		>
@@ -42,6 +90,10 @@ export const LoginForm = () => {
 					{(field, hasError) => (
 						<Input
 							{...field}
+							onBlur={(event) => {
+								field.onChange(event.currentTarget.value.trim());
+								field.onBlur();
+							}}
 							className={styles.input}
 							placeholder={t(Auth.FORM_EMAIL_PLACEHOLDER)}
 							error={hasError}
@@ -63,7 +115,12 @@ export const LoginForm = () => {
 					</Button>
 				</div>
 			</div>
-			<Button type="submit" variant="primary" disabled={false} className={styles['submit-button']}>
+			<Button
+				type="submit"
+				variant="primary"
+				disabled={!hydrated || isSubmitting}
+				className={styles['submit-button']}
+			>
 				{t(Auth.LOGIN_SUBMIT)}
 			</Button>
 		</form>

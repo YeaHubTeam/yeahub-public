@@ -30,7 +30,7 @@ export const createRegisterSchema = ({
 			.min(2, minUsernameLength)
 			.max(30, maxUsernameLength)
 			.required(required),
-		email: yup.string().matches(emailRule, email).required(required),
+		email: yup.string().trim().matches(emailRule, email).required(required),
 		password: yup
 			.string()
 			.min(8, minPasswordLength)

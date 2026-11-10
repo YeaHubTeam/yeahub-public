@@ -37,7 +37,9 @@ export const RegisterForm = () => {
 		<form
 			className={styles['form-wrapper']}
 			onSubmit={(event) => {
-				void handleSubmit(onRegistration)(event);
+				void handleSubmit((data) =>
+					onRegistration({ ...data, username: data.username.trim(), email: data.email.trim() }),
+				)(event);
 			}}
 		>
 			<Text variant="head2" className={styles.header}>
@@ -49,6 +51,10 @@ export const RegisterForm = () => {
 					{(field) => (
 						<Input
 							{...field}
+							onBlur={(event) => {
+								field.onChange(event.currentTarget.value.trim());
+								field.onBlur();
+							}}
 							className={styles.input}
 							placeholder={t(Auth.FORM_USERNAME_PLACEHOLDER)}
 						/>
@@ -60,6 +66,10 @@ export const RegisterForm = () => {
 					{(field) => (
 						<Input
 							{...field}
+							onBlur={(event) => {
+								field.onChange(event.currentTarget.value.trim());
+								field.onBlur();
+							}}
 							className={styles.input}
 							placeholder={t(Auth.FORM_EMAIL_PLACEHOLDER)}
 						/>
