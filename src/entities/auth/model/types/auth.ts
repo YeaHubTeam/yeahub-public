@@ -8,8 +8,8 @@ export type SignUpFormValues = {
 	email: string;
 	password: string;
 	passwordConfirmation: string;
-	isChecked: boolean;
+	isChecked?: boolean;
 	privacyConsent: boolean;
 	offerConsent: boolean;
-	adConsent: boolean;
+	adConsent?: boolean;
 };

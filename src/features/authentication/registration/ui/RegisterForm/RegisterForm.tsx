@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef, useState, useSyncExternalStore } from 'react';
+
 import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
 
@@ -20,15 +22,35 @@ import { Text } from '@/shared/ui/Text';
 
 import styles from './RegisterForm.module.css';
 
-export const RegisterForm = () => {
+interface RegisterFormProps {
+	onSubmit?: (values: SignUpFormValues) => Promise<void>;
+	error?: string | null;
+}
+
+const subscribeToHydration = () => () => {};
+
+export const RegisterForm = ({ onSubmit, error }: RegisterFormProps) => {
+	const hydrated = useSyncExternalStore(
+		subscribeToHydration,
+		() => true,
+		() => false,
+	);
+	const pending = useRef(false);
+	const [failed, setFailed] = useState(false);
 	const {
 		handleSubmit,
 		control,
-		formState: { errors, isValid },
+		formState: { errors, isValid, isSubmitting },
 	} = useFormContext<SignUpFormValues>();
 
-	const onRegistration = (_data: SignUpFormValues) => {
-		// Auth API integration is deferred; validation only.
+	const onRegistration = async (data: SignUpFormValues) => {
+		if (!onSubmit) return;
+		setFailed(false);
+		try {
+			await onSubmit({ ...data, username: data.username.trim(), email: data.email.trim() });
+		} catch {
+			setFailed(true);
+		}
 	};
 
 	const t = useTranslations(i18Namespace.auth);
@@ -36,10 +58,16 @@ export const RegisterForm = () => {
 	return (
 		<form
 			className={styles['form-wrapper']}
+			method="post"
 			onSubmit={(event) => {
-				void handleSubmit((data) =>
-					onRegistration({ ...data, username: data.username.trim(), email: data.email.trim() }),
-				)(event);
+				event.preventDefault();
+				if (!hydrated || !onSubmit || pending.current) return;
+				pending.current = true;
+				void handleSubmit(onRegistration)(event)
+					.catch(() => setFailed(true))
+					.finally(() => {
+						pending.current = false;
+					});
 			}}
 		>
 			<Text variant="head2" className={styles.header}>
@@ -93,9 +121,17 @@ export const RegisterForm = () => {
 				/>
 			</div>
 
+			{(error || failed) && (
+				<div role="alert">
+					<Text variant="body1" color="red-700">
+						{error || t(Auth.REGISTRATION_ERROR)}
+					</Text>
+				</div>
+			)}
 			<Button
 				type="submit"
-				disabled={!isValid}
+				disabled={!hydrated || !onSubmit || !isValid || isSubmitting}
+				aria-busy={isSubmitting}
 				variant="primary"
 				className={styles['submit-button']}
 			>

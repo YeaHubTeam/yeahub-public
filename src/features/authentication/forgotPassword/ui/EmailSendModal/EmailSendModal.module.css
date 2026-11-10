@@ -1,0 +1,19 @@
+.modal {
+	white-space: pre-wrap;
+}
+
+.subtitle {
+	margin-bottom: 16px;
+	text-align: center;
+	white-space: pre-wrap;
+}
+
+.button {
+	font-weight: var(--font-weight-400);
+	font-size: var(--font-size-p-s);
+}
+
+.timer {
+	margin: 16px 0;
+	text-align: center;
+}

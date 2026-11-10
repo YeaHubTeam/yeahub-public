@@ -8,6 +8,7 @@ interface RegisterValidationMessages {
 	minUsernameLength: string;
 	maxUsernameLength: string;
 	minPasswordLength: string;
+	maxPasswordLength?: string;
 	passwordWeak: string;
 	passwordSimilar: string;
 	privacy: string;
@@ -20,6 +21,7 @@ export const createRegisterSchema = ({
 	maxUsernameLength,
 	minPasswordLength,
 	passwordWeak,
+	maxPasswordLength = passwordWeak,
 	passwordSimilar,
 	privacy,
 }: RegisterValidationMessages) =>
@@ -34,14 +36,27 @@ export const createRegisterSchema = ({
 		password: yup
 			.string()
 			.min(8, minPasswordLength)
+			.max(255, maxPasswordLength)
 			.matches(passwordRules, passwordWeak)
 			.required(required),
 		passwordConfirmation: yup
 			.string()
 			.min(8, minPasswordLength)
+			.max(255, maxPasswordLength)
 			.matches(passwordRules, passwordWeak)
 			.oneOf([yup.ref('password')], passwordSimilar)
 			.required(required),
-		privacyConsent: yup.boolean().oneOf([true], privacy).required(required),
-		offerConsent: yup.boolean().oneOf([true], privacy).required(required),
+		privacyConsent: yup
+			.boolean()
+			.strict()
+			.typeError(privacy)
+			.oneOf([true], privacy)
+			.required(required),
+		offerConsent: yup
+			.boolean()
+			.strict()
+			.typeError(privacy)
+			.oneOf([true], privacy)
+			.required(required),
+		adConsent: yup.boolean().strict().typeError(privacy).optional(),
 	});

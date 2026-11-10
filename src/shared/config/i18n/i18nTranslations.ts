@@ -361,6 +361,17 @@ export enum Analytics {
 }
 
 export enum Auth {
+	PASSWORD_RECOVERY_TITLE = 'password.recovery.title',
+	PASSWORD_RECOVERY_SUBTITLE = 'password.recovery.subtitle',
+	PASSWORD_RECOVERY_NEW_PASSWORD_LABEL = 'password.recovery.new.label',
+	PASSWORD_RECOVERY_CONFIRM_PASSWORD_LABEL = 'password.recovery.confirm.label',
+	PASSWORD_RECOVERY_SUBMIT = 'password.recovery.submit',
+	PASSWORD_RECOVERY_SUCCESS = 'password.recovery.success',
+	PASSWORD_RECOVERY_TOKEN_MISSING = 'password.recovery.token.missing',
+	PASSWORD_RECOVERY_TOKEN_EXPIRED = 'password.recovery.token.expired',
+	PASSWORD_RECOVERY_ERROR = 'password.recovery.error',
+	PASSWORD_RECOVERY_LOGIN_LINK = 'password.recovery.login.link',
+
 	FORGOT_PASSWORD_TITLE = 'forgot.password.title',
 	FORGOT_PASSWORD_SUBTITLE = 'forgot.password.subtitle',
 	FORGOT_PASSWORD_SUBMIT = 'forgot.password.submit',
@@ -369,6 +380,10 @@ export enum Auth {
 	FORGOT_PASSWORD_MODAL_SUBMIT = 'forgot.password.modal.submit',
 	FORGOT_PASSWORD_MODAL_WAIT = 'forgot.password.modal.wait',
 	FORGOT_PASSWORD_ERROR = 'forgot.password.error',
+	REGISTRATION_ERROR = 'registration.error.general',
+	REGISTRATION_ERROR_CONFLICT = 'registration.error.conflict',
+	REGISTRATION_SUCCESS = 'registration.success',
+	REGISTRATION_LOGIN_FAILED = 'registration.login.failed',
 	REGISTRATION_TITLE = 'registration.title',
 	REGISTRATION_SUBMIT = 'registration.submit',
 	REGISTRATION_HAVE_ACCOUNT = 'registration.have.account',

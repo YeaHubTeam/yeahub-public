@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { signIn } from 'next-auth/react';
 import authMessages from 'public/locales/ru/auth.json';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -8,25 +9,33 @@ import { RegisterForm } from '@/features/authentication/registration';
 
 import { createRegisterSchema } from '../lib/validation/registerSchema';
 import type { UserSchema } from '../model/types/userTypes';
+import { UserCreateForm } from './UserCreateForm';
 
+jest.mock('next-auth/react', () => ({ signIn: jest.fn() }));
+const replace = jest.fn();
+const refresh = jest.fn();
 jest.mock('next-intl', () => ({
-	useTranslations: () => {
-		const translate = (key: string) => {
-			let value: unknown = jest.requireActual('public/locales/ru/auth.json');
-			for (const part of key.split('.')) {
-				if (typeof value !== 'object' || value === null || !(part in value)) return key;
-				value = Reflect.get(value, part);
-			}
-			return typeof value === 'string' ? value : key;
-		};
-		return Object.assign(translate, { rich: (key: string) => key });
+	useTranslations: (namespace: string) => {
+		const { createTranslator } = jest.requireActual('next-intl');
+		return createTranslator({
+			locale: 'ru',
+			messages: jest.requireActual(`public/locales/ru/${namespace}.json`),
+		});
 	},
 }));
 jest.mock('@/shared/config', () => ({
 	...jest.requireActual<object>('@/shared/config/i18n/i18nTranslations'),
 	i18Namespace: { auth: 'auth', translation: 'translation' },
+	ROUTES: { appRoute: '/', auth: { login: { page: '/auth/login' } } },
 }));
-jest.mock('@/shared/config/navigation', () => ({ useRouter: () => ({ push: jest.fn() }) }));
+jest.mock('@/shared/config/navigation', () => ({
+	...jest.requireActual('@/shared/config/navigation'),
+	Link: ({ href, children }: { href: string; children: import('react').ReactNode }) => {
+		const { getPathname } = jest.requireActual('@/shared/config/navigation');
+		return <a href={getPathname({ locale: 'ru', href })}>{children}</a>;
+	},
+	useRouter: () => ({ push: jest.fn(), replace, refresh }),
+}));
 jest.mock('@/shared/ui/Icon', () => ({ Icon: () => null }));
 
 const messages = {
@@ -63,7 +72,7 @@ const Harness = () => {
 	});
 	return (
 		<FormProvider {...methods}>
-			<RegisterForm />
+			<RegisterForm onSubmit={jest.fn().mockResolvedValue(undefined)} />
 		</FormProvider>
 	);
 };
@@ -85,14 +94,24 @@ const toggle = async (name: string) => {
 		await Promise.resolve();
 	});
 };
+let storageWrite: jest.SpyInstance;
 const originalFetch = globalThis.fetch;
 const mockFetch = jest.fn<ReturnType<typeof fetch>, Parameters<typeof fetch>>();
 beforeEach(() => {
+	storageWrite = jest.spyOn(Storage.prototype, 'setItem');
+	jest
+		.mocked(signIn)
+		.mockReset()
+		.mockResolvedValue({ ok: true, error: undefined, status: 200, url: null, code: undefined });
+	replace.mockReset();
+	refresh.mockReset();
 	mockFetch.mockReset().mockRejectedValue(new Error('Real requests forbidden'));
 	globalThis.fetch = mockFetch;
 });
 afterEach(() => {
 	expect(mockFetch).not.toHaveBeenCalled();
+	expect(storageWrite).not.toHaveBeenCalled();
+	storageWrite.mockRestore();
 });
 afterAll(() => {
 	globalThis.fetch = originalFetch;
@@ -242,5 +261,158 @@ describe('RegisterForm text field behavior', () => {
 			await Promise.resolve();
 		});
 		expect(event.defaultPrevented).toBe(true);
+	});
+});
+
+describe('UserCreateForm registration integration', () => {
+	const button = () => screen.getByRole('button', { name: 'Зарегистрироваться' });
+	const fill = async () => {
+		enter('username', values.username);
+		enter('email', values.email);
+		enter('password', values.password);
+		enter('passwordConfirmation', values.passwordConfirmation);
+		await toggle('privacyConsent');
+		await toggle('offerConsent');
+	};
+	it('remains blocked without registerAction', async () => {
+		render(<UserCreateForm />);
+		await fill();
+		expect(button()).toBeDisabled();
+		fireEvent.submit(input('email').closest('form')!);
+		expect(screen.queryByRole('status')).toBeNull();
+	});
+	it('submits once and replaces the form after success', async () => {
+		const action = jest.fn().mockResolvedValue({ status: 'success' });
+		render(<UserCreateForm registerAction={action} />);
+		await fill();
+		await waitFor(() => expect(button()).toBeEnabled());
+		fireEvent.click(button());
+		expect(await screen.findByRole('status')).toHaveTextContent('Аккаунт успешно создан.');
+		expect(action).toHaveBeenCalledTimes(1);
+		expect(action).toHaveBeenCalledWith(expect.objectContaining(values));
+		await waitFor(() =>
+			expect(signIn).toHaveBeenCalledWith('credentials', {
+				username: values.email,
+				password: values.password,
+				redirect: false,
+			}),
+		);
+		expect(replace).toHaveBeenCalledWith('/');
+		expect(refresh).toHaveBeenCalledTimes(1);
+		expect(document.querySelector('form')).toBeNull();
+		expect(screen.getByRole('link', { name: 'Перейти ко входу' })).toHaveAttribute(
+			'href',
+			'/ru/auth/login',
+		);
+	});
+	it.each(['conflict', 'validation-error', 'error', 'reject'])(
+		'preserves form on %s',
+		async (status) => {
+			const action =
+				status === 'reject'
+					? jest.fn().mockRejectedValue(new Error('private-details'))
+					: jest.fn().mockResolvedValue({ status });
+			render(<UserCreateForm registerAction={action} />);
+			await fill();
+			await waitFor(() => expect(button()).toBeEnabled());
+			fireEvent.click(button());
+			expect(await screen.findByRole('alert')).toHaveTextContent(
+				status === 'conflict' ? 'Не удалось создать аккаунт.' : 'Не удалось зарегистрироваться.',
+			);
+			expect(input('password')).toHaveValue(values.password);
+			expect(input('privacyConsent')).toBeChecked();
+			expect(input('offerConsent')).toBeChecked();
+			expect(screen.queryByRole('status')).toBeNull();
+			expect(screen.queryByText('private-details')).toBeNull();
+			expect(signIn).not.toHaveBeenCalled();
+		},
+	);
+	it('blocks parallel submit and restores availability', async () => {
+		let finish: ((value: { status: 'error' }) => void) | undefined;
+		const action = jest.fn(
+			() =>
+				new Promise<{ status: 'error' }>((resolve) => {
+					finish = resolve;
+				}),
+		);
+		render(<UserCreateForm registerAction={action} />);
+		await fill();
+		await waitFor(() => expect(button()).toBeEnabled());
+		const form = input('email').closest('form')!;
+		fireEvent.submit(form);
+		fireEvent.submit(form);
+		await waitFor(() => expect(button()).toHaveAttribute('aria-busy', 'true'));
+		expect(action).toHaveBeenCalledTimes(1);
+		await act(async () => {
+			finish?.({ status: 'error' });
+			await Promise.resolve();
+		});
+		await waitFor(() => expect(button()).toBeEnabled());
+	});
+});
+
+describe('post-registration Auth.js login', () => {
+	const fillAndSubmit = async (action: jest.Mock) => {
+		render(<UserCreateForm registerAction={action} />);
+		enter('username', values.username);
+		enter('email', values.email);
+		enter('password', values.password);
+		enter('passwordConfirmation', values.passwordConfirmation);
+		await toggle('privacyConsent');
+		await toggle('offerConsent');
+		const button = screen.getByRole('button', { name: 'Зарегистрироваться' });
+		await waitFor(() => expect(button).toBeEnabled());
+		fireEvent.click(button);
+	};
+	it.each(['failure', 'rejection'])(
+		'retains created-account state after login %s',
+		async (outcome) => {
+			if (outcome === 'rejection')
+				jest.mocked(signIn).mockRejectedValue(new Error('private-login-details'));
+			else {
+				const failure = {
+					ok: false,
+					error: 'CredentialsSignin',
+					status: 401,
+					url: null,
+					code: undefined,
+				};
+				jest.mocked(signIn).mockResolvedValue(failure);
+			}
+			const action = jest.fn().mockResolvedValue({ status: 'success' });
+			await fillAndSubmit(action);
+			await waitFor(() =>
+				expect(screen.getByRole('status')).toHaveTextContent(
+					'Аккаунт создан, но автоматически войти не удалось. Войдите с указанными данными.',
+				),
+			);
+			expect(document.querySelector('form')).toBeNull();
+			expect(action).toHaveBeenCalledTimes(1);
+			expect(replace).not.toHaveBeenCalled();
+			expect(screen.queryByText('private-login-details')).toBeNull();
+		},
+	);
+	it('keeps login pending protected and ignores completion after unmount', async () => {
+		let finish: ((value: Awaited<ReturnType<typeof signIn>>) => void) | undefined;
+		jest.mocked(signIn).mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					finish = resolve;
+				}),
+		);
+		const action = jest.fn().mockResolvedValue({ status: 'success' });
+		await fillAndSubmit(action);
+		await waitFor(() => expect(signIn).toHaveBeenCalledTimes(1));
+		expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+		expect(document.querySelector('form')).toBeNull();
+		const { cleanup } = await import('@testing-library/react');
+		cleanup();
+		await act(async () => {
+			finish?.({ ok: true, error: undefined, status: 200, url: null, code: undefined });
+			await Promise.resolve();
+		});
+		expect(replace).not.toHaveBeenCalled();
+		expect(refresh).not.toHaveBeenCalled();
+		expect(action).toHaveBeenCalledTimes(1);
 	});
 });
