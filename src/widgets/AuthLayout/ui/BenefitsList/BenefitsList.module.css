@@ -1,0 +1,17 @@
+.benefit-list-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.benefit-list-wrapper .title {
+  margin-bottom: 14px;
+  color: inherit;
+  line-height: 120%;
+  font-weight: var(--font-weight-500);
+  font-size: var(--font-size-h-s);
+}
+
+.benefit-wrapper {
+  margin: 0;
+  padding: 0;
+}

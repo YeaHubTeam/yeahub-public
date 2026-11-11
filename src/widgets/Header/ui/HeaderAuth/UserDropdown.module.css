@@ -1,0 +1,80 @@
+.trigger {
+	padding: 0;
+	border: none;
+	border-radius: 10px;
+	background-color: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+
+	&:focus-visible {
+		outline: 2px solid var(--color-purple-700);
+		outline-offset: 4px;
+	}
+}
+
+.panel {
+	min-width: 242px;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 14px;
+	padding-bottom: 14px;
+	min-width: 242px;
+	border-bottom: 1px solid #eaeaea;
+	text-align: center;
+}
+
+.header .large-avatar {
+	width: 58px;
+	height: 58px;
+	border: 1px solid var(--color-purple-700);
+}
+
+.header-text {
+	min-width: 0;
+	max-width: 242px;
+	overflow-wrap: anywhere;
+}
+
+.name {
+	margin-bottom: 5px;
+	max-width: 242px;
+	overflow-wrap: anywhere;
+}
+
+.menu-item {
+	justify-content: flex-start;
+	width: 100%;
+}
+
+/* Match the original enabled menu appearance while retaining native disabled semantics. */
+.panel .menu-item:disabled {
+	background-color: var(--color-white-900);
+	color: var(--color-black-1000);
+
+	&:hover {
+		background-color: var(--button-background-tertiary-hover);
+		color: var(--color-purple-700);
+	}
+
+	&:active {
+		background-color: var(--color-white-900);
+		color: var(--color-black-1000);
+	}
+}
+
+.panel .menu-item.logout:disabled:hover {
+	background-color: var(--color-black-30);
+	color: var(--color-black-1000);
+}
+
+.logout-icon {
+	margin-right: 7px;
+	width: 21.5px;
+	height: 21.5px;
+}

@@ -1,6 +1,10 @@
-import { cleanup, fireEvent, screen } from '@testing-library/react';
-
-import { renderComponent } from '@/shared/libs';
+import '@testing-library/jest-dom';
+import { act, cleanup, fireEvent, render as renderComponent, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server.node';
+import ts from 'typescript';
 
 import { Modal } from './Modal';
 import type { ModalProps, ModalVariant, RequiredModalProps } from './ModalTypes';
@@ -11,6 +15,22 @@ import {
 	primaryButtonVariants,
 	titleColors,
 } from './constants';
+
+jest.mock('@/shared/ui/Icon', () => ({
+	Icon: ({
+		dataTestId,
+		color,
+		type: _type,
+		icon: _icon,
+		...props
+	}: {
+		dataTestId: string;
+		color: string;
+		type: string;
+		icon: string;
+	}) => <span {...props} data-testid={dataTestId} data-color={color} />,
+}));
+beforeEach(() => jest.clearAllMocks());
 
 type OverrideProps = Partial<ModalProps>;
 
@@ -83,7 +103,7 @@ describe('Modal', () => {
 		test('merges custom className with internal classes', () => {
 			render({ className: 'custom-class' });
 
-			expect(screen.getByTestId(modalTestIds.modalContentWrapper)).toHaveClass('custom-class');
+			expect(screen.getByTestId(modalTestIds.modal)).toHaveClass('custom-class');
 		});
 
 		test.each<ModalVariant>(['default', 'error'])('renders %s variant correctly', (variant) => {
@@ -94,14 +114,15 @@ describe('Modal', () => {
 				buttonOutlineText: 'Outline Text',
 			});
 
-			expect(screen.getByTestId(modalTestIds.modal)).toHaveClass(`${variant}-modal`);
+			expect(screen.getByTestId(modalTestIds.modal)).toHaveClass(`variant-${variant}-modal`);
 
 			expect(screen.getByTestId(modalTestIds.modalTitle)).toHaveClass(
 				`text-${titleColors[variant]}`,
 			);
-			expect(screen.getByTestId(modalTestIds.modalCloseIcon)).toHaveStyle({
-				color: closeIconColors[variant],
-			});
+			expect(screen.getByTestId(modalTestIds.modalCloseIcon)).toHaveAttribute(
+				'data-color',
+				closeIconColors[variant],
+			);
 			expect(screen.getByTestId(modalTestIds.modalPrimaryButton)).toHaveClass(
 				`button-${primaryButtonVariants[variant]}`,
 			);
@@ -204,5 +225,91 @@ describe('Modal', () => {
 			fireEvent.click(screen.getByTestId(modalTestIds.modal));
 			expect(onClose).not.toHaveBeenCalled();
 		});
+	});
+});
+
+describe('SSR and arbitrary content', () => {
+	it('renders no portal on the server without DOM globals', () => {
+		const source = readFileSync(`${process.cwd()}/src/shared/ui/Modal/Modal.tsx`, 'utf8');
+		const compiled = ts.transpileModule(source, {
+			compilerOptions: {
+				module: ts.ModuleKind.CommonJS,
+				jsx: ts.JsxEmit.ReactJSX,
+				esModuleInterop: true,
+			},
+		}).outputText;
+		const isolated = { exports: {} as { Modal?: typeof Modal } };
+		runInNewContext(compiled, {
+			module: isolated,
+			exports: isolated.exports,
+			require: (name: string) =>
+				name.startsWith('.')
+					? name.endsWith('.css')
+						? {}
+						: jest.requireActual('./constants')
+					: jest.requireActual(name),
+		});
+		const ServerModal = isolated.exports.Modal!;
+		expect(
+			renderToString(
+				<ServerModal isOpen onClose={onClose}>
+					<div>Server</div>
+				</ServerModal>,
+			),
+		).toBe('');
+	});
+	it('hydrates the empty server snapshot and mounts the portal without mismatch', async () => {
+		const error = jest.fn();
+		const container = document.createElement('div');
+		document.body.appendChild(container);
+		const element = (
+			<Modal isOpen onClose={onClose}>
+				Hydrated content
+			</Modal>
+		);
+		container.innerHTML = renderToString(element);
+		let root: ReturnType<typeof hydrateRoot> | undefined;
+		await act(async () => {
+			root = hydrateRoot(container, element, { onRecoverableError: error });
+			await Promise.resolve();
+		});
+		expect(screen.getByText('Hydrated content')).toBeInTheDocument();
+		expect(error).not.toHaveBeenCalled();
+		await act(async () => {
+			root?.unmount();
+			await Promise.resolve();
+		});
+		container.remove();
+	});
+	it('renders blocks, paragraphs and forms without paragraph nesting', () => {
+		renderComponent(
+			<Modal isOpen onClose={onClose}>
+				<div>
+					<p>Paragraph</p>
+					<form>
+						<input aria-label="Field" />
+					</form>
+				</div>
+			</Modal>,
+		);
+		expect(screen.getByText('Paragraph').parentElement?.tagName).toBe('DIV');
+		expect(document.querySelector('p p, p div, p form')).toBeNull();
+		expect(screen.getByLabelText('Field')).toBeInTheDocument();
+	});
+	it('removes portal and restores previous scrolling state on unmount', () => {
+		document.body.style.overflow = 'auto';
+		const ui = renderComponent(
+			<Modal isOpen onClose={onClose}>
+				Content
+			</Modal>,
+		);
+		const overlay = screen.getByTestId(modalTestIds.modalOverlay);
+		ui.unmount();
+		expect(document.getElementById('modal-root')).toBeNull();
+		expect(document.body.style.overflow).toBe('auto');
+		fireEvent.keyDown(document.body, { key: 'Escape' });
+		expect(onClose).not.toHaveBeenCalled();
+		expect(overlay.isConnected).toBe(false);
+		document.body.style.overflow = '';
 	});
 });

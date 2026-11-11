@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react';
+'use client';
+
+import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 
 import classNames from 'classnames';
 import { createPortal } from 'react-dom';
@@ -6,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
+import textStyles from '@/shared/ui/Text/Text.module.css';
 
 import styles from './Modal.module.css';
 import { ModalProps } from './ModalTypes';
@@ -23,6 +26,8 @@ const createPortalRoot = () => {
 
 	return modalRoot;
 };
+
+const subscribeToMount = () => () => {};
 
 export const Modal = ({
 	isOpen,
@@ -43,9 +48,12 @@ export const Modal = ({
 	className = '',
 	view = 'default',
 }: ModalProps) => {
-	const portalRootRef = useRef(document.getElementById('modal-root') || createPortalRoot());
-	const renderRootRef = useRef(document.body);
-	const rootEl = renderRootRef.current;
+	const mounted = useSyncExternalStore(
+		subscribeToMount,
+		() => true,
+		() => false,
+	);
+	const portal = useMemo(() => (mounted ? createPortalRoot() : null), [mounted]);
 	const overlayRef = useRef<HTMLDivElement>(null);
 
 	const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -67,26 +75,18 @@ export const Modal = ({
 	};
 
 	useEffect(() => {
-		if (rootEl) {
-			rootEl.style.overflow = isOpen ? 'hidden' : '';
+		if (!isOpen || !portal) return;
+		const body = document.body;
+		const previousOverflow = body.style.overflow;
+		body.style.overflow = 'hidden';
+		body.appendChild(portal);
+		return () => {
+			portal.remove();
+			body.style.overflow = previousOverflow;
+		};
+	}, [isOpen, portal]);
 
-			return () => {
-				rootEl.style.overflow = '';
-			};
-		}
-	}, [isOpen]);
-
-	useEffect(() => {
-		if (isOpen && rootEl) {
-			rootEl.appendChild(portalRootRef.current);
-			const portal = portalRootRef.current;
-
-			return () => {
-				portal.remove();
-				rootEl.style.overflow = '';
-			};
-		}
-	}, [isOpen]);
+	if (!portal || !isOpen) return null;
 
 	const isButtons = buttonOutlineText || buttonPrimaryText;
 
@@ -138,9 +138,11 @@ export const Modal = ({
 						</Text>
 					)}
 					{children && (
-						<Text className={styles.text} variant="body3">
+						<div
+							className={classNames(styles.text, textStyles.body3, textStyles['text-black-900'])}
+						>
 							{children}
-						</Text>
+						</div>
 					)}
 				</div>
 				{isButtons && (
@@ -175,6 +177,6 @@ export const Modal = ({
 				)}
 			</div>
 		</div>,
-		portalRootRef.current,
+		portal,
 	);
 };

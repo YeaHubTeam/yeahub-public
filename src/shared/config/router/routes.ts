@@ -1,5 +1,18 @@
 export const ROUTES = {
 	appRoute: '/',
+	auth: {
+		login: {
+			route: 'login',
+			page: '/auth/login',
+		},
+		'forgot-password': {
+			page: '/auth/forgot-password',
+		},
+		register: {
+			route: 'register',
+			page: '/auth/register',
+		},
+	},
 	login: `${process.env.NEXT_PUBLIC_APP_SITE_URL}auth/login`,
 	register: `${process.env.NEXT_PUBLIC_APP_SITE_URL}auth/register`,
 	questions: {

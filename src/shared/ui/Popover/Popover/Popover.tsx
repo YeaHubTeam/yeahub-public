@@ -161,7 +161,9 @@ export const Popover = (props: PopoverProps & { isMobile?: boolean; isTablet?: b
 				{...rest}
 			>
 				<PopoverTrigger asChild={true}>{childrenToRender}</PopoverTrigger>
-				<PopoverContent style={{ zIndex: 2 }}>{contentMemo}</PopoverContent>
+				<PopoverContent style={{ zIndex: 2 }} aria-label={ariaLabel}>
+					{contentMemo}
+				</PopoverContent>
 			</PopoverFabric>
 		</div>
 	);

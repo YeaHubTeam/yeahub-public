@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/react": "^0.27.16",
+		"@hookform/resolvers": "5.9.1",
 		"@monaco-editor/react": "^4.7.0",
 		"@reduxjs/toolkit": "^2.8.2",
 		"date-fns": "^4.4.0",
@@ -29,13 +30,17 @@
 		"jsdom": "^27.0.1",
 		"lowlight": "^3.3.0",
 		"next": "16.2.6",
+		"next-auth": "5.0.0-beta.32",
 		"next-intl": "^4.12.0",
 		"react": "19.2.6",
 		"react-dom": "19.2.6",
+		"react-hook-form": "7.88.0",
 		"react-redux": "^9.2.0",
 		"react-responsive": "^10.0.1",
 		"react-slick": "^0.30.3",
-		"slick-carousel": "^1.8.1"
+		"slick-carousel": "^1.8.1",
+		"undici": "^7.13.0",
+		"yup": "1.7.1"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.1",
@@ -83,7 +88,6 @@
 		"ts-node": "^10.9.2",
 		"typescript": "^5",
 		"typescript-eslint": "^8.39.0",
-		"undici": "^7.13.0",
 		"web-streams-polyfill": "^4.1.0"
 	},
 	"overrides": {
