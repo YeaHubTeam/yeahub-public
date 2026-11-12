@@ -1,9 +1,14 @@
+import { headers } from 'next/headers';
+
+import { createActionURL, setEnvDefaults } from '@auth/core';
+import type { AuthConfig } from '@auth/core';
 import NextAuth from 'next-auth';
-import { encode } from 'next-auth/jwt';
+import { encode, getToken } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
 import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
+import { readOwnProfile } from '@/entities/profile/server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
 
 import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
@@ -62,7 +67,7 @@ const getTokenExpiry = (token: string): number => {
 	}
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
+const nextAuth = NextAuth(() => ({
 	debug: false,
 	session: { strategy: 'jwt', maxAge: 7 * 24 * 60 * 60 },
 	jwt: {
@@ -146,10 +151,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 		},
 	},
 	callbacks: {
-		async jwt({ token, user, trigger }) {
+		async jwt({ token, user, trigger, session }) {
 			const stored = user && 'backendSession' in user ? user.backendSession : token.backendSession;
 			if (!isBackendSession(stored) || deadline(stored) <= Math.floor(Date.now() / 1000))
 				return null;
+			// This flag is only a request to re-read identity from the backend, never trusted image data.
+			if (trigger === 'update' && isObject(session) && session.syncAvatar === true) {
+				if (stored.accessExpiresAt <= Math.floor(Date.now() / 1000)) return token;
+				try {
+					const profile = await avatarTimeout((signal) => {
+						const backend = createBackendAuthTransport({
+							...getAuthBackendConfig(),
+							fetch: (input, init) => fetch(input, { ...init, signal }),
+						});
+						return backend.profile(stored.accessToken);
+					});
+					if (profile.id !== stored.userId || !validAvatarUrl(profile.avatarUrl)) return token;
+					return {
+						sub: stored.userId,
+						backendSession: { ...stored, avatarUrl: profile.avatarUrl || null },
+					};
+				} catch {
+					return token;
+				}
+			}
 			let data = stored;
 			// Auth.js sets update only for writable operations. Client session data is ignored.
 			if (trigger === 'update' && data.accessExpiresAt <= Math.floor(Date.now() / 1000) + 60) {
@@ -219,3 +244,191 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 		},
 	},
 }));
+
+export const { handlers, auth, signIn, signOut } = nextAuth;
+
+// Shared, private cookie verification for server reads and mutations.
+const currentBackendSession = async () => {
+	try {
+		const requestHeaders = await headers();
+		const config: AuthConfig = {
+			providers: [],
+			secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+			basePath: '/api/auth',
+		};
+		// Match NextAuth's environment defaults, including secret rotation.
+		setEnvDefaults(process.env, config, true);
+		const url = createActionURL(
+			'session',
+			requestHeaders.get('x-forwarded-proto') ?? 'https',
+			requestHeaders,
+			process.env,
+			config,
+		);
+		// Cookie only: do not accept a request Authorization header as a session.
+		const token = await getToken({
+			req: { headers: new Headers({ cookie: requestHeaders.get('cookie') ?? '' }) },
+			secret: config.secret ?? [],
+			secureCookie: url.protocol === 'https:',
+		});
+		const data = token?.backendSession;
+		const now = Math.floor(Date.now() / 1000);
+		if (
+			!isBackendSession(data) ||
+			token?.sub !== data.userId ||
+			typeof token.exp !== 'number' ||
+			token.exp <= now ||
+			deadline(data) <= now
+		)
+			return { status: 'unauthenticated' } as const;
+		if (data.accessExpiresAt <= now) return { status: 'refresh-required' } as const;
+		return { status: 'success', data } as const;
+	} catch {
+		return { status: 'error' } as const;
+	}
+};
+
+// Server composition root: never expose credentials through the session callback.
+export const getOwnProfile = async () => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await readOwnProfile(
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' } as const;
+	}
+};
+
+export type AvatarOperation = { operation: 'set'; avatarImage: string } | { operation: 'delete' };
+export type AvatarMutationResult =
+	| { status: 'success'; avatarUrl: string | null }
+	| {
+			status:
+				| 'unauthenticated'
+				| 'refresh-required'
+				| 'forbidden'
+				| 'validation-error'
+				| 'identity-mismatch'
+				| 'sync-required'
+				| 'error';
+	  };
+
+const validAvatarUrl = (value: unknown): value is string | null => {
+	if (value === null || value === '') return true;
+	if (typeof value !== 'string') return false;
+	try {
+		const url = new URL(value);
+		return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password;
+	} catch {
+		return false;
+	}
+};
+
+const avatarTimeout = async <T>(request: (signal: AbortSignal) => Promise<T>): Promise<T> => {
+	const controller = new AbortController();
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	try {
+		const timeout = new Promise<never>((_, reject) => {
+			timer = setTimeout(() => {
+				controller.abort();
+				reject(new Error('Avatar request timed out'));
+			}, 5000);
+		});
+		return await Promise.race([request(controller.signal), timeout]);
+	} finally {
+		clearTimeout(timer);
+	}
+};
+
+// Canonical base64 validation in O(n) time and O(1) auxiliary space.
+// The Action validates PNG contents; this boundary does not decode the image again.
+const validAvatarBase64 = (value: unknown): value is string => {
+	const maxBytes = 5 * 1024 * 1024;
+	if (
+		typeof value !== 'string' ||
+		value.length === 0 ||
+		value.length % 4 !== 0 ||
+		value.length > 4 * Math.ceil(maxBytes / 3)
+	)
+		return false;
+	const padding = value.endsWith('==') ? 2 : value.endsWith('=') ? 1 : 0;
+	if ((value.length / 4) * 3 - padding > maxBytes) return false;
+	const dataLength = value.length - padding;
+	let last = 0;
+	for (let index = 0; index < dataLength; index++) {
+		const code = value.charCodeAt(index);
+		if (code >= 65 && code <= 90) last = code - 65;
+		else if (code >= 97 && code <= 122) last = code - 71;
+		else if (code >= 48 && code <= 57) last = code + 4;
+		else if (code === 43) last = 62;
+		else if (code === 47) last = 63;
+		else return false;
+	}
+	// RFC 4648: unused low bits must be zero for a canonical final quantum.
+	return padding === 0 || (last & (padding === 2 ? 15 : 3)) === 0;
+};
+
+// Must be invoked from a writable Next.js context. Never expose a generic user update API.
+export const mutateOwnAvatar = async (input: AvatarOperation): Promise<AvatarMutationResult> => {
+	if (!isObject(input)) return { status: 'validation-error' };
+	const setting = input.operation === 'set';
+	if (
+		(!setting && input.operation !== 'delete') ||
+		Object.keys(input).some(
+			(key) => !['operation', ...(setting ? ['avatarImage'] : [])].includes(key),
+		)
+	)
+		return { status: 'validation-error' };
+	if (setting && !validAvatarBase64(input.avatarImage)) return { status: 'validation-error' };
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	const { data } = session;
+	try {
+		const { apiOrigin, allowedOrigins } = getAuthBackendConfig();
+		if (!allowedOrigins.includes(apiOrigin)) return { status: 'error' };
+		const result = await avatarTimeout(async (signal): Promise<AvatarMutationResult> => {
+			const response = await fetch(
+				new URL(`/users/${encodeURIComponent(data.userId)}`, apiOrigin),
+				{
+					method: 'PATCH',
+					cache: 'no-store',
+					redirect: 'manual',
+					credentials: 'omit',
+					signal,
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${data.accessToken}`,
+					},
+					body: JSON.stringify(setting ? { avatarImage: input.avatarImage } : { avatarUrl: '' }),
+				},
+			);
+			if (response.status === 401) return { status: 'unauthenticated' };
+			if (response.status === 403) return { status: 'forbidden' };
+			if (response.status !== 200) return { status: 'error' };
+			const value: unknown = await response.json();
+			if (!isObject(value) || typeof value.id !== 'string' || !validAvatarUrl(value.avatarUrl))
+				return { status: 'error' };
+			if (value.id !== data.userId) return { status: 'identity-mismatch' };
+			if ((setting && !value.avatarUrl) || (!setting && value.avatarUrl))
+				return { status: 'error' };
+			return { status: 'success', avatarUrl: value.avatarUrl || null };
+		});
+		if (result.status !== 'success') return result;
+		try {
+			// Clients may send the same signal: the callback always re-reads and validates the backend.
+			const signal = { user: {}, syncAvatar: true };
+			const updated = await nextAuth.unstable_update(signal);
+			if (updated?.user?.id !== data.userId || updated.user.image !== result.avatarUrl)
+				return { status: 'sync-required' };
+			return result;
+		} catch {
+			// The backend already committed. Do not claim that the cookie was synchronized.
+			return { status: 'sync-required' };
+		}
+	} catch {
+		return { status: 'error' };
+	}
+};

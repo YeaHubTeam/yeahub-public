@@ -2,14 +2,25 @@
 import { NextRequest } from 'next/server';
 
 import { encode, getToken } from 'next-auth/jwt';
+import { deflateSync } from 'node:zlib';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 
-import { auth, handlers } from './auth';
+import { auth, getOwnProfile, handlers, mutateOwnAvatar } from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('next/headers', () => ({ headers: jest.fn(() => Promise.resolve(requestHeaders)) }));
+jest.mock('next/headers', () => ({
+	headers: jest.fn(() => Promise.resolve(requestHeaders)),
+	cookies: jest.fn(() =>
+		Promise.resolve({
+			set: (name: string, value: string) => {
+				if (!writableCookies) throw new Error('Read-only cookie context');
+				cookieWrites.push({ name, value });
+			},
+		}),
+	),
+}));
 jest.mock('@/shared/config/authBackend.server', () => ({
 	getAuthBackendConfig: jest.fn(() => ({
 		apiOrigin: 'https://backend.example',
@@ -47,6 +58,10 @@ const sessionCookieName = '__Secure-authjs.session-token';
 let logs: jest.SpyInstance[];
 let expectedRefreshCalls = 0;
 let expectedLogoutCalls = 0;
+let expectedProfileFetchCalls = 0;
+let expectedProfileCalls = 0;
+let writableCookies = true;
+let cookieWrites: { name: string; value: string }[] = [];
 let issuedCookies: string[] = [];
 let originalEnvironment: NodeJS.ProcessEnv;
 
@@ -129,6 +144,10 @@ beforeEach(() => {
 	profile.mockReset();
 	logout.mockReset();
 	expectedLogoutCalls = 0;
+	expectedProfileFetchCalls = 0;
+	expectedProfileCalls = 0;
+	writableCookies = true;
+	cookieWrites = [];
 	jest.mocked(createBackendAuthTransport).mockReturnValue({ login, refresh, profile, logout });
 	jest.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network forbidden'));
 	logs = [
@@ -140,9 +159,9 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		expect(refresh).toHaveBeenCalledTimes(expectedRefreshCalls);
-		expect(profile).not.toHaveBeenCalled();
+		expect(profile).toHaveBeenCalledTimes(expectedProfileCalls);
 		expect(logout).toHaveBeenCalledTimes(expectedLogoutCalls);
-		expect(globalThis.fetch).not.toHaveBeenCalled();
+		expect(globalThis.fetch).toHaveBeenCalledTimes(expectedProfileFetchCalls);
 		const logged = logs
 			.flatMap((spy) => spy.mock.calls)
 			.map((args) => args.map(String).join(' '))
@@ -657,5 +676,406 @@ describe('real Auth.js signout', () => {
 			maxAge: 3600,
 		});
 		await expectCleared(await signOutRequest(`${sessionCookieName}=${jwt}`));
+	});
+});
+
+describe('server-only own profile access', () => {
+	it.each(['sessionExpiresAt', 'refreshExpiresAt'])(
+		'enforces stored %s independently of JWT expiry',
+		async (field) => {
+			const value = await encode({
+				secret: process.env.AUTH_SECRET!,
+				salt: sessionCookieName,
+				maxAge: 3600,
+				token: {
+					sub: 'user-id',
+					backendSession: {
+						userId: 'user-id',
+						username: 'sample',
+						avatarUrl: null,
+						accessToken: token(now + 3600),
+						refreshToken: token(now + 7200),
+						accessExpiresAt: now + 3600,
+						refreshExpiresAt: now + 7200,
+						sessionExpiresAt: now + 7200,
+						[field]: now - 1,
+					},
+				},
+			});
+			requestHeaders = new Headers({
+				host: 'site.example',
+				cookie: `${sessionCookieName}=${value}`,
+			});
+			expect(await getOwnProfile()).toEqual({ status: 'unauthenticated' });
+			expect(await mutateOwnAvatar({ operation: 'delete' })).toEqual({ status: 'unauthenticated' });
+		},
+	);
+
+	it('rejects a damaged encrypted cookie without a backend request', async () => {
+		requestHeaders = new Headers({ host: 'site.example', cookie: `${sessionCookieName}=damaged` });
+		expect(await getOwnProfile()).toEqual({ status: 'unauthenticated' });
+	});
+
+	it('does not fetch for a guest', async () => {
+		expect(await getOwnProfile()).toEqual({ status: 'unauthenticated' });
+	});
+
+	it('uses a real encrypted Auth.js cookie and returns only a profile projection', async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', cookie });
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(
+			new Response(
+				JSON.stringify({
+					id: 'user-id',
+					username: 'sample',
+					email: 'test@example.invalid',
+					isVerified: true,
+					avatarUrl: null,
+					birthday: null,
+					country: null,
+					city: null,
+					userRoles: [{ id: 1, name: 'candidate', permissions: [] }],
+					profiles: [{ id: 'profile-id', isActive: true, specializationId: 11, profileSkills: [] }],
+					access_token: 'must-not-return',
+				}),
+				{ status: 200 },
+			),
+		);
+		const result = await getOwnProfile();
+		expect(result).toMatchObject({ status: 'success', profile: { id: 'user-id' } });
+		expect(JSON.stringify(result)).not.toMatch(
+			/accessToken|refreshToken|access_token|backendSession|must-not-return/,
+		);
+		expect(globalThis.fetch).toHaveBeenCalledWith(
+			new URL('https://backend.example/auth/profile'),
+			expect.objectContaining({
+				cache: 'no-store',
+				headers: { Authorization: `Bearer ${token(now + 3600)}` },
+			}),
+		);
+	});
+
+	it('requires writable refresh after access expiry without rotating on read', async () => {
+		const cookie = await signIn();
+		jest.setSystemTime((now + 3601) * 1000);
+		requestHeaders = new Headers({ host: 'site.example', cookie });
+		expect(await getOwnProfile()).toEqual({ status: 'refresh-required' });
+	});
+
+	it('rejects the expired absolute deadline', async () => {
+		const cookie = await signIn();
+		jest.setSystemTime((now + 7201) * 1000);
+		requestHeaders = new Headers({ host: 'site.example', cookie });
+		expect(await getOwnProfile()).toEqual({ status: 'unauthenticated' });
+	});
+
+	it('does not accept a Bearer header instead of the session cookie', async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({
+			host: 'site.example',
+			authorization: `Bearer ${cookie.split('=')[1]}`,
+		});
+		expect(await getOwnProfile()).toEqual({ status: 'unauthenticated' });
+	});
+});
+
+describe('authorized avatar mutation and writable session', () => {
+	const avatarUrl = 'https://images.example/new-avatar.png';
+	const sizedPng = (size: number) => {
+		const checksum = (bytes: Buffer) => {
+			let value = 0xffffffff;
+			for (const byte of bytes) {
+				value ^= byte;
+				for (let bit = 0; bit < 8; bit++) value = (value >>> 1) ^ (0xedb88320 & -(value & 1));
+			}
+			return (value ^ 0xffffffff) >>> 0;
+		};
+		const chunk = (name: string, data: Buffer) => {
+			const type = Buffer.from(name);
+			const length = Buffer.alloc(4);
+			length.writeUInt32BE(data.length);
+			const crc = Buffer.alloc(4);
+			crc.writeUInt32BE(checksum(Buffer.concat([type, data])));
+			return Buffer.concat([length, type, data, crc]);
+		};
+		const header = Buffer.alloc(13);
+		header.writeUInt32BE(128);
+		header.writeUInt32BE(128, 4);
+		header[8] = 8;
+		header[9] = 6;
+		const start = Buffer.concat([
+			Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+			chunk('IHDR', header),
+			chunk('IDAT', deflateSync(Buffer.alloc((128 * 4 + 1) * 128))),
+		]);
+		const end = chunk('IEND', Buffer.alloc(0));
+		const padding =
+			size > start.length + end.length + 20
+				? chunk(
+						'tEXt',
+						Buffer.concat([
+							Buffer.from('comment\0'),
+							Buffer.alloc(size - start.length - end.length - 20, 120),
+						]),
+					)
+				: Buffer.alloc(0);
+		return Buffer.concat([start, padding, end]).toString('base64');
+	};
+
+	const image = Buffer.from('synthetic-image').toString('base64');
+	const prepare = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	const patchReply = (body: unknown, status = 200) => {
+		expectedProfileFetchCalls++;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response(JSON.stringify(body), { status }));
+	};
+	const syncReply = (image: string | null) => {
+		expectedProfileCalls++;
+		profile.mockResolvedValue({ id: 'user-id', avatarUrl: image });
+	};
+	const savedCookie = () => {
+		const cookie = cookieWrites
+			.filter(({ value }) => value)
+			.map(({ name, value }) => `${name}=${value}`)
+			.join('; ');
+		issuedCookies.push(cookie);
+		return cookie;
+	};
+
+	it.each([0, 1024 * 1024 + 1, 5 * 1024 * 1024])(
+		'accepts canonical avatar base64 size %s with the real mutator',
+		async (size) => {
+			await prepare();
+			const avatarImage = sizedPng(size);
+			patchReply({ id: 'user-id', avatarUrl });
+			syncReply(avatarUrl);
+			await expect(mutateOwnAvatar({ operation: 'set', avatarImage })).resolves.toEqual({
+				status: 'success',
+				avatarUrl,
+			});
+			const requestBody = jest.mocked(globalThis.fetch).mock.calls[0][1]?.body;
+			if (typeof requestBody !== 'string') throw new Error('Expected a JSON request body');
+			const body = JSON.parse(requestBody) as {
+				avatarImage: string;
+			};
+			expect(Object.keys(body)).toEqual(['avatarImage']);
+			expect(body.avatarImage === avatarImage).toBe(true);
+			expect(body.avatarImage.startsWith('data:')).toBe(false);
+		},
+	);
+
+	it.each([
+		'aG@=',
+		'AAAA=AAA',
+		'=AAA',
+		'A===',
+		'AAA==',
+		'AAA',
+		'AA',
+		'AAAA====',
+		'AB==',
+		'AAB=',
+		'éAAA',
+		'AA==\n',
+	])('rejects noncanonical base64 case %# without a request', async (avatarImage) => {
+		await prepare();
+		await expect(mutateOwnAvatar({ operation: 'set', avatarImage })).resolves.toEqual({
+			status: 'validation-error',
+		});
+	});
+
+	it('rejects decoded bytes above 5 MiB even when the encoded length fits the bound', async () => {
+		await prepare();
+		const avatarImage = sizedPng(5 * 1024 * 1024 + 1);
+		await expect(mutateOwnAvatar({ operation: 'set', avatarImage })).resolves.toEqual({
+			status: 'validation-error',
+		});
+	});
+
+	it.each(['success', 'error', 'sync-required'] as const)(
+		'passes through the real Action and real mutator: %s',
+		async (status) => {
+			const { changeOwnAvatar } = await import('./app/[locale]/(public)/profile/actions');
+			expect(jest.isMockFunction(mutateOwnAvatar)).toBe(false);
+			await prepare();
+			const avatarImage = sizedPng(status === 'success' ? 5 * 1024 * 1024 : 0);
+			patchReply({ id: 'user-id', avatarUrl }, status === 'error' ? 500 : 200);
+			if (status !== 'error') syncReply(avatarUrl);
+			writableCookies = status !== 'sync-required';
+			const result = await changeOwnAvatar({ operation: 'set', avatarImage });
+			expect(result).toEqual(status === 'success' ? { status, avatarUrl } : { status });
+			expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+			const requestBody = jest.mocked(globalThis.fetch).mock.calls[0][1]?.body;
+			if (typeof requestBody !== 'string') throw new Error('Expected a JSON request body');
+			const body = JSON.parse(requestBody) as {
+				avatarImage: string;
+			};
+			expect(body.avatarImage === avatarImage).toBe(true);
+			expect(body.avatarImage.startsWith('data:')).toBe(false);
+		},
+	);
+
+	it.each(['set', 'delete'] as const)(
+		'persists %s through real Auth.js cookie encoding',
+		async (operation) => {
+			const original = await prepare();
+			const previous = await decodeSession(original);
+			const nextImage = operation === 'set' ? avatarUrl : '';
+			patchReply({ id: 'user-id', avatarUrl: nextImage, email: 'ignored@example.invalid' });
+			syncReply(nextImage);
+			const result = await mutateOwnAvatar(
+				operation === 'set' ? { operation, avatarImage: image } : { operation },
+			);
+			expect(result).toEqual({ status: 'success', avatarUrl: nextImage || null });
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				new URL('https://backend.example/users/user-id'),
+				expect.objectContaining({
+					method: 'PATCH',
+					cache: 'no-store',
+					redirect: 'manual',
+					credentials: 'omit',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token(now + 3600)}`,
+					},
+					body: JSON.stringify(operation === 'set' ? { avatarImage: image } : { avatarUrl: '' }),
+				}),
+			);
+			expect(profile).toHaveBeenCalledWith(token(now + 3600));
+			expect(cookieWrites.length).toBeGreaterThan(0);
+			const cookie = savedCookie();
+			const decoded = await decodeSession(cookie);
+			expect(decoded?.backendSession).toEqual({
+				...(previous?.backendSession as object),
+				avatarUrl: nextImage || null,
+			});
+			expect(decoded?.exp).toBe(previous?.exp);
+			const restored = await restore(cookie);
+			expect(restored?.user?.image).toBe(nextImage || null);
+			expect(JSON.stringify(result)).not.toMatch(
+				/accessToken|refreshToken|backendSession|synthetic|ignored/,
+			);
+			expect(JSON.stringify(result)).not.toContain(image);
+		},
+	);
+
+	it('does not trust client avatar fields, even with the synchronization signal', async () => {
+		const cookie = await prepare();
+		syncReply(avatarUrl);
+		const response = await updateSession(cookie, {
+			syncAvatar: true,
+			image: 'https://attacker.invalid',
+			user: { id: 'other', image: 'https://attacker.invalid' },
+		});
+		const decoded = await decodeSession(cookiesFrom(response));
+		expect(decoded?.backendSession).toMatchObject({
+			userId: 'user-id',
+			avatarUrl,
+			sessionExpiresAt: now + 7200,
+		});
+		expect(JSON.stringify(await response.json())).not.toContain('attacker');
+	});
+
+	it('refuses a guest and rejects a supplied target user ID', async () => {
+		expect(await mutateOwnAvatar({ operation: 'delete' })).toEqual({ status: 'unauthenticated' });
+		await prepare();
+		const input = { operation: 'delete' as const, userId: 'other-user' };
+		expect(await mutateOwnAvatar(input)).toEqual({ status: 'validation-error' });
+	});
+
+	it.each([
+		null,
+		{},
+		{ operation: 'set', avatarImage: 'data:image/png;base64,abc' },
+		{ operation: 'set', avatarImage: '' },
+		{ operation: 'unknown' },
+	])('rejects invalid input %# before the backend', async (input) => {
+		expect(await mutateOwnAvatar(input as Parameters<typeof mutateOwnAvatar>[0])).toEqual({
+			status: 'validation-error',
+		});
+	});
+
+	it.each([401, 403, 500, 302])('keeps session unchanged on HTTP %s', async (status) => {
+		const cookie = await prepare();
+		patchReply({ internal: 'hidden' }, status);
+		expect(await mutateOwnAvatar({ operation: 'delete' })).toEqual({
+			status: status === 401 ? 'unauthenticated' : status === 403 ? 'forbidden' : 'error',
+		});
+		expect(cookieWrites).toHaveLength(0);
+		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
+	});
+
+	it.each([{ id: 'other', avatarUrl }, { id: 'user-id', avatarUrl: 123 }, null])(
+		'rejects identity mismatch or invalid backend data %#',
+		async (body) => {
+			await prepare();
+			patchReply(body);
+			expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
+				status: body?.id === 'other' ? 'identity-mismatch' : 'error',
+			});
+			expect(cookieWrites).toHaveLength(0);
+		},
+	);
+
+	it('handles network failure and permits an explicit later retry', async () => {
+		await prepare();
+		expectedProfileFetchCalls++;
+		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
+			status: 'error',
+		});
+		expect(cookieWrites).toHaveLength(0);
+		patchReply({ id: 'user-id', avatarUrl });
+		syncReply(avatarUrl);
+		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
+			status: 'success',
+			avatarUrl,
+		});
+	});
+
+	it('aborts a hung PATCH without writing a session', async () => {
+		await prepare();
+		expectedProfileFetchCalls++;
+		jest.mocked(globalThis.fetch).mockImplementation(() => new Promise(() => {}));
+		const pending = mutateOwnAvatar({ operation: 'delete' });
+		while (jest.mocked(globalThis.fetch).mock.calls.length === 0) {
+			await new Promise<void>((resolve) => setImmediate(resolve));
+		}
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await pending).toEqual({ status: 'error' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+
+	it.each([3601, 7201])('rejects expired credentials at +%s seconds', async (seconds) => {
+		await prepare();
+		jest.setSystemTime((now + seconds) * 1000);
+		expect(await mutateOwnAvatar({ operation: 'delete' })).toEqual({
+			status: seconds < 7200 ? 'refresh-required' : 'unauthenticated',
+		});
+	});
+
+	it('reports a committed mutation that could not persist the cookie', async () => {
+		await prepare();
+		patchReply({ id: 'user-id', avatarUrl });
+		syncReply(avatarUrl);
+		writableCookies = false;
+		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
+			status: 'sync-required',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+
+	it('does not accept another identity during server-side synchronization', async () => {
+		const cookie = await prepare();
+		patchReply({ id: 'user-id', avatarUrl });
+		expectedProfileCalls++;
+		profile.mockResolvedValue({ id: 'other', avatarUrl });
+		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
+			status: 'sync-required',
+		});
+		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
 	});
 });

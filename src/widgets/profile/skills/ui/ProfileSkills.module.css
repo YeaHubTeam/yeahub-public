@@ -1,0 +1,42 @@
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+	min-width: 0;
+}
+
+.list {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.skill {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	width: fit-content;
+	max-width: 100%;
+	min-height: 42px;
+	border: 1px solid var(--color-purple-700);
+	border-radius: 12px;
+}
+
+.icon {
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+}
+
+.name {
+	min-width: 0;
+	line-height: 22px;
+	overflow-wrap: anywhere;
+	user-select: none;
+}

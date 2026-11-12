@@ -6,8 +6,7 @@ import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 import LogoutIcon from '@/shared/assets/icons/logout-icon.svg';
-import { Header, ROUTES, Translation, i18Namespace } from '@/shared/config';
-import { useRouter } from '@/shared/config/navigation';
+import { Header, ROUTES, Translation, i18Namespace, useRouter } from '@/shared/config';
 import { useScreenSize } from '@/shared/libs';
 import { AvatarWithoutPhoto } from '@/shared/ui/AvatarWithoutPhoto';
 import { Button } from '@/shared/ui/Button';
@@ -69,13 +68,22 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 		Header.USER_SETTINGS,
 		Header.USER_LOGOUT,
 	].map((key) => ({
-		renderComponent: () => (
+		renderComponent: (close) => (
 			<Button
 				type="button"
 				variant="tertiary-link"
-				disabled={key !== Header.USER_LOGOUT || isSigningOut}
+				disabled={(key !== Header.USER_LOGOUT && key !== Header.USER_PROFILE) || isSigningOut}
 				aria-busy={key === Header.USER_LOGOUT ? isSigningOut : undefined}
-				onClick={key === Header.USER_LOGOUT ? () => void onLogout() : undefined}
+				onClick={
+					key === Header.USER_PROFILE
+						? () => {
+								close();
+								router.push(ROUTES.profile.page);
+							}
+						: key === Header.USER_LOGOUT
+							? () => void onLogout()
+							: undefined
+				}
 				className={
 					key === Header.USER_LOGOUT
 						? `${styles['menu-item']} ${styles.logout}`

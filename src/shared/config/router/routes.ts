@@ -1,5 +1,6 @@
 export const ROUTES = {
 	appRoute: '/',
+	profile: { page: '/profile' },
 	auth: {
 		login: {
 			route: 'login',
