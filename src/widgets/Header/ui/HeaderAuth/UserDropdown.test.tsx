@@ -1,20 +1,36 @@
+import type { ReactElement } from 'react';
+
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render as rtlRender, screen, waitFor } from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
 
 import { UserDropdown } from './UserDropdown';
 
+const render = (ui: ReactElement) =>
+	rtlRender(ui, {
+		wrapper: ({ children }) => (
+			<NextIntlClientProvider locale="ru" messages={{}}>
+				{children}
+			</NextIntlClientProvider>
+		),
+	});
 const push = jest.fn();
 const replace = jest.fn();
 const signOut = jest.fn();
 jest.mock('@/shared/config', () => ({
 	...jest.requireActual('@/shared/config/i18n/i18nTranslations'),
 	i18Namespace: { header: 'header', translation: 'translation' },
-	ROUTES: { profile: { page: '/profile' }, auth: { login: { page: '/auth/login' } } },
+	ROUTES: jest.requireActual('@/shared/config').ROUTES,
+	useRouter: jest.requireActual('@/shared/config').useRouter,
+}));
+jest.mock('next/navigation', () => ({
+	usePathname: () => '/ru/profile',
 	useRouter: () => ({ push, replace }),
 }));
 jest.mock('@/shared/libs', () => ({ useScreenSize: () => ({ isMobile: false, isTablet: false }) }));
 jest.mock('next-auth/react', () => ({ signOut: (...args: unknown[]) => signOut(...args) }));
 jest.mock('next-intl', () => ({
+	...jest.requireActual('next-intl'),
 	useTranslations: (namespace: string) => {
 		const { createTranslator } = jest.requireActual('next-intl');
 		return createTranslator({
@@ -32,18 +48,18 @@ it('opens the existing menu, goes to local profile and closes the Popover', asyn
 	render(<UserDropdown username="Name" image={null} />);
 	fireEvent.click(screen.getByRole('button', { expanded: false }));
 	fireEvent.click(await screen.findByRole('button', { name: 'Мой профиль' }));
-	expect(push).toHaveBeenCalledWith('/profile');
+	expect(push).toHaveBeenCalledWith('/ru/profile');
 	await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 	expect(signOut).not.toHaveBeenCalled();
 });
-it('keeps unimplemented membership/settings disabled and preserves logout', async () => {
+it('keeps membership disabled, enables settings and preserves logout', async () => {
 	signOut.mockResolvedValue({ url: '/auth/login' });
 	render(<UserDropdown username="Name" />);
 	fireEvent.click(screen.getByRole('button', { expanded: false }));
 	expect(await screen.findByRole('button', { name: 'Выбрать членство' })).toBeDisabled();
-	expect(screen.getByRole('button', { name: 'Настройки' })).toBeDisabled();
+	expect(screen.getByRole('button', { name: 'Настройки' })).toBeEnabled();
 	fireEvent.click(screen.getByRole('button', { name: 'Выйти' }));
-	await waitFor(() => expect(replace).toHaveBeenCalledWith('/auth/login'));
+	await waitFor(() => expect(replace).toHaveBeenCalledWith('/ru/auth/login'));
 	expect(signOut).toHaveBeenCalledWith({ redirect: false });
 	expect(push).not.toHaveBeenCalled();
 });
@@ -59,4 +75,19 @@ it('uses a fallback for failed images and allows a different URL', () => {
 	);
 	view.rerender(<UserDropdown username="Name" image={null} />);
 	expect(screen.queryByRole('img', { name: 'Аватар' })).toBeNull();
+});
+
+it('opens local settings through the real locale-aware router and closes the menu', async () => {
+	render(<UserDropdown username="Name" />);
+	fireEvent.click(screen.getByRole('button', { expanded: false }));
+	const settings = await screen.findByRole('button', { name: 'Настройки' });
+	expect(settings).toBeEnabled();
+	settings.focus();
+	expect(settings).toHaveFocus();
+	fireEvent.click(settings);
+	expect(push).toHaveBeenCalledTimes(1);
+	expect(push).toHaveBeenCalledWith('/ru/settings');
+	await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+	expect(replace).not.toHaveBeenCalled();
+	expect(signOut).not.toHaveBeenCalled();
 });

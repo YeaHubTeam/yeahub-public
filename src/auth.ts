@@ -9,12 +9,22 @@ import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 import {
+	mutateTelegram,
 	parseProfileEditInput,
+	parseTelegramPayload,
 	readHeaderProfile,
 	readOwnProfile,
+	readSettingsSnapshot,
 	saveOwnProfile,
+	sendVerificationEmail,
 } from '@/entities/profile/server';
-import type { HeaderProfileResult, ProfileEditResult } from '@/entities/profile/server';
+import type {
+	HeaderProfileResult,
+	ProfileEditResult,
+	SettingsSnapshotResult,
+	TelegramMutationResult,
+	VerificationEmailResult,
+} from '@/entities/profile/server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
 
 import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
@@ -318,6 +328,64 @@ export const getHeaderProfile = async (): Promise<HeaderProfileResult> => {
 		{ userId: session.data.userId, accessToken: session.data.accessToken },
 		getAuthBackendConfig(),
 	);
+};
+
+// Read-only settings composition; credentials remain private to this server module.
+export const getSettingsSnapshot = async (): Promise<SettingsSnapshotResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await readSettingsSnapshot(
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+// Explicit invocation only: never called by a render or snapshot read.
+export const sendOwnVerificationEmail = async (): Promise<VerificationEmailResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await sendVerificationEmail(
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export const linkOwnTelegram = async (payload: unknown): Promise<TelegramMutationResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	const data = parseTelegramPayload(payload);
+	if (!data) return { status: 'validation-error' };
+	try {
+		return await mutateTelegram(
+			{ type: 'link', payload: data },
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export const unlinkOwnTelegram = async (): Promise<TelegramMutationResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await mutateTelegram(
+			{ type: 'unlink' },
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
 };
 
 export type AvatarOperation = { operation: 'set'; avatarImage: string } | { operation: 'delete' };

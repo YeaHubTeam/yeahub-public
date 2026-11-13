@@ -10,9 +10,13 @@ import {
 	auth,
 	getHeaderProfile,
 	getOwnProfile,
+	getSettingsSnapshot,
 	handlers,
+	linkOwnTelegram,
 	mutateOwnAvatar,
 	mutateOwnProfile,
+	sendOwnVerificationEmail,
+	unlinkOwnTelegram,
 } from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
 
@@ -1366,6 +1370,303 @@ describe('read-only Header projection using existing session credentials', () =>
 		expect(await getHeaderProfile()).toEqual({
 			status: status === 401 ? 'unauthenticated' : 'forbidden',
 		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+describe('read-only settings snapshot using existing session credentials', () => {
+	const fresh = {
+		id: 'user-id',
+		username: 'Backend name',
+		email: null,
+		isVerified: false,
+		telegramUsername: null,
+		profiles: [],
+		subscriptions: [],
+	};
+	it('reads current identity, does not require profiles, and leaves encrypted session and cookies unchanged', async () => {
+		const cookie = await signIn();
+		const original = await decodeSession(cookie);
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		writableCookies = false;
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(
+			new Response(JSON.stringify({ ...fresh, access_token: 'synthetic-hidden' }), {
+				status: 200,
+			}),
+		);
+		expect(getSettingsSnapshot.length).toBe(0);
+		expect(await getSettingsSnapshot()).toEqual({
+			status: 'success',
+			snapshot: {
+				userId: 'user-id',
+				email: null,
+				isVerified: false,
+				telegramUsername: null,
+				profiles: [],
+				subscriptions: [],
+				activeProfileId: null,
+			},
+		});
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
+	});
+	it('does not request a profile for guests', async () => {
+		expect(await getSettingsSnapshot()).toEqual({ status: 'unauthenticated' });
+	});
+	it.each([3601, 7201])('does not use expired credentials at +%s', async (seconds) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		jest.setSystemTime((now + seconds) * 1000);
+		expect(await getSettingsSnapshot()).toEqual({
+			status: seconds < 7200 ? 'refresh-required' : 'unauthenticated',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects an expired absolute deadline with otherwise live credentials', async () => {
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+			throw new Error('Synthetic session missing');
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		expect(await getSettingsSnapshot()).toEqual({ status: 'unauthenticated' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([401, 403])('preserves HTTP %s without changing session', async (status) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response('{}', { status }));
+		expect(await getSettingsSnapshot()).toEqual({
+			status: status === 401 ? 'unauthenticated' : 'forbidden',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+it.each(['invalid-cookie', 'wrong-identity'])(
+	'rejects settings session %s before loader',
+	async (kind) => {
+		let cookie = `${sessionCookieName}=invalid`;
+		if (kind === 'wrong-identity') {
+			const original = await signIn();
+			const decoded = await decodeSession(original);
+			const value = await encode({
+				secret: process.env.AUTH_SECRET!,
+				salt: sessionCookieName,
+				token: { ...decoded, sub: 'other' },
+			});
+			cookie = `${sessionCookieName}=${value}`;
+		}
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expect(await getSettingsSnapshot()).toEqual({ status: 'unauthenticated' });
+		expect(globalThis.fetch).not.toHaveBeenCalled();
+	},
+);
+
+describe('verification email authorization through existing session credentials', () => {
+	it('reads current identity, does not require profiles, and leaves encrypted session and cookies unchanged', async () => {
+		const cookie = await signIn();
+		const original = await decodeSession(cookie);
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		writableCookies = false;
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValue(
+				new Response(JSON.stringify({ message: 'Verification email was sent' }), { status: 200 }),
+			);
+		expect(sendOwnVerificationEmail.length).toBe(0);
+		expect(await sendOwnVerificationEmail()).toEqual({ status: 'success' });
+		expect(globalThis.fetch).toHaveBeenCalledWith(
+			new URL('https://backend.example/auth/send-verification-email/user-id'),
+			expect.objectContaining({
+				method: 'GET',
+				cache: 'no-store',
+				headers: { Authorization: expect.any(String) },
+			}),
+		);
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
+	});
+	it('does not request a profile for guests', async () => {
+		expect(await sendOwnVerificationEmail()).toEqual({ status: 'unauthenticated' });
+	});
+	it.each([3601, 7201])('does not use expired credentials at +%s', async (seconds) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		jest.setSystemTime((now + seconds) * 1000);
+		expect(await sendOwnVerificationEmail()).toEqual({
+			status: seconds < 7200 ? 'refresh-required' : 'unauthenticated',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects an expired absolute deadline with otherwise live credentials', async () => {
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+			throw new Error('Synthetic session missing');
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		expect(await sendOwnVerificationEmail()).toEqual({ status: 'unauthenticated' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([401, 403])('preserves HTTP %s without changing session', async (status) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response('{}', { status }));
+		expect(await sendOwnVerificationEmail()).toEqual({
+			status: status === 401 ? 'unauthenticated' : 'forbidden',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+it('does not send email for an invalid cookie or mismatched session identity', async () => {
+	requestHeaders = new Headers({
+		host: 'site.example',
+		'x-forwarded-proto': 'https',
+		cookie: `${sessionCookieName}=invalid`,
+	});
+	expect(await sendOwnVerificationEmail()).toEqual({ status: 'unauthenticated' });
+	const cookie = await signIn();
+	const decoded = await decodeSession(cookie);
+	const value = await encode({
+		secret: process.env.AUTH_SECRET!,
+		salt: sessionCookieName,
+		token: { ...decoded, sub: 'other' },
+	});
+	requestHeaders = new Headers({
+		host: 'site.example',
+		'x-forwarded-proto': 'https',
+		cookie: `${sessionCookieName}=${value}`,
+	});
+	expect(await sendOwnVerificationEmail()).toEqual({ status: 'unauthenticated' });
+	expect(globalThis.fetch).not.toHaveBeenCalled();
+});
+
+describe('Telegram operations use existing private credentials without session updates', () => {
+	const telegramPayload = {
+		id: 123,
+		first_name: ' Test ',
+		auth_date: 1800000000,
+		hash: 'a'.repeat(64),
+		username: 'telegram_user',
+	};
+	const invoke = (operation: string) =>
+		operation === 'link' ? linkOwnTelegram(telegramPayload) : unlinkOwnTelegram();
+	const selectCookie = (cookie: string) => {
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+	};
+	it.each(['link', 'unlink'])(
+		'authorizes %s with only server credentials and leaves cookies unchanged',
+		async (operation) => {
+			const cookie = await signIn();
+			const original = await decodeSession(cookie);
+			selectCookie(cookie);
+			writableCookies = false;
+			expectedProfileFetchCalls = 1;
+			const telegramUsername = operation === 'link' ? 'telegram_user' : null;
+			const responseBody = {
+				id: 'user-id',
+				telegramUsername,
+				telegramId: 123,
+				refreshToken: 'hidden',
+			};
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValue(new Response(JSON.stringify(responseBody), { status: 201 }));
+			expect(await invoke(operation)).toEqual({ status: 'success', telegramUsername });
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				new URL(`https://backend.example/users/${operation}-telegram`),
+				expect.objectContaining({
+					method: 'POST',
+					cache: 'no-store',
+					headers: expect.objectContaining({ Authorization: expect.any(String) }),
+				}),
+			);
+			expect(cookieWrites).toHaveLength(0);
+			expect(await decodeSession(cookie)).toEqual(original);
+		},
+	);
+	it.each(['link', 'unlink'])('rejects guest %s before backend', async (operation) => {
+		expect(await invoke(operation)).toEqual({ status: 'unauthenticated' });
+	});
+	it.each(['link', 'unlink'])(
+		'rejects expired access and expired session for %s before backend',
+		async (operation) => {
+			const cookie = await signIn();
+			selectCookie(cookie);
+			jest.setSystemTime((now + 3601) * 1000);
+			expect(await invoke(operation)).toEqual({ status: 'refresh-required' });
+			jest.setSystemTime((now + 7201) * 1000);
+			expect(await invoke(operation)).toEqual({ status: 'unauthenticated' });
+		},
+	);
+	it.each(['link', 'unlink'])(
+		'rejects invalid cookie, identity and absolute deadline for %s',
+		async (operation) => {
+			selectCookie(`${sessionCookieName}=invalid`);
+			expect(await invoke(operation)).toEqual({ status: 'unauthenticated' });
+			const cookie = await signIn();
+			const decoded = await decodeSession(cookie);
+			if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+				throw new Error('Synthetic session missing');
+			for (const tokenValue of [
+				{ ...decoded, sub: 'other' },
+				{ ...decoded, backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 } },
+			]) {
+				const value = await encode({
+					secret: process.env.AUTH_SECRET!,
+					salt: sessionCookieName,
+					token: tokenValue,
+				});
+				selectCookie(`${sessionCookieName}=${value}`);
+				expect(await invoke(operation)).toEqual({ status: 'unauthenticated' });
+			}
+		},
+	);
+	it('rejects forged Yeahub identity in link payload without contacting backend', async () => {
+		selectCookie(await signIn());
+		expect(await linkOwnTelegram({ ...telegramPayload, userId: 'other' })).toEqual({
+			status: 'validation-error',
+		});
+	});
+	it('preserves Telegram failure instead of reporting logout', async () => {
+		selectCookie(await signIn());
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValue(
+				new Response(JSON.stringify({ message: 'auth.telegram.data_outdated' }), { status: 401 }),
+			);
+		expect(await linkOwnTelegram(telegramPayload)).toEqual({ status: 'outdated-telegram-data' });
 		expect(cookieWrites).toHaveLength(0);
 	});
 });

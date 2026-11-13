@@ -74,7 +74,12 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 			<Button
 				type="button"
 				variant="tertiary-link"
-				disabled={(key !== Header.USER_LOGOUT && key !== Header.USER_PROFILE) || isSigningOut}
+				disabled={
+					(key !== Header.USER_LOGOUT &&
+						key !== Header.USER_PROFILE &&
+						key !== Header.USER_SETTINGS) ||
+					isSigningOut
+				}
 				aria-busy={key === Header.USER_LOGOUT ? isSigningOut : undefined}
 				onClick={
 					key === Header.USER_PROFILE
@@ -82,9 +87,14 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 								close();
 								router.push(ROUTES.profile.page);
 							}
-						: key === Header.USER_LOGOUT
-							? () => void onLogout()
-							: undefined
+						: key === Header.USER_SETTINGS
+							? () => {
+									close();
+									router.push(ROUTES.settings.page);
+								}
+							: key === Header.USER_LOGOUT
+								? () => void onLogout()
+								: undefined
 				}
 				className={
 					key === Header.USER_LOGOUT

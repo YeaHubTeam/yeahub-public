@@ -72,7 +72,7 @@ export const ROUTES = {
 	},
 	settings: {
 		route: 'settings',
-		page: process.env.NEXT_PUBLIC_APP_SITE_URL + 'settings',
+		page: '/settings',
 	},
 	avos: {
 		route: 'avos',
