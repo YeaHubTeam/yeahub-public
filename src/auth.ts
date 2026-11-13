@@ -8,7 +8,8 @@ import Credentials from 'next-auth/providers/credentials';
 import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
-import { readOwnProfile } from '@/entities/profile/server';
+import { parseProfileEditInput, readOwnProfile, saveOwnProfile } from '@/entities/profile/server';
+import type { ProfileEditResult } from '@/entities/profile/server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
 
 import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
@@ -155,21 +156,23 @@ const nextAuth = NextAuth(() => ({
 			const stored = user && 'backendSession' in user ? user.backendSession : token.backendSession;
 			if (!isBackendSession(stored) || deadline(stored) <= Math.floor(Date.now() / 1000))
 				return null;
-			// This flag is only a request to re-read identity from the backend, never trusted image data.
-			if (trigger === 'update' && isObject(session) && session.syncAvatar === true) {
+			// Client data is a re-read signal only; username always comes from the verified backend.
+			if (trigger === 'update' && isObject(session) && session.syncProfile === true) {
 				if (stored.accessExpiresAt <= Math.floor(Date.now() / 1000)) return token;
 				try {
-					const profile = await avatarTimeout((signal) => {
-						const backend = createBackendAuthTransport({
-							...getAuthBackendConfig(),
-							fetch: (input, init) => fetch(input, { ...init, signal }),
-						});
-						return backend.profile(stored.accessToken);
-					});
-					if (profile.id !== stored.userId || !validAvatarUrl(profile.avatarUrl)) return token;
+					const result = await readOwnProfile(
+						{ userId: stored.userId, accessToken: stored.accessToken },
+						getAuthBackendConfig(),
+					);
+					if (
+						result.status !== 'success' ||
+						result.profile.username.length < 2 ||
+						result.profile.username.length > 30
+					)
+						return token;
 					return {
 						sub: stored.userId,
-						backendSession: { ...stored, avatarUrl: profile.avatarUrl || null },
+						backendSession: { ...stored, username: result.profile.username },
 					};
 				} catch {
 					return token;
@@ -312,7 +315,6 @@ export type AvatarMutationResult =
 				| 'forbidden'
 				| 'validation-error'
 				| 'identity-mismatch'
-				| 'sync-required'
 				| 'error';
 	  };
 
@@ -416,16 +418,41 @@ export const mutateOwnAvatar = async (input: AvatarOperation): Promise<AvatarMut
 				return { status: 'error' };
 			return { status: 'success', avatarUrl: value.avatarUrl || null };
 		});
+		return result;
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+// Writable server context only. Identity and credentials never come from Action arguments.
+export const mutateOwnProfile = async (input: unknown): Promise<ProfileEditResult> => {
+	const data = parseProfileEditInput(input);
+	if (!data) return { status: 'validation-error' };
+	const session = await currentBackendSession();
+	if (session.status !== 'success')
+		return { status: session.status === 'error' ? 'error' : 'unauthorized' };
+	try {
+		const result = await saveOwnProfile(
+			data,
+			{
+				userId: session.data.userId,
+				accessToken: session.data.accessToken,
+				expiresAt: Math.min(session.data.accessExpiresAt, deadline(session.data)),
+			},
+			getAuthBackendConfig(),
+		);
 		if (result.status !== 'success') return result;
 		try {
-			// Clients may send the same signal: the callback always re-reads and validates the backend.
-			const signal = { user: {}, syncAvatar: true };
+			const signal = { user: {}, syncProfile: true };
 			const updated = await nextAuth.unstable_update(signal);
-			if (updated?.user?.id !== data.userId || updated.user.image !== result.avatarUrl)
+			if (
+				!isObject(updated?.user) ||
+				updated.user.id !== session.data.userId ||
+				updated.user.username !== data.username
+			)
 				return { status: 'sync-required' };
-			return result;
+			return { status: 'success' };
 		} catch {
-			// The backend already committed. Do not claim that the cookie was synchronized.
 			return { status: 'sync-required' };
 		}
 	} catch {

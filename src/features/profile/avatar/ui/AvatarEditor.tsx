@@ -10,7 +10,9 @@ import { useTranslations } from 'next-intl';
 import { Cropper } from 'react-cropper';
 import type { ReactCropperElement } from 'react-cropper';
 
-import { Translation, i18Namespace, useRouter } from '@/shared/config';
+import { useAvatarState } from '@/entities/profile';
+import Gallery from '@/shared/assets/images/gallery.avif';
+import { Translation, i18Namespace } from '@/shared/config';
 import { AvatarWithoutPhoto } from '@/shared/ui/AvatarWithoutPhoto';
 import { Button } from '@/shared/ui/Button';
 import { Modal } from '@/shared/ui/Modal';
@@ -24,34 +26,39 @@ import styles from './AvatarEditor.module.css';
 export const AvatarEditor = ({
 	image,
 	avatarAction,
+	variant = 'default',
 }: {
 	image: string | null;
 	avatarAction: AvatarAction;
+	variant?: 'default' | 'profile-edit';
 }) => {
 	const t = useTranslations(i18Namespace.profile);
 	const common = useTranslations(i18Namespace.translation);
-	const router = useRouter();
-	const { update } = useSession();
+	const { data: sessionData, status: sessionStatus } = useSession();
+	const owner = sessionData?.user?.id;
+	const currentOwner = useRef(owner);
+	const generation = useRef(0);
+	const { value, beginChange } = useAvatarState();
 	const fileInput = useRef<HTMLInputElement>(null);
 	const cropper = useRef<ReactCropperElement>(null);
 	const mounted = useRef(false);
 	const locked = useRef(false);
 	const [pending, setPending] = useState(false);
+	const [dragActive, setDragActive] = useState(false);
 	const [source, setSource] = useState<string | null>(null);
 	const [cropped, setCropped] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
-	const [notice, setNotice] = useState<'success' | 'sync' | null>(null);
-	const [confirmed, setConfirmed] = useState<{
-		previous: string | null;
-		value: string | null;
-	} | null>(null);
-	const visibleImage = confirmed?.previous === image ? confirmed.value : image;
+	const [failedImage, setFailedImage] = useState<string | null>(null);
+	const visibleImage = value && value.userId === owner ? value.avatarUrl : image;
 	useEffect(() => {
 		mounted.current = true;
 		return () => {
 			mounted.current = false;
 		};
 	}, []);
+	useEffect(() => {
+		currentOwner.current = owner;
+	}, [owner]);
 
 	const choose = () => {
 		if (!locked.current) fileInput.current?.click();
@@ -61,7 +68,6 @@ export const AvatarEditor = ({
 		locked.current = true;
 		setPending(true);
 		setError(null);
-		setNotice(null);
 		try {
 			const result = await readAvatarFile(file);
 			if (!mounted.current) return;
@@ -108,21 +114,21 @@ export const AvatarEditor = ({
 			setError(null);
 		}
 	};
-	const synchronize = async (repair: boolean) => {
-		router.refresh();
-		// A signal requests a server-verified read; no image or identity is sent by the client.
-		return repair ? update({ syncAvatar: true }) : update();
-	};
 	const mutate = async (input: AvatarActionInput) => {
 		if (locked.current) return;
+		const userId = currentOwner.current;
+		if (!userId || sessionStatus !== 'authenticated') {
+			return;
+		}
+		const id = ++generation.current;
+		const publish = beginChange(userId);
 		locked.current = true;
 		setPending(true);
 		setError(null);
-		setNotice(null);
 		try {
 			const result = await avatarAction(input);
-			if (!mounted.current) return;
-			if (result.status !== 'success' && result.status !== 'sync-required') {
+			if (!mounted.current || generation.current !== id || currentOwner.current !== userId) return;
+			if (result.status !== 'success') {
 				setError(
 					t(result.status === 'refresh-required' ? 'avatar.error.refresh' : 'avatar.error.general'),
 				);
@@ -130,34 +136,14 @@ export const AvatarEditor = ({
 			}
 			setSource(null);
 			setCropped(null);
-			if (result.status === 'success') setConfirmed({ previous: image, value: result.avatarUrl });
-			try {
-				const session = await synchronize(result.status === 'sync-required');
-				if (!mounted.current) return;
-				if (result.status === 'success' && session && session.user?.image === result.avatarUrl)
-					setNotice('success');
-				else setNotice('sync');
-			} catch {
-				if (mounted.current) setNotice('sync');
+			if (!publish(result.avatarUrl)) return;
+		} catch {
+			if (mounted.current && generation.current === id) setError(t('avatar.error.general'));
+		} finally {
+			if (generation.current === id) {
+				locked.current = false;
+				if (mounted.current) setPending(false);
 			}
-		} catch {
-			if (mounted.current) setError(t('avatar.error.general'));
-		} finally {
-			locked.current = false;
-			if (mounted.current) setPending(false);
-		}
-	};
-	const repair = async () => {
-		if (locked.current) return;
-		locked.current = true;
-		setPending(true);
-		try {
-			await synchronize(true);
-		} catch {
-			/* Keep the explicit sync warning. */
-		} finally {
-			locked.current = false;
-			if (mounted.current) setPending(false);
 		}
 	};
 	const trigger = (toggle?: () => void) => (
@@ -169,9 +155,10 @@ export const AvatarEditor = ({
 			aria-label={t(visibleImage ? 'avatar.change' : 'avatar.add')}
 			onClick={visibleImage ? toggle : choose}
 		>
-			{visibleImage ? (
+			{visibleImage && failedImage !== visibleImage ? (
 				<Image
 					src={visibleImage}
+					onError={() => setFailedImage(visibleImage)}
 					alt={common(Translation.AVATAR)}
 					width={170}
 					height={188}
@@ -185,7 +172,7 @@ export const AvatarEditor = ({
 	);
 
 	return (
-		<div className={styles.container}>
+		<div className={variant === 'profile-edit' ? styles['edit-container'] : styles.container}>
 			<input
 				ref={fileInput}
 				type="file"
@@ -199,57 +186,150 @@ export const AvatarEditor = ({
 					if (file) void select(file);
 				}}
 			/>
-			<div
-				className={styles.frame}
-				onDragOver={(event) => event.preventDefault()}
-				onDrop={(event) => {
-					event.preventDefault();
-					const file = event.dataTransfer.files[0];
-					if (file) void select(file);
-				}}
-			>
-				{visibleImage ? (
-					<Popover
-						ariaLabel={t('avatar.menu')}
-						menuItems={[
-							{
-								renderComponent: (toggle) => (
-									<Button
-										type="button"
-										variant="tertiary"
-										disabled={pending}
-										onClick={() => {
-											toggle();
-											choose();
-										}}
-									>
-										{t('avatar.change')}
-									</Button>
-								),
-							},
-							{
-								renderComponent: (toggle) => (
-									<Button
-										type="button"
-										variant="destructive-tertiary"
-										disabled={pending}
-										onClick={() => {
-											toggle();
-											void mutate({ operation: 'delete' });
-										}}
-									>
-										{t('avatar.delete')}
-									</Button>
-								),
-							},
-						]}
+			{variant === 'profile-edit' ? (
+				<div className={styles['edit-layout']}>
+					<div className={styles['edit-preview']}>
+						<div className={styles['edit-picture']} aria-busy={pending}>
+							{visibleImage && failedImage !== visibleImage ? (
+								<Image
+									src={visibleImage}
+									onError={() => setFailedImage(visibleImage)}
+									alt={t('avatar.upload.preview')}
+									width={170}
+									height={188}
+									unoptimized
+									className={styles['edit-image']}
+								/>
+							) : (
+								<AvatarWithoutPhoto />
+							)}
+						</div>
+						{visibleImage && (
+							<Button
+								type="button"
+								fullWidth
+								variant="destructive-tertiary"
+								disabled={pending}
+								aria-busy={pending}
+								className={styles['edit-delete']}
+								onClick={() => void mutate({ operation: 'delete' })}
+							>
+								{t('avatar.upload.delete')}
+							</Button>
+						)}
+					</div>
+					<div
+						className={`${styles['upload-zone']} ${dragActive ? styles['upload-active'] : ''} ${pending ? styles['upload-disabled'] : ''}`}
+						role="button"
+						tabIndex={pending ? -1 : 0}
+						aria-label={t('avatar.choose')}
+						aria-disabled={pending}
+						aria-busy={pending}
+						onClick={choose}
+						onKeyDown={(event) => {
+							if (event.key === 'Enter' || event.key === ' ') {
+								event.preventDefault();
+								choose();
+							}
+						}}
+						onDragEnter={(event) => {
+							event.preventDefault();
+							if (!locked.current) setDragActive(true);
+						}}
+						onDragOver={(event) => {
+							event.preventDefault();
+							if (!locked.current) setDragActive(true);
+						}}
+						onDragLeave={(event) => {
+							if (
+								!(event.relatedTarget instanceof Node) ||
+								!event.currentTarget.contains(event.relatedTarget)
+							)
+								setDragActive(false);
+						}}
+						onDrop={(event) => {
+							event.preventDefault();
+							setDragActive(false);
+							const file = event.dataTransfer.files[0];
+							if (file) void select(file);
+						}}
 					>
-						{({ onToggle }) => trigger(onToggle)}
-					</Popover>
-				) : (
-					trigger()
-				)}
-			</div>
+						<Image
+							src={Gallery}
+							alt={t('avatar.upload.photo')}
+							width={32}
+							height={33}
+							unoptimized
+						/>
+						<div className={styles['upload-instruction']}>
+							<Text variant="body2" color="purple-700" isNoWrap>
+								{t('avatar.upload.link')}
+							</Text>
+							<Text variant="body2" color="black-500" isNoWrap>
+								{t('avatar.upload.text')} {t('avatar.upload.photo')}
+							</Text>
+						</div>
+						<Text variant="body1" color="black-300">
+							{t('avatar.upload.formats')} (
+							{t('avatar.upload.limit', { maxFileMBSize: MAX_AVATAR_BYTES / (1024 * 1024) })})
+						</Text>
+					</div>
+				</div>
+			) : (
+				<>
+					<div
+						className={styles.frame}
+						onDragOver={(event) => event.preventDefault()}
+						onDrop={(event) => {
+							event.preventDefault();
+							const file = event.dataTransfer.files[0];
+							if (file) void select(file);
+						}}
+					>
+						{visibleImage && failedImage !== visibleImage ? (
+							<Popover
+								ariaLabel={t('avatar.menu')}
+								menuItems={[
+									{
+										renderComponent: (toggle) => (
+											<Button
+												type="button"
+												variant="tertiary"
+												disabled={pending}
+												onClick={() => {
+													toggle();
+													choose();
+												}}
+											>
+												{t('avatar.change')}
+											</Button>
+										),
+									},
+									{
+										renderComponent: (toggle) => (
+											<Button
+												type="button"
+												variant="destructive-tertiary"
+												disabled={pending}
+												onClick={() => {
+													toggle();
+													void mutate({ operation: 'delete' });
+												}}
+											>
+												{t('avatar.delete')}
+											</Button>
+										),
+									},
+								]}
+							>
+								{({ onToggle }) => trigger(onToggle)}
+							</Popover>
+						) : (
+							trigger()
+						)}
+					</div>
+				</>
+			)}
 			{error && !source && (
 				<div role="alert">
 					<Text variant="body2" color="red-700">
@@ -257,21 +337,7 @@ export const AvatarEditor = ({
 					</Text>
 				</div>
 			)}
-			{notice && (
-				<div role="status">
-					<Text variant="body2">{t(notice === 'success' ? 'avatar.success' : 'avatar.sync')}</Text>
-					{notice === 'sync' && (
-						<Button
-							type="button"
-							variant="tertiary-link"
-							disabled={pending}
-							onClick={() => void repair()}
-						>
-							{t('avatar.reload')}
-						</Button>
-					)}
-				</div>
-			)}
+
 			<Modal
 				isOpen={source !== null}
 				onClose={close}

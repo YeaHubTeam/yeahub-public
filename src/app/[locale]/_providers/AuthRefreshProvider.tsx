@@ -5,6 +5,8 @@ import type { ReactNode } from 'react';
 
 import { SessionProvider, getSession, useSession } from 'next-auth/react';
 
+import { AvatarStateProvider } from '@/entities/profile';
+
 const RETRY_PAUSE_MS = 30_000;
 
 const RefreshSession = () => {
@@ -69,9 +71,18 @@ const RefreshSession = () => {
 	return null;
 };
 
+const AvatarStateScope = ({ children }: { children: ReactNode }) => {
+	const { data, status } = useSession();
+	return (
+		<AvatarStateProvider userId={status === 'unauthenticated' ? null : (data?.user?.id ?? null)}>
+			{children}
+		</AvatarStateProvider>
+	);
+};
+
 export const AuthRefreshProvider = ({ children }: { children: ReactNode }) => (
 	<SessionProvider refetchInterval={60} refetchWhenOffline={false}>
 		<RefreshSession />
-		{children}
+		<AvatarStateScope>{children}</AvatarStateScope>
 	</SessionProvider>
 );

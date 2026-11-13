@@ -8,7 +8,6 @@ export type AvatarActionResult =
 				| 'forbidden'
 				| 'validation-error'
 				| 'identity-mismatch'
-				| 'sync-required'
 				| 'error';
 	  };
 export type AvatarAction = (input: AvatarActionInput) => Promise<AvatarActionResult>;

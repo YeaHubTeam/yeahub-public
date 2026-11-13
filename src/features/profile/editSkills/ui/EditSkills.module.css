@@ -1,0 +1,50 @@
+.container {
+	width: 100%;
+}
+
+.section {
+	display: flex;
+	gap: 120px;
+	width: 100%;
+}
+
+.titles {
+	width: 100%;
+	max-width: 230px;
+}
+
+.control {
+	width: 100%;
+	min-width: 0;
+	max-width: 740px;
+}
+
+/* Match the source image constraints despite Next Image's inline radius. */
+.control img {
+	width: auto;
+	max-width: 35px;
+	height: auto;
+	max-height: 35px;
+	border-radius: 6px !important;
+}
+
+.skeleton {
+	padding: 0 16px;
+	width: 320px;
+	max-width: 100%;
+	min-height: 48px;
+	border: 1px solid var(--background-button);
+}
+
+@media (width < 1024px) {
+	.section {
+		flex-flow: column wrap;
+		gap: 20px;
+	}
+}
+
+@media (width < 768px) {
+	.container {
+		flex-wrap: wrap;
+	}
+}

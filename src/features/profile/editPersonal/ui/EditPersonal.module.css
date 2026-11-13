@@ -1,0 +1,40 @@
+.sections {
+	gap: 60px;
+}
+
+.section {
+	display: flex;
+	gap: 120px;
+	width: 100%;
+	max-width: 1010px;
+}
+
+.titles {
+	width: 100%;
+	max-width: 230px;
+}
+
+.controls {
+	min-width: 0;
+}
+
+.socials {
+	min-width: 0;
+}
+
+.input {
+	max-width: 100%;
+}
+
+@media (width < 1024px) {
+	.section {
+		flex-flow: column wrap;
+		gap: 20px;
+	}
+}
+
+@media (width < 768px) {
+	.sections {
+		gap: 24px;
+	}
+}

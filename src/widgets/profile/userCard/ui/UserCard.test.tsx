@@ -1,5 +1,11 @@
+import type { ReactElement, ReactNode } from 'react';
+
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render as renderBase, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { NextIntlClientProvider } from 'next-intl';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import type { OwnProfile } from '@/entities/profile';
 
@@ -8,11 +14,21 @@ import { UserCard } from '../index';
 jest.mock('@/shared/config', () => ({
 	...jest.requireActual('@/shared/config/i18n/i18nTranslations'),
 	i18Namespace: { profile: 'profile', translation: 'translation' },
+	ROUTES: { profile: { page: '/profile' } },
+	Link: jest.requireActual('@/shared/config/navigation').Link,
 	useRouter: () => ({ refresh: jest.fn() }),
 }));
-jest.mock('@/shared/config/navigation', () => ({ useRouter: () => ({ refresh: jest.fn() }) }));
+jest.mock('@/shared/config/navigation', () => ({
+	...jest.requireActual('@/shared/config/navigation'),
+	useRouter: () => ({ refresh: jest.fn() }),
+}));
+jest.mock('next/navigation', () => ({
+	usePathname: () => '/ru/profile',
+	useRouter: () => ({ refresh: jest.fn(), push: jest.fn(), replace: jest.fn() }),
+}));
 jest.mock('next-auth/react', () => ({ useSession: () => ({ update: jest.fn() }) }));
 jest.mock('next-intl', () => ({
+	...jest.requireActual('next-intl'),
 	useTranslations: (namespace: string) => {
 		const { createTranslator } = jest.requireActual('next-intl');
 		return createTranslator({
@@ -21,6 +37,13 @@ jest.mock('next-intl', () => ({
 		});
 	},
 }));
+
+const LocaleWrapper = ({ children }: { children: ReactNode }) => (
+	<NextIntlClientProvider locale="ru" messages={{}}>
+		{children}
+	</NextIntlClientProvider>
+);
+const render = (ui: ReactElement) => renderBase(ui, { wrapper: LocaleWrapper });
 
 const profile = (): OwnProfile => ({
 	id: 'user-a',
@@ -190,4 +213,64 @@ it('enables avatar controls only when a callback is explicitly provided', () => 
 	);
 	expect(screen.getByRole('button', { name: 'Добавить фотографию' })).toBeInTheDocument();
 	expect(avatarAction).not.toHaveBeenCalled();
+});
+
+it('renders exactly one localized edit link only with own-profile actions', () => {
+	const avatarAction = jest.fn();
+	const view = render(
+		<UserCard profile={profile()} specialization={specialization} avatarAction={avatarAction} />,
+	);
+	const links = screen.getAllByRole('link', { name: 'Редактирование профиля' });
+	expect(links).toHaveLength(1);
+	expect(links[0]).toHaveAttribute('href', '/ru/profile/edit#personal-information');
+	expect(links[0]).toHaveClass('edit');
+	expect(links[0].querySelector('svg')).toHaveAttribute('width', '20');
+	expect(links[0].querySelector('svg')).toHaveAttribute('height', '20');
+	expect(links[0].querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+	expect(links[0].querySelector('svg')).toHaveStyle({ color: 'var(--color-purple-700)' });
+	view.rerender(<UserCard profile={profile()} specialization={specialization} />);
+	expect(screen.queryByRole('link', { name: 'Редактирование профиля' })).toBeNull();
+	expect(avatarAction).not.toHaveBeenCalled();
+});
+it('keeps native link focus and Enter activation without calling avatar mutation', async () => {
+	const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+	const avatarAction = jest.fn();
+	render(<UserCard profile={profile()} specialization={null} avatarAction={avatarAction} />);
+	const link = screen.getByRole('link', { name: 'Редактирование профиля' });
+	const activate = jest.fn((event: Event) => event.preventDefault());
+	link.addEventListener('click', activate);
+	link.focus();
+	expect(link).toHaveFocus();
+	expect(link.tabIndex).toBe(0);
+	await user.keyboard('{Enter}');
+	expect(activate).toHaveBeenCalledTimes(1);
+	expect(link).toHaveAttribute('href', '/ru/profile/edit#personal-information');
+	expect(avatarAction).not.toHaveBeenCalled();
+});
+it('keeps passive images in their original fixed frame and preserves the placeholder', () => {
+	const view = render(<UserCard profile={profile()} specialization={null} />);
+	const image = screen.getByRole('img', { name: 'Аватар' });
+	expect(image).toHaveAttribute('width', '170');
+	expect(image).toHaveAttribute('height', '188');
+	expect(image).toHaveClass('image');
+	expect(image.parentElement).toHaveClass('avatar');
+	view.rerender(<UserCard profile={{ ...profile(), avatarUrl: null }} specialization={null} />);
+	expect(screen.getByTestId('AvatarWithoutPhoto_Wrapper').parentElement).toHaveClass('avatar');
+});
+
+it('retains the local frame, cover sizing, mobile composition and visible focus contract', () => {
+	const css = readFileSync(
+		join(process.cwd(), 'src/widgets/profile/userCard/ui/UserCard.module.css'),
+		'utf8',
+	);
+	expect(css).toMatch(
+		/\.avatar\s*\{[^}]*width: 170px;[^}]*height: 188px;[^}]*overflow: hidden;[^}]*border-radius: 20px;/,
+	);
+	expect(css).toMatch(
+		/\.image\s*\{[^}]*display: block;[^}]*width: 100%;[^}]*height: 100%;[^}]*object-fit: cover;/,
+	);
+	expect(css).toMatch(/\.edit:focus-visible\s*\{[^}]*outline: 2px solid/);
+	expect(css).toContain('@media (width <= 768px)');
+	expect(css).toMatch(/\.user-data\s*\{[^}]*flex-direction: column;[^}]*order: 2;/);
+	expect(css).toMatch(/\.edit\s*\{[^}]*order: 1;/);
 });

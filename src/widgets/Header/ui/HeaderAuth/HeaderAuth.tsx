@@ -1,12 +1,14 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 
 import Image from 'next/image';
 
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
+import { useAvatarState } from '@/entities/profile';
 import { Translation, i18Namespace } from '@/shared/config';
 import { AvatarWithoutPhoto } from '@/shared/ui/AvatarWithoutPhoto';
 import { Text } from '@/shared/ui/Text';
@@ -17,6 +19,10 @@ import { UserDropdown } from './UserDropdown';
 
 export const HeaderAuth = ({ desktopGuest }: { desktopGuest: ReactNode }) => {
 	const { data: session, status } = useSession();
+	const { value } = useAvatarState();
+	const [failed, setFailed] = useState<{ userId: string; url: string } | null>(null);
+	const image =
+		value && value.userId === session?.user?.id ? value.avatarUrl : session?.user?.image;
 	const t = useTranslations(i18Namespace.translation);
 
 	if (status === 'authenticated' && session?.user) {
@@ -26,7 +32,7 @@ export const HeaderAuth = ({ desktopGuest }: { desktopGuest: ReactNode }) => {
 		return (
 			<>
 				<div className={styles['header-auth-desktop']}>
-					<UserDropdown key={user.id} username={username} image={user.image} email={user.email} />
+					<UserDropdown key={user.id} username={username} image={image} email={user.email} />
 				</div>
 				<div className={styles['header-auth-mobile']}>
 					<div className={styles.user}>
@@ -36,9 +42,10 @@ export const HeaderAuth = ({ desktopGuest }: { desktopGuest: ReactNode }) => {
 							</Text>
 						)}
 						<div className={styles.avatar}>
-							{user.image ? (
+							{image && !(failed?.userId === user.id && failed?.url === image) ? (
 								<Image
-									src={user.image}
+									src={image}
+									onError={() => setFailed({ userId: user.id!, url: image })}
 									alt={t(Translation.AVATAR)}
 									width={40}
 									height={40}

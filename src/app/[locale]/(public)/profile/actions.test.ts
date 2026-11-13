@@ -136,7 +136,7 @@ it('deletes without requiring image bytes', async () => {
 	await changeOwnAvatar({ operation: 'delete' });
 	expect(mutation).toHaveBeenCalledWith({ operation: 'delete' });
 });
-it.each(['error', 'sync-required', 'refresh-required', 'unauthenticated'] as const)(
+it.each(['error', 'refresh-required', 'unauthenticated'] as const)(
 	'preserves safe status %s without retries',
 	async (status) => {
 		mutation.mockResolvedValue({ status });

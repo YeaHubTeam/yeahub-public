@@ -11,7 +11,10 @@
 	background-color: var(--color-purple-100);
 }
 
+/* Anchor to the frame, not the auto-height wrapper introduced by Popover. */
 .trigger {
+	position: absolute;
+	inset: 0;
 	display: flex;
 	padding: 0;
 	width: 100%;
@@ -26,6 +29,7 @@
 }
 
 .image {
+	display: block;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
@@ -84,5 +88,98 @@
 
 	.frame {
 		height: auto;
+	}
+}
+
+.edit-container {
+	width: 100%;
+}
+
+.edit-layout {
+	display: flex;
+	gap: 40px;
+}
+
+.edit-preview {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	flex-direction: column;
+	gap: 8px;
+	width: 170px;
+	min-height: 188px;
+}
+
+.edit-picture {
+	height: 188px;
+}
+
+.edit-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 20px;
+	object-fit: cover;
+}
+
+.edit-delete {
+	position: absolute;
+	right: 50%;
+	bottom: -40px;
+	background: none;
+	transform: translateX(50%);
+}
+
+.upload-zone {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	padding: 0 40px;
+	width: 100%;
+	min-height: 188px;
+	border: 2px dashed var(--color-purple-400);
+	border-radius: 16px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.upload-zone:focus-visible {
+	box-shadow: var(--focus-shadow);
+	outline: none;
+}
+
+.upload-active {
+	background-color: var(--background-progress-bar);
+}
+
+.upload-disabled {
+	pointer-events: none;
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.upload-instruction {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
+}
+
+@media (width < 768px) {
+	.edit-layout {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.edit-preview {
+		width: 100%;
+	}
+
+	.edit-delete {
+		align-self: center;
 	}
 }

@@ -23,6 +23,7 @@ interface UserDropdownProps {
 }
 
 export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
+	const [failedImage, setFailedImage] = useState<string | null>(null);
 	const t = useTranslations(i18Namespace.header);
 	const tCommon = useTranslations(i18Namespace.translation);
 	const { isMobile, isTablet } = useScreenSize();
@@ -50,9 +51,10 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 	if (isMobile || isTablet) return null;
 
 	const avatar = (size: number) =>
-		image ? (
+		image && failedImage !== image ? (
 			<Image
 				src={image}
+				onError={() => setFailedImage(image)}
 				alt={tCommon(Translation.AVATAR)}
 				width={size}
 				height={size}

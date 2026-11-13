@@ -6,7 +6,7 @@ import { deflateSync } from 'node:zlib';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 
-import { auth, getOwnProfile, handlers, mutateOwnAvatar } from './auth';
+import { auth, getOwnProfile, handlers, mutateOwnAvatar, mutateOwnProfile } from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
@@ -833,18 +833,6 @@ describe('authorized avatar mutation and writable session', () => {
 		expectedProfileFetchCalls++;
 		jest.mocked(globalThis.fetch).mockResolvedValue(new Response(JSON.stringify(body), { status }));
 	};
-	const syncReply = (image: string | null) => {
-		expectedProfileCalls++;
-		profile.mockResolvedValue({ id: 'user-id', avatarUrl: image });
-	};
-	const savedCookie = () => {
-		const cookie = cookieWrites
-			.filter(({ value }) => value)
-			.map(({ name, value }) => `${name}=${value}`)
-			.join('; ');
-		issuedCookies.push(cookie);
-		return cookie;
-	};
 
 	it.each([0, 1024 * 1024 + 1, 5 * 1024 * 1024])(
 		'accepts canonical avatar base64 size %s with the real mutator',
@@ -852,7 +840,6 @@ describe('authorized avatar mutation and writable session', () => {
 			await prepare();
 			const avatarImage = sizedPng(size);
 			patchReply({ id: 'user-id', avatarUrl });
-			syncReply(avatarUrl);
 			await expect(mutateOwnAvatar({ operation: 'set', avatarImage })).resolves.toEqual({
 				status: 'success',
 				avatarUrl,
@@ -896,7 +883,7 @@ describe('authorized avatar mutation and writable session', () => {
 		});
 	});
 
-	it.each(['success', 'error', 'sync-required'] as const)(
+	it.each(['success', 'error'] as const)(
 		'passes through the real Action and real mutator: %s',
 		async (status) => {
 			const { changeOwnAvatar } = await import('./app/[locale]/(public)/profile/actions');
@@ -904,8 +891,6 @@ describe('authorized avatar mutation and writable session', () => {
 			await prepare();
 			const avatarImage = sizedPng(status === 'success' ? 5 * 1024 * 1024 : 0);
 			patchReply({ id: 'user-id', avatarUrl }, status === 'error' ? 500 : 200);
-			if (status !== 'error') syncReply(avatarUrl);
-			writableCookies = status !== 'sync-required';
 			const result = await changeOwnAvatar({ operation: 'set', avatarImage });
 			expect(result).toEqual(status === 'success' ? { status, avatarUrl } : { status });
 			expect(globalThis.fetch).toHaveBeenCalledTimes(1);
@@ -920,13 +905,12 @@ describe('authorized avatar mutation and writable session', () => {
 	);
 
 	it.each(['set', 'delete'] as const)(
-		'persists %s through real Auth.js cookie encoding',
+		'returns confirmed %s without reading or writing Auth.js session',
 		async (operation) => {
 			const original = await prepare();
 			const previous = await decodeSession(original);
 			const nextImage = operation === 'set' ? avatarUrl : '';
 			patchReply({ id: 'user-id', avatarUrl: nextImage, email: 'ignored@example.invalid' });
-			syncReply(nextImage);
 			const result = await mutateOwnAvatar(
 				operation === 'set' ? { operation, avatarImage: image } : { operation },
 			);
@@ -945,17 +929,12 @@ describe('authorized avatar mutation and writable session', () => {
 					body: JSON.stringify(operation === 'set' ? { avatarImage: image } : { avatarUrl: '' }),
 				}),
 			);
-			expect(profile).toHaveBeenCalledWith(token(now + 3600));
-			expect(cookieWrites.length).toBeGreaterThan(0);
-			const cookie = savedCookie();
-			const decoded = await decodeSession(cookie);
-			expect(decoded?.backendSession).toEqual({
-				...(previous?.backendSession as object),
-				avatarUrl: nextImage || null,
-			});
-			expect(decoded?.exp).toBe(previous?.exp);
-			const restored = await restore(cookie);
-			expect(restored?.user?.image).toBe(nextImage || null);
+			expect(profile).not.toHaveBeenCalled();
+			expect(cookieWrites).toHaveLength(0);
+			const decoded = await decodeSession(original);
+			expect(decoded?.backendSession).toEqual(previous?.backendSession);
+			expect((await restore(original))?.user?.image).toBe('https://images.example/avatar');
+
 			expect(JSON.stringify(result)).not.toMatch(
 				/accessToken|refreshToken|backendSession|synthetic|ignored/,
 			);
@@ -965,7 +944,6 @@ describe('authorized avatar mutation and writable session', () => {
 
 	it('does not trust client avatar fields, even with the synchronization signal', async () => {
 		const cookie = await prepare();
-		syncReply(avatarUrl);
 		const response = await updateSession(cookie, {
 			syncAvatar: true,
 			image: 'https://attacker.invalid',
@@ -974,7 +952,7 @@ describe('authorized avatar mutation and writable session', () => {
 		const decoded = await decodeSession(cookiesFrom(response));
 		expect(decoded?.backendSession).toMatchObject({
 			userId: 'user-id',
-			avatarUrl,
+			avatarUrl: 'https://images.example/avatar',
 			sessionExpiresAt: now + 7200,
 		});
 		expect(JSON.stringify(await response.json())).not.toContain('attacker');
@@ -1029,7 +1007,6 @@ describe('authorized avatar mutation and writable session', () => {
 		});
 		expect(cookieWrites).toHaveLength(0);
 		patchReply({ id: 'user-id', avatarUrl });
-		syncReply(avatarUrl);
 		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
 			status: 'success',
 			avatarUrl,
@@ -1057,25 +1034,254 @@ describe('authorized avatar mutation and writable session', () => {
 		});
 	});
 
-	it('reports a committed mutation that could not persist the cookie', async () => {
+	it('does not require writable cookies to confirm a backend mutation', async () => {
 		await prepare();
 		patchReply({ id: 'user-id', avatarUrl });
-		syncReply(avatarUrl);
 		writableCookies = false;
 		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
-			status: 'sync-required',
+			status: 'success',
+			avatarUrl,
 		});
 		expect(cookieWrites).toHaveLength(0);
 	});
+});
 
-	it('does not accept another identity during server-side synchronization', async () => {
-		const cookie = await prepare();
-		patchReply({ id: 'user-id', avatarUrl });
-		expectedProfileCalls++;
-		profile.mockResolvedValue({ id: 'other', avatarUrl });
-		expect(await mutateOwnAvatar({ operation: 'set', avatarImage: image })).toEqual({
-			status: 'sync-required',
-		});
-		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
+describe('authorized profile editing and persisted username', () => {
+	const input = { username: 'New name', city: '', socialNetwork: [], profileSkills: [1] };
+	const ownProfile = (username = 'sample') => ({
+		id: 'user-id',
+		username,
+		email: 'test@example.invalid',
+		isVerified: true,
+		avatarUrl: 'https://images.example/backend-different-avatar',
+		birthday: null,
+		country: null,
+		city: '',
+		userRoles: [],
+		profiles: [
+			{
+				id: 'profile-id',
+				isActive: true,
+				specializationId: 1,
+				description: 'Old',
+				socialNetwork: [],
+				profileSkills: [{ id: 1, title: 'JS' }],
+			},
+		],
 	});
+	const prepare = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	const replies = () => {
+		expectedProfileFetchCalls = 4;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(ownProfile())))
+			.mockResolvedValueOnce(
+				new Response(
+					JSON.stringify({ id: 'profile-id', socialNetwork: [], profileSkills: [{ id: 1 }] }),
+				),
+			)
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ id: 'user-id', username: input.username, city: '' })),
+			)
+			.mockResolvedValueOnce(new Response(JSON.stringify(ownProfile(input.username))));
+	};
+	const savedCookie = () => {
+		const cookie = cookieWrites
+			.filter(({ value }) => value)
+			.map(({ name, value }) => `${name}=${value}`)
+			.join('; ');
+		issuedCookies.push(cookie);
+		return cookie;
+	};
+	it('mutates through real server code and writes an Auth.js cookie containing only the confirmed new username', async () => {
+		const cookie = await prepare();
+		const before = (await decodeSession(cookie))!.backendSession;
+		replies();
+		expect(await mutateOwnProfile(input)).toEqual({ status: 'success' });
+		expect(cookieWrites.length).toBeGreaterThan(0);
+		const persisted = savedCookie();
+		expect((await decodeSession(persisted))!.backendSession).toEqual({
+			...(before as object),
+			username: input.username,
+		});
+		expect(await restore(persisted)).toMatchObject({
+			user: { id: 'user-id', username: input.username, image: 'https://images.example/avatar' },
+		});
+		expect(JSON.stringify(await restore(persisted))).not.toMatch(
+			/accessToken|refreshToken|backendSession|access_token/,
+		);
+		expect(
+			jest.mocked(globalThis.fetch).mock.calls.filter(([, options]) => options?.method === 'PATCH'),
+		).toHaveLength(1);
+	});
+	it.each(['guest', 'access', 'refresh', 'absolute', 'identity'])(
+		'refuses %s without any backend mutation',
+		async (outcome) => {
+			if (outcome !== 'guest') {
+				const cookie = await prepare();
+				if (outcome === 'identity' || outcome === 'absolute' || outcome === 'refresh') {
+					const decoded = (await decodeSession(cookie))!;
+					const backendSession = decoded.backendSession as Record<string, unknown>;
+					const jwt = await encode({
+						secret: process.env.AUTH_SECRET!,
+						salt: sessionCookieName,
+						maxAge: 10000,
+						token: {
+							...decoded,
+							...(outcome === 'identity' ? { sub: 'other' } : {}),
+							backendSession: {
+								...backendSession,
+								...(outcome === 'absolute'
+									? { sessionExpiresAt: now - 1 }
+									: outcome === 'refresh'
+										? { refreshExpiresAt: now - 1 }
+										: {}),
+							},
+						},
+					});
+					requestHeaders.set('cookie', `${sessionCookieName}=${jwt}`);
+				} else jest.setSystemTime((now + 3601) * 1000);
+			}
+			expect(await mutateOwnProfile(input)).toEqual({ status: 'unauthorized' });
+			expect(cookieWrites).toHaveLength(0);
+		},
+	);
+	it.each(['userId', 'profileId'])(
+		'rejects client identity field %s before reading the backend',
+		async (field) => {
+			await prepare();
+			expect(await mutateOwnProfile({ ...input, [field]: 'other' })).toEqual({
+				status: 'validation-error',
+			});
+		},
+	);
+	it('returns sync-required in a read-only cookie context without repeating PUT or PATCH', async () => {
+		await prepare();
+		replies();
+		writableCookies = false;
+		expect(await mutateOwnProfile(input)).toEqual({ status: 'sync-required' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('returns sync-required when the backend re-read cannot confirm the new username', async () => {
+		await prepare();
+		replies();
+		jest
+			.mocked(globalThis.fetch)
+			.mockReset()
+			.mockResolvedValueOnce(new Response(JSON.stringify(ownProfile())))
+			.mockResolvedValueOnce(
+				new Response(
+					JSON.stringify({ id: 'profile-id', socialNetwork: [], profileSkills: [{ id: 1 }] }),
+				),
+			)
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ id: 'user-id', username: input.username, city: '' })),
+			)
+			.mockRejectedValueOnce(new Error('Private network failure'));
+		expect(await mutateOwnProfile(input)).toEqual({ status: 'sync-required' });
+		expect((await decodeSession(savedCookie()))!.backendSession).toMatchObject({
+			username: 'sample',
+		});
+	});
+	it('keeps the original cookie and does not synchronize after a failed PATCH', async () => {
+		await prepare();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(ownProfile())))
+			.mockResolvedValueOnce(
+				new Response(
+					JSON.stringify({ id: 'profile-id', socialNetwork: [], profileSkills: [{ id: 1 }] }),
+				),
+			)
+			.mockResolvedValueOnce(new Response('{}', { status: 500 }));
+		expect(await mutateOwnProfile(input)).toEqual({
+			status: 'partial-success',
+			profile: 'confirmed',
+			user: 'unconfirmed',
+			reason: 'error',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('ignores client username/name/email/image even when requesting verified profile synchronization', async () => {
+		const cookie = await prepare();
+		const before = (await decodeSession(cookie))!.backendSession;
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(ownProfile('Verified name'))));
+		const response = await updateSession(cookie, {
+			syncProfile: true,
+			name: 'attacker',
+			username: 'attacker',
+			user: { id: 'other', username: 'attacker', email: 'attacker', image: 'attacker' },
+		});
+		const persisted = cookiesFrom(response);
+		expect((await decodeSession(persisted))!.backendSession).toEqual({
+			...(before as object),
+			username: 'Verified name',
+		});
+	});
+	it('runs the real Server Action, mutator, backend transport and writable Auth.js update', async () => {
+		await prepare();
+		replies();
+		const { saveProfile } = await import('./app/[locale]/(public)/profile/edit/actions');
+		expect(await saveProfile(input)).toEqual({ status: 'success' });
+		expect((await decodeSession(savedCookie()))!.backendSession).toMatchObject({
+			username: input.username,
+		});
+	});
+	it('validates oversized UTF-8 before any backend call through the real mutator', async () => {
+		await prepare();
+		expect(await mutateOwnProfile({ ...input, description: 'я'.repeat(32_768) + 'a' })).toEqual({
+			status: 'validation-error',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('refuses another identity during username synchronization', async () => {
+		const cookie = await prepare();
+		const before = (await decodeSession(cookie))!.backendSession;
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ ...ownProfile('Attacker'), id: 'other' })),
+			);
+		const result = await updateSession(cookie, { syncProfile: true });
+		expect((await decodeSession(cookiesFrom(result)))!.backendSession).toEqual(before);
+	});
+});
+
+describe('avatar mutation is independent of session synchronization', () => {
+	it.each([null, '', 'https://images.example/confirmed.png'])(
+		'returns the checked backend avatar %# with no readback or cookie writes',
+		async (avatarUrl) => {
+			const original = await signIn();
+			requestHeaders = new Headers({
+				host: 'site.example',
+				'x-forwarded-proto': 'https',
+				cookie: original,
+			});
+			writableCookies = false;
+			expectedProfileFetchCalls = 1;
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValue(
+					new Response(JSON.stringify({ id: 'user-id', avatarUrl }), { status: 200 }),
+				);
+			const result = await mutateOwnAvatar(
+				avatarUrl
+					? { operation: 'set', avatarImage: Buffer.from('synthetic').toString('base64') }
+					: { operation: 'delete' },
+			);
+			expect(result).toEqual({ status: 'success', avatarUrl: avatarUrl || null });
+			expect(profile).not.toHaveBeenCalled();
+			expect(cookieWrites).toHaveLength(0);
+			expect((await restore(original))?.user?.image).toBe('https://images.example/avatar');
+		},
+	);
 });

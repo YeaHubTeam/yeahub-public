@@ -47,3 +47,16 @@ it('keeps unimplemented membership/settings disabled and preserves logout', asyn
 	expect(signOut).toHaveBeenCalledWith({ redirect: false });
 	expect(push).not.toHaveBeenCalled();
 });
+
+it('uses a fallback for failed images and allows a different URL', () => {
+	const view = render(<UserDropdown username="Name" image="https://images.example/old" />);
+	fireEvent.error(screen.getByRole('img', { name: 'Аватар' }));
+	expect(screen.queryByRole('img', { name: 'Аватар' })).toBeNull();
+	view.rerender(<UserDropdown username="Name" image="https://images.example/new" />);
+	expect(screen.getByRole('img', { name: 'Аватар' })).toHaveAttribute(
+		'src',
+		'https://images.example/new',
+	);
+	view.rerender(<UserDropdown username="Name" image={null} />);
+	expect(screen.queryByRole('img', { name: 'Аватар' })).toBeNull();
+});
