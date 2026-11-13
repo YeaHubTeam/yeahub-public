@@ -1,3 +1,4 @@
+import type { HeaderProfileResult } from '@/entities/profile';
 // import { LanguageSwitcher } from '@/features/switch-language';
 import { TariffsButton } from '@/entities/subscription';
 import { AppLogo } from '@/shared/ui/AppLogo';
@@ -9,7 +10,11 @@ import { HeaderNav } from '../HeaderNav/HeaderNav';
 import styles from './Header.module.css';
 import { HeaderClient } from './HeaderClient';
 
-export const Header = () => {
+export const Header = ({
+	loadHeaderProfileAction,
+}: {
+	loadHeaderProfileAction: () => Promise<HeaderProfileResult>;
+}) => {
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'SiteNavigationElement',
@@ -50,6 +55,7 @@ export const Header = () => {
 				<Flex align="center" gap="16">
 					{/*<LanguageSwitcher />*/}
 					<HeaderAuth
+						loadHeaderProfileAction={loadHeaderProfileAction}
 						desktopGuest={
 							<Flex align="center" gap="16">
 								<TariffsButton />

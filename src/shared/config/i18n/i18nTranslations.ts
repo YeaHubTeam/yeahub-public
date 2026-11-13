@@ -1527,6 +1527,7 @@ export enum Vacancies {
 
 export enum Profile {
 	EDIT_TITLE = 'edit.title',
+	EDIT_BREADCRUMB_PROFILE = 'edit.breadcrumb.profile',
 	EDIT_TABS_PERSONAL = 'edit.tabs.personal',
 	EDIT_TABS_ABOUT = 'edit.tabs.about',
 	EDIT_TABS_SKILLS = 'edit.tabs.skills',

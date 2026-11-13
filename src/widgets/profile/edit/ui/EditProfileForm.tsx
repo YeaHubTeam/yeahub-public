@@ -14,9 +14,10 @@ import { EditAbout } from '@/features/profile/editAbout';
 import { EditPersonal } from '@/features/profile/editPersonal';
 import { EditSkills } from '@/features/profile/editSkills';
 import type { SkillOption } from '@/features/profile/editSkills';
-import { ROUTES, i18Namespace, useRouter } from '@/shared/config';
+import { Link, ROUTES, i18Namespace, useRouter } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
+import { Icon } from '@/shared/ui/Icon';
 import { Text } from '@/shared/ui/Text';
 
 import {
@@ -248,91 +249,117 @@ export const EditProfileForm = ({
 	};
 	const labels = [t('edit.tabs.personal'), t('edit.tabs.about'), t('edit.tabs.skills')];
 	return (
-		<Card>
-			<Text variant="body5-strong" isMainTitle className={styles.title}>
-				{t('edit.title')}
-			</Text>
-			<div className={styles.tabs}>
-				<div role="tablist" aria-label={t('edit.title')} className={styles.list}>
-					{tabs.map((id, index) => (
-						<button
-							key={id}
-							id={`tab-${id}`}
-							ref={(element) => {
-								tabButtons.current[index] = element;
-							}}
-							type="button"
-							role="tab"
-							aria-selected={id === tab}
-							aria-controls={`panel-${id}`}
-							tabIndex={id === tab ? 0 : -1}
-							className={styles.tab}
-							onClick={() => select(id)}
-							onKeyDown={(event) => keyboard(event, index)}
-						>
-							<Text variant="body6" color={id === tab ? 'purple-700' : 'black-500'}>
-								{labels[index]}
+		<>
+			<nav aria-label={t('edit.title')}>
+				<ol className={styles.breadcrumbs}>
+					<li className={styles.crumb}>
+						<Link href={ROUTES.profile.page} className={styles['crumb-link']}>
+							<Icon
+								icon="altArrowRight"
+								size={20}
+								color="black-700"
+								className={styles['crumb-back']}
+								aria-hidden="true"
+							/>
+							<Text variant="body3" color="black-700" className={styles['crumb-text']}>
+								{t('edit.breadcrumb.profile')}
 							</Text>
-						</button>
-					))}
-				</div>
-			</div>
-			<FormProvider {...methods}>
-				<form
-					onSubmit={handleSubmit}
-					onKeyDown={(event) => {
-						if (!mounted && event.key === 'Enter') event.preventDefault();
-					}}
-					noValidate
-					aria-busy={pending}
-				>
-					<fieldset disabled={!mounted} className={styles.fields}>
-						{tabs.map((id) => (
-							<div
+						</Link>
+					</li>
+					<li className={`${styles.crumb} ${styles['crumb-current']}`} aria-current="page">
+						<Icon icon="altArrowRight" size={20} color="purple-700" aria-hidden="true" />
+						<Text variant="body3" color="purple-700" className={styles['crumb-text']}>
+							{t('edit.title')}
+						</Text>
+					</li>
+				</ol>
+			</nav>
+			<Card>
+				<Text variant="body5-strong" isMainTitle className={styles.title}>
+					{t('edit.title')}
+				</Text>
+				<div className={styles.tabs}>
+					<div role="tablist" aria-label={t('edit.title')} className={styles.list}>
+						{tabs.map((id, index) => (
+							<button
 								key={id}
-								id={`panel-${id}`}
-								role="tabpanel"
-								aria-labelledby={`tab-${id}`}
-								hidden={id !== tab}
+								id={`tab-${id}`}
+								ref={(element) => {
+									tabButtons.current[index] = element;
+								}}
+								type="button"
+								role="tab"
+								aria-selected={id === tab}
+								aria-controls={`panel-${id}`}
+								tabIndex={id === tab ? 0 : -1}
+								className={styles.tab}
+								onClick={() => select(id)}
+								onKeyDown={(event) => keyboard(event, index)}
 							>
-								{id === tab && id === 'personal-information' && (
-									<EditPersonal
-										profile={profile}
-										specialization={specialization}
-										avatar={
-											<AvatarEditor
-												variant="profile-edit"
-												image={profile.avatarUrl}
-												avatarAction={avatarAction}
-											/>
-										}
-									/>
-								)}
-								{id === tab && id === 'about-me' && <EditAbout />}
-								{id === tab && id === 'skills' && (
-									<EditSkills
-										initialSkills={profile.activeProfile.profileSkills}
-										options={skills}
-										error={skillsError}
-									/>
-								)}
-							</div>
+								<Text variant="body4" color={id === tab ? 'purple-700' : 'black-500'}>
+									{labels[index]}
+								</Text>
+							</button>
 						))}
-					</fieldset>
-					{message && (
-						<div role={success ? 'status' : 'alert'} className={styles.message}>
-							<Text variant="body3" color={success ? 'black-800' : 'red-700'}>
-								{message}
-							</Text>
-						</div>
-					)}
-					<div className={styles.save}>
-						<Button type="submit" disabled={!mounted || pending || success} aria-busy={pending}>
-							{t('edit.save.button')}
-						</Button>
 					</div>
-				</form>
-			</FormProvider>
-		</Card>
+				</div>
+				<FormProvider {...methods}>
+					<form
+						onSubmit={handleSubmit}
+						onKeyDown={(event) => {
+							if (!mounted && event.key === 'Enter') event.preventDefault();
+						}}
+						noValidate
+						aria-busy={pending}
+					>
+						<fieldset disabled={!mounted} className={styles.fields}>
+							{tabs.map((id) => (
+								<div
+									key={id}
+									id={`panel-${id}`}
+									role="tabpanel"
+									aria-labelledby={`tab-${id}`}
+									hidden={id !== tab}
+								>
+									{id === tab && id === 'personal-information' && (
+										<EditPersonal
+											profile={profile}
+											specialization={specialization}
+											avatar={
+												<AvatarEditor
+													variant="profile-edit"
+													image={profile.avatarUrl}
+													avatarAction={avatarAction}
+												/>
+											}
+										/>
+									)}
+									{id === tab && id === 'about-me' && <EditAbout />}
+									{id === tab && id === 'skills' && (
+										<EditSkills
+											initialSkills={profile.activeProfile.profileSkills}
+											options={skills}
+											error={skillsError}
+										/>
+									)}
+								</div>
+							))}
+						</fieldset>
+						{message && (
+							<div role={success ? 'status' : 'alert'} className={styles.message}>
+								<Text variant="body3" color={success ? 'black-800' : 'red-700'}>
+									{message}
+								</Text>
+							</div>
+						)}
+						<div className={styles.save}>
+							<Button type="submit" disabled={!mounted || pending || success} aria-busy={pending}>
+								{t('edit.save.button')}
+							</Button>
+						</div>
+					</form>
+				</FormProvider>
+			</Card>
+		</>
 	);
 };

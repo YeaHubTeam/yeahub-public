@@ -6,7 +6,14 @@ import { deflateSync } from 'node:zlib';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 
-import { auth, getOwnProfile, handlers, mutateOwnAvatar, mutateOwnProfile } from './auth';
+import {
+	auth,
+	getHeaderProfile,
+	getOwnProfile,
+	handlers,
+	mutateOwnAvatar,
+	mutateOwnProfile,
+} from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
@@ -1284,4 +1291,81 @@ describe('avatar mutation is independent of session synchronization', () => {
 			expect((await restore(original))?.user?.image).toBe('https://images.example/avatar');
 		},
 	);
+});
+
+describe('read-only Header projection using existing session credentials', () => {
+	const fresh = {
+		id: 'user-id',
+		username: 'Backend name',
+		email: null,
+		avatarUrl: 'https://images.example/fresh',
+	};
+	it('reads current identity, does not require profiles, and leaves encrypted session and cookies unchanged', async () => {
+		const cookie = await signIn();
+		const original = await decodeSession(cookie);
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		writableCookies = false;
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(
+			new Response(JSON.stringify({ ...fresh, access_token: 'synthetic-hidden' }), {
+				status: 200,
+			}),
+		);
+		expect(getHeaderProfile.length).toBe(0);
+		expect(await getHeaderProfile()).toEqual({
+			status: 'success',
+			profile: {
+				userId: 'user-id',
+				username: 'Backend name',
+				email: null,
+				avatarUrl: fresh.avatarUrl,
+			},
+		});
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
+	});
+	it('does not request a profile for guests', async () => {
+		expect(await getHeaderProfile()).toEqual({ status: 'unauthenticated' });
+	});
+	it.each([3601, 7201])('does not use expired credentials at +%s', async (seconds) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		jest.setSystemTime((now + seconds) * 1000);
+		expect(await getHeaderProfile()).toEqual({
+			status: seconds < 7200 ? 'refresh-required' : 'unauthenticated',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects an expired absolute deadline with otherwise live credentials', async () => {
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+			throw new Error('Synthetic session missing');
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		expect(await getHeaderProfile()).toEqual({ status: 'unauthenticated' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([401, 403])('preserves HTTP %s without changing session', async (status) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response('{}', { status }));
+		expect(await getHeaderProfile()).toEqual({
+			status: status === 401 ? 'unauthenticated' : 'forbidden',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
 });

@@ -7,3 +7,5 @@ export type {
 export type { ProfileEditInput, ProfileEditResult } from './model/types/profileEdit';
 
 export { AvatarStateProvider, useAvatarState } from './model/AvatarState';
+
+export type { HeaderProfile, HeaderProfileResult } from './model/types/profile';

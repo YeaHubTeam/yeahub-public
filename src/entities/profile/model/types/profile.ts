@@ -28,3 +28,15 @@ export type OwnProfileResult =
 				| 'identity-mismatch'
 				| 'error';
 	  };
+
+export type HeaderProfile = {
+	userId: string;
+	avatarUrl: string | null;
+	username: string;
+	email: string | null;
+};
+export type HeaderProfileResult =
+	| { status: 'success'; profile: HeaderProfile }
+	| {
+			status: 'unauthenticated' | 'refresh-required' | 'forbidden' | 'identity-mismatch' | 'error';
+	  };

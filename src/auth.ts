@@ -8,8 +8,13 @@ import Credentials from 'next-auth/providers/credentials';
 import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
-import { parseProfileEditInput, readOwnProfile, saveOwnProfile } from '@/entities/profile/server';
-import type { ProfileEditResult } from '@/entities/profile/server';
+import {
+	parseProfileEditInput,
+	readHeaderProfile,
+	readOwnProfile,
+	saveOwnProfile,
+} from '@/entities/profile/server';
+import type { HeaderProfileResult, ProfileEditResult } from '@/entities/profile/server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
 
 import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
@@ -303,6 +308,16 @@ export const getOwnProfile = async () => {
 	} catch {
 		return { status: 'error' } as const;
 	}
+};
+
+// Read-only composition: reuse credential checks without exposing or changing the session.
+export const getHeaderProfile = async (): Promise<HeaderProfileResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	return readHeaderProfile(
+		{ userId: session.data.userId, accessToken: session.data.accessToken },
+		getAuthBackendConfig(),
+	);
 };
 
 export type AvatarOperation = { operation: 'set'; avatarImage: string } | { operation: 'delete' };

@@ -1,8 +1,14 @@
+import type { ReactElement } from 'react';
+
 import '@testing-library/jest-dom';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render as rtlRender, screen, waitFor } from '@testing-library/react';
 import { Editor } from '@tiptap/core';
+import { NextIntlClientProvider } from 'next-intl';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 
+import { AvatarStateProvider } from '@/entities/profile';
 import type { OwnProfile, ProfileEditResult } from '@/entities/profile';
 
 import { EditProfileForm } from '../index';
@@ -10,10 +16,19 @@ import type { EditProfileFormProps } from '../index';
 import { createEditDefaults, toEditPayload } from '../lib/editProfileMapper';
 import type { SavedProfileSnapshot } from '../lib/editProfileMapper';
 
+const render = (ui: ReactElement) =>
+	rtlRender(ui, {
+		wrapper: ({ children }) => (
+			<NextIntlClientProvider locale="ru" messages={{}}>
+				<AvatarStateProvider userId="user">{children}</AvatarStateProvider>
+			</NextIntlClientProvider>
+		),
+	});
 const replace = jest.fn();
 const refresh = jest.fn();
 const update = jest.fn();
 jest.mock('@/shared/config', () => ({
+	Link: jest.requireActual('@/shared/config').Link,
 	i18Namespace: { profile: 'profile', translation: 'translation' },
 	ROUTES: { profile: { page: '/profile' }, auth: { login: { page: '/auth/login' } } },
 	useRouter: () => ({ replace, refresh }),
@@ -21,6 +36,10 @@ jest.mock('@/shared/config', () => ({
 	redirect: jest.fn(() => {
 		throw new Error('REDIRECT');
 	}),
+}));
+jest.mock('next/navigation', () => ({
+	usePathname: () => '/ru/profile/edit',
+	useRouter: () => ({ push: jest.fn(), replace: jest.fn(), refresh: jest.fn() }),
 }));
 jest.mock('next-auth/react', () => ({
 	useSession: () => ({ update, status: 'authenticated', data: { user: { id: 'user' } } }),
@@ -320,7 +339,10 @@ it('saves avatar separately through the real slot and preserves draft after the 
 	change();
 	fireEvent.click(screen.getByRole('button', { name: 'Удалить фото' }));
 	await waitFor(() => expect(p.avatarAction).toHaveBeenCalledWith({ operation: 'delete' }));
-	await waitFor(() => expect(refresh).toHaveBeenCalled());
+	await waitFor(() =>
+		expect(screen.getAllByTestId('AvatarWithoutPhoto_Wrapper').length).toBeGreaterThan(0),
+	);
+	expect(refresh).not.toHaveBeenCalled();
 	view.rerender(<EditProfileForm {...p} profile={{ ...profile, avatarUrl: null }} />);
 	expect(screen.getByLabelText('Никнейм')).toHaveValue('Changed');
 	expect(p.saveAction).not.toHaveBeenCalled();
@@ -354,11 +376,45 @@ it('keeps the draft clean when Tiptap loads and normalizes unchanged raw HTML', 
 });
 
 it('disables all native form controls and Save in server HTML before hydration', () => {
-	const html = renderToString(<EditProfileForm {...props()} />);
+	const html = renderToString(
+		<NextIntlClientProvider locale="ru" messages={{}}>
+			<EditProfileForm {...props()} />
+		</NextIntlClientProvider>,
+	);
 	const template = document.createElement('template');
 	template.innerHTML = html;
 	expect(template.content.querySelector('fieldset')?.hasAttribute('disabled')).toBe(true);
 	expect(template.content.querySelector('button[type="submit"]')?.hasAttribute('disabled')).toBe(
 		true,
 	);
+});
+
+it('renders one localized profile breadcrumb before the editing card', () => {
+	const view = render(<EditProfileForm {...props()} />);
+	const nav = screen.getByRole('navigation', { name: 'Редактирование профиля' });
+	const link = screen.getByRole('link', { name: 'Профиль' });
+	expect(link).toHaveAttribute('href', '/ru/profile');
+	expect(view.container.querySelectorAll('nav')).toHaveLength(1);
+	expect(nav.querySelector('[aria-current="page"]')).toHaveTextContent('Редактирование профиля');
+	expect(
+		nav.compareDocumentPosition(screen.getByRole('heading', { name: 'Редактирование профиля' })) &
+			Node.DOCUMENT_POSITION_FOLLOWING,
+	).toBeTruthy();
+	expect(view.container.querySelector('form')?.contains(nav)).toBe(false);
+	link.focus();
+	expect(link).toHaveFocus();
+});
+it('uses React tab typography, spacing and responsive breadcrumb composition', () => {
+	render(<EditProfileForm {...props()} />);
+	for (const tab of screen.getAllByRole('tab')) expect(tab.querySelector('p')).toHaveClass('body4');
+	const css = readFileSync(
+		join(process.cwd(), 'src/widgets/profile/edit/ui/EditProfileForm.module.css'),
+		'utf8',
+	);
+	expect(css).toMatch(/\.list\s*\{[^}]*gap: 10px;[^}]*padding: 10px;/);
+	expect(css).toMatch(/\.tab\s*\{[^}]*padding: 10px;/);
+	expect(css).toMatch(/\.breadcrumbs\s*\{[^}]*margin: 0 0 24px;[^}]*height: 27px;/);
+	expect(css).toMatch(/@media \(width <= 767px\)/);
+	expect(css).toMatch(/\.crumb-current\s*\{[^}]*display: none;/);
+	expect(css).toMatch(/\.crumb-back\s*\{[^}]*transform: rotate\(180deg\);/);
 });

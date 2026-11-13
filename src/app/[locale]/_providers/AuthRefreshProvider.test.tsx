@@ -1,20 +1,14 @@
 /** @jest-environment jsdom */
-import {
-	Children,
-	StrictMode,
-	cloneElement,
-	isValidElement,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { Children, StrictMode, cloneElement, isValidElement, useEffect, useRef } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 
 import '@testing-library/jest-dom';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { getSession, useSession } from 'next-auth/react';
 import { NextIntlClientProvider } from 'next-intl';
+import { FormProvider, useForm } from 'react-hook-form';
 
+import type { HeaderProfileResult } from '@/entities/profile';
 import { useAvatarState } from '@/entities/profile';
 import { AvatarEditor } from '@/features/profile/avatar';
 import { Header } from '@/widgets/Header';
@@ -151,6 +145,22 @@ beforeEach(() => {
 	jest.useFakeTimers({ doNotFake: ['queueMicrotask', 'nextTick'] });
 	current = validSession(true);
 	next = validSession(false);
+	headerRead.mockReset();
+	headerRead.mockImplementation(() =>
+		Promise.resolve(
+			current
+				? {
+						status: 'success',
+						profile: {
+							userId: current.user.id,
+							username: current.user.username,
+							email: null,
+							avatarUrl: current.user.image,
+						},
+					}
+				: { status: 'unauthenticated' },
+		),
+	);
 	calls = jest.fn((url: string, init?: RequestInit) => {
 		if (url.endsWith('/csrf'))
 			return Promise.resolve({
@@ -280,6 +290,7 @@ describe('browser Auth.js refresh with the real SessionProvider', () => {
 });
 
 // Obtain the real client session slot from Header's public composition, without importing widget internals.
+const headerRead = jest.fn<Promise<HeaderProfileResult>, []>();
 const HeaderSessionView = () => {
 	const find = (
 		node: ReactNode,
@@ -288,7 +299,7 @@ const HeaderSessionView = () => {
 		if ('desktopGuest' in node.props) return node;
 		return Children.toArray(node.props.children).map(find).find(Boolean);
 	};
-	const slot = find(Header());
+	const slot = find(Header({ loadHeaderProfileAction: headerRead }));
 	if (!slot) throw new Error('Header session slot missing');
 	return cloneElement(slot, { desktopGuest: <span>Guest</span> });
 };
@@ -310,16 +321,14 @@ const changeImage = async (container: HTMLElement) => {
 };
 let profileMounts = 0;
 const ProfileDraft = () => {
-	const [value, setValue] = useState('');
+	const methods = useForm<{ draft: string }>({ defaultValues: { draft: '' } });
 	useEffect(() => {
 		profileMounts++;
 	}, []);
 	return (
-		<input
-			aria-label="Unrelated draft"
-			value={value}
-			onChange={(event) => setValue(event.target.value)}
-		/>
+		<FormProvider {...methods}>
+			<input aria-label="Unrelated draft" {...methods.register('draft')} />
+		</FormProvider>
 	);
 };
 const AvatarAndHeader = ({
@@ -485,17 +494,21 @@ describe('shared avatar state with real Header and SessionProvider', () => {
 		expect(calls).toHaveBeenCalledTimes(before);
 		expect(action).toHaveBeenCalledTimes(1);
 	});
-	it('uses the stale session again after provider remount (reload simulation)', async () => {
+	it('reads backend null after provider remount despite a stale session image', async () => {
 		const action = jest.fn().mockResolvedValue({ status: 'success', avatarUrl: null });
 		const view = render(<AvatarAndHeader image={avatarSource} action={action} />);
 		await waitFor(() => expect(headerImages()).toHaveLength(2));
 		fireEvent.click(screen.getByRole('button', { name: 'Удалить фото' }));
 		await expectHeaderAvatar(null);
-		expect(headerImages()).toHaveLength(0);
 		view.unmount();
-		render(<AvatarAndHeader image={avatarSource} action={action} />);
-		await waitFor(() => expect(headerImages()).toHaveLength(2));
-		for (const image of headerImages()) expect(image).toHaveAttribute('src', avatarSource);
+		headerRead.mockResolvedValue({
+			status: 'success',
+			profile: { userId: 'synthetic-user', avatarUrl: null, username: 'Backend name', email: null },
+		});
+		render(<AvatarAndHeader image={null} action={action} />);
+		await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(2));
+		await expectHeaderAvatar(null);
+		expect(current?.user.image).toBe(avatarSource);
 	});
 });
 
@@ -544,4 +557,213 @@ it('rejects an older completion after a newer operation has started', async () =
 	fireEvent.click(screen.getByText('Commit new'));
 	fireEvent.click(screen.getByText('Commit old'));
 	expect(screen.getByTestId('override')).toHaveTextContent(avatarTarget);
+});
+
+const headerProfile = (
+	avatarUrl: string | null,
+	userId = 'synthetic-user',
+): HeaderProfileResult => ({
+	status: 'success',
+	profile: { userId, avatarUrl, username: 'Backend name', email: 'synthetic@example.invalid' },
+});
+const HeaderOnly = () => (
+	<NextIntlClientProvider locale="ru" messages={{}}>
+		<AuthRefreshProvider>
+			<div data-testid="real-header">
+				<HeaderSessionView />
+			</div>
+			<ProfileDraft />
+		</AuthRefreshProvider>
+	</NextIntlClientProvider>
+);
+describe('Header backend initialization independent of Auth.js image', () => {
+	beforeEach(() => {
+		current = sessionWithImage(avatarSource);
+		next = current;
+		profileMounts = 0;
+	});
+	it('shows fallback until backend data arrives and uses backend username/email without resetting draft', async () => {
+		let finish!: (value: HeaderProfileResult) => void;
+		headerRead.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					finish = resolve;
+				}),
+		);
+		render(<HeaderOnly />);
+		await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(1));
+		expect(headerImages()).toHaveLength(0);
+		expect(screen.queryByText('sample')).toBeNull();
+		const draft = screen.getByLabelText('Unrelated draft');
+		fireEvent.change(draft, { target: { value: 'keep' } });
+		await act(async () => {
+			finish(headerProfile(avatarTarget));
+			await Promise.resolve();
+		});
+		await expectHeaderAvatar(avatarTarget);
+		expect(screen.getAllByText('Backend name').length).toBeGreaterThan(0);
+		fireEvent.click(
+			within(screen.getByTestId('real-header')).getByRole('button', { expanded: false }),
+		);
+		expect(await screen.findByText('synthetic@example.invalid')).toBeInTheDocument();
+		expect(screen.getByLabelText('Unrelated draft')).toBe(draft);
+		expect(draft).toHaveValue('keep');
+		expect(profileMounts).toBe(1);
+		expect(headerRead).toHaveBeenCalledWith();
+		expect(posts()).toHaveLength(0);
+	});
+	it('does not reread on ordinary renders or StrictMode effect replay', async () => {
+		headerRead.mockResolvedValue(headerProfile(avatarTarget));
+		const view = render(
+			<StrictMode>
+				<HeaderOnly />
+			</StrictMode>,
+		);
+		await expectHeaderAvatar(avatarTarget);
+		view.rerender(
+			<StrictMode>
+				<HeaderOnly />
+			</StrictMode>,
+		);
+		await act(async () => {
+			await Promise.resolve();
+		});
+		expect(headerRead).toHaveBeenCalledTimes(1);
+	});
+	it.each([
+		'error',
+		'unauthenticated',
+		'forbidden',
+		'refresh-required',
+		'identity-mismatch',
+		'rejection',
+	] as const)(
+		'keeps the page and fallback on %s without retries or session writes',
+		async (outcome) => {
+			if (outcome === 'rejection') headerRead.mockRejectedValue(new Error('synthetic failure'));
+			else headerRead.mockResolvedValue({ status: outcome });
+			render(<HeaderOnly />);
+			await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(1));
+			await act(async () => {
+				for (let i = 0; i < 10; i++) await Promise.resolve();
+			});
+			expect(headerImages()).toHaveLength(0);
+			expect(screen.getByLabelText('Unrelated draft')).toBeInTheDocument();
+			expect(headerRead).toHaveBeenCalledTimes(1);
+			expect(posts()).toHaveLength(0);
+			expect(screen.queryByText('Guest')).toBeNull();
+		},
+	);
+	it('does not load for guests', async () => {
+		current = null;
+		render(<HeaderOnly />);
+		await screen.findByText('Guest');
+		expect(headerRead).not.toHaveBeenCalled();
+	});
+	it('ignores a response with another identity', async () => {
+		headerRead.mockResolvedValue(headerProfile(avatarTarget, 'other-user'));
+		render(<HeaderOnly />);
+		await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(1));
+		await act(async () => {
+			await Promise.resolve();
+		});
+		expect(headerImages()).toHaveLength(0);
+		expect(screen.queryByText('Backend name')).toBeNull();
+	});
+	it.each([avatarTarget, null])(
+		'keeps a confirmed PATCH over a late initial GET: %#',
+		async (target) => {
+			let finish!: (value: HeaderProfileResult) => void;
+			headerRead.mockImplementation(
+				() =>
+					new Promise((resolve) => {
+						finish = resolve;
+					}),
+			);
+			const action = jest.fn().mockResolvedValue({ status: 'success', avatarUrl: target });
+			render(<AvatarAndHeader image={avatarSource} action={action} />);
+			await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(1));
+			const draft = screen.getByLabelText('Unrelated draft');
+			fireEvent.change(draft, { target: { value: 'unsaved' } });
+			const before = calls.mock.calls.length;
+			fireEvent.click(screen.getByRole('button', { name: 'Удалить фото' }));
+			await waitFor(() =>
+				expect(screen.getByRole('button', { name: 'Выберите фотографию' })).toBeEnabled(),
+			);
+			await expectHeaderAvatar(target);
+			await act(async () => {
+				finish(headerProfile(avatarSource));
+				await Promise.resolve();
+			});
+			await expectHeaderAvatar(target);
+			expect(screen.getByLabelText('Unrelated draft')).toBe(draft);
+			expect(draft).toHaveValue('unsaved');
+			expect(profileMounts).toBe(1);
+			expect(action).toHaveBeenCalledTimes(1);
+			expect(calls).toHaveBeenCalledTimes(before);
+			expect(headerRead).toHaveBeenCalledTimes(1);
+		},
+	);
+	it('rejects old A and B responses after A → B → A, then clears data on logout', async () => {
+		const responses: Array<(value: HeaderProfileResult) => void> = [];
+		headerRead.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					responses.push(resolve);
+				}),
+		);
+		render(<HeaderOnly />);
+		await waitFor(() => expect(responses).toHaveLength(1));
+		current = {
+			...sessionWithImage(avatarSource),
+			user: { ...validSession(false).user, id: 'user-b', image: avatarSource },
+		};
+		await act(async () => {
+			await getSession();
+		});
+		await waitFor(() => expect(responses).toHaveLength(2));
+		current = sessionWithImage(avatarSource);
+		await act(async () => {
+			await getSession();
+		});
+		await waitFor(() => expect(responses).toHaveLength(3));
+		await act(async () => {
+			responses[0](headerProfile(avatarSource));
+			responses[1](headerProfile(avatarSource, 'user-b'));
+			await Promise.resolve();
+		});
+		expect(headerImages()).toHaveLength(0);
+		expect(screen.queryByText('Backend name')).toBeNull();
+		await act(async () => {
+			responses[2](headerProfile(avatarTarget));
+			await Promise.resolve();
+		});
+		await expectHeaderAvatar(avatarTarget);
+		current = null;
+		await act(async () => {
+			await getSession();
+		});
+		await screen.findByText('Guest');
+		expect(headerImages()).toHaveLength(0);
+		expect(screen.queryByText('Backend name')).toBeNull();
+		expect(headerRead).toHaveBeenCalledTimes(3);
+	});
+	it('ignores a pending read after unmount', async () => {
+		let finish!: (value: HeaderProfileResult) => void;
+		headerRead.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					finish = resolve;
+				}),
+		);
+		const view = render(<HeaderOnly />);
+		await waitFor(() => expect(headerRead).toHaveBeenCalledTimes(1));
+		view.unmount();
+		await act(async () => {
+			finish(headerProfile(avatarTarget));
+			await Promise.resolve();
+		});
+		expect(screen.queryByText('Backend name')).toBeNull();
+		expect(headerRead).toHaveBeenCalledTimes(1);
+	});
 });
