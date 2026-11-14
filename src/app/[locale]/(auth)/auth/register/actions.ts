@@ -2,7 +2,7 @@
 
 import 'server-only';
 
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 import { emailRule, passwordRules } from '@/shared/libs';
 
 export type RegistrationResult = {

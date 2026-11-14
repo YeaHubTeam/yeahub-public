@@ -9,8 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type { SignUpFormValues } from '@/entities/auth';
 import { LoginLabel, RegisterForm } from '@/features/authentication/registration';
-import { Auth, ROUTES, Translation, i18Namespace } from '@/shared/config';
-import { Link, useRouter } from '@/shared/config/navigation';
+import { Auth, Link, ROUTES, Translation, i18Namespace, useRouter } from '@/shared/config';
 import { Flex } from '@/shared/ui/Flex';
 import { Text } from '@/shared/ui/Text';
 

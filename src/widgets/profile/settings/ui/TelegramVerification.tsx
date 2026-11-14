@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import type { TelegramMutationResult } from '@/entities/profile/server';
+import type { TelegramMutationResult } from '@/entities/profile';
 import { ROUTES, i18Namespace, useRouter } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';

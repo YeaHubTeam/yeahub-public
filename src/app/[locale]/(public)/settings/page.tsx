@@ -9,7 +9,7 @@ import { getTranslations } from 'next-intl/server';
 import { auth, getSettingsPageData, getSettingsPaymentHistory } from '@/auth';
 import { getSpecializationById } from '@/entities/specialization';
 import { ROUTES, i18Namespace, redirect, routing } from '@/shared/config';
-import { getTelegramWidgetConfig } from '@/shared/config/telegram.server';
+import { getTelegramWidgetConfig } from '@/shared/config/index.server';
 import { Text } from '@/shared/ui/Text';
 import { SettingsShell } from '@/widgets/profile/settings';
 

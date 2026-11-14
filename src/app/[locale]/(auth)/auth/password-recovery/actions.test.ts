@@ -1,10 +1,10 @@
 /** @jest-environment node */
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 import { resetPassword } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
+jest.mock('@/shared/config/index.server', () => ({ getAuthBackendConfig: jest.fn() }));
 jest.mock('@/shared/libs', () => ({
 	passwordRules: jest.requireActual('@/shared/libs/app/regexp').passwordRules,
 }));

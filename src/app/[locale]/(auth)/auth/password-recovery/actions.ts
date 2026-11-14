@@ -2,7 +2,7 @@
 
 import 'server-only';
 
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 import { passwordRules } from '@/shared/libs';
 
 type ResetPasswordResult =

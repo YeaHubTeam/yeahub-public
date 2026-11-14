@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import type { AccountDeletionResult } from '@/entities/profile/server';
+import type { AccountDeletionResult } from '@/entities/profile';
 import { i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';

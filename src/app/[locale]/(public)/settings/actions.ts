@@ -29,7 +29,7 @@ import type {
 	SettingsProfileSelectionResult,
 	TelegramMutationResult,
 	VerificationEmailResult,
-} from '@/entities/profile/server';
+} from '@/entities/profile/index.server';
 import { getSpecializationById } from '@/entities/specialization';
 import type {
 	PaymentInitInput,

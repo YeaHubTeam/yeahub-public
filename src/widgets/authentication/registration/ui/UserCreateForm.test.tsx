@@ -24,18 +24,16 @@ jest.mock('next-intl', () => ({
 	},
 }));
 jest.mock('@/shared/config', () => ({
-	...jest.requireActual<object>('@/shared/config/i18n/i18nTranslations'),
-	i18Namespace: { auth: 'auth', translation: 'translation' },
-	ROUTES: { appRoute: '/', auth: { login: { page: '/auth/login' } } },
-}));
-jest.mock('@/shared/config/navigation', () => ({
-	...jest.requireActual('@/shared/config/navigation'),
 	Link: ({ href, children }: { href: string; children: import('react').ReactNode }) => {
 		const { getPathname } = jest.requireActual('@/shared/config/navigation');
 		return <a href={getPathname({ locale: 'ru', href })}>{children}</a>;
 	},
 	useRouter: () => ({ push: jest.fn(), replace, refresh }),
+	...jest.requireActual<object>('@/shared/config/i18n/i18nTranslations'),
+	i18Namespace: { auth: 'auth', translation: 'translation' },
+	ROUTES: { appRoute: '/', auth: { login: { page: '/auth/login' } } },
 }));
+
 jest.mock('@/shared/ui/Icon', () => ({ Icon: () => null }));
 
 const messages = {

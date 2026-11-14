@@ -7,7 +7,7 @@ import type {
 	ProfileDeletionResult,
 	SettingsProfileCreationResult,
 	SettingsProfileSelectionResult,
-} from '@/entities/profile/server';
+} from '@/entities/profile';
 import multyProfile from '@/shared/assets/images/multyProfile.png';
 import { ROUTES, i18Namespace, useRouter } from '@/shared/config';
 import { Banner } from '@/shared/ui/Banner';

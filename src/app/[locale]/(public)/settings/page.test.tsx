@@ -14,7 +14,7 @@ import {
 import { getSpecializationById } from '@/entities/specialization';
 import type { SettingsTariffCatalogResult } from '@/entities/subscription/index.server';
 import { Header, ROUTES, redirect } from '@/shared/config';
-import { getTelegramWidgetConfig } from '@/shared/config/telegram.server';
+import { getTelegramWidgetConfig } from '@/shared/config/index.server';
 import { SELECT_TARIFF_SETTINGS_TAB } from '@/shared/libs';
 import { SettingsShell } from '@/widgets/profile/settings';
 
@@ -32,7 +32,7 @@ import Page, { metadata } from './page';
 
 jest.mock('@/entities/specialization', () => ({ getSpecializationById: jest.fn() }));
 
-jest.mock('@/shared/config/telegram.server', () => ({
+jest.mock('@/shared/config/index.server', () => ({
 	getTelegramWidgetConfig: jest.fn(() => ({ status: 'missing' })),
 }));
 

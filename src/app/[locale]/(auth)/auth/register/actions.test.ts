@@ -1,11 +1,11 @@
 /** @jest-environment node */
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 import { registerUser } from './actions';
 import type { RegistrationInput } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
+jest.mock('@/shared/config/index.server', () => ({ getAuthBackendConfig: jest.fn() }));
 jest.mock('@/shared/libs', () => jest.requireActual('@/shared/libs/app/regexp'));
 const input: RegistrationInput = {
 	username: 'test-user',

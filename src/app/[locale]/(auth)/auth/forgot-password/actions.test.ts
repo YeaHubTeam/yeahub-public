@@ -1,10 +1,10 @@
 /** @jest-environment node */
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 import { sendPasswordResetEmail } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
+jest.mock('@/shared/config/index.server', () => ({ getAuthBackendConfig: jest.fn() }));
 // Use the actual public API email rule without loading unrelated UI/browser helpers.
 jest.mock('@/shared/libs', () => ({
 	emailRule: jest.requireActual('@/shared/libs/app/regexp').emailRule,
