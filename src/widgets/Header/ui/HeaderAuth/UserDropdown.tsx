@@ -6,8 +6,8 @@ import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 import LogoutIcon from '@/shared/assets/icons/logout-icon.svg';
-import { Header, ROUTES, Translation, i18Namespace, useRouter } from '@/shared/config';
-import { useScreenSize } from '@/shared/libs';
+import { Header, ROUTES, Translation, i18Namespace, usePathname, useRouter } from '@/shared/config';
+import { SELECT_TARIFF_SETTINGS_TAB, useScreenSize } from '@/shared/libs';
 import { AvatarWithoutPhoto } from '@/shared/ui/AvatarWithoutPhoto';
 import { Button } from '@/shared/ui/Button';
 import { Popover } from '@/shared/ui/Popover';
@@ -29,6 +29,7 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 	const { isMobile, isTablet } = useScreenSize();
 	const visibleEmail = email?.trim();
 	const router = useRouter();
+	const pathname = usePathname();
 	const pending = useRef(false);
 	const [isSigningOut, setIsSigningOut] = useState(false);
 	const onLogout = async () => {
@@ -77,7 +78,8 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 				disabled={
 					(key !== Header.USER_LOGOUT &&
 						key !== Header.USER_PROFILE &&
-						key !== Header.USER_SETTINGS) ||
+						key !== Header.USER_SETTINGS &&
+						key !== Header.USER_MEMBERSHIP) ||
 					isSigningOut
 				}
 				aria-busy={key === Header.USER_LOGOUT ? isSigningOut : undefined}
@@ -87,14 +89,23 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 								close();
 								router.push(ROUTES.profile.page);
 							}
-						: key === Header.USER_SETTINGS
+						: key === Header.USER_MEMBERSHIP
 							? () => {
+									if (pending.current) return;
 									close();
-									router.push(ROUTES.settings.page);
+									if (pathname === ROUTES.settings.page) {
+										// Native same-document navigation emits hashchange and preserves Back/Forward.
+										window.location.hash = SELECT_TARIFF_SETTINGS_TAB.split('#')[1];
+									} else router.push(SELECT_TARIFF_SETTINGS_TAB);
 								}
-							: key === Header.USER_LOGOUT
-								? () => void onLogout()
-								: undefined
+							: key === Header.USER_SETTINGS
+								? () => {
+										close();
+										router.push(ROUTES.settings.page);
+									}
+								: key === Header.USER_LOGOUT
+									? () => void onLogout()
+									: undefined
 				}
 				className={
 					key === Header.USER_LOGOUT

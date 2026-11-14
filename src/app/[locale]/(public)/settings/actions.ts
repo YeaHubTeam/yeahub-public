@@ -6,17 +6,22 @@ import { getLocale } from 'next-intl/server';
 import 'server-only';
 
 import {
+	cancelOwnSettingsSubscription,
 	changeOwnPassword,
 	createOwnSettingsProfile,
 	deleteOwnSettingsAccount,
 	deleteOwnSettingsProfile,
+	getSettingsPaymentHistory,
 	getSettingsSnapshot,
+	initializeOwnSettingsPayment,
 	linkOwnTelegram,
 	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
+	startOwnSettingsTrial,
 	unlinkOwnTelegram,
 } from '@/auth';
 import type { ChangePasswordResult } from '@/auth';
+import type { PaymentHistoryResult } from '@/entities/payment/index.server';
 import type {
 	AccountDeletionResult,
 	ProfileDeletionResult,
@@ -26,6 +31,12 @@ import type {
 	VerificationEmailResult,
 } from '@/entities/profile/server';
 import { getSpecializationById } from '@/entities/specialization';
+import type {
+	PaymentInitInput,
+	PaymentInitResult,
+	SubscriptionCancellationResult,
+	TrialResult,
+} from '@/entities/subscription/index.server';
 import { ROUTES, routing } from '@/shared/config';
 import { route } from '@/shared/libs';
 
@@ -154,5 +165,61 @@ export async function deleteSettingsAccount(
 		return await deleteOwnSettingsAccount(confirmationUsername);
 	} catch {
 		return { status: 'error' };
+	}
+}
+
+export async function readSettingsPaymentHistory(page: unknown): Promise<PaymentHistoryResult> {
+	try {
+		return await getSettingsPaymentHistory(page);
+	} catch {
+		return { status: 'error' };
+	}
+}
+
+export async function startSettingsTrial(): Promise<TrialResult> {
+	let confirmed = false;
+	let started = false;
+	try {
+		const locale = await getLocale();
+		if (!routing.locales.some((value) => value === locale)) return { status: 'error' };
+		started = true;
+		const result = await startOwnSettingsTrial();
+		if (result.status !== 'success') return result;
+		confirmed = true;
+		for (const path of [ROUTES.settings.page, ROUTES.profile.page, `${ROUTES.profile.page}/edit`])
+			revalidatePath(`/${locale}${path}`);
+		return { status: 'success' };
+	} catch {
+		return { status: confirmed ? 'incomplete' : started ? 'outcome-unknown' : 'error' };
+	}
+}
+
+export async function initializeSettingsPayment(
+	input: PaymentInitInput,
+): Promise<PaymentInitResult> {
+	try {
+		return await initializeOwnSettingsPayment(input);
+	} catch {
+		return { status: 'outcome-unknown' };
+	}
+}
+
+export async function cancelSettingsSubscription(
+	expectedSubscriptionId: string,
+): Promise<SubscriptionCancellationResult> {
+	let started = false;
+	let confirmed = false;
+	try {
+		const locale = await getLocale();
+		if (!routing.locales.some((value) => value === locale)) return { status: 'error' };
+		started = true;
+		const result = await cancelOwnSettingsSubscription(expectedSubscriptionId);
+		if (result.status !== 'success') return result;
+		confirmed = true;
+		for (const path of [ROUTES.settings.page, ROUTES.profile.page, `${ROUTES.profile.page}/edit`])
+			revalidatePath(`/${locale}${path}`);
+		return result;
+	} catch {
+		return { status: confirmed ? 'incomplete' : started ? 'outcome-unknown' : 'error' };
 	}
 }

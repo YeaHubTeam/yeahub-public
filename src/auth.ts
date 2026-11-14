@@ -2,6 +2,8 @@ import { cookies, headers } from 'next/headers';
 
 import { createActionURL, setEnvDefaults } from '@auth/core';
 import type { AuthConfig } from '@auth/core';
+import { differenceInDays, format, getDaysInMonth, isValid, parseISO } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import NextAuth from 'next-auth';
 import { encode, getToken } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
@@ -10,6 +12,8 @@ import { createHash } from 'node:crypto';
 import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
+import { readPaymentHistory } from '@/entities/payment/index.server';
+import type { PaymentHistoryResult } from '@/entities/payment/index.server';
 import {
 	createOwnProfile,
 	deleteOwnAccount,
@@ -35,7 +39,23 @@ import type {
 	TelegramMutationResult,
 	VerificationEmailResult,
 } from '@/entities/profile/server';
+import {
+	isCancellationSubscriptionId,
+	parsePaymentInitInput,
+	readSettingsCatalog,
+	requestPaymentInit,
+	requestSubscriptionCancellation,
+	requestTrial,
+} from '@/entities/subscription/index.server';
+import type {
+	PaymentInitInput,
+	PaymentInitResult,
+	SettingsTariffCatalogResult,
+	SubscriptionCancellationResult,
+	TrialResult,
+} from '@/entities/subscription/index.server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { readTariffFlag } from '@/shared/config/index.server';
 
 import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
 
@@ -390,6 +410,94 @@ export const getSettingsSnapshot = async (): Promise<SettingsSnapshotResult> => 
 		);
 	} catch {
 		return { status: 'error' };
+	}
+};
+
+// Explicit page-only composition. Ordinary snapshot reads and mutations never load flags/catalog.
+export const getSettingsPageData = async (): Promise<
+	| {
+			status: 'success';
+			snapshot: Extract<SettingsSnapshotResult, { status: 'success' }>['snapshot'];
+			tariffs: SettingsTariffCatalogResult;
+	  }
+	| Exclude<SettingsSnapshotResult, { status: 'success' }>
+> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		const config = getAuthBackendConfig();
+		const flag = await readTariffFlag(config);
+		const result = await readSettingsSnapshot(
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			config,
+			flag,
+		);
+		if (result.status !== 'success') return result;
+		const tariffs = await readSettingsCatalog(
+			result.tariffGate ?? { status: 'unavailable', showTariffs: false },
+			config,
+		);
+		return { status: 'success', snapshot: result.snapshot, tariffs };
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+// Read-only pagination: no profile request, auth update or client-supplied identity.
+export const getSettingsPaymentHistory = async (
+	page: unknown = 1,
+): Promise<PaymentHistoryResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await readPaymentHistory(
+			page,
+			{ userId: session.data.userId, accessToken: session.data.accessToken },
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+// Explicit trial mutation with fresh eligibility and one post-success readback.
+export const startOwnSettingsTrial = async (): Promise<TrialResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	let sent = false;
+	let confirmed = false;
+	try {
+		const config = getAuthBackendConfig();
+		const credentials = { userId: session.data.userId, accessToken: session.data.accessToken };
+		const before = await readSettingsSnapshot(credentials, config);
+		if (before.status !== 'success')
+			return { status: before.status === 'identity-mismatch' ? 'error' : before.status };
+		if (before.snapshot.userId !== session.data.userId) return { status: 'error' };
+		if (!before.snapshot.isVerified) return { status: 'verification-required' };
+		if (!before.snapshot.canStartTrial) return { status: 'not-eligible' };
+		const now = Math.floor(Date.now() / 1000);
+		if (deadline(session.data) <= now) return { status: 'unauthenticated' };
+		if (session.data.accessExpiresAt <= now) return { status: 'refresh-required' };
+		sent = true;
+		const result = await requestTrial(credentials, config);
+		if (result.status !== 'success') return result;
+		confirmed = true;
+		const after = await readSettingsSnapshot(credentials, config);
+		if (after.status !== 'success' || after.snapshot.userId !== session.data.userId)
+			return { status: 'incomplete' };
+		const trials = after.snapshot.subscriptions.filter((item) => item.subscriptionId === 4);
+		const trial = trials[0];
+		if (
+			trials.length !== 1 ||
+			!trial ||
+			trial.state !== 'active' ||
+			!trial.endDate ||
+			Date.parse(trial.endDate) <= Date.now()
+		)
+			return { status: 'incomplete' };
+		return { status: 'success' };
+	} catch {
+		return { status: confirmed ? 'incomplete' : sent ? 'outcome-unknown' : 'error' };
 	}
 };
 
@@ -820,5 +928,118 @@ export const mutateOwnProfile = async (input: unknown): Promise<ProfileEditResul
 		}
 	} catch {
 		return { status: 'error' };
+	}
+};
+
+// Explicit payment initialization only. No session writes or mutation replay.
+export const initializeOwnSettingsPayment = async (
+	input: PaymentInitInput,
+): Promise<PaymentInitResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	const parsed = parsePaymentInitInput(input);
+	if (!parsed) return { status: 'invalid-input' };
+	let sent = false;
+	try {
+		const config = getAuthBackendConfig();
+		const credentials = { userId: session.data.userId, accessToken: session.data.accessToken };
+		const flag = await readTariffFlag(config);
+		const before = await readSettingsSnapshot(credentials, config, flag);
+		if (before.status !== 'success')
+			return { status: before.status === 'identity-mismatch' ? 'error' : before.status };
+		if (before.snapshot.userId !== session.data.userId) return { status: 'error' };
+		if (!before.snapshot.isVerified) return { status: 'verification-required' };
+		const catalog = await readSettingsCatalog(
+			before.tariffGate ?? { status: 'unavailable', showTariffs: false },
+			config,
+		);
+		if (catalog.status === 'hidden') return { status: 'not-available' };
+		if (catalog.status !== 'success') return { status: 'error' };
+		if (
+			!catalog.tariffs.some(
+				(tariff) =>
+					tariff.id === parsed.tariffId && ['month', 'quarter', 'year'].includes(tariff.code),
+			)
+		)
+			return { status: 'not-available' };
+		const payment = parsePaymentInitInput({
+			...parsed,
+			email: before.snapshot.email ?? parsed.email,
+		});
+		if (!payment) return { status: 'invalid-input' };
+		const now = Math.floor(Date.now() / 1000);
+		if (deadline(session.data) <= now) return { status: 'unauthenticated' };
+		if (session.data.accessExpiresAt <= now) return { status: 'refresh-required' };
+		sent = true;
+		return await requestPaymentInit(payment, credentials, config);
+	} catch {
+		return { status: sent ? 'outcome-unknown' : 'error' };
+	}
+};
+
+// No replay: state readback cannot prove primary/rebill cleanup after a failed DELETE.
+export const cancelOwnSettingsSubscription = async (
+	expectedSubscriptionId: string,
+): Promise<SubscriptionCancellationResult> => {
+	if (!isCancellationSubscriptionId(expectedSubscriptionId)) return { status: 'invalid-input' };
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	let sent = false;
+	let confirmed = false;
+	try {
+		const config = getAuthBackendConfig();
+		const credentials = { userId: session.data.userId, accessToken: session.data.accessToken };
+		const before = await readSettingsSnapshot(credentials, config);
+		if (before.status !== 'success')
+			return { status: before.status === 'identity-mismatch' ? 'error' : before.status };
+		if (before.snapshot.userId !== session.data.userId) return { status: 'error' };
+		if (!before.snapshot.isVerified) return { status: 'verification-required' };
+		const now = Date.now();
+		const selected = before.snapshot.subscriptions.find(
+			(item) =>
+				(item.state === 'active' || item.state === 'canceled') &&
+				item.endDate !== null &&
+				Number.isFinite(Date.parse(item.endDate)) &&
+				Date.parse(item.endDate) >= now,
+		);
+		if (!selected || selected.state !== 'active') return { status: 'not-available' };
+		if (selected.id !== expectedSubscriptionId) return { status: 'conflict' };
+		const seconds = Math.floor(Date.now() / 1000);
+		if (deadline(session.data) <= seconds) return { status: 'unauthenticated' };
+		if (session.data.accessExpiresAt <= seconds) return { status: 'refresh-required' };
+		sent = true;
+		const result = await requestSubscriptionCancellation(
+			selected.subscriptionId,
+			credentials,
+			config,
+		);
+		if (result.status !== 'success') return result;
+		confirmed = true;
+		const after = await readSettingsSnapshot(credentials, config);
+		if (after.status !== 'success' || after.snapshot.userId !== session.data.userId)
+			return { status: 'incomplete' };
+		const canceled = after.snapshot.subscriptions.find((item) => item.id === selected.id);
+		if (
+			!canceled ||
+			canceled.subscriptionId !== selected.subscriptionId ||
+			canceled.state !== 'canceled' ||
+			canceled.endDate !== selected.endDate ||
+			!canceled.endDate
+		)
+			return { status: 'incomplete' };
+		const createDate = parseISO(canceled.createDate);
+		const endDate = parseISO(canceled.endDate);
+		if (!isValid(createDate) || !isValid(endDate)) return { status: 'incomplete' };
+		return {
+			status: 'success',
+			subscription: {
+				state: 'canceled',
+				daysLeft: Math.max(0, differenceInDays(endDate, new Date())),
+				daysInCreationMonth: getDaysInMonth(createDate),
+				endDateLabel: format(endDate, 'd MMMM yyyy', { locale: ru }),
+			},
+		};
+	} catch {
+		return { status: confirmed ? 'incomplete' : sent ? 'outcome-unknown' : 'error' };
 	}
 };

@@ -1,5 +1,8 @@
 import 'server-only';
 
+import { evaluateTariffGate } from '@/shared/config/index.server';
+import type { TariffFlagResult } from '@/shared/config/index.server';
+
 import type { SettingsSnapshot, SettingsSnapshotResult } from '../model/types/settings';
 import type { ProfileBackendConfig } from './profile.server';
 
@@ -27,6 +30,7 @@ const date = (value: unknown): string | null => {
 export const readSettingsSnapshot = async (
 	credentials: { userId: string; accessToken: string },
 	config: ProfileBackendConfig,
+	tariffFlag?: TariffFlagResult,
 ): Promise<SettingsSnapshotResult> => {
 	const controller = new AbortController();
 	let timer: ReturnType<typeof setTimeout> | undefined;
@@ -119,6 +123,16 @@ export const readSettingsSnapshot = async (
 				subscriptions.find((subscription) => subscription.subscriptionId === 4)?.state === 'active';
 			return {
 				status: 'success',
+				...(tariffFlag
+					? {
+							tariffGate: evaluateTariffGate(
+								tariffFlag,
+								Array.isArray(data.userRoles)
+									? roles.map((role) => (role as Record<string, unknown>).name as string)
+									: null,
+							),
+						}
+					: {}),
 				snapshot: {
 					userId: data.id,
 					username: typeof data.username === 'string' ? data.username : null,

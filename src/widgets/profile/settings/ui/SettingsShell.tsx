@@ -15,10 +15,20 @@ import type { ChangePasswordAction } from './ChangePasswordForm';
 import type { AccountDeletionAction } from './DeleteAccountSection';
 import { EmailVerification } from './EmailVerification';
 import type { EmailActions, EmailState } from './EmailVerification';
+import { usePaymentHistory } from './PaymentHistory';
+import type { PaymentHistoryOptions } from './PaymentHistory';
 import styles from './SettingsShell.module.css';
+import { SubscribeModal, usePaymentCheckout } from './SubscribeModal';
+import type { PaymentAction } from './SubscribeModal';
+import { TariffTab } from './TariffTab';
+import type { TariffTabProps } from './TariffTab';
 import { TelegramVerification, useTelegramVerification } from './TelegramVerification';
 import type { TelegramOptions } from './TelegramVerification';
 import telegramStyles from './TelegramVerification.module.css';
+import { TrialToast, useTariffMutationGate, useTrialActivation } from './TrialActivation';
+import type { TrialAction } from './TrialActivation';
+import { UnsubscribeModal, useSubscriptionCancellation } from './UnsubscribeModal';
+import type { CancellationAction } from './UnsubscribeModal';
 
 const tabs = [
 	{ id: 'select-tariff', label: 'settings.tabs.select.tariff' },
@@ -49,7 +59,19 @@ export const SettingsShell = ({
 	account,
 	profileActions,
 	deleteAccountAction,
+	tariffData,
+	paymentHistory,
+	trialAction,
+	paymentAction,
+	cancelAction,
+	cancelSubscriptionId,
 }: {
+	cancelAction?: CancellationAction;
+	cancelSubscriptionId?: string | null;
+	paymentAction?: PaymentAction;
+	trialAction?: TrialAction;
+	paymentHistory?: PaymentHistoryOptions;
+	tariffData?: TariffTabProps;
 	deleteAccountAction?: AccountDeletionAction;
 	profileActions?: ProfileManagementActions;
 	account?: AccountProfilesData;
@@ -66,6 +88,46 @@ export const SettingsShell = ({
 		pending: false,
 		until: 0,
 		sent: false,
+	});
+	const sharedGate = useTariffMutationGate();
+	const cancellationController = useSubscriptionCancellation({
+		action: cancelAction,
+		gate: sharedGate,
+		expectedSubscriptionId: cancelSubscriptionId ?? null,
+		subscription: tariffData?.currentSubscription ?? null,
+	});
+	// Retain pagination through cancellation's automatic RSC invalidation only.
+	// Other server refreshes keep the existing history reset behavior.
+	const [historySource, setHistorySource] = useState({
+		owner: sharedGate.identity,
+		options: paymentHistory,
+	});
+	const retainHistory = cancellationController.retainsHistory;
+	if (
+		historySource.owner !== sharedGate.identity ||
+		(!retainHistory && historySource.options !== paymentHistory)
+	)
+		setHistorySource({ owner: sharedGate.identity, options: paymentHistory });
+	const historyOptions =
+		retainHistory && historySource.owner === sharedGate.identity
+			? historySource.options
+			: paymentHistory;
+	const paymentHistoryController = usePaymentHistory(historyOptions);
+
+	const paymentController = usePaymentCheckout({
+		action: paymentAction,
+		gate: sharedGate,
+		email: emailVerification?.email ?? null,
+		isVerified: emailState.verified || emailVerification?.isVerified === true,
+	});
+	const trialController = useTrialActivation({
+		sharedGate,
+		action: trialAction,
+		eligible:
+			tariffData?.canStartTrial === true &&
+			tariffData.catalog.status === 'success' &&
+			tariffData.currentSubscription === null,
+		isVerified: emailState.verified || emailVerification?.isVerified === true,
 	});
 	const t = useTranslations(i18Namespace.profile);
 	const header = useTranslations(i18Namespace.header);
@@ -97,6 +159,11 @@ export const SettingsShell = ({
 	};
 	return (
 		<>
+			<TrialToast
+				toast={cancellationController.toast ?? paymentController.toast ?? trialController.toast}
+			/>
+			<UnsubscribeModal controller={cancellationController} />
+			<SubscribeModal controller={paymentController} />
 			<div className={styles.tabs}>
 				<div role="tablist" aria-label={header(Header.USER_SETTINGS)} className={styles.list}>
 					{tabs.map((tab, index) => (
@@ -130,6 +197,16 @@ export const SettingsShell = ({
 				aria-labelledby={`settings-tab-${active}`}
 				tabIndex={0}
 			>
+				{active === 'select-tariff' && tariffData && (
+					<TariffTab
+						{...tariffData}
+						currentSubscription={cancellationController.subscription}
+						cancellationController={cancellationController}
+						paymentHistoryController={paymentHistoryController}
+						trialController={trialController}
+						paymentController={paymentController}
+					/>
+				)}
 				{active === 'account' && account && (
 					<AccountProfiles {...account} controller={profileController} />
 				)}

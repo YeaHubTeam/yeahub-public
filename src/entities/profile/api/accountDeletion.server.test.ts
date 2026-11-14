@@ -122,7 +122,15 @@ it.each([
 it('does not require verified email, an active profile or absence of an active paid subscription', async () => {
 	const before = {
 		...snapshot(),
-		subscriptions: [{ id: 'subscription', userId, subscriptionId: 6, state: 'active' }],
+		subscriptions: [
+			{
+				id: 'subscription',
+				userId,
+				subscriptionId: 6,
+				state: 'active',
+				createDate: '2026-01-01T00:00:00.000Z',
+			},
+		],
 	};
 	prepare(before);
 	expect(await remove()).toEqual({ status: 'success' });

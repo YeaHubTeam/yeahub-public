@@ -306,7 +306,15 @@ describe('profile creation', () => {
 			...fresh(9, source === 'role'),
 			subscriptions:
 				source === 'trial'
-					? [{ id: 'trial', userId: 'user-a', subscriptionId: 4, state: 'active' }]
+					? [
+							{
+								id: 'trial',
+								userId: 'user-a',
+								subscriptionId: 4,
+								state: 'active',
+								createDate: '2026-01-01T00:00:00.000Z',
+							},
+						]
 					: [],
 		};
 		queue(before);
@@ -316,7 +324,15 @@ describe('profile creation', () => {
 		request.mockResolvedValueOnce(
 			json({
 				...fresh(3),
-				subscriptions: [{ id: 'trial', userId: 'user-a', subscriptionId: 4, state: 'inactive' }],
+				subscriptions: [
+					{
+						id: 'trial',
+						userId: 'user-a',
+						subscriptionId: 4,
+						state: 'inactive',
+						createDate: '2026-01-01T00:00:00.000Z',
+					},
+				],
 			}),
 		);
 		expect(await create()).toEqual({ status: 'limit-reached' });

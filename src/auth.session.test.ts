@@ -10,19 +10,24 @@ import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/se
 
 import {
 	auth,
+	cancelOwnSettingsSubscription,
 	changeOwnPassword,
 	createOwnSettingsProfile,
 	deleteOwnSettingsAccount,
 	deleteOwnSettingsProfile,
 	getHeaderProfile,
 	getOwnProfile,
+	getSettingsPageData,
+	getSettingsPaymentHistory,
 	getSettingsSnapshot,
 	handlers,
+	initializeOwnSettingsPayment,
 	linkOwnTelegram,
 	mutateOwnAvatar,
 	mutateOwnProfile,
 	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
+	startOwnSettingsTrial,
 	unlinkOwnTelegram,
 } from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
@@ -2488,5 +2493,1001 @@ describe('account deletion through the private auth boundary', () => {
 		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
 		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'unauthenticated' });
 		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+describe('explicit read-only Settings page tariff composition', () => {
+	const backendProfile = {
+		id: 'user-id',
+		username: 'Backend',
+		email: null,
+		isVerified: false,
+		telegramUsername: null,
+		profiles: [],
+		subscriptions: [],
+		userRoles: [{ id: 1, name: 'candidate' }],
+	};
+	const flag = {
+		flag: 'dashboard.subscription.show-tariffs',
+		clientType: 'WEB',
+		enabled: true,
+		roles: ['candidate'],
+	};
+	const flagList = (value = flag) => ({ data: [value], total: 1, page: 1, limit: 10 });
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	it('uses one trusted profile and only public read-only flag/catalog requests without changing cookies', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(flagList())))
+			.mockResolvedValueOnce(new Response(JSON.stringify(backendProfile)))
+			.mockResolvedValueOnce(new Response('[]'));
+		const result = await getSettingsPageData();
+		expect(result).toMatchObject({
+			status: 'success',
+			tariffs: { status: 'success', gate: { status: 'allowed', showTariffs: true }, tariffs: [] },
+		});
+		expect(result).not.toHaveProperty('snapshot.userRoles');
+		expect(result).not.toHaveProperty('snapshot.tariffGate');
+		expect(JSON.stringify(result)).not.toContain('accessToken');
+		expect(jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname)).toEqual([
+			'/feature-flags',
+			'/auth/profile',
+			'/subscriptions',
+		]);
+		for (const [url, options] of jest.mocked(globalThis.fetch).mock.calls) {
+			expect(options?.cache).toBe('no-store');
+			expect(options?.method ?? 'GET').toBe('GET');
+			if ((url as URL).pathname !== '/auth/profile') expect(options?.headers).toBeUndefined();
+		}
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it.each(['disabled', 'role-denied', 'missing', 'unavailable', 'catalog-error'])(
+		'isolates %s from the rest of Settings and skips a closed catalog',
+		async (kind) => {
+			await setup();
+			expectedProfileFetchCalls = kind === 'catalog-error' ? 3 : 2;
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValueOnce(
+					new Response(
+						JSON.stringify(
+							kind === 'missing'
+								? { data: [], total: 0, page: 1, limit: 10 }
+								: kind === 'unavailable'
+									? {}
+									: flagList({
+											...flag,
+											enabled: kind !== 'disabled',
+											roles: kind === 'role-denied' ? ['admin'] : ['candidate'],
+										}),
+						),
+					),
+				)
+				.mockResolvedValueOnce(new Response(JSON.stringify(backendProfile)))
+				.mockResolvedValueOnce(new Response('{}', { status: 500 }));
+			const result = await getSettingsPageData();
+			expect(result).toMatchObject({
+				status: 'success',
+				tariffs:
+					kind === 'catalog-error'
+						? { status: 'error', reason: 'backend' }
+						: { status: 'hidden', gate: { status: kind, showTariffs: false } },
+			});
+			expect(cookieWrites).toHaveLength(0);
+		},
+	);
+	it.each([0, 3601, 7201])(
+		'does not load page data for absent/expired credentials at %s',
+		async (seconds) => {
+			if (seconds) {
+				await setup();
+				jest.setSystemTime((now + seconds) * 1000);
+			}
+			expect(await getSettingsPageData()).toEqual({
+				status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+			});
+			expect(globalThis.fetch).not.toHaveBeenCalled();
+		},
+	);
+	it('rejects a different profile identity before loading the catalog', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(flagList())))
+			.mockResolvedValueOnce(new Response(JSON.stringify({ ...backendProfile, id: 'other' })));
+		expect(await getSettingsPageData()).toEqual({ status: 'identity-mismatch' });
+	});
+	it('keeps the ordinary snapshot at exactly one profile request with no gate', async () => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response(JSON.stringify(backendProfile)));
+		const result = await getSettingsSnapshot();
+		expect(result.status).toBe('success');
+		expect(result).not.toHaveProperty('tariffGate');
+		expect((jest.mocked(globalThis.fetch).mock.calls[0][0] as URL).pathname).toBe('/auth/profile');
+	});
+});
+
+describe('read-only payment history via existing server credentials', () => {
+	const userId = '11111111-1111-4111-8111-111111111111';
+	const setup = async (kind = 'valid') => {
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				sub: kind === 'mismatch' ? 'other' : userId,
+				backendSession: {
+					...(decoded!.backendSession as object),
+					userId: kind === 'invalid-uuid' ? 'invalid' : userId,
+				},
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		return `${sessionCookieName}=${value}`;
+	};
+	it('loads the initial page with one GET, no profile read, cookies, auth update or private output', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(
+			new Response(
+				JSON.stringify({
+					data: [{ createdAt: '2026-02-01T00:00:00Z', status: null, rebillId: 'private' }],
+					page: 1,
+					limit: 5,
+					total: 1,
+				}),
+			),
+		);
+		expect(await getSettingsPaymentHistory()).toEqual({
+			status: 'success',
+			items: [{ dateLabel: '1 февраля 2026', isConfirmed: false }],
+			page: 1,
+			limit: 5,
+			total: 1,
+		});
+		const [url, options] = jest.mocked(globalThis.fetch).mock.calls[0];
+		expect((url as URL).pathname).toBe(`/payments/${userId}`);
+		expect((url as URL).search).toBe('?page=1&limit=5');
+		expect(options?.method).toBe('GET');
+		expect(profile).not.toHaveBeenCalled();
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it('ignores injected client identity and limit when loading another page', async () => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValue(new Response(JSON.stringify({ data: [], page: 2, limit: 5, total: 0 })));
+		expect(
+			await Reflect.apply(getSettingsPaymentHistory, null, [
+				2,
+				{ userId: 'foreign', limit: 100, accessToken: 'foreign' },
+			]),
+		).toMatchObject({ status: 'success', page: 2, limit: 5 });
+		const url = jest.mocked(globalThis.fetch).mock.calls[0][0] as URL;
+		expect(url.pathname).toBe(`/payments/${userId}`);
+		expect(url.searchParams.get('limit')).toBe('5');
+	});
+	it.each([0, 3601, 7201])(
+		'does not fetch for guest or expired credentials at %s',
+		async (seconds) => {
+			if (seconds) {
+				await setup();
+				jest.setSystemTime((now + seconds) * 1000);
+			}
+			expect(await getSettingsPaymentHistory()).toEqual({
+				status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+			});
+			expect(globalThis.fetch).not.toHaveBeenCalled();
+		},
+	);
+	it.each(['mismatch', 'invalid-uuid'])(
+		'rejects invalid identity %s without HTTP',
+		async (kind) => {
+			await setup(kind);
+			expect(await getSettingsPaymentHistory()).toEqual({ status: 'unauthenticated' });
+			expect(globalThis.fetch).not.toHaveBeenCalled();
+		},
+	);
+	it.each([0, '2', { userId, page: 1, limit: 100 }])(
+		'rejects invalid page %# without HTTP',
+		async (page) => {
+			await setup();
+			expect(await getSettingsPaymentHistory(page)).toEqual({ status: 'invalid-input' });
+			expect(globalThis.fetch).not.toHaveBeenCalled();
+		},
+	);
+	it.each([401, 403, 500])('preserves session on payment HTTP %s', async (status) => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(new Response('{}', { status }));
+		expect(await getSettingsPaymentHistory()).toEqual({
+			status: status === 401 ? 'unauthenticated' : status === 403 ? 'forbidden' : 'error',
+		});
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+});
+
+describe('trial activation with fresh server eligibility and confirmed readback', () => {
+	const before = {
+		id: 'user-id',
+		username: 'Backend',
+		email: 'synthetic@example.invalid',
+		isVerified: true,
+		userRoles: [],
+		profiles: [],
+		subscriptions: [],
+	};
+	const trial = (
+		state = 'active',
+		endDate: string | null = '2030-02-01T00:00:00.000Z',
+		id = 'trial',
+	) => ({
+		id,
+		userId: 'user-id',
+		subscriptionId: 4,
+		state,
+		createDate: '2026-01-01T00:00:00.000Z',
+		endDate,
+	});
+	const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	const paths = () =>
+		jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname);
+	it('performs two profile GETs and one mutation, preserves session and never modifies other subscriptions', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		expectedProfileFetchCalls = 3;
+		const other = { ...trial(), id: 'other', subscriptionId: 7, state: 'inactive' };
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json({ ...before, subscriptions: [other] }))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(
+				json({ ...before, userRoles: undefined, subscriptions: [other, trial()] }),
+			);
+		expect(startOwnSettingsTrial.length).toBe(0);
+		expect(
+			await Reflect.apply(startOwnSettingsTrial, null, [
+				{ userId: 'foreign', duration: 100, accessToken: 'foreign' },
+			]),
+		).toEqual({ status: 'success' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/trial', '/auth/profile']);
+		for (const [url, options] of jest.mocked(globalThis.fetch).mock.calls) {
+			expect(options?.method ?? 'GET').toBe('GET');
+			expect(options?.cache).toBe('no-store');
+			expect(options?.body).toBeUndefined();
+			if ((url as URL).pathname === '/subscriptions/trial') expect((url as URL).search).toBe('');
+		}
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it.each([0, 3601, 7201])(
+		'rejects guest/expired session before any request at %s',
+		async (seconds) => {
+			if (seconds) {
+				await setup();
+				jest.setSystemTime((now + seconds) * 1000);
+			}
+			expect(await startOwnSettingsTrial()).toEqual({
+				status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+			});
+			expect(globalThis.fetch).not.toHaveBeenCalled();
+		},
+	);
+	it.each([
+		{ patch: { id: 'other' }, expected: 'error' },
+		{ patch: { isVerified: false }, expected: 'verification-required' },
+		{ patch: { userRoles: [{ id: 2, name: 'candidate-premium' }] }, expected: 'not-eligible' },
+		{ patch: { userRoles: undefined }, expected: 'not-eligible' },
+		{ patch: { userRoles: [{}] }, expected: 'error' },
+		...['active', 'inactive', 'canceled', 'pending_payment'].map((state) => ({
+			patch: { subscriptions: [trial(state)] },
+			expected: 'not-eligible',
+		})),
+	])('uses fresh eligibility instead of stale page props %#', async ({ patch, expected }) => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(json({ ...before, ...patch }));
+		expect(await startOwnSettingsTrial()).toEqual({ status: expected });
+		expect(paths()).toEqual(['/auth/profile']);
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([
+		[401, 'unauthenticated'],
+		[403, 'forbidden'],
+		[500, 'error'],
+	] as const)('does not mutate after pre-read HTTP %s', async (status, expected) => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValue(json({}, status));
+		expect(await startOwnSettingsTrial()).toEqual({ status: expected });
+	});
+	it.each([
+		[401, 'unauthenticated'],
+		[403, 'forbidden'],
+		[404, 'error'],
+		[409, 'conflict'],
+		[500, 'outcome-unknown'],
+	] as const)('does not retry mutation HTTP %s', async (status, expected) => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status }));
+		expect(await startOwnSettingsTrial()).toEqual({ status: expected });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/trial']);
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('does not retry an unknown network outcome', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockRejectedValueOnce(new Error('Private connection failure'));
+		expect(await startOwnSettingsTrial()).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/trial']);
+	});
+	it('bounds a hanging mutation without retry or readback', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		let dispatched!: () => void;
+		const started = new Promise<void>((resolve) => {
+			dispatched = resolve;
+		});
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockImplementationOnce(() => {
+				dispatched();
+				return new Promise(() => {});
+			});
+		const result = startOwnSettingsTrial();
+		await started;
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await result).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/trial']);
+	});
+	it.each([
+		{ ...before, subscriptions: [] },
+		{ ...before, id: 'other', subscriptions: [trial()] },
+		{ ...before, subscriptions: [trial('inactive')] },
+		{ ...before, subscriptions: [trial('active', null)] },
+		{ ...before, subscriptions: [trial('active', '2020-01-01T00:00:00Z')] },
+		{ ...before, subscriptions: [trial('active', 'invalid')] },
+		{ ...before, subscriptions: [trial(), trial('canceled', '2030-01-01T00:00:00Z', 'duplicate')] },
+	])('returns incomplete rather than retrying an unconfirmed readback %#', async (after) => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(json(after));
+		expect(await startOwnSettingsTrial()).toEqual({ status: 'incomplete' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/trial', '/auth/profile']);
+	});
+	it.each([3601, 7201])(
+		'rechecks credential/deadline expiry after pre-read at +%s',
+		async (seconds) => {
+			await setup();
+			expectedProfileFetchCalls = 1;
+			jest.mocked(globalThis.fetch).mockImplementationOnce(() => {
+				jest.setSystemTime((now + seconds) * 1000);
+				return Promise.resolve(json(before));
+			});
+			expect(await startOwnSettingsTrial()).toEqual({
+				status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+			});
+			expect(paths()).toEqual(['/auth/profile']);
+		},
+	);
+});
+
+it.each([401, 403, 500])(
+	'keeps trial HTTP 200 followed by readback HTTP %s incomplete without replay',
+	async (status) => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expectedProfileFetchCalls = 3;
+		const before = {
+			id: 'user-id',
+			username: 'Backend',
+			email: null,
+			isVerified: true,
+			userRoles: [],
+			profiles: [],
+			subscriptions: [],
+		};
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(before)))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(new Response('{}', { status }));
+		expect(await startOwnSettingsTrial()).toEqual({ status: 'incomplete' });
+		expect(jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname)).toEqual([
+			'/auth/profile',
+			'/subscriptions/trial',
+			'/auth/profile',
+		]);
+		expect(cookieWrites).toHaveLength(0);
+	},
+);
+
+describe('payment initialization server boundary', () => {
+	afterEach(() => expect(cookieWrites).toHaveLength(0));
+	const input = {
+		tariffId: 2,
+		email: 'client+receipt@example.invalid',
+		isOfferAgreed: true,
+		isConsentAgreed: true,
+	};
+	const before = {
+		id: 'user-id',
+		email: 'server@example.invalid',
+		isVerified: true,
+		userRoles: [],
+		profiles: [],
+		subscriptions: [],
+	};
+	const flag = (enabled = true, roles: string[] = []) => ({
+		data: [{ flag: 'dashboard.subscription.show-tariffs', clientType: 'WEB', enabled, roles }],
+		page: 1,
+		limit: 10,
+		total: 1,
+	});
+	const tariff = (id = 2, code = 'month', isActive = true) => ({
+		id,
+		code,
+		isActive,
+		finalPrice: 800,
+		pricePerMonth: 800,
+		discount: 0,
+		monthPeriod: 1,
+	});
+	const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status });
+	const paths = () =>
+		jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname);
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	const mockReads = (profileData: unknown = before, flagData = flag(), tariffs = [tariff()]) => {
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(flagData))
+			.mockResolvedValueOnce(json(profileData))
+			.mockResolvedValueOnce(json(tariffs));
+	};
+	it.each(['month', 'quarter', 'year'])(
+		'initializes %s once with fresh data and keeps credentials server-only',
+		async (code) => {
+			const cookie = await setup();
+			const original = await decodeSession(cookie);
+			expectedProfileFetchCalls = 4;
+			mockReads(before, flag(), [tariff(2, code)]);
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValueOnce(new Response('https://securepay.tinkoff.ru/new/synthetic'));
+			expect(await initializeOwnSettingsPayment(input)).toEqual({
+				status: 'success',
+				paymentUrl: 'https://securepay.tinkoff.ru/new/synthetic',
+			});
+			expect(paths()).toEqual([
+				'/feature-flags',
+				'/auth/profile',
+				'/subscriptions',
+				'/subscriptions/2/payment/init',
+			]);
+			const [url, options] = jest.mocked(globalThis.fetch).mock.calls[3];
+			expect((url as URL).searchParams.get('email')).toBe('server@example.invalid');
+			expect(options?.headers).toEqual({ Authorization: `Bearer ${token(now + 3600)}` });
+			expect(cookieWrites).toHaveLength(0);
+			expect((await decodeSession(cookie))?.backendSession).toEqual(original?.backendSession);
+		},
+	);
+	it.each(['guest', 'expired', 'deadline', 'identity', 'cookie'])(
+		'rejects %s before backend calls',
+		async (kind) => {
+			if (kind !== 'guest') {
+				const cookie = await setup();
+				if (kind === 'expired') jest.setSystemTime((now + 3601) * 1000);
+				if (kind === 'deadline') jest.setSystemTime((now + 7201) * 1000);
+				if (kind === 'cookie') requestHeaders.set('cookie', 'damaged-cookie-value');
+				if (kind === 'identity') {
+					const decoded = await decodeSession(cookie);
+					const value = await encode({
+						secret: process.env.AUTH_SECRET!,
+						salt: sessionCookieName,
+						token: { ...decoded, sub: 'other' },
+					});
+					requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+				}
+			}
+			expect(await initializeOwnSettingsPayment(input)).toEqual({
+				status: kind === 'expired' ? 'refresh-required' : 'unauthenticated',
+			});
+		},
+	);
+	it.each([
+		{ ...input, tariffId: '2' },
+		{ ...input, isOfferAgreed: false },
+		{ ...input, isConsentAgreed: false },
+		{ ...input, email: 'invalid' },
+		{ ...input, userId: 'other' },
+	])('rejects malformed input without any backend request %#', async (value) => {
+		await setup();
+		expect(await initializeOwnSettingsPayment(value as typeof input)).toEqual({
+			status: 'invalid-input',
+		});
+	});
+	it.each([
+		{ patch: { id: 'other' }, status: 'error' },
+		{ patch: { isVerified: false }, status: 'verification-required' },
+	])('rejects invalid fresh profile %#', async ({ patch, status }) => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(flag()))
+			.mockResolvedValueOnce(json({ ...before, ...patch }));
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status });
+	});
+	it.each([flag(false), flag(true, ['admin']), { data: [], page: 1, limit: 10, total: 0 }, {}])(
+		'fails closed for gate %#',
+		async (value) => {
+			await setup();
+			expectedProfileFetchCalls = 2;
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValueOnce(json(value))
+				.mockResolvedValueOnce(json(before));
+			expect(await initializeOwnSettingsPayment(input)).toEqual({ status: 'not-available' });
+		},
+	);
+	it.each([
+		{ tariffs: [tariff(7)] },
+		{ tariffs: [tariff(2, 'month', false)] },
+		{ tariffs: [tariff(2, 'free')] },
+		{ tariffs: [tariff(2, 'trial')] },
+	])('rejects unavailable tariff %#', async ({ tariffs }) => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		mockReads(before, flag(), tariffs);
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status: 'not-available' });
+	});
+	it('uses the submitted receipt email when the server email is absent', async () => {
+		await setup();
+		expectedProfileFetchCalls = 4;
+		mockReads({ ...before, email: null });
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response('https://securepay.tinkoff.ru/new/synthetic'));
+		expect((await initializeOwnSettingsPayment(input)).status).toBe('success');
+		expect((jest.mocked(globalThis.fetch).mock.calls[3][0] as URL).search).toBe(
+			'?email=client%2Breceipt%40example.invalid',
+		);
+	});
+	it.each([3601, 7201])('rechecks deadlines immediately before Init +%s', async (seconds) => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(flag()))
+			.mockResolvedValueOnce(json(before))
+			.mockImplementationOnce(() => {
+				jest.setSystemTime((now + seconds) * 1000);
+				return Promise.resolve(json([tariff()]));
+			});
+		expect(await initializeOwnSettingsPayment(input)).toEqual({
+			status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+		});
+	});
+	it.each([
+		[400, 'error'],
+		[401, 'unauthenticated'],
+		[403, 'forbidden'],
+		[404, 'not-available'],
+		[409, 'conflict'],
+		[500, 'outcome-unknown'],
+	] as const)('does not replay Init after HTTP %s', async (status, expected) => {
+		await setup();
+		expectedProfileFetchCalls = 4;
+		mockReads();
+		jest.mocked(globalThis.fetch).mockResolvedValueOnce(new Response(null, { status }));
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status: expected });
+		expect(paths().filter((path) => path.endsWith('/payment/init'))).toHaveLength(1);
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([401, 403, 500])('does not initialize after profile HTTP %s', async (status) => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(flag()))
+			.mockResolvedValueOnce(json({}, status));
+		expect(await initializeOwnSettingsPayment(input)).toEqual({
+			status: status === 401 ? 'unauthenticated' : status === 403 ? 'forbidden' : 'error',
+		});
+	});
+	it('does not initialize after malformed catalog or invalid server email', async () => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		mockReads(before, flag(), [{ ...tariff(), finalPrice: -1 }]);
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status: 'error' });
+		jest.mocked(globalThis.fetch).mockClear();
+		mockReads({ ...before, email: 'invalid' });
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status: 'invalid-input' });
+	});
+	it('does not retry a network failure after Init dispatch', async () => {
+		await setup();
+		expectedProfileFetchCalls = 4;
+		mockReads();
+		jest.mocked(globalThis.fetch).mockRejectedValueOnce(new Error('Private connection failure'));
+		expect(await initializeOwnSettingsPayment(input)).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual([
+			'/feature-flags',
+			'/auth/profile',
+			'/subscriptions',
+			'/subscriptions/2/payment/init',
+		]);
+	});
+	it('does not replay or read back a hanging Init after 45 seconds', async () => {
+		await setup();
+		expectedProfileFetchCalls = 4;
+		mockReads();
+		let dispatch!: () => void;
+		const started = new Promise<void>((resolve) => {
+			dispatch = resolve;
+		});
+		jest.mocked(globalThis.fetch).mockImplementationOnce(() => {
+			dispatch();
+			return new Promise(() => {});
+		});
+		const result = initializeOwnSettingsPayment(input);
+		await started;
+		await jest.advanceTimersByTimeAsync(45000);
+		expect(await result).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual([
+			'/feature-flags',
+			'/auth/profile',
+			'/subscriptions',
+			'/subscriptions/2/payment/init',
+		]);
+	});
+	it('does not add subscription or active-profile restrictions or mutate trial independently', async () => {
+		await setup();
+		expectedProfileFetchCalls = 4;
+		const data = {
+			...before,
+			subscriptions: [
+				{
+					id: 'synthetic-trial',
+					userId: 'user-id',
+					subscriptionId: 4,
+					state: 'active',
+					createDate: '2026-01-01T00:00:00Z',
+					endDate: '2030-01-01T00:00:00Z',
+				},
+			],
+		};
+		mockReads(data);
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response('https://securepay.tinkoff.ru/new/synthetic'));
+		expect((await initializeOwnSettingsPayment(input)).status).toBe('success');
+		expect(paths()).toEqual([
+			'/feature-flags',
+			'/auth/profile',
+			'/subscriptions',
+			'/subscriptions/2/payment/init',
+		]);
+	});
+});
+
+describe('subscription cancellation server boundary', () => {
+	const id = '22222222-2222-4222-8222-222222222222';
+	const otherId = '33333333-3333-4333-8333-333333333333';
+	const subscription = {
+		id,
+		userId: 'user-id',
+		subscriptionId: 2,
+		state: 'active',
+		createDate: '2026-02-01T00:00:00Z',
+		endDate: '2030-04-01T00:00:00Z',
+	};
+	const before = {
+		id: 'user-id',
+		email: 'synthetic@example.invalid',
+		isVerified: true,
+		profiles: [],
+		subscriptions: [subscription],
+	};
+	const after = { ...before, subscriptions: [{ ...subscription, state: 'canceled' }] };
+	const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
+	const paths = () =>
+		jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname);
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	afterEach(() => expect(cookieWrites).toHaveLength(0));
+	it('cancels the displayed subscription, ignores newer pending_payment, confirms readback and preserves session', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		expectedProfileFetchCalls = 3;
+		const pending = {
+			...subscription,
+			id: otherId,
+			subscriptionId: 3,
+			state: 'pending_payment',
+			createDate: '2029-01-01T00:00:00Z',
+			endDate: null,
+		};
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json({ ...before, subscriptions: [pending, subscription] }))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(json({ ...after, subscriptions: [pending, ...after.subscriptions] }));
+		const result = await cancelOwnSettingsSubscription(id);
+		expect(result).toMatchObject({
+			status: 'success',
+			subscription: { state: 'canceled', daysInCreationMonth: 28, endDateLabel: '1 апреля 2030' },
+		});
+		expect(Object.keys(result).sort()).toEqual(['status', 'subscription']);
+		if (result.status === 'success')
+			expect(Object.keys(result.subscription).sort()).toEqual([
+				'daysInCreationMonth',
+				'daysLeft',
+				'endDateLabel',
+				'state',
+			]);
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users', '/auth/profile']);
+		const [, options] = jest.mocked(globalThis.fetch).mock.calls[1];
+		expect(options?.method).toBe('DELETE');
+		expect(JSON.parse(options!.body as string)).toEqual({ userId: 'user-id', subscriptionId: 2 });
+		expect(options?.headers).toMatchObject({ Authorization: `Bearer ${token(now + 3600)}` });
+		expect((await decodeSession(cookie))?.backendSession).toEqual(original?.backendSession);
+	});
+	it.each(['guest', 'expired', 'deadline', 'identity', 'cookie'])(
+		'rejects %s without backend requests',
+		async (kind) => {
+			if (kind !== 'guest') {
+				const cookie = await setup();
+				if (kind === 'expired') jest.setSystemTime((now + 3601) * 1000);
+				if (kind === 'deadline') jest.setSystemTime((now + 7201) * 1000);
+				if (kind === 'cookie') requestHeaders.set('cookie', 'damaged-cookie-value');
+				if (kind === 'identity') {
+					const decoded = await decodeSession(cookie);
+					const value = await encode({
+						secret: process.env.AUTH_SECRET!,
+						salt: sessionCookieName,
+						token: { ...decoded, sub: 'other' },
+					});
+					requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+				}
+			}
+			expect(await cancelOwnSettingsSubscription(id)).toEqual({
+				status: kind === 'expired' ? 'refresh-required' : 'unauthenticated',
+			});
+		},
+	);
+	it.each([null, 2, '', 'invalid', '22222222-2222-4222-8222-22222222222Z'])(
+		'rejects invalid expected UUID before backend %#',
+		async (value) => {
+			await setup();
+			expect(await cancelOwnSettingsSubscription(value as string)).toEqual({
+				status: 'invalid-input',
+			});
+		},
+	);
+	it.each([
+		{ value: { ...before, id: 'other' }, status: 'error' },
+		{ value: { ...before, isVerified: false }, status: 'verification-required' },
+		{ value: { ...before, subscriptions: [] }, status: 'not-available' },
+		{ value: after, status: 'not-available' },
+		{
+			value: { ...before, subscriptions: [{ ...subscription, endDate: '2020-01-01T00:00:00Z' }] },
+			status: 'not-available',
+		},
+		{
+			value: { ...before, subscriptions: [{ ...subscription, endDate: null }] },
+			status: 'not-available',
+		},
+		{
+			value: { ...before, subscriptions: [{ ...subscription, state: 'pending_payment' }] },
+			status: 'not-available',
+		},
+		{ value: { ...before, subscriptions: [{ ...subscription, id: otherId }] }, status: 'conflict' },
+		{
+			value: {
+				...before,
+				subscriptions: [{ ...subscription, state: 'canceled', id: otherId }, subscription],
+			},
+			status: 'not-available',
+		},
+	])('rejects unsafe fresh snapshot %# with zero DELETE', async ({ value, status }) => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValueOnce(json(value));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status });
+		expect(paths()).toEqual(['/auth/profile']);
+	});
+	it.each([3601, 7201])('rechecks credentials and deadline after snapshot +%s', async (seconds) => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockImplementationOnce(() => {
+			jest.setSystemTime((now + seconds) * 1000);
+			return Promise.resolve(json(before));
+		});
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({
+			status: seconds === 3601 ? 'refresh-required' : 'unauthenticated',
+		});
+	});
+	it.each([
+		[400, 'error'],
+		[401, 'unauthenticated'],
+		[403, 'forbidden'],
+		[404, 'not-available'],
+		[409, 'conflict'],
+		[500, 'outcome-unknown'],
+		[204, 'outcome-unknown'],
+	] as const)('does not read back or retry DELETE HTTP %s', async (status, expected) => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status }));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status: expected });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users']);
+	});
+	it.each([
+		{ ...after, id: 'other' },
+		{ ...after, subscriptions: [] },
+		before,
+		{ ...after, subscriptions: [{ ...after.subscriptions[0], id: otherId }] },
+		{ ...after, subscriptions: [{ ...after.subscriptions[0], subscriptionId: 3 }] },
+		{ ...after, subscriptions: [{ ...after.subscriptions[0], endDate: '2031-01-01T00:00:00Z' }] },
+		{ ...after, subscriptions: [{ ...after.subscriptions[0], endDate: null }] },
+		{ ...after, subscriptions: [{ ...after.subscriptions[0], createDate: 'invalid' }] },
+	])('returns incomplete for contradictory readback %# without retry', async (value) => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(json(value));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status: 'incomplete' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users', '/auth/profile']);
+	});
+	it.each([401, 403, 500])('keeps failed readback HTTP %s incomplete', async (status) => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(json({}, status));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status: 'incomplete' });
+	});
+	it('keeps a lost DELETE response unknown with one mutation', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockRejectedValueOnce(new Error('Private failure'));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users']);
+	});
+	it('does not replay after the five-second DELETE timeout', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		let dispatch!: () => void;
+		const started = new Promise<void>((resolve) => {
+			dispatch = resolve;
+		});
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockImplementationOnce(() => {
+				dispatch();
+				return new Promise(() => {});
+			});
+		const result = cancelOwnSettingsSubscription(id);
+		await started;
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await result).toEqual({ status: 'outcome-unknown' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users']);
+	});
+	it.each([401, 403, 500])('refuses pre-read HTTP %s with zero DELETE', async (status) => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest.mocked(globalThis.fetch).mockResolvedValueOnce(json({}, status));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({
+			status: status === 401 ? 'unauthenticated' : status === 403 ? 'forbidden' : 'error',
+		});
+		expect(paths()).toEqual(['/auth/profile']);
+	});
+	it('returns incomplete for network failure during readback without replay', async () => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockRejectedValueOnce(new Error('Private readback failure'));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({ status: 'incomplete' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users', '/auth/profile']);
+	});
+	it('bounds a hanging readback and keeps HTTP 200 cancellation incomplete', async () => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		let dispatch!: () => void;
+		const started = new Promise<void>((resolve) => {
+			dispatch = resolve;
+		});
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json(before))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockImplementationOnce(() => {
+				dispatch();
+				return new Promise(() => {});
+			});
+		const result = cancelOwnSettingsSubscription(id);
+		await started;
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await result).toEqual({ status: 'incomplete' });
+		expect(paths()).toEqual(['/auth/profile', '/subscriptions/users', '/auth/profile']);
+	});
+	it('allows endDate equal to now and returns the existing zero-day projection', async () => {
+		await setup();
+		expectedProfileFetchCalls = 3;
+		const value = { ...subscription, endDate: new Date(now * 1000).toISOString() };
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(json({ ...before, subscriptions: [value] }))
+			.mockResolvedValueOnce(new Response(null, { status: 200 }))
+			.mockResolvedValueOnce(json({ ...before, subscriptions: [{ ...value, state: 'canceled' }] }));
+		expect(await cancelOwnSettingsSubscription(id)).toEqual({
+			status: 'success',
+			subscription: {
+				state: 'canceled',
+				daysLeft: 0,
+				daysInCreationMonth: 28,
+				endDateLabel: '15 января 2027',
+			},
+		});
 	});
 });

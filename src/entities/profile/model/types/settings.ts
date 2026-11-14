@@ -1,3 +1,5 @@
+import type { TariffGate } from '@/shared/config/index.server';
+
 export type SettingsSnapshot = {
 	userId: string;
 	username: string | null;
@@ -17,7 +19,7 @@ export type SettingsSnapshot = {
 	}[];
 };
 export type SettingsSnapshotResult =
-	| { status: 'success'; snapshot: SettingsSnapshot }
+	| { status: 'success'; snapshot: SettingsSnapshot; tariffGate?: TariffGate }
 	| {
 			status: 'unauthenticated' | 'refresh-required' | 'forbidden' | 'identity-mismatch' | 'error';
 	  };

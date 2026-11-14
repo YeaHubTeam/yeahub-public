@@ -1,11 +1,18 @@
+import type { ComponentProps } from 'react';
+
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider as IntlProvider } from 'next-intl';
 
 import header from '../../../../../public/locales/ru/header.json';
 import profile from '../../../../../public/locales/ru/profile.json';
+import subscription from '../../../../../public/locales/ru/subscription.json';
 import translation from '../../../../../public/locales/ru/translation.json';
 import user from '../../../../../public/locales/ru/user.json';
 import { SettingsShell } from '../index';
+
+const NextIntlClientProvider = (props: ComponentProps<typeof IntlProvider>) => (
+	<IntlProvider {...props} messages={{ subscription, translation, ...props.messages }} />
+);
 
 jest.mock('@/shared/assets/images/multyProfile.png', () => ({
 	src: '/multyProfile.png',
@@ -18,20 +25,28 @@ const localizedPush = jest.fn();
 const refresh = jest.fn();
 const replace = jest.fn();
 const signOut = jest.fn();
-jest.mock('next-auth/react', () => ({ signOut: (...args: unknown[]) => signOut(...args) }));
+let historyIdentity: string | null = 'history-owner';
+jest.mock('next-auth/react', () => ({
+	signOut: (...args: unknown[]) => signOut(...args),
+	useSession: () => ({
+		data: historyIdentity ? { user: { id: historyIdentity } } : null,
+		status: historyIdentity ? 'authenticated' : 'unauthenticated',
+	}),
+}));
 
+const settingsRouter = {
+	replace,
+	refresh,
+	push: (href: string) => {
+		push(href);
+		localizedPush(
+			jest.requireActual('@/shared/config/navigation').getPathname({ locale: 'ru', href }),
+		);
+	},
+};
 jest.mock('@/shared/config', () => ({
 	...jest.requireActual('@/shared/config'),
-	useRouter: () => ({
-		replace,
-		refresh,
-		push: (href: string) => {
-			push(href);
-			localizedPush(
-				jest.requireActual('@/shared/config/navigation').getPathname({ locale: 'ru', href }),
-			);
-		},
-	}),
+	useRouter: () => settingsRouter,
 }));
 
 const ids = ['select-tariff', 'change-password', 'email-verify', 'account'];
@@ -905,3 +920,506 @@ test('does not trigger sign-out or navigation from a late deletion response afte
 	expect(signOut).not.toHaveBeenCalled();
 	expect(replace).not.toHaveBeenCalled();
 });
+
+test('keeps tariff data across hash navigation without loading or mutating backend state', () => {
+	const originalFetch = globalThis.fetch;
+	const fetchSpy = jest.fn().mockRejectedValue(new Error('No requests allowed'));
+	globalThis.fetch = fetchSpy;
+	try {
+		render(
+			<NextIntlClientProvider locale="ru" messages={{ profile, header, subscription }}>
+				<SettingsShell
+					tariffData={{
+						catalog: {
+							status: 'success',
+							gate: { status: 'allowed', showTariffs: true },
+							tariffs: [
+								{
+									id: 1,
+									code: 'month',
+									finalPrice: 900,
+									pricePerMonth: 900,
+									discount: 0,
+									monthPeriod: 1,
+								},
+							],
+						},
+						canStartTrial: false,
+						currentSubscription: null,
+					}}
+				/>
+			</NextIntlClientProvider>,
+		);
+		expect(screen.getByRole('article', { name: '1 месяц' })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Подписаться' })).toBeDisabled();
+		fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+		expect(screen.queryByRole('article')).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+		expect(screen.getByRole('article', { name: '1 месяц' })).toBeInTheDocument();
+		expect(window.location.hash).toBe('#select-tariff');
+		expect(fetchSpy).not.toHaveBeenCalled();
+	} finally {
+		globalThis.fetch = originalFetch;
+	}
+});
+
+test('keeps payment pagination above hash panels, after the subscription, without repeating reads', async () => {
+	historyIdentity = 'history-owner';
+	const read = jest.fn().mockResolvedValue({
+		status: 'success',
+		page: 2,
+		limit: 5,
+		total: 6,
+		items: [{ dateLabel: 'Вторая страница', isConfirmed: false }],
+	});
+	const options = {
+		ownerId: 'history-owner',
+		initial: {
+			status: 'success' as const,
+			page: 1,
+			limit: 5 as const,
+			total: 6,
+			items: [{ dateLabel: 'Первая страница', isConfirmed: true }],
+		},
+		read,
+	};
+	render(
+		<NextIntlClientProvider locale="ru" messages={{ profile, header, subscription }}>
+			<SettingsShell
+				paymentHistory={options}
+				tariffData={{
+					catalog: { status: 'hidden', gate: { status: 'missing', showTariffs: false } },
+					canStartTrial: false,
+					currentSubscription: {
+						state: 'canceled',
+						daysLeft: 1,
+						daysInCreationMonth: 31,
+						endDateLabel: '1 февраля 2026',
+					},
+				}}
+			/>
+		</NextIntlClientProvider>,
+	);
+	expect(
+		screen
+			.getByText('Участник сообщества')
+			.compareDocumentPosition(screen.getByText('Ваши предыдущие платежи')) &
+			Node.DOCUMENT_POSITION_FOLLOWING,
+	).toBeTruthy();
+	fireEvent.click(screen.getByRole('button', { name: '2' }));
+	await waitFor(() => expect(screen.getByText('Вторая страница')).toBeInTheDocument());
+	fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+	expect(screen.queryByText('Вторая страница')).not.toBeInTheDocument();
+	fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+	expect(screen.getByText('Вторая страница')).toBeInTheDocument();
+	expect(read).toHaveBeenCalledTimes(1);
+	expect(read).toHaveBeenCalledWith(2);
+});
+
+const trialCatalog = {
+	status: 'success' as const,
+	gate: { status: 'allowed' as const, showTariffs: true as const },
+	tariffs: [
+		{ id: 1, code: 'free' as const, finalPrice: 0, pricePerMonth: 0, discount: 0, monthPeriod: 1 },
+	],
+};
+const trialShell = (
+	action: () => Promise<{ status: 'success' | 'outcome-unknown' }>,
+	emailActions = {
+		send: jest.fn().mockResolvedValue({ status: 'success' }),
+		read: jest.fn().mockResolvedValue({ status: 'success', isVerified: true }),
+	},
+	verified = true,
+	premium = false,
+) => (
+	<NextIntlClientProvider locale="ru" messages={{ profile, header, translation, subscription }}>
+		<SettingsShell
+			trialAction={action}
+			tariffData={{
+				catalog: trialCatalog,
+				canStartTrial: true,
+				currentSubscription: premium
+					? {
+							state: 'active',
+							daysLeft: 7,
+							daysInCreationMonth: 31,
+							endDateLabel: '1 февраля 2026',
+						}
+					: null,
+			}}
+			emailVerification={{
+				email: 'synthetic@example.invalid',
+				isVerified: verified,
+				actions: emailActions,
+			}}
+		/>
+	</NextIntlClientProvider>
+);
+test('preserves an unknown trial lock across hash panels and fresh same-identity props', async () => {
+	const action = jest.fn().mockResolvedValue({ status: 'outcome-unknown' });
+	const view = render(trialShell(action));
+	await act(async () => {
+		fireEvent.click(screen.getByRole('button', { name: 'Тест драйв 7 дней' }));
+		await Promise.resolve();
+	});
+	expect(screen.getByRole('alert')).toHaveTextContent('Failed to connect trial subscription');
+	fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+	view.rerender(trialShell(action));
+	const button = screen.getByRole('button', { name: 'Тест драйв 7 дней' });
+	expect(button).toBeDisabled();
+	fireEvent.click(button);
+	expect(action).toHaveBeenCalledTimes(1);
+});
+test('refreshes once after trial success and switches to premium when the refreshed props arrive', async () => {
+	window.history.replaceState({}, '', '/ru/settings#select-tariff');
+	const action = jest.fn().mockResolvedValue({ status: 'success' });
+	const oldCount = refresh.mock.calls.length;
+	const view = render(trialShell(action));
+	await act(async () => {
+		fireEvent.click(screen.getByRole('button', { name: 'Тест драйв 7 дней' }));
+		await Promise.resolve();
+	});
+	expect(screen.getByRole('status')).toHaveTextContent(
+		'You have successfully connected a trial subscription',
+	);
+	expect(refresh.mock.calls.length).toBe(oldCount + 1);
+	expect(window.location.hash).toBe('#select-tariff');
+	view.rerender(trialShell(action, undefined, true, true));
+	expect(screen.getByText('Участник сообщества')).toBeInTheDocument();
+	expect(screen.queryByRole('button', { name: 'Тест драйв 7 дней' })).not.toBeInTheDocument();
+	expect(action).toHaveBeenCalledTimes(1);
+	expect(refresh.mock.calls.length).toBe(oldCount + 1);
+});
+test('uses verified email from existing polling before allowing a trial mutation', async () => {
+	jest.useFakeTimers();
+	try {
+		const action = jest.fn().mockResolvedValue({ status: 'success' });
+		const email = {
+			send: jest.fn().mockResolvedValue({ status: 'success' }),
+			read: jest.fn().mockResolvedValue({ status: 'success', isVerified: true }),
+		};
+		render(trialShell(action, email, false));
+		fireEvent.click(screen.getByRole('button', { name: 'Тест драйв 7 дней' }));
+		expect(action).not.toHaveBeenCalled();
+		expect(localizedPush).toHaveBeenCalledWith('/ru/settings#email-verify');
+		fireEvent.click(screen.getByRole('tab', { name: 'Верификация' }));
+		await act(async () => {
+			fireEvent.click(screen.getByRole('button', { name: profile.email.verification.submit }));
+			await Promise.resolve();
+		});
+		await act(async () => {
+			await jest.advanceTimersByTimeAsync(5000);
+		});
+		expect(email.read).toHaveBeenCalledTimes(1);
+		fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+		await act(async () => {
+			fireEvent.click(screen.getByRole('button', { name: 'Тест драйв 7 дней' }));
+			await Promise.resolve();
+		});
+		expect(action).toHaveBeenCalledTimes(1);
+	} finally {
+		jest.useRealTimers();
+	}
+});
+
+jest.mock('next/navigation', () => ({
+	...jest.requireActual('next/navigation'),
+	usePathname: () => '/ru/settings',
+	useRouter: () => settingsRouter,
+}));
+
+const checkoutShell = (
+	paymentAction: NonNullable<Parameters<typeof SettingsShell>[0]['paymentAction']>,
+	trialAction = jest.fn(),
+	verified = true,
+	overrides: Partial<ComponentProps<typeof SettingsShell>> = {},
+) => (
+	<NextIntlClientProvider locale="ru" messages={{ profile, header, translation, subscription }}>
+		<SettingsShell
+			paymentAction={paymentAction}
+			trialAction={trialAction}
+			tariffData={{
+				catalog: {
+					...trialCatalog,
+					tariffs: [
+						...trialCatalog.tariffs,
+						{
+							id: 2,
+							code: 'month',
+							finalPrice: 800,
+							pricePerMonth: 800,
+							discount: 0,
+							monthPeriod: 1,
+						},
+					],
+				},
+				canStartTrial: true,
+				currentSubscription: null,
+			}}
+			emailVerification={{
+				email: 'synthetic@example.invalid',
+				isVerified: verified,
+				actions: {
+					send: jest.fn().mockResolvedValue({ status: 'success' }),
+					read: jest.fn().mockResolvedValue({ status: 'success', isVerified: true }),
+				},
+			}}
+			{...overrides}
+		/>
+	</NextIntlClientProvider>
+);
+test('keeps the checkout draft and terminal gate above hash panels and refreshed props', async () => {
+	const action = jest.fn().mockResolvedValue({ status: 'conflict' });
+	const trial = jest.fn();
+	const view = render(checkoutShell(action, trial));
+	fireEvent.click(screen.getByRole('button', { name: 'Подписаться' }));
+	expect(action).not.toHaveBeenCalled();
+	screen.getAllByRole('checkbox').forEach((checkbox) => fireEvent.click(checkbox));
+	fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Подписаться' }));
+	expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось подключить подписку');
+	fireEvent.click(screen.getByRole('button', { name: 'Закрыть модальное окно' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+	view.rerender(checkoutShell(action, trial));
+	expect(screen.getByRole('button', { name: 'Тест драйв 7 дней' })).toBeDisabled();
+	expect(screen.getByRole('button', { name: 'Подписаться' })).toBeDisabled();
+	expect(action).toHaveBeenCalledTimes(1);
+	expect(trial).not.toHaveBeenCalled();
+	expect(window.location.hash).toBe('#select-tariff');
+});
+test('uses verification confirmed by the existing polling before checkout', async () => {
+	jest.useFakeTimers();
+	try {
+		const action = jest.fn().mockResolvedValue({ status: 'forbidden' });
+		render(checkoutShell(action, jest.fn(), false));
+		fireEvent.click(screen.getByRole('tab', { name: 'Верификация' }));
+		fireEvent.click(screen.getByRole('button', { name: profile.email.verification.submit }));
+		await act(async () => {
+			await Promise.resolve();
+		});
+		await act(async () => {
+			await jest.advanceTimersByTimeAsync(5000);
+		});
+		fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+		fireEvent.click(screen.getByRole('button', { name: 'Подписаться' }));
+		screen.getAllByRole('checkbox').forEach((checkbox) => fireEvent.click(checkbox));
+		await act(async () => {
+			fireEvent.click(
+				within(screen.getByRole('dialog')).getByRole('button', { name: 'Подписаться' }),
+			);
+			await Promise.resolve();
+		});
+		expect(action).toHaveBeenCalledTimes(1);
+	} finally {
+		jest.useRealTimers();
+	}
+});
+
+const cancellationId = '22222222-2222-4222-8222-222222222222';
+const cancellationView = {
+	state: 'active' as const,
+	daysLeft: 7,
+	daysInCreationMonth: 31,
+	endDateLabel: '1 февраля 2030',
+};
+const cancellationSuccess = {
+	status: 'success' as const,
+	subscription: { ...cancellationView, state: 'canceled' as const },
+};
+const cancellationShell = (
+	action: NonNullable<Parameters<typeof SettingsShell>[0]['cancelAction']>,
+	options: NonNullable<Parameters<typeof SettingsShell>[0]['paymentHistory']>,
+	state: 'active' | 'canceled' = 'active',
+) => (
+	<NextIntlClientProvider locale="ru" messages={{ profile, header, subscription, translation }}>
+		<SettingsShell
+			cancelAction={action}
+			cancelSubscriptionId={cancellationId}
+			paymentHistory={options}
+			tariffData={{
+				catalog: { status: 'hidden', gate: { status: 'missing', showTariffs: false } },
+				canStartTrial: false,
+				currentSubscription: { ...cancellationView, state },
+			}}
+		/>
+	</NextIntlClientProvider>
+);
+const cancellationHistory = () => {
+	const read = jest.fn().mockResolvedValue({
+		status: 'success',
+		items: [{ dateLabel: 'Вторая страница отмены', isConfirmed: true }],
+		page: 2,
+		limit: 5,
+		total: 6,
+	});
+	return {
+		ownerId: 'history-owner',
+		initial: {
+			status: 'success' as const,
+			items: [{ dateLabel: 'Первая страница отмены', isConfirmed: false }],
+			page: 1,
+			limit: 5 as const,
+			total: 6,
+		},
+		read,
+	};
+};
+test('preserves payment page through cancellation, automatic RSC props and hash navigation without refresh', async () => {
+	historyIdentity = 'history-owner';
+	let resolve!: (value: typeof cancellationSuccess) => void;
+	const action = jest.fn().mockReturnValue(
+		new Promise((done) => {
+			resolve = done;
+		}),
+	);
+	const options = cancellationHistory();
+	const originalRefreshes = refresh.mock.calls.length;
+	const view = render(cancellationShell(action, options));
+	fireEvent.click(screen.getByRole('button', { name: '2' }));
+	await screen.findByText('Вторая страница отмены');
+	fireEvent.click(screen.getByRole('button', { name: 'Отменить подписку' }));
+	expect(action).not.toHaveBeenCalled();
+	fireEvent.click(screen.getByRole('button', { name: 'Да' }));
+	expect(action).toHaveBeenCalledTimes(1);
+	expect(action).toHaveBeenCalledWith(cancellationId);
+	// The Action's revalidatePath can deliver new props before its Promise resolves.
+	view.rerender(
+		cancellationShell(action, { ...options, initial: { ...options.initial } }, 'canceled'),
+	);
+	expect(screen.getByText('Вторая страница отмены')).toBeInTheDocument();
+	fireEvent.click(screen.getByRole('button', { name: 'Нет' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+	expect(screen.getByText('Вторая страница отмены')).toBeInTheDocument();
+	await act(async () => {
+		resolve(cancellationSuccess);
+		await Promise.resolve();
+	});
+	expect(screen.getByRole('status')).toHaveTextContent('Подписка отключена');
+	expect(
+		screen.getByText('Вы отменили подписку. Полный доступ сохранится до 1 февраля 2030.'),
+	).toBeInTheDocument();
+	expect(screen.getByText('Осталось 7 дней')).toBeInTheDocument();
+	expect(screen.queryByRole('button', { name: 'Отменить подписку' })).not.toBeInTheDocument();
+	view.rerender(cancellationShell(action, { ...options, initial: { ...options.initial } }));
+	expect(screen.getByText('Вторая страница отмены')).toBeInTheDocument();
+	expect(screen.queryByRole('button', { name: 'Отменить подписку' })).not.toBeInTheDocument();
+	expect(options.read).toHaveBeenCalledTimes(1);
+	expect(refresh).toHaveBeenCalledTimes(originalRefreshes);
+	expect(window.location.hash).toBe('#select-tariff');
+});
+test('keeps cancellation blocked through same-identity fresh props and hash panels after an unknown outcome', async () => {
+	const action = jest.fn().mockResolvedValue({ status: 'outcome-unknown' });
+	const options = cancellationHistory();
+	const view = render(cancellationShell(action, options));
+	fireEvent.click(screen.getByRole('button', { name: 'Отменить подписку' }));
+	fireEvent.click(screen.getByRole('button', { name: 'Да' }));
+	expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось отключить подписку');
+	fireEvent.click(screen.getByRole('button', { name: 'Нет' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Аккаунт' }));
+	fireEvent.click(screen.getByRole('tab', { name: 'Выбрать тариф' }));
+	view.rerender(cancellationShell(action, { ...options }));
+	expect(screen.getByRole('button', { name: 'Отменить подписку' })).toBeDisabled();
+	expect(action).toHaveBeenCalledTimes(1);
+});
+test.each([false, true])(
+	'accepts fresh premium history after blocked checkout (existing history: %s)',
+	async (hasHistory) => {
+		historyIdentity = 'history-owner';
+		const action = jest.fn().mockResolvedValue({ status: 'outcome-unknown' });
+		const trial = jest.fn();
+		const options = cancellationHistory();
+		const premium = {
+			catalog: {
+				status: 'hidden' as const,
+				gate: { status: 'missing' as const, showTariffs: false as const },
+			},
+			canStartTrial: false,
+			currentSubscription: cancellationView,
+		};
+		const view = render(checkoutShell(action, trial));
+		fireEvent.click(screen.getByRole('button', { name: 'Подписаться' }));
+		if (hasHistory) {
+			view.rerender(
+				checkoutShell(action, trial, true, { tariffData: premium, paymentHistory: options }),
+			);
+			expect(screen.getByText('Первая страница отмены')).toBeInTheDocument();
+		}
+		screen.getAllByRole('checkbox').forEach((checkbox) => fireEvent.click(checkbox));
+		fireEvent.click(
+			within(screen.getByRole('dialog')).getByRole('button', { name: 'Подписаться' }),
+		);
+		expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось подключить подписку');
+		fireEvent.click(screen.getByRole('button', { name: 'Закрыть модальное окно' }));
+		const updated = {
+			...options,
+			initial: {
+				...options.initial,
+				items: [{ dateLabel: 'Новая серверная история', isConfirmed: true }],
+			},
+		};
+		view.rerender(
+			checkoutShell(action, trial, true, {
+				tariffData: premium,
+				paymentHistory: updated,
+				cancelAction: jest.fn(),
+				cancelSubscriptionId: cancellationId,
+			}),
+		);
+		expect(screen.getByText('Новая серверная история')).toBeInTheDocument();
+		expect(screen.queryByText('Первая страница отмены')).not.toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Отменить подписку' })).toBeDisabled();
+		expect(action).toHaveBeenCalledTimes(1);
+		expect(trial).not.toHaveBeenCalled();
+		expect(options.read).not.toHaveBeenCalled();
+		historyIdentity = 'another-history-owner';
+		view.rerender(
+			checkoutShell(action, trial, true, {
+				tariffData: premium,
+				paymentHistory: updated,
+				cancelAction: jest.fn(),
+				cancelSubscriptionId: cancellationId,
+			}),
+		);
+		expect(screen.queryByText('Новая серверная история')).not.toBeInTheDocument();
+		historyIdentity = 'history-owner';
+	},
+);
+test('keeps the existing history reset for ordinary RSC updates outside cancellation', async () => {
+	const action = jest.fn();
+	const options = cancellationHistory();
+	const view = render(cancellationShell(action, options));
+	fireEvent.click(screen.getByRole('button', { name: '2' }));
+	await screen.findByText('Вторая страница отмены');
+	view.rerender(cancellationShell(action, { ...options, initial: { ...options.initial } }));
+	expect(screen.queryByText('Вторая страница отмены')).not.toBeInTheDocument();
+	expect(screen.getByText('Первая страница отмены')).toBeInTheDocument();
+	expect(action).not.toHaveBeenCalled();
+});
+
+test.each(['account', 'email-verify'])(
+	'follows a native membership hash transition from #%s and browser Back/Forward',
+	async (hash) => {
+		window.history.replaceState(null, '', `/ru/settings#${hash}`);
+		const originalFetch = globalThis.fetch;
+		const backend = jest.fn();
+		globalThis.fetch = backend;
+		try {
+			mount();
+			selected(hash === 'account' ? 3 : 2);
+			// Header's same-document membership navigation uses this native hash assignment.
+			act(() => {
+				window.location.hash = '#select-tariff';
+			});
+			await waitFor(() => selected(0));
+			act(() => window.history.back());
+			await waitFor(() => selected(hash === 'account' ? 3 : 2));
+			act(() => window.history.forward());
+			await waitFor(() => selected(0));
+			expect(backend).not.toHaveBeenCalled();
+		} finally {
+			globalThis.fetch = originalFetch;
+		}
+	},
+);

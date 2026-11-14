@@ -402,3 +402,40 @@ it.each([
 	reply({ ...body(), ...data });
 	expect(await readSettingsSnapshot(credentials, config)).toEqual({ status: 'error' });
 });
+
+it.each([
+	{ roles: [], userRoles: [], expected: 'allowed' },
+	{ roles: ['candidate'], userRoles: [{ id: 1, name: 'candidate' }], expected: 'allowed' },
+	{ roles: ['admin'], userRoles: [{ id: 1, name: 'candidate-premium' }], expected: 'role-denied' },
+	{ roles: ['candidate'], userRoles: undefined, expected: 'unavailable' },
+])(
+	'evaluates the optional page gate from trusted roles without changing ordinary reads %#',
+	async ({ roles, userRoles, expected }) => {
+		reply({ ...body(), userRoles });
+		const result = await readSettingsSnapshot(credentials, config, {
+			status: 'success',
+			enabled: true,
+			roles,
+		});
+		expect(result).toMatchObject({
+			status: 'success',
+			tariffGate: { status: expected, showTariffs: expected === 'allowed' },
+		});
+		expect(result).not.toHaveProperty('roles');
+		expect(result).not.toHaveProperty('snapshot.userRoles');
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+		reply(body());
+		expect(await readSettingsSnapshot(credentials, config)).not.toHaveProperty('tariffGate');
+		expect(fetchSpy).toHaveBeenCalledTimes(2);
+	},
+);
+it('keeps identity checking ahead of the page gate', async () => {
+	reply({ ...body(), id: 'other' });
+	expect(
+		await readSettingsSnapshot(credentials, config, {
+			status: 'success',
+			enabled: true,
+			roles: [],
+		}),
+	).toEqual({ status: 'identity-mismatch' });
+});

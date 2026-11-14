@@ -1,0 +1,13 @@
+.modal {
+	width: 553px;
+}
+
+.description {
+	margin-bottom: 20px;
+}
+
+@media (width < 480px) {
+	.modal {
+		width: calc(100vw - 40px);
+	}
+}
