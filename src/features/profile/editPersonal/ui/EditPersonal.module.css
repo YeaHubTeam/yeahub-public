@@ -26,6 +26,32 @@
 	max-width: 100%;
 }
 
+.specialization-link {
+	display: flex;
+	align-items: center;
+	align-self: flex-start;
+	max-width: 100%;
+	height: 24px;
+	color: var(--color-purple-700);
+	font-weight: var(--font-weight-600);
+	font-size: var(--font-size-p-m);
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-purple-800);
+		outline-offset: 2px;
+		color: var(--color-purple-800);
+	}
+
+	&:active {
+		color: var(--color-purple-800);
+		text-decoration: underline;
+	}
+}
+
 @media (width < 1024px) {
 	.section {
 		flex-flow: column wrap;

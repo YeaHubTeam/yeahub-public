@@ -43,7 +43,12 @@ it('does not trim username, city or social values and allows empty city', async 
 	const result: yup.InferType<typeof schema> = await schema.validate(value);
 	const compatible: PersonalFormValues = result;
 	expect(compatible).toEqual(value);
-	expect(Object.keys(schema.fields)).toEqual(['username', 'city', 'socialNetwork']);
+	expect(Object.keys(schema.fields)).toEqual([
+		'specializationId',
+		'username',
+		'city',
+		'socialNetwork',
+	]);
 	await expect(schema.validate({ ...value, city: ' City ' })).resolves.toMatchObject({
 		city: ' City ',
 	});
@@ -109,4 +114,46 @@ it('composes with the future fields and works with yupResolver without changing 
 	});
 	expect(resolved.errors).toEqual({});
 	expect(resolved.values).toEqual(data);
+});
+
+describe('specialization selection', () => {
+	const messages = {
+		required: 'Required',
+		minUsernameLength: 'Min',
+		maxUsernameLength: 'Max',
+		socialNetwork: 'Social',
+	};
+	it.each([1, 42])('accepts initial positive ID %s without coercion', async (specializationId) => {
+		expect(
+			await createPersonalSchema(messages, 0).validate({ ...value, specializationId }),
+		).toEqual({ ...value, specializationId });
+	});
+	it.each([
+		undefined,
+		null,
+		0,
+		-1,
+		1.5,
+		'1',
+		'',
+		NaN,
+		Infinity,
+		{},
+		[],
+		Number.MAX_SAFE_INTEGER + 1,
+	])('rejects invalid initial ID %j', async (specializationId) => {
+		expect(await createPersonalSchema(messages, 0).isValid({ ...value, specializationId })).toBe(
+			false,
+		);
+	});
+	it('requires selection and preserves established specialization', async () => {
+		expect(await createPersonalSchema(messages, 0).isValid(value)).toBe(false);
+		expect(await createPersonalSchema(messages, 3).isValid({ ...value, specializationId: 3 })).toBe(
+			true,
+		);
+		expect(await createPersonalSchema(messages, 3).isValid({ ...value, specializationId: 4 })).toBe(
+			false,
+		);
+		expect(await createPersonalSchema(messages, 3).isValid(value)).toBe(false);
+	});
 });

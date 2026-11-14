@@ -36,6 +36,8 @@ export type EditProfileFormProps = {
 	specialization: { id: number; title: string } | null;
 	skills: readonly SkillOption[];
 	skillsError?: boolean;
+	specializationOptions?: readonly { id: number; title: string }[];
+	specializationError?: boolean;
 	avatarAction: AvatarAction;
 	saveAction: (input: ProfileEditInput) => Promise<ProfileEditResult>;
 	readAction: () => Promise<
@@ -61,6 +63,8 @@ export const EditProfileForm = ({
 	specialization,
 	skills,
 	skillsError = false,
+	specializationOptions = [],
+	specializationError = false,
 	avatarAction,
 	saveAction,
 	readAction,
@@ -73,6 +77,12 @@ export const EditProfileForm = ({
 		description: profile.activeProfile.description,
 	}));
 	const identity = useRef({ id: profile.id, profileId: profile.activeProfile.id });
+	const [initialProfile] = useState(() => ({
+		id: profile.activeProfile.id,
+		specializationId: profile.activeProfile.specializationId,
+	}));
+	const [assignedSpecialization, setAssignedSpecialization] = useState<number | null>(null);
+	const originalSpecialization = assignedSpecialization ?? initialProfile.specializationId;
 	const schema = useMemo(
 		() =>
 			createEditProfileSchema(
@@ -95,8 +105,9 @@ export const EditProfileForm = ({
 					},
 				},
 				baseline.description,
+				originalSpecialization,
 			),
-		[baseline.description, t, common],
+		[baseline.description, originalSpecialization, t, common],
 	);
 	const methods = useForm<EditProfileValues>({
 		defaultValues: baseline.values,
@@ -107,6 +118,12 @@ export const EditProfileForm = ({
 	const dirty = !sameEditValues(watched as EditProfileValues, baseline.values);
 	const tab = useSyncExternalStore(subscribeHash, currentTab, () => tabs[0]);
 	const [pending, setPending] = useState(false);
+	const [uncertain, setUncertain] = useState(false);
+	const uncertainRef = useRef(false);
+	const markUncertain = () => {
+		uncertainRef.current = true;
+		setUncertain(true);
+	};
 	const [message, setMessage] = useState<string | null>(null);
 	const [success, setSuccess] = useState(false);
 	const mounted = useSyncExternalStore(
@@ -165,7 +182,20 @@ export const EditProfileForm = ({
 		router.replace(ROUTES.auth.login.page);
 	};
 	const submit = async (values: EditProfileValues) => {
-		const sent = toEditPayload(values, baseline.description);
+		if (
+			initialProfile.specializationId === 0 &&
+			assignedSpecialization === null &&
+			(specializationError ||
+				!specializationOptions.some((option) => option.id === values.specializationId))
+		) {
+			methods.setError('specializationId', { message: t('edit.form.specializationError') });
+			select('personal-information');
+			return;
+		}
+		const sent = toEditPayload(values, baseline.description, {
+			...initialProfile,
+			specializationId: originalSpecialization,
+		});
 		const expected = { ...identity.current, description: baseline.description };
 		try {
 			const result = await saveAction(sent);
@@ -175,6 +205,7 @@ export const EditProfileForm = ({
 				return;
 			}
 			if (result.status !== 'success') {
+				if (!['validation-error', 'error', 'forbidden'].includes(result.status)) markUncertain();
 				setMessage(
 					t(
 						result.status === 'partial-success'
@@ -195,16 +226,25 @@ export const EditProfileForm = ({
 				return;
 			}
 			if (read.status !== 'success') {
+				markUncertain();
 				setMessage(
 					t(read.status === 'refresh-required' ? 'edit.save.refresh' : 'edit.save.readError'),
 				);
 				return;
 			}
-			if (!matchesSavedProfile(read.profile, sent, expected)) {
+			if (
+				!matchesSavedProfile(read.profile, sent, expected) ||
+				read.profile.specializationId !== (sent.specializationId ?? originalSpecialization)
+			) {
+				markUncertain();
 				setMessage(t('edit.save.mismatch'));
 				return;
 			}
-			const confirmed = savedToEditValues(read.profile);
+			const confirmed = savedToEditValues({
+				...read.profile,
+				specializationId: read.profile.specializationId ?? originalSpecialization,
+			});
+			if (sent.specializationId !== undefined) setAssignedSpecialization(sent.specializationId);
 			const unchanged = sameEditValues(methods.getValues(), values);
 			setBaseline({ values: confirmed, description: read.profile.description });
 			if (!unchanged) {
@@ -218,12 +258,15 @@ export const EditProfileForm = ({
 			setMessage(t('edit.save.success'));
 			router.replace(ROUTES.profile.page);
 		} catch {
-			if (alive.current) setMessage(t('edit.save.error'));
+			if (alive.current) {
+				markUncertain();
+				setMessage(t('edit.save.uncertain'));
+			}
 		}
 	};
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (!mounted || locked.current || success) return;
+		if (!mounted || locked.current || success || uncertainRef.current) return;
 		locked.current = true;
 		setPending(true);
 		setSuccess(false);
@@ -231,7 +274,7 @@ export const EditProfileForm = ({
 		void methods
 			.handleSubmit(submit, (errors) => {
 				const next =
-					errors.username || errors.city || errors.socialNetwork
+					errors.specializationId || errors.username || errors.city || errors.socialNetwork
 						? 'personal-information'
 						: errors.description
 							? 'about-me'
@@ -324,7 +367,16 @@ export const EditProfileForm = ({
 									{id === tab && id === 'personal-information' && (
 										<EditPersonal
 											profile={profile}
-											specialization={specialization}
+											specialization={
+												assignedSpecialization === null
+													? specialization
+													: (specializationOptions.find(
+															(option) => option.id === assignedSpecialization,
+														) ?? specialization)
+											}
+											specializationOptions={specializationOptions}
+											specializationError={specializationError}
+											initialSpecializationId={originalSpecialization}
 											avatar={
 												<AvatarEditor
 													variant="profile-edit"
@@ -350,10 +402,26 @@ export const EditProfileForm = ({
 								<Text variant="body3" color={success ? 'black-800' : 'red-700'}>
 									{message}
 								</Text>
+								{uncertain && (
+									<Text variant="body3" color="red-700">
+										{t('edit.save.uncertain')}
+									</Text>
+								)}
 							</div>
 						)}
 						<div className={styles.save}>
-							<Button type="submit" disabled={!mounted || pending || success} aria-busy={pending}>
+							<Button
+								type="submit"
+								disabled={
+									!mounted ||
+									pending ||
+									success ||
+									uncertain ||
+									(originalSpecialization === 0 &&
+										(specializationError || specializationOptions.length === 0))
+								}
+								aria-busy={pending}
+							>
 								{t('edit.save.button')}
 							</Button>
 						</div>

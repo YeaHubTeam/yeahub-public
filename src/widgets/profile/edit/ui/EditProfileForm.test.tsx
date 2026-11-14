@@ -30,7 +30,11 @@ const update = jest.fn();
 jest.mock('@/shared/config', () => ({
 	Link: jest.requireActual('@/shared/config').Link,
 	i18Namespace: { profile: 'profile', translation: 'translation' },
-	ROUTES: { profile: { page: '/profile' }, auth: { login: { page: '/auth/login' } } },
+	ROUTES: {
+		settings: { page: '/settings' },
+		profile: { page: '/profile' },
+		auth: { login: { page: '/auth/login' } },
+	},
 	useRouter: () => ({ replace, refresh }),
 	routing: { locales: ['ru'] },
 	redirect: jest.fn(() => {
@@ -87,6 +91,7 @@ const props = (): EditProfileFormProps => ({
 const saved = (username = 'Changed'): SavedProfileSnapshot => ({
 	id: 'user',
 	profileId: 'active',
+	specializationId: 1,
 	username,
 	city: 'City',
 	description: '<p>Original</p>',
@@ -166,7 +171,11 @@ it('submits all initialized fields without visiting tabs, confirms readback then
 	save();
 	await waitFor(() => expect(replace).toHaveBeenCalledWith('/profile'));
 	expect(p.saveAction).toHaveBeenCalledWith({
-		...toEditPayload(createEditDefaults(profile), profile.activeProfile.description),
+		...toEditPayload(
+			createEditDefaults(profile),
+			profile.activeProfile.description,
+			profile.activeProfile,
+		),
 		username: 'Changed',
 	});
 	expect(p.readAction).toHaveBeenCalledTimes(1);
@@ -417,4 +426,161 @@ it('uses React tab typography, spacing and responsive breadcrumb composition', (
 	expect(css).toMatch(/@media \(width <= 767px\)/);
 	expect(css).toMatch(/\.crumb-current\s*\{[^}]*display: none;/);
 	expect(css).toMatch(/\.crumb-back\s*\{[^}]*transform: rotate\(180deg\);/);
+});
+
+const newProfileProps = (): EditProfileFormProps => {
+	const p = props();
+	p.profile = { ...profile, activeProfile: { ...profile.activeProfile, specializationId: 0 } };
+	p.specialization = null;
+	p.specializationOptions = [
+		{ id: 7, title: 'Backend developer' },
+		{ id: 8, title: 'Frontend developer' },
+	];
+	p.readAction = jest
+		.fn()
+		.mockResolvedValue({ status: 'success', profile: { ...saved('Name'), specializationId: 7 } });
+	return p;
+};
+const chooseSpecialization = () => {
+	fireEvent.click(screen.getByRole('button', { name: 'Выберите специализацию' }));
+	fireEvent.click(screen.getByRole('option', { name: 'Backend developer' }));
+};
+it('requires a new profile selection even when saving from another tab', async () => {
+	const p = newProfileProps();
+	render(<EditProfileForm {...p} />);
+	go('Навыки');
+	save();
+	await waitFor(() =>
+		expect(screen.getByRole('tab', { name: 'Личная информация' })).toHaveAttribute(
+			'aria-selected',
+			'true',
+		),
+	);
+	expect(p.saveAction).not.toHaveBeenCalled();
+});
+it('saves a scalar selected ID with the original profile and full draft, then confirms readback', async () => {
+	const p = newProfileProps();
+	render(<EditProfileForm {...p} />);
+	chooseSpecialization();
+	save();
+	await waitFor(() => expect(replace).toHaveBeenCalledWith('/profile'));
+	expect(p.saveAction).toHaveBeenCalledTimes(1);
+	expect(p.saveAction).toHaveBeenCalledWith({
+		username: 'Name',
+		city: 'City',
+		socialNetwork: [{ code: 'github', title: 'GH' }],
+		profileSkills: [999],
+		expectedProfileId: 'active',
+		specializationId: 7,
+	});
+	expect(screen.getByRole('group', { name: 'IT специальность' })).toHaveAttribute(
+		'aria-disabled',
+		'true',
+	);
+	expect(screen.getByText('Backend developer')).toBeInTheDocument();
+});
+it('does not submit when the directory is unavailable', () => {
+	const p = newProfileProps();
+	p.specializationError = true;
+	p.specializationOptions = [];
+	render(<EditProfileForm {...p} />);
+	save();
+	expect(p.saveAction).not.toHaveBeenCalled();
+	expect(screen.getByRole('button', { name: 'Сохранить' })).toBeDisabled();
+	expect(
+		screen.getByText('Не удалось загрузить доступные специализации. Обновите страницу.'),
+	).toBeInTheDocument();
+});
+it.each(['partial-success', 'sync-required', 'throw', 'read-error', 'read-mismatch'])(
+	'locks repeated writes after uncertain outcome %s while retaining draft',
+	async (outcome) => {
+		const p = newProfileProps();
+		if (outcome === 'throw') p.saveAction = jest.fn().mockRejectedValue(new Error('Private'));
+		else if (outcome === 'read-error')
+			p.readAction = jest.fn().mockResolvedValue({ status: 'error' });
+		else if (outcome === 'read-mismatch')
+			p.readAction = jest
+				.fn()
+				.mockResolvedValue({ status: 'success', profile: { ...saved(), specializationId: 8 } });
+		else p.saveAction = jest.fn().mockResolvedValue({ status: outcome });
+		render(<EditProfileForm {...p} />);
+		chooseSpecialization();
+		change();
+		save();
+		await waitFor(() => expect(screen.getByRole('button', { name: 'Сохранить' })).toBeDisabled());
+		await waitFor(() =>
+			expect(screen.getByRole('alert')).toHaveTextContent(
+				'Перед повторным сохранением обновите страницу',
+			),
+		);
+		save();
+		expect(p.saveAction).toHaveBeenCalledTimes(1);
+		expect(screen.getByLabelText('Никнейм')).toHaveValue('Changed');
+		expect(screen.getByText('Backend developer')).toBeInTheDocument();
+		expect(replace).not.toHaveBeenCalled();
+	},
+);
+it('retains the original profile precondition after new RSC props arrive', async () => {
+	const p = newProfileProps();
+	const view = render(<EditProfileForm {...p} />);
+	chooseSpecialization();
+	view.rerender(
+		<EditProfileForm
+			{...p}
+			profile={{
+				...p.profile,
+				activeProfile: { ...p.profile.activeProfile, id: 'new-active-profile' },
+			}}
+		/>,
+	);
+	save();
+	await waitFor(() => expect(p.saveAction).toHaveBeenCalledTimes(1));
+	expect(p.saveAction).toHaveBeenCalledWith(
+		expect.objectContaining({ expectedProfileId: 'active', specializationId: 7 }),
+	);
+});
+
+it('retains a numeric specialization draft across hash switches without fetching or saving', () => {
+	const p = newProfileProps();
+	render(<EditProfileForm {...p} />);
+	chooseSpecialization();
+	go('Навыки');
+	go('Личная информация');
+	expect(screen.getByText('Backend developer')).toBeInTheDocument();
+	expect(p.saveAction).not.toHaveBeenCalled();
+	expect(p.readAction).not.toHaveBeenCalled();
+});
+it('validates the required specialization on touch', async () => {
+	const p = newProfileProps();
+	render(<EditProfileForm {...p} />);
+	fireEvent.blur(screen.getByRole('button', { name: 'Выберите специализацию' }));
+	await waitFor(() =>
+		expect(screen.getByText('Это поле обязательно для заполнения')).toBeInTheDocument(),
+	);
+	expect(p.saveAction).not.toHaveBeenCalled();
+});
+it('keeps selection and allows explicit retry after a definite pre-mutation error', async () => {
+	const p = newProfileProps();
+	p.saveAction = jest.fn().mockResolvedValue({ status: 'error' });
+	render(<EditProfileForm {...p} />);
+	chooseSpecialization();
+	save();
+	await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument());
+	expect(screen.getByRole('button', { name: 'Сохранить' })).not.toBeDisabled();
+	expect(screen.getByText('Backend developer')).toBeInTheDocument();
+	expect(p.readAction).not.toHaveBeenCalled();
+	expect(replace).not.toHaveBeenCalled();
+});
+
+it('offers a localized account link without submitting the edit form', () => {
+	const p = props();
+	render(<EditProfileForm {...p} />);
+	change();
+	const link = screen.getByRole('link', { name: 'Сменить специальность' });
+	expect(link).toHaveAttribute('href', '/ru/settings#account');
+	link.focus();
+	expect(link).toHaveFocus();
+	fireEvent.click(link);
+	expect(p.saveAction).not.toHaveBeenCalled();
+	expect(p.readAction).not.toHaveBeenCalled();
 });

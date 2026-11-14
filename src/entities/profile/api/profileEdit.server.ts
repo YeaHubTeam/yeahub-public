@@ -27,12 +27,25 @@ export const parseProfileEditInput = (value: unknown): ProfileEditInput | null =
 	if (
 		!object(value) ||
 		Object.keys(value).some(
-			(key) => !['username', 'city', 'socialNetwork', 'description', 'profileSkills'].includes(key),
+			(key) =>
+				![
+					'username',
+					'city',
+					'socialNetwork',
+					'description',
+					'profileSkills',
+					'expectedProfileId',
+					'specializationId',
+				].includes(key),
 		)
 	)
 		return null;
 	if (
 		!['username', 'city', 'socialNetwork', 'profileSkills'].every((key) => own(value, key)) ||
+		(own(value, 'expectedProfileId') &&
+			(typeof value.expectedProfileId !== 'string' || !value.expectedProfileId)) ||
+		(own(value, 'specializationId') &&
+			(!skillId(value.specializationId) || !own(value, 'expectedProfileId'))) ||
 		typeof value.username !== 'string' ||
 		value.username.length < 2 ||
 		value.username.length > 30 ||
@@ -65,6 +78,12 @@ export const parseProfileEditInput = (value: unknown): ProfileEditInput | null =
 	}
 	return {
 		username: value.username,
+		...(own(value, 'expectedProfileId')
+			? { expectedProfileId: value.expectedProfileId as string }
+			: {}),
+		...(own(value, 'specializationId')
+			? { specializationId: value.specializationId as number }
+			: {}),
 		city: value.city,
 		socialNetwork: links,
 		profileSkills: [...value.profileSkills],
@@ -153,6 +172,28 @@ export const saveOwnProfile = async (
 		)
 			return { status: 'error' };
 		const profileId = profiles[0].id;
+		if (data.expectedProfileId !== undefined && data.expectedProfileId !== profileId)
+			return { status: 'forbidden' };
+		if (data.specializationId !== undefined && profiles[0].specializationId !== 0)
+			return { status: 'validation-error' };
+		if (
+			data.specializationId !== undefined &&
+			current.profiles.some(
+				(profile) =>
+					object(profile) &&
+					profile.id !== profileId &&
+					profile.specializationId === data.specializationId,
+			)
+		)
+			return { status: 'validation-error' };
+		const originalDescription = profiles[0].description;
+		if (
+			data.specializationId !== undefined &&
+			originalDescription !== undefined &&
+			originalDescription !== null &&
+			typeof originalDescription !== 'string'
+		)
+			return { status: 'error' };
 		// Unknown records are immutable server data, never accepted from the client.
 		const existing = profiles[0].socialNetwork ?? [];
 		if (!Array.isArray(existing)) return { status: 'error' };
@@ -179,6 +220,7 @@ export const saveOwnProfile = async (
 		const body = {
 			socialNetwork,
 			profileSkills: data.profileSkills,
+			...(data.specializationId !== undefined ? { specializationId: data.specializationId } : {}),
 			...(own(data, 'description') ? { description: data.description } : {}),
 		};
 		attempted = true;
@@ -249,6 +291,59 @@ export const saveOwnProfile = async (
 				user: 'unconfirmed',
 				reason: 'error',
 			};
+		if (data.specializationId !== undefined) {
+			confirmed = false;
+			if (!validSession())
+				return {
+					status: 'partial-success',
+					profile: 'unconfirmed',
+					user: 'unconfirmed',
+					reason: 'unauthorized',
+				};
+			const readback = await request(new URL('/auth/profile', origin), {
+				headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			});
+			const loaded = readback.body;
+			const active =
+				object(loaded) && Array.isArray(loaded.profiles)
+					? loaded.profiles.filter((profile) => object(profile) && profile.isActive === true)
+					: [];
+			const profile = active[0];
+			if (
+				readback.status !== 200 ||
+				!object(loaded) ||
+				loaded.id !== credentials.userId ||
+				loaded.username !== data.username ||
+				loaded.city !== data.city ||
+				active.length !== 1 ||
+				!object(profile) ||
+				profile.id !== profileId ||
+				profile.specializationId !== data.specializationId ||
+				(profile.description ?? null) !==
+					(own(data, 'description') ? data.description : (originalDescription ?? null)) ||
+				!Array.isArray(profile.profileSkills) ||
+				profile.profileSkills.length !== data.profileSkills.length ||
+				!profile.profileSkills.every(
+					(skill) => object(skill) && skillId(skill.id) && data.profileSkills.includes(skill.id),
+				) ||
+				new Set(profile.profileSkills.map((skill) => (object(skill) ? skill.id : undefined)))
+					.size !== data.profileSkills.length ||
+				!Array.isArray(profile.socialNetwork) ||
+				profile.socialNetwork.length !== socialNetwork.length ||
+				!profile.socialNetwork.every(
+					(link, index) =>
+						object(link) &&
+						link.code === socialNetwork[index].code &&
+						link.title === socialNetwork[index].title,
+				)
+			)
+				return {
+					status: 'partial-success',
+					profile: 'unconfirmed',
+					user: 'unconfirmed',
+					reason: readback.status === 200 ? 'error' : failure(readback.status),
+				};
+		}
 		return { status: 'success' };
 	} catch {
 		if (attempted)

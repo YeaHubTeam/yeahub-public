@@ -6,6 +6,23 @@ import type { ProfileBackendConfig } from './profile.server';
 const object = (value: unknown): value is Record<string, unknown> =>
 	typeof value === 'object' && value !== null && !Array.isArray(value);
 const text = (value: unknown): value is string => typeof value === 'string' && value.length > 0;
+// Backend Date fields arrive as ISO timestamps, not epoch values or locale dates.
+const date = (value: unknown): string | null => {
+	if (
+		typeof value !== 'string' ||
+		!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(value)
+	)
+		return null;
+	const parsed = new Date(value);
+	const calendar = new Date(`${value.slice(0, 19)}Z`);
+	if (
+		!Number.isFinite(parsed.getTime()) ||
+		!Number.isFinite(calendar.getTime()) ||
+		calendar.toISOString().slice(0, 19) !== value.slice(0, 19)
+	)
+		return null;
+	return parsed.toISOString();
+};
 // Narrow read-only projection: no active profile or unrelated AuthUser fields required.
 export const readSettingsSnapshot = async (
 	credentials: { userId: string; accessToken: string },
@@ -44,6 +61,16 @@ export const readSettingsSnapshot = async (
 				!Array.isArray(data.subscriptions)
 			)
 				return { status: 'error' };
+
+			// Roles are used only to compute the display capability; never expose their full objects.
+			const roles = data.userRoles ?? [];
+			if (!Array.isArray(roles)) return { status: 'error' };
+			let hasCandidatePremiumRole = false;
+			for (const role of roles) {
+				if (!object(role) || !Number.isInteger(role.id) || !text(role.name))
+					return { status: 'error' };
+				if (role.name === 'candidate-premium') hasCandidatePremiumRole = true;
+			}
 			const profiles: SettingsSnapshot['profiles'] = [];
 			for (const item of data.profiles) {
 				if (
@@ -68,23 +95,38 @@ export const readSettingsSnapshot = async (
 				if (
 					!object(item) ||
 					!text(item.id) ||
-					!Number.isInteger(item.subscriptionId) ||
+					!Number.isSafeInteger(item.subscriptionId) ||
+					(item.subscriptionId as number) <= 0 ||
 					item.userId !== credentials.userId ||
 					typeof item.state !== 'string' ||
 					!['pending_payment', 'active', 'canceled', 'inactive'].includes(item.state) ||
 					subscriptions.some((s) => s.id === item.id)
 				)
 					return { status: 'error' };
+				const createDate = date(item.createDate);
+				const endDate = item.endDate == null ? null : date(item.endDate);
+				if (!createDate || (item.endDate != null && !endDate)) return { status: 'error' };
 				subscriptions.push({
 					id: item.id,
 					subscriptionId: item.subscriptionId as number,
 					state: item.state as SettingsSnapshot['subscriptions'][number]['state'],
+					createDate,
+					endDate,
 				});
 			}
+			// Match React getTrialSubscription(): the first trial record determines its state.
+			const hasActiveTrialSubscription =
+				subscriptions.find((subscription) => subscription.subscriptionId === 4)?.state === 'active';
 			return {
 				status: 'success',
 				snapshot: {
 					userId: data.id,
+					username: typeof data.username === 'string' ? data.username : null,
+					hasPremiumAccess: hasCandidatePremiumRole || hasActiveTrialSubscription,
+					canStartTrial:
+						Array.isArray(data.userRoles) &&
+						!hasCandidatePremiumRole &&
+						!subscriptions.some((subscription) => subscription.subscriptionId === 4),
 					email: data.email,
 					isVerified: data.isVerified,
 					telegramUsername: data.telegramUsername || null,

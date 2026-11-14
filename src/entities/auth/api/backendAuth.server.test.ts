@@ -688,3 +688,56 @@ describe('backend auth server transport', () => {
 		}
 	});
 });
+
+describe('password change transport', () => {
+	const input = {
+		userId: 'synthetic-user',
+		accessToken: 'synthetic-original',
+		password: ' NewPassword123! ',
+		passwordConfirm: ' NewPassword123! ',
+	};
+	it('sends one private PATCH with exactly the password fields and parses refresh cookie', async () => {
+		const { fetcher, transport } = setup();
+		fetcher.mockResolvedValue(success());
+		expect(await transport.changePassword(input)).toEqual(fullLoginResult);
+		expect(fetcher).toHaveBeenCalledTimes(1);
+		expect(fetcher).toHaveBeenCalledWith(
+			`${origin}/auth/password-change/synthetic-user`,
+			expect.objectContaining({
+				method: 'PATCH',
+				cache: 'no-store',
+				credentials: 'omit',
+				redirect: 'manual',
+				headers: { Authorization: 'Bearer synthetic-original', 'Content-Type': 'application/json' },
+				body: JSON.stringify({ password: input.password, passwordConfirm: input.passwordConfirm }),
+			}),
+		);
+	});
+	it.each([400, 401, 403, 404, 500])('rejects HTTP %s without retry', async (status) => {
+		const { fetcher, transport } = setup();
+		fetcher.mockResolvedValue(json({ message: 'auth.user.password.confirmation_failed' }, status));
+		await expect(transport.changePassword(input)).rejects.toMatchObject({ kind: 'http', status });
+		expect(fetcher).toHaveBeenCalledTimes(1);
+	});
+	it.each([
+		json(authBody),
+		json(authBody, 201, ['refresh_token=synthetic-refresh']),
+		json({ user }),
+		json({ ...authBody, user: { id: 'synthetic-user' } }, 200, ['refresh_token=synthetic-refresh']),
+		json(authBody, 200, ['refresh_token=one', 'refresh_token=two']),
+	])('rejects malformed success/cookie %#', async (response) => {
+		const { fetcher, transport } = setup();
+		fetcher.mockResolvedValue(response);
+		await expect(transport.changePassword(input)).rejects.toMatchObject({ kind: 'protocol' });
+		expect(fetcher).toHaveBeenCalledTimes(1);
+	});
+	it('returns a safe network failure without retaining passwords', async () => {
+		const { fetcher, transport } = setup();
+		fetcher.mockRejectedValue(new Error(input.password));
+		await expect(transport.changePassword(input)).rejects.toMatchObject({
+			kind: 'network',
+			message: 'Backend auth network failure',
+		});
+		expect(fetcher).toHaveBeenCalledTimes(1);
+	});
+});

@@ -12,8 +12,24 @@ interface PersonalValidationMessages {
 const stringValue = (value: unknown, original: unknown) =>
 	typeof original === 'string' ? value : original;
 
-export const createPersonalSchema = (messages: PersonalValidationMessages) =>
+export const createPersonalSchema = (
+	messages: PersonalValidationMessages,
+	initialSpecializationId?: number,
+) =>
 	yup.object({
+		// Optional only for callers predating specialization selection. Defaults always supply a number.
+		specializationId: yup
+			.mixed<number>()
+			.test('specialization-id', messages.required, (id) =>
+				id === undefined
+					? initialSpecializationId === undefined
+					: typeof id === 'number' &&
+						Number.isSafeInteger(id) &&
+						id > 0 &&
+						(initialSpecializationId === undefined ||
+							initialSpecializationId === 0 ||
+							id === initialSpecializationId),
+			),
 		username: yup
 			.string()
 			.transform(stringValue)

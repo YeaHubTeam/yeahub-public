@@ -9,9 +9,28 @@ import type {
 	ProfileEditInput,
 	ProfileEditResult,
 } from '@/entities/profile';
+import { getSpecializationById } from '@/entities/specialization';
 
 export async function saveProfile(input: ProfileEditInput): Promise<ProfileEditResult> {
 	try {
+		if (object(input) && Object.prototype.hasOwnProperty.call(input, 'specializationId')) {
+			if (
+				!Number.isSafeInteger(input.specializationId) ||
+				typeof input.specializationId !== 'number' ||
+				input.specializationId <= 0 ||
+				typeof input.expectedProfileId !== 'string' ||
+				!input.expectedProfileId
+			)
+				return { status: 'validation-error' };
+			const own = await getOwnProfile();
+			if (own.status === 'unauthenticated' || own.status === 'refresh-required')
+				return { status: 'unauthorized' };
+			if (own.status !== 'success') return { status: 'error' };
+			if (own.profile.activeProfile.id !== input.expectedProfileId) return { status: 'forbidden' };
+			if (own.profile.activeProfile.specializationId !== 0) return { status: 'validation-error' };
+			const specialization = await getSpecializationById(input.specializationId).catch(() => null);
+			if (specialization?.id !== input.specializationId) return { status: 'validation-error' };
+		}
 		return await mutateOwnProfile(input);
 	} catch {
 		return { status: 'error' };
@@ -24,6 +43,7 @@ export type SavedProfile = Pick<
 > & {
 	id: OwnProfile['id'];
 	profileId: ActiveProfile['id'];
+	specializationId: ActiveProfile['specializationId'];
 	description: ActiveProfile['description'];
 };
 
@@ -56,6 +76,9 @@ const projectSavedProfile = (value: unknown): SavedProfile | null => {
 	if (
 		!object(active) ||
 		!text(active.id) ||
+		!Number.isSafeInteger(active.specializationId) ||
+		typeof active.specializationId !== 'number' ||
+		active.specializationId < 0 ||
 		!nullableText(active.description) ||
 		!Array.isArray(active.socialNetwork) ||
 		!Array.isArray(active.profileSkills)
@@ -85,6 +108,7 @@ const projectSavedProfile = (value: unknown): SavedProfile | null => {
 	return {
 		id: value.id,
 		profileId: active.id,
+		specializationId: active.specializationId,
 		username: value.username,
 		city: value.city,
 		description: active.description,

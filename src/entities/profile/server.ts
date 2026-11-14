@@ -16,3 +16,19 @@ export type { VerificationEmailResult } from './api/verificationEmail.server';
 
 export { mutateTelegram, parseTelegramPayload } from './api/telegram.server';
 export type { TelegramLoginPayload, TelegramMutationResult } from './model/types/telegram';
+
+export {
+	deleteOwnProfile,
+	createOwnProfile,
+	selectOwnProfile,
+} from './api/profileManagement.server';
+export type {
+	ProfileDeletionResult,
+	ProfileCreationResult,
+	SettingsProfileCreationResult,
+	ProfileSelectionResult,
+	SettingsProfileSelectionResult,
+} from './model/types/profileManagement';
+
+export { deleteOwnAccount } from './api/accountDeletion.server';
+export type { AccountDeletionResult } from './api/accountDeletion.server';

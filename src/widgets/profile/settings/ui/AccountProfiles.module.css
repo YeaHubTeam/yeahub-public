@@ -1,0 +1,280 @@
+.banner img {
+	width: 100%;
+	height: auto;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.heading {
+	line-height: 127%;
+}
+
+.counter {
+	flex-shrink: 0;
+	padding: 6px 14px;
+	border-radius: 10px;
+	background-color: var(--color-purple-700);
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.profile {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 10px 24px;
+	min-width: 0;
+	border: 1px solid var(--color-black-30);
+	border-radius: 14px;
+	background-color: var(--color-black-30);
+}
+
+.portrait {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	width: 38px;
+	height: 38px;
+	border: 1px solid var(--color-black-30);
+	border-radius: 38px;
+}
+
+.check {
+	position: absolute;
+	right: -8px;
+	bottom: 0;
+	color: var(--color-purple-700);
+}
+
+.title {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--color-blue-550);
+	line-height: 120%;
+}
+
+.active {
+	border-color: var(--color-purple-700);
+
+	.title {
+		color: var(--color-purple-700);
+	}
+}
+
+.screen-reader {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.select {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border: 0;
+	border-radius: inherit;
+	background: transparent;
+	cursor: pointer;
+}
+
+.open {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+	padding: 0;
+	height: 20px;
+	border: 0;
+	background: transparent;
+	color: var(--color-purple-700);
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-p-s);
+	font-family: inherit;
+	cursor: pointer;
+}
+
+.select:focus-visible,
+.open:focus-visible {
+	outline: 2px solid var(--color-purple-700);
+	outline-offset: 2px;
+}
+
+.select:disabled,
+.open:disabled {
+	cursor: default;
+}
+
+.profile:has(.select:not(:disabled)):hover {
+	border-color: var(--color-purple-700);
+
+	.title {
+		color: var(--color-purple-700);
+	}
+}
+
+.open svg {
+	transition: transform 0.3s ease-in-out;
+}
+
+.open:not(:disabled):hover svg {
+	transform: translateX(5px);
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	margin-top: 30px;
+}
+
+.feedback {
+	margin-top: 20px;
+}
+
+.help {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 0;
+	height: 24px;
+	border: 0;
+	background: transparent;
+	color: var(--color-purple-700);
+	font-weight: var(--font-weight-600);
+	font-size: var(--font-size-p-m);
+	font-family: inherit;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:active {
+		color: var(--color-purple-800);
+		text-decoration: underline;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-purple-800);
+		outline-offset: 2px;
+		color: var(--color-purple-800);
+	}
+}
+
+.help-modal {
+	max-width: 553px;
+}
+
+.help-content > p {
+	margin-bottom: 14px;
+	border-bottom-color: var(--color-purple-50);
+	color: var(--color-purple-700);
+}
+
+.steps {
+	margin: 0;
+	padding-left: 22px;
+}
+
+.step {
+	padding-bottom: 17px;
+	list-style: decimal;
+}
+
+.step-text {
+	display: inline;
+	line-height: 100%;
+}
+
+.help-description {
+	padding-top: 10px;
+	padding-bottom: 12px;
+}
+
+.delete-action {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--color-red-600);
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-p-s);
+	font-family: inherit;
+	cursor: pointer;
+
+	&:disabled {
+		color: var(--color-red-200);
+		cursor: default;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-red-700);
+		outline-offset: 2px;
+	}
+
+	&:not(:disabled):hover {
+		text-decoration: underline;
+	}
+}
+
+.delete-modal {
+	width: 100%;
+	max-width: 553px;
+}
+
+.delete-description {
+	margin-bottom: 20px;
+	white-space: pre-line;
+}
+
+.delete-label {
+	margin-bottom: 8px;
+}
+
+.delete-input {
+	width: 100%;
+	border: 1px solid var(--color-black-200);
+	background-color: transparent;
+}
+
+@media (width < 768px) {
+	.profile {
+		padding: 10px;
+	}
+}
+
+@media (width < 480px) {
+	.heading {
+		font-size: var(--font-size-h-s);
+	}
+}

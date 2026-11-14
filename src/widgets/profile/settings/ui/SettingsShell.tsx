@@ -8,6 +8,11 @@ import { useTranslations } from 'next-intl';
 import { Header, i18Namespace } from '@/shared/config';
 import { Text } from '@/shared/ui/Text';
 
+import { AccountProfiles, useProfileManagement } from './AccountProfiles';
+import type { AccountProfilesData, ProfileManagementActions } from './AccountProfiles';
+import { ChangePasswordForm, usePasswordSubmission } from './ChangePasswordForm';
+import type { ChangePasswordAction } from './ChangePasswordForm';
+import type { AccountDeletionAction } from './DeleteAccountSection';
 import { EmailVerification } from './EmailVerification';
 import type { EmailActions, EmailState } from './EmailVerification';
 import styles from './SettingsShell.module.css';
@@ -40,10 +45,21 @@ const subscribe = (listener: () => void) => {
 export const SettingsShell = ({
 	emailVerification,
 	telegramVerification,
+	passwordAction,
+	account,
+	profileActions,
+	deleteAccountAction,
 }: {
+	deleteAccountAction?: AccountDeletionAction;
+	profileActions?: ProfileManagementActions;
+	account?: AccountProfilesData;
+	passwordAction?: ChangePasswordAction;
 	telegramVerification?: TelegramOptions;
 	emailVerification?: { email: string | null; isVerified: boolean; actions: EmailActions };
 }) => {
+	// Keep mutation locks and deletion confirmation alive across account-tab unmounts.
+	const profileController = useProfileManagement(account, profileActions, deleteAccountAction);
+	const passwordController = usePasswordSubmission(passwordAction);
 	const telegramController = useTelegramVerification(telegramVerification);
 	const [emailState, setEmailState] = useState<EmailState>({
 		verified: emailVerification?.isVerified ?? false,
@@ -114,6 +130,12 @@ export const SettingsShell = ({
 				aria-labelledby={`settings-tab-${active}`}
 				tabIndex={0}
 			>
+				{active === 'account' && account && (
+					<AccountProfiles {...account} controller={profileController} />
+				)}
+				{active === 'change-password' && passwordAction && (
+					<ChangePasswordForm controller={passwordController} />
+				)}
 				{active === 'email-verify' && (emailVerification || telegramVerification) && (
 					<div className={telegramStyles.sections}>
 						{emailVerification && (

@@ -1,8 +1,11 @@
 /** @jest-environment node */
 import { getOwnProfile, mutateOwnProfile } from '@/auth';
 import type { ProfileEditInput, ProfileEditResult } from '@/entities/profile';
+import { getSpecializationById } from '@/entities/specialization';
 
 import { readSavedProfile, saveProfile } from './actions';
+
+jest.mock('@/entities/specialization', () => ({ getSpecializationById: jest.fn() }));
 
 jest.mock('server-only', () => ({}), { virtual: true });
 jest.mock('@/auth', () => ({ mutateOwnProfile: jest.fn(), getOwnProfile: jest.fn() }));
@@ -75,6 +78,7 @@ describe('readSavedProfile', () => {
 			profile: {
 				id: 'server-user',
 				profileId: 'server-profile',
+				specializationId: 3,
 				username: ' Name ',
 				city: null,
 				description: '<p>Raw HTML</p>',
@@ -208,6 +212,55 @@ describe('readSavedProfile', () => {
 	])('rejects malformed projected fields (%#)', async (fields) => {
 		mockRead({ status: 'success', profile: { ...loaded().profile, ...fields } });
 		expect(await readSavedProfile()).toEqual({ status: 'error' });
+		expect(mutateOwnProfile).not.toHaveBeenCalled();
+	});
+});
+
+describe('initial specialization assignment', () => {
+	const assignment = { ...value, expectedProfileId: 'server-profile', specializationId: 11 };
+	const initial = () => {
+		const data = loaded();
+		data.profile.activeProfile.specializationId = 0;
+		return data;
+	};
+	it('checks the current profile and directory before forwarding the complete draft', async () => {
+		mockRead(initial());
+		jest
+			.mocked(getSpecializationById)
+			.mockResolvedValue({ id: 11 } as Awaited<ReturnType<typeof getSpecializationById>>);
+		jest.mocked(mutateOwnProfile).mockResolvedValue({ status: 'success' });
+		expect(await saveProfile(assignment)).toEqual({ status: 'success' });
+		expect(getSpecializationById).toHaveBeenCalledWith(11);
+		expect(mutateOwnProfile).toHaveBeenCalledTimes(1);
+		expect(mutateOwnProfile).toHaveBeenCalledWith(assignment);
+	});
+	it.each([0, -1, 1.5, '11', null])(
+		'rejects invalid specialization %j',
+		async (specializationId) => {
+			expect(await saveProfile({ ...assignment, specializationId } as ProfileEditInput)).toEqual({
+				status: 'validation-error',
+			});
+			expect(mutateOwnProfile).not.toHaveBeenCalled();
+		},
+	);
+	it('rejects an established specialization', async () => {
+		mockRead(loaded());
+		expect(await saveProfile(assignment)).toEqual({ status: 'validation-error' });
+		expect(mutateOwnProfile).not.toHaveBeenCalled();
+	});
+	it('rejects a changed or foreign active profile', async () => {
+		mockRead(initial());
+		expect(await saveProfile({ ...assignment, expectedProfileId: 'another-profile' })).toEqual({
+			status: 'forbidden',
+		});
+		expect(mutateOwnProfile).not.toHaveBeenCalled();
+	});
+	it.each([null, { id: 12 }])('rejects an unknown directory entry %j', async (entry) => {
+		mockRead(initial());
+		jest
+			.mocked(getSpecializationById)
+			.mockResolvedValue(entry as Awaited<ReturnType<typeof getSpecializationById>>);
+		expect(await saveProfile(assignment)).toEqual({ status: 'validation-error' });
 		expect(mutateOwnProfile).not.toHaveBeenCalled();
 	});
 });

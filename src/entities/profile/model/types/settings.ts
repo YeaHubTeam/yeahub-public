@@ -1,5 +1,8 @@
 export type SettingsSnapshot = {
 	userId: string;
+	username: string | null;
+	hasPremiumAccess: boolean;
+	canStartTrial: boolean;
 	email: string | null;
 	isVerified: boolean;
 	telegramUsername: string | null;
@@ -9,6 +12,8 @@ export type SettingsSnapshot = {
 		id: string;
 		subscriptionId: number;
 		state: 'pending_payment' | 'active' | 'canceled' | 'inactive';
+		createDate: string;
+		endDate: string | null;
 	}[];
 };
 export type SettingsSnapshotResult =

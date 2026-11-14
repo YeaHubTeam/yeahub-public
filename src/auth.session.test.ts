@@ -1,13 +1,19 @@
 /** @jest-environment node */
+import { cookies as nextCookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
 import { encode, getToken } from 'next-auth/jwt';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { deflateSync } from 'node:zlib';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 
 import {
 	auth,
+	changeOwnPassword,
+	createOwnSettingsProfile,
+	deleteOwnSettingsAccount,
+	deleteOwnSettingsProfile,
 	getHeaderProfile,
 	getOwnProfile,
 	getSettingsSnapshot,
@@ -15,19 +21,52 @@ import {
 	linkOwnTelegram,
 	mutateOwnAvatar,
 	mutateOwnProfile,
+	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
 	unlinkOwnTelegram,
 } from './auth';
 import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
 
+jest.mock('next-auth/jwt', () => {
+	const actual = jest.requireActual('next-auth/jwt');
+	return {
+		...actual,
+		encode: jest.fn((args: unknown) => {
+			if (failEncoding) throw new Error('Synthetic encoding failure');
+			return actual.encode(args);
+		}),
+	};
+});
+
 jest.mock('server-only', () => ({}), { virtual: true });
 jest.mock('next/headers', () => ({
-	headers: jest.fn(() => Promise.resolve(requestHeaders)),
+	headers: jest.fn(() =>
+		Promise.resolve(passwordTestContext.getStore()?.headers ?? requestHeaders),
+	),
 	cookies: jest.fn(() =>
 		Promise.resolve({
 			set: (name: string, value: string) => {
 				if (!writableCookies) throw new Error('Read-only cookie context');
-				cookieWrites.push({ name, value });
+				if (!dropCookieWrites)
+					(passwordTestContext.getStore()?.writes ?? cookieWrites).push({ name, value });
+			},
+			getAll: () => {
+				const current = passwordTestContext.getStore();
+				const values = new Map(
+					(current?.headers ?? requestHeaders)
+						.get('cookie')
+						?.split('; ')
+						.filter(Boolean)
+						.map((pair) => {
+							const index = pair.indexOf('=');
+							return [pair.slice(0, index), pair.slice(index + 1)];
+						}) ?? [],
+				);
+				for (const { name, value } of current?.writes ?? cookieWrites) {
+					if (value) values.set(name, value);
+					else values.delete(name);
+				}
+				return [...values].map(([name, value]) => ({ name, value }));
 			},
 		}),
 	),
@@ -55,6 +94,14 @@ jest.mock('./lib/authRefresh.server', () => ({
 	refreshAuthCredentials: jest.fn(),
 }));
 
+const passwordTestContext = new AsyncLocalStorage<{
+	headers: Headers;
+	writes: { name: string; value: string }[];
+}>();
+let failEncoding = false;
+let dropCookieWrites = false;
+const changePasswordTransport = jest.fn();
+let expectedPasswordCalls = 0;
 let requestHeaders = new Headers();
 const now = 1_800_000_000;
 const token = (exp: number) =>
@@ -143,6 +190,10 @@ beforeEach(() => {
 	jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate'] }).setSystemTime(now * 1000);
 	requestHeaders = new Headers();
 	issuedCookies = [];
+	failEncoding = false;
+	dropCookieWrites = false;
+	expectedPasswordCalls = 0;
+	changePasswordTransport.mockReset();
 	login.mockReset();
 	login.mockResolvedValue({
 		access_token: token(now + 3600),
@@ -159,7 +210,9 @@ beforeEach(() => {
 	expectedProfileCalls = 0;
 	writableCookies = true;
 	cookieWrites = [];
-	jest.mocked(createBackendAuthTransport).mockReturnValue({ login, refresh, profile, logout });
+	jest
+		.mocked(createBackendAuthTransport)
+		.mockReturnValue({ login, refresh, profile, logout, changePassword: changePasswordTransport });
 	jest.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network forbidden'));
 	logs = [
 		jest.spyOn(console, 'error').mockImplementation(() => {}),
@@ -169,6 +222,7 @@ beforeEach(() => {
 });
 afterEach(() => {
 	try {
+		expect(changePasswordTransport).toHaveBeenCalledTimes(expectedPasswordCalls);
 		expect(refresh).toHaveBeenCalledTimes(expectedRefreshCalls);
 		expect(profile).toHaveBeenCalledTimes(expectedProfileCalls);
 		expect(logout).toHaveBeenCalledTimes(expectedLogoutCalls);
@@ -1108,6 +1162,65 @@ describe('authorized profile editing and persisted username', () => {
 		issuedCookies.push(cookie);
 		return cookie;
 	};
+
+	it.each([true, false])(
+		'initial specialization uses trusted credentials and readback (confirmed=%s)',
+		async (confirmed) => {
+			await prepare();
+			const original = ownProfile();
+			original.profiles[0].specializationId = 0;
+			const saved = ownProfile(input.username);
+			saved.profiles[0].specializationId = confirmed ? 11 : 0;
+			expectedProfileFetchCalls = confirmed ? 5 : 4;
+			jest
+				.mocked(globalThis.fetch)
+				.mockResolvedValueOnce(new Response(JSON.stringify(original)))
+				.mockResolvedValueOnce(
+					new Response(
+						JSON.stringify({ id: 'profile-id', socialNetwork: [], profileSkills: [{ id: 1 }] }),
+					),
+				)
+				.mockResolvedValueOnce(
+					new Response(JSON.stringify({ id: 'user-id', username: input.username, city: '' })),
+				)
+				.mockResolvedValueOnce(new Response(JSON.stringify(saved)))
+				.mockResolvedValueOnce(new Response(JSON.stringify(saved)));
+			const result = await mutateOwnProfile({
+				...input,
+				expectedProfileId: 'profile-id',
+				specializationId: 11,
+			});
+			expect(result).toEqual(
+				confirmed
+					? { status: 'success' }
+					: {
+							status: 'partial-success',
+							profile: 'unconfirmed',
+							user: 'unconfirmed',
+							reason: 'error',
+						},
+			);
+			expect(
+				jest.mocked(globalThis.fetch).mock.calls.filter(([, options]) => options?.method === 'PUT'),
+			).toHaveLength(1);
+			if (!confirmed) expect(cookieWrites).toHaveLength(0);
+		},
+	);
+	it('rejects a stale draft through the real auth boundary without mutation', async () => {
+		await prepare();
+		expectedProfileFetchCalls = 1;
+		const original = ownProfile();
+		original.profiles[0].specializationId = 0;
+		jest.mocked(globalThis.fetch).mockResolvedValueOnce(new Response(JSON.stringify(original)));
+		expect(
+			await mutateOwnProfile({
+				...input,
+				expectedProfileId: 'previous-profile',
+				specializationId: 11,
+			}),
+		).toEqual({ status: 'forbidden' });
+		expect(cookieWrites).toHaveLength(0);
+	});
 	it('mutates through real server code and writes an Auth.js cookie containing only the confirmed new username', async () => {
 		const cookie = await prepare();
 		const before = (await decodeSession(cookie))!.backendSession;
@@ -1400,6 +1513,9 @@ describe('read-only settings snapshot using existing session credentials', () =>
 			status: 'success',
 			snapshot: {
 				userId: 'user-id',
+				username: 'Backend name',
+				hasPremiumAccess: false,
+				canStartTrial: false,
 				email: null,
 				isVerified: false,
 				telegramUsername: null,
@@ -1667,6 +1783,710 @@ describe('Telegram operations use existing private credentials without session u
 				new Response(JSON.stringify({ message: 'auth.telegram.data_outdated' }), { status: 401 }),
 			);
 		expect(await linkOwnTelegram(telegramPayload)).toEqual({ status: 'outdated-telegram-data' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+describe('password change using real Auth.js writer and private ALS credentials', () => {
+	const input = { password: ' NewPassword123! ', passwordConfirm: ' NewPassword123! ' };
+	const credential = (exp: number, id = 'user-id', version = 'new') =>
+		`synthetic.${Buffer.from(JSON.stringify({ sub: id, exp, version })).toString('base64url')}.signature`;
+	const result = (version = 'new') => ({
+		access_token: credential(now + 4000, 'user-id', version),
+		refreshToken: credential(now + 12000, 'user-id', version),
+		user: { id: 'user-id', username: 'must-not-replace', avatarUrl: null },
+	});
+	const setupPassword = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		expectedPasswordCalls = 1;
+		changePasswordTransport.mockResolvedValue(result());
+		return cookie;
+	};
+	const written = () => {
+		const values = new Map<string, string>();
+		for (const { name, value } of cookieWrites) {
+			if (value) values.set(name, value);
+			else values.delete(name);
+		}
+		return [...values].map(([name, value]) => `${name}=${value}`).join('; ');
+	};
+	it('encodes, writes and decodes the replacement pair without changing display fields or deadline', async () => {
+		const originalCookie = await setupPassword();
+		const original = await decodeSession(originalCookie);
+		expect(await changeOwnPassword(input)).toEqual({ status: 'success' });
+		expect(changePasswordTransport).toHaveBeenCalledWith({
+			userId: 'user-id',
+			accessToken: token(now + 3600),
+			...input,
+		});
+		const updated = await decodeSession(written());
+		expect(updated?.backendSession).toEqual({
+			...(original?.backendSession as object),
+			accessToken: result().access_token,
+			refreshToken: result().refreshToken,
+			accessExpiresAt: now + 4000,
+			refreshExpiresAt: now + 12000,
+		});
+		expect(updated?.exp).toBe(now + 7200);
+		const session = await restore(written());
+		expect(session?.user?.id).toBe('user-id');
+		expect(JSON.stringify(session)).not.toContain(result().access_token);
+		expect(JSON.stringify(session)).not.toContain(result().refreshToken);
+		expect(cookieWrites.length).toBeGreaterThan(0);
+	});
+	it('runs the real backend token/cookie parser through the real Auth.js writer', async () => {
+		await setupPassword();
+		expectedPasswordCalls = 0;
+		expectedProfileFetchCalls = 1;
+		const actual: typeof import('@/entities/auth/api/backendAuth.server') = jest.requireActual(
+			'@/entities/auth/api/backendAuth.server',
+		);
+		jest
+			.mocked(createBackendAuthTransport)
+			.mockImplementationOnce((config) => actual.createBackendAuthTransport(config));
+		const next = result();
+		const headers = new Headers({ 'Content-Type': 'application/json' });
+		headers.append('Set-Cookie', `refresh_token=${next.refreshToken}; HttpOnly; Secure`);
+		const body = {
+			access_token: next.access_token,
+			user: { id: 'user-id', username: 'sample', avatarUrl: null },
+		};
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValue(new Response(JSON.stringify(body), { status: 200, headers }));
+		expect(await changeOwnPassword(input)).toEqual({ status: 'success' });
+		const decoded = await decodeSession(written());
+		expect((decoded?.backendSession as { refreshToken: string }).refreshToken).toBe(
+			next.refreshToken,
+		);
+		expect(globalThis.fetch).toHaveBeenCalledWith(
+			'https://backend.example/auth/password-change/user-id',
+			expect.objectContaining({ method: 'PATCH', cache: 'no-store', body: JSON.stringify(input) }),
+		);
+	});
+
+	it.each([
+		null,
+		{},
+		{ ...input, userId: 'other' },
+		{ password: 'short', passwordConfirm: 'short' },
+		{ ...input, passwordConfirm: 'different' },
+		{ ...input, password: 'a'.repeat(256) },
+		{ password: null, passwordConfirm: null },
+	])('rejects invalid input %# before backend', async (value) => {
+		expect(await changeOwnPassword(value)).toEqual({ status: 'validation-error' });
+	});
+	it('rejects guests without mutation', async () => {
+		expect(await changeOwnPassword(input)).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects expired access and session deadline without mutation', async () => {
+		await setupPassword();
+		expectedPasswordCalls = 0;
+		jest.setSystemTime((now + 3601) * 1000);
+		expect(await changeOwnPassword(input)).toEqual({ status: 'refresh-required' });
+		jest.setSystemTime((now + 7201) * 1000);
+		expect(await changeOwnPassword(input)).toEqual({ status: 'unauthenticated' });
+	});
+	it.each([400, 401, 403, 404, 500])('maps backend HTTP %s without retry', async (status) => {
+		await setupPassword();
+		changePasswordTransport.mockRejectedValue(new BackendAuthError('http', status));
+		expect(await changeOwnPassword(input)).toEqual({
+			status:
+				status === 400
+					? 'validation-error'
+					: status === 401
+						? 'unauthenticated'
+						: status === 403
+							? 'forbidden'
+							: status === 404
+								? 'not-found'
+								: 'outcome-unknown',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('reports a missing refresh cookie/parser failure as incomplete', async () => {
+		await setupPassword();
+		changePasswordTransport.mockRejectedValue(new BackendAuthError('protocol', 200));
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'backend-result-unverified',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([
+		{ ...result(), access_token: 'malformed' },
+		{ ...result(), refreshToken: 'malformed' },
+		{ ...result(), user: { ...result().user, id: 'other' } },
+		{ ...result(), access_token: credential(now + 4000, 'other') },
+		{ ...result(), refreshToken: credential(now + 12000, 'other') },
+		{ ...result(), access_token: credential(now - 1) },
+	])('rejects unverified replacement %#', async (value) => {
+		await setupPassword();
+		changePasswordTransport.mockResolvedValue(value);
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'backend-result-unverified',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('does not install credentials after the original deadline expires during PATCH', async () => {
+		await setupPassword();
+
+		// New credentials must still be live so the original deadline is the rejecting condition.
+		changePasswordTransport.mockImplementation(() => {
+			jest.setSystemTime((now + 7201) * 1000);
+			return Promise.resolve({ ...result(), access_token: credential(now + 10000) });
+		});
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'deadline-expired',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('reports cookie write failure without success', async () => {
+		await setupPassword();
+		writableCookies = false;
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'session-update-failed',
+		});
+	});
+	it('handles an unstable_update writer exception without success', async () => {
+		await setupPassword();
+		jest.mocked(nextCookies).mockRejectedValueOnce(new Error('Synthetic writer failure'));
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'session-update-failed',
+		});
+	});
+	it('detects encoding failure even if Auth.js returned a public session body', async () => {
+		await setupPassword();
+		failEncoding = true;
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'session-update-failed',
+		});
+		failEncoding = false;
+		expect(await decodeSession(written())).toBeNull();
+	});
+	it('detects a writer that did not persist the replacement', async () => {
+		await setupPassword();
+		dropCookieWrites = true;
+		expect(await changeOwnPassword(input)).toEqual({
+			status: 'incomplete',
+			stage: 'session-update-failed',
+		});
+	});
+	it('returns unknown on timeout and does not repeat PATCH', async () => {
+		await setupPassword();
+		let ready!: () => void;
+		const started = new Promise<void>((resolve) => {
+			ready = resolve;
+		});
+		changePasswordTransport.mockImplementation(() => {
+			ready();
+			return new Promise(() => {});
+		});
+		const pending = changeOwnPassword(input);
+		await started;
+		expect(changePasswordTransport).toHaveBeenCalledTimes(1);
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await pending).toEqual({ status: 'outcome-unknown' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('does not trust replacement credentials or ALS markers in a client session update', async () => {
+		const cookie = await signIn();
+		const response = await updateSession(cookie, {
+			passwordReplacement: { next: result() },
+			backendSession: result(),
+			accessToken: 'forged',
+		});
+		const decoded = await decodeSession(cookiesFrom(response));
+		expect((decoded?.backendSession as { accessToken: string }).accessToken).toBe(
+			token(now + 3600),
+		);
+	});
+	it('isolates parallel password replacements and exposes response-order limitation', async () => {
+		const cookie = await signIn();
+		expectedPasswordCalls = 2;
+		const contexts = [1, 2].map(() => ({
+			headers: new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie }),
+			writes: [] as { name: string; value: string }[],
+		}));
+		const resolvers: ((value: ReturnType<typeof result>) => void)[] = [];
+		let ready!: () => void;
+		const started = new Promise<void>((resolve) => {
+			ready = resolve;
+		});
+		changePasswordTransport.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					resolvers.push(resolve);
+					if (resolvers.length === 2) ready();
+				}),
+		);
+		const requests = contexts.map((context) =>
+			passwordTestContext.run(context, () => changeOwnPassword(input)),
+		);
+		await started;
+		expect(resolvers).toHaveLength(2);
+		resolvers[1](result('second'));
+		resolvers[0](result('first'));
+		expect(await Promise.all(requests)).toEqual([{ status: 'success' }, { status: 'success' }]);
+		for (const [index, context] of contexts.entries()) {
+			const latest = new Map(context.writes.map(({ name, value }) => [name, value]));
+			const decoded = await decodeSession(
+				[...latest].map(([name, value]) => `${name}=${value}`).join('; '),
+			);
+			expect((decoded?.backendSession as { refreshToken: string }).refreshToken).toBe(
+				result(index === 0 ? 'first' : 'second').refreshToken,
+			);
+		}
+	});
+	it('does not leak ALS replacement into a concurrent ordinary refresh', async () => {
+		const cookie = await signIn();
+		expectedPasswordCalls = 1;
+		expectedRefreshCalls = 1;
+		let resolvePatch!: (value: ReturnType<typeof result>) => void;
+		let ready!: () => void;
+		const started = new Promise<void>((resolve) => {
+			ready = resolve;
+		});
+		changePasswordTransport.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					resolvePatch = resolve;
+					ready();
+				}),
+		);
+		const context = {
+			headers: new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie }),
+			writes: [] as { name: string; value: string }[],
+		};
+		const change = passwordTestContext.run(context, () => changeOwnPassword(input));
+		await started;
+		jest.setSystemTime((now + 3550) * 1000);
+		refresh.mockResolvedValue({
+			...result('refresh'),
+			user: { id: 'user-id', username: 'sample', avatarUrl: 'https://images.example/avatar' },
+		});
+		const refreshRequest = updateSession(cookie);
+		resolvePatch(result('password'));
+		const response = await refreshRequest;
+		const refreshed = await decodeSession(cookiesFrom(response));
+		expect((refreshed?.backendSession as { refreshToken: string }).refreshToken).toBe(
+			result('refresh').refreshToken,
+		);
+		expect(await change).toEqual({ status: 'success' });
+	});
+	it('does not call backend for invalid cookie or expired absolute deadline with live token expiry', async () => {
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=invalid`,
+		});
+		expect(await changeOwnPassword(input)).toEqual({ status: 'unauthenticated' });
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+			throw new Error('Synthetic session missing');
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		expect(await changeOwnPassword(input)).toEqual({ status: 'unauthenticated' });
+	});
+	it('returns unknown for a network failure without cookie changes', async () => {
+		await setupPassword();
+		changePasswordTransport.mockRejectedValue(new BackendAuthError('network'));
+		expect(await changeOwnPassword(input)).toEqual({ status: 'outcome-unknown' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it.each([8, 255])('accepts the backend password length boundary %s', async (length) => {
+		await setupPassword();
+		const value = 'a'.repeat(length);
+		expect(await changeOwnPassword({ password: value, passwordConfirm: value })).toEqual({
+			status: 'success',
+		});
+	});
+});
+
+describe('settings profile selection with the private auth boundary', () => {
+	const target = '11111111-1111-4111-8111-111111111111';
+	const other = '22222222-2222-4222-8222-222222222222';
+	const snapshot = (active: boolean) => ({
+		id: 'user-id',
+		email: null,
+		isVerified: true,
+		userRoles: [],
+		profiles: [
+			{ id: target, specializationId: 11, isActive: active },
+			{ id: other, specializationId: 22, isActive: !active },
+		],
+		subscriptions: [],
+	});
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	it('selects with server credentials and does not write or update the Auth.js session', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		writableCookies = false;
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot(false)), { status: 200 }))
+			.mockResolvedValueOnce(new Response(null, { status: 204 }))
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot(true)), { status: 200 }));
+		expect(await selectOwnSettingsProfile(target)).toEqual({
+			status: 'success',
+			profileId: target,
+			specializationId: 11,
+			changed: true,
+		});
+		expect(globalThis.fetch).toHaveBeenNthCalledWith(
+			2,
+			new URL(`https://backend.example/profiles/${target}/active`),
+			expect.objectContaining({
+				method: 'PATCH',
+				headers: { Authorization: `Bearer ${token(now + 3600)}` },
+			}),
+		);
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it('does not PATCH an already-active profile', async () => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot(true)), { status: 200 }));
+		expect(await selectOwnSettingsProfile(target)).toEqual({
+			status: 'success',
+			profileId: target,
+			specializationId: 11,
+			changed: false,
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('does not request settings for a guest', async () => {
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects expired access and session credentials before any backend request', async () => {
+		await setup();
+		jest.setSystemTime((now + 3601) * 1000);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'refresh-required' });
+		jest.setSystemTime((now + 7201) * 1000);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects an expired absolute deadline with otherwise live token expiry', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		if (!decoded || !decoded.backendSession || typeof decoded.backendSession !== 'object')
+			throw new Error('Synthetic session missing');
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...decoded.backendSession, sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects a mismatched cookie identity before backend', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: { ...decoded, sub: 'other' },
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'unauthenticated' });
+	});
+	it('does not PATCH a profile outside the server list', async () => {
+		await setup();
+		expectedProfileFetchCalls = 1;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ ...snapshot(true), profiles: [] }), { status: 200 }),
+			);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'not-found' });
+	});
+	it('returns forbidden on verification-required without logout or session update', async () => {
+		await setup();
+		expectedProfileFetchCalls = 2;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot(false)), { status: 200 }))
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ message: 'auth.user.verified_required' }), { status: 403 }),
+			);
+		expect(await selectOwnSettingsProfile(target)).toEqual({ status: 'forbidden' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+});
+
+describe('settings profile creation through private credentials', () => {
+	const target = '11111111-1111-4111-8111-111111111111';
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	it('creates using only the trusted user identity and never updates Auth.js cookies', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		writableCookies = false;
+		const before = {
+			id: 'user-id',
+			email: null,
+			isVerified: true,
+			userRoles: [],
+			profiles: [],
+			subscriptions: [],
+		};
+		const created = { id: target, userId: 'user-id', specializationId: 0, isActive: true };
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(before)))
+			.mockResolvedValueOnce(new Response(JSON.stringify(created), { status: 201 }))
+			.mockResolvedValueOnce(new Response(JSON.stringify({ ...before, profiles: [created] })));
+		expect(createOwnSettingsProfile).toHaveLength(0);
+		expect(
+			await Reflect.apply(createOwnSettingsProfile, undefined, [{ userId: 'foreign' }]),
+		).toEqual({ status: 'success', profileId: target });
+		expect(JSON.parse(jest.mocked(globalThis.fetch).mock.calls[1][1]!.body as string)).toEqual({
+			userId: 'user-id',
+			profileType: 1,
+			specializationId: 0,
+			markingWeight: 1,
+		});
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it('blocks a guest before any backend request', async () => {
+		expect(await createOwnSettingsProfile()).toEqual({ status: 'unauthenticated' });
+	});
+	it('preserves access expiry and the absolute session deadline checks', async () => {
+		await setup();
+		jest.setSystemTime((now + 3601) * 1000);
+		expect(await createOwnSettingsProfile()).toEqual({ status: 'refresh-required' });
+		jest.setSystemTime((now + 7201) * 1000);
+		expect(await createOwnSettingsProfile()).toEqual({ status: 'unauthenticated' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects mismatched cookie identity before backend', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: { ...decoded, sub: 'other' },
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await createOwnSettingsProfile()).toEqual({ status: 'unauthenticated' });
+	});
+});
+
+describe('settings profile deletion via trusted session', () => {
+	const target = '11111111-1111-4111-8111-111111111111';
+	const active = '22222222-2222-4222-8222-222222222222';
+	const setup = async () => {
+		const cookie = await signIn();
+		requestHeaders = new Headers({ host: 'site.example', 'x-forwarded-proto': 'https', cookie });
+		return cookie;
+	};
+	it('uses only the server identity, preserves Auth.js credentials and writes no cookies', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		writableCookies = false;
+		const snapshot = {
+			id: 'user-id',
+			username: ' Name ',
+			email: null,
+			isVerified: true,
+			userRoles: [],
+			subscriptions: [],
+			profiles: [
+				{ id: target, isActive: false, specializationId: 11 },
+				{ id: active, isActive: true, specializationId: 22 },
+			],
+		};
+		expectedProfileFetchCalls = 3;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot)))
+			.mockResolvedValueOnce(new Response(null, { status: 204 }))
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ ...snapshot, profiles: [snapshot.profiles[1]] })),
+			);
+		expect(
+			await Reflect.apply(deleteOwnSettingsProfile, undefined, [
+				target,
+				' Name ',
+				{ userId: 'foreign' },
+			]),
+		).toEqual({ status: 'success' });
+		expect(jest.mocked(globalThis.fetch).mock.calls[1]).toEqual([
+			new URL(`https://backend.example/profiles/${target}`),
+			expect.objectContaining({
+				method: 'DELETE',
+				headers: { Authorization: expect.stringMatching(/^Bearer /) },
+			}),
+		]);
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it('rejects a guest without backend requests', async () => {
+		expect(await deleteOwnSettingsProfile(target, ' Name ')).toEqual({ status: 'unauthenticated' });
+	});
+	it('preserves access and session deadline checks before backend', async () => {
+		await setup();
+		jest.setSystemTime((now + 3601) * 1000);
+		expect(await deleteOwnSettingsProfile(target, ' Name ')).toEqual({
+			status: 'refresh-required',
+		});
+		jest.setSystemTime((now + 7201) * 1000);
+		expect(await deleteOwnSettingsProfile(target, ' Name ')).toEqual({ status: 'unauthenticated' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects malformed UUID before any backend request', async () => {
+		await setup();
+		expect(await deleteOwnSettingsProfile('invalid', ' Name ')).toEqual({
+			status: 'invalid-input',
+		});
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects a mismatched cookie identity without backend', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: { ...decoded, sub: 'other' },
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await deleteOwnSettingsProfile(target, ' Name ')).toEqual({ status: 'unauthenticated' });
+	});
+});
+
+describe('account deletion through the private auth boundary', () => {
+	const userId = '11111111-1111-4111-8111-111111111111';
+	const setup = async (validIdentity = true) => {
+		const cookie = await signIn();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				...(validIdentity
+					? { sub: userId, backendSession: { ...(decoded!.backendSession as object), userId } }
+					: {}),
+			},
+		});
+		requestHeaders = new Headers({
+			host: 'site.example',
+			'x-forwarded-proto': 'https',
+			cookie: `${sessionCookieName}=${value}`,
+		});
+		return `${sessionCookieName}=${value}`;
+	};
+	it('uses trusted UUID and fresh username, leaves credentials and cookies unchanged, and never signs out', async () => {
+		const cookie = await setup();
+		const original = await decodeSession(cookie);
+		writableCookies = false;
+		expectedProfileFetchCalls = 2;
+		const snapshot = {
+			id: userId,
+			username: ' Name ',
+			email: null,
+			isVerified: false,
+			profiles: [],
+			subscriptions: [
+				{
+					id: 'paid',
+					userId,
+					subscriptionId: 6,
+					state: 'active',
+					createDate: '2026-01-01T00:00:00.000Z',
+					endDate: null,
+				},
+			],
+			userRoles: [],
+		};
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValueOnce(new Response(JSON.stringify(snapshot)))
+			.mockResolvedValueOnce(
+				new Response(JSON.stringify({ message: 'User deleted successfully' })),
+			);
+		expect(
+			await Reflect.apply(deleteOwnSettingsAccount, undefined, [' Name ', { userId: 'foreign' }]),
+		).toEqual({ status: 'success' });
+		expect(jest.mocked(globalThis.fetch).mock.calls.map(([url]) => (url as URL).pathname)).toEqual([
+			'/auth/profile',
+			`/users/${userId}`,
+		]);
+		expect(cookieWrites).toHaveLength(0);
+		expect(await decodeSession(cookie)).toEqual(original);
+	});
+	it('blocks a guest without HTTP requests', async () => {
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects a malformed trusted identity before HTTP requests', async () => {
+		await setup(false);
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'error' });
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('rejects expired access and session deadlines before HTTP requests', async () => {
+		await setup();
+		jest.setSystemTime((now + 3601) * 1000);
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'refresh-required' });
+		jest.setSystemTime((now + 7201) * 1000);
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'unauthenticated' });
+	});
+	it('rejects a cookie/identity mismatch before HTTP requests', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: { ...decoded, sub: 'foreign' },
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'unauthenticated' });
+	});
+	it('honors an expired absolute deadline even when access credentials have not expired', async () => {
+		const cookie = await setup();
+		const decoded = await decodeSession(cookie);
+		const value = await encode({
+			secret: process.env.AUTH_SECRET!,
+			salt: sessionCookieName,
+			token: {
+				...decoded,
+				backendSession: { ...(decoded!.backendSession as object), sessionExpiresAt: now - 1 },
+			},
+		});
+		requestHeaders.set('cookie', `${sessionCookieName}=${value}`);
+		expect(await deleteOwnSettingsAccount(' Name ')).toEqual({ status: 'unauthenticated' });
 		expect(cookieWrites).toHaveLength(0);
 	});
 });

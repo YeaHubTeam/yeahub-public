@@ -27,6 +27,36 @@ const createPortalRoot = () => {
 	return modalRoot;
 };
 
+const isAvailable = (element: HTMLElement) => {
+	if (!element.isConnected || element.matches(':disabled, input[type="hidden"]')) return false;
+	for (let current: HTMLElement | null = element; current; current = current.parentElement) {
+		if (
+			current.hidden ||
+			current.hasAttribute('inert') ||
+			current.getAttribute('aria-hidden') === 'true'
+		)
+			return false;
+		const style = getComputedStyle(current);
+		if (
+			style.display === 'none' ||
+			style.visibility === 'hidden' ||
+			style.visibility === 'collapse'
+		)
+			return false;
+	}
+	return true;
+};
+const focusableElements = (dialog: HTMLElement) =>
+	Array.from(
+		dialog.querySelectorAll<HTMLElement>(
+			'a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]',
+		),
+	)
+		.filter((element) => element.tabIndex >= 0 && isAvailable(element))
+		.sort(
+			(a, b) => (a.tabIndex > 0 ? a.tabIndex : Infinity) - (b.tabIndex > 0 ? b.tabIndex : Infinity),
+		);
+
 const subscribeToMount = () => () => {};
 
 export const Modal = ({
@@ -55,6 +85,10 @@ export const Modal = ({
 	);
 	const portal = useMemo(() => (mounted ? createPortalRoot() : null), [mounted]);
 	const overlayRef = useRef<HTMLDivElement>(null);
+	const closeRef = useRef(onClose);
+	useEffect(() => {
+		closeRef.current = onClose;
+	}, [onClose]);
 
 	const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
@@ -63,26 +97,71 @@ export const Modal = ({
 			onClose();
 		}
 	};
-	const handleClickXCircle = (e: React.MouseEvent<SVGElement>) => {
+	const handleClickXCircle = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
 		onClose();
-	};
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement | SVGElement>) => {
-		e.stopPropagation();
-		if (e.key === 'Escape') {
-			onClose();
-		}
 	};
 
 	useEffect(() => {
 		if (!isOpen || !portal) return;
 		const body = document.body;
 		const previousOverflow = body.style.overflow;
+		const opener = document.activeElement;
 		body.style.overflow = 'hidden';
 		body.appendChild(portal);
+		const dialog = overlayRef.current;
+		const isTopDialog = () => {
+			const dialogs = document.querySelectorAll('[role="dialog"][aria-modal="true"]');
+			return dialogs[dialogs.length - 1] === dialog;
+		};
+		const focusInside = () => {
+			if (dialog) (focusableElements(dialog)[0] ?? dialog).focus();
+		};
+		const trapFocus = (event: FocusEvent) => {
+			if (dialog && isTopDialog() && !dialog.contains(event.target as Node)) focusInside();
+		};
+		const trapKeys = (event: KeyboardEvent) => {
+			if (!dialog || !isTopDialog()) return;
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				event.stopPropagation();
+				closeRef.current();
+				return;
+			}
+			if (event.key !== 'Tab') return;
+			const elements = focusableElements(dialog);
+			const first = elements[0],
+				last = elements[elements.length - 1];
+			if (!first) {
+				event.preventDefault();
+				dialog.focus();
+				return;
+			}
+			const active = document.activeElement;
+			if (
+				!dialog.contains(active) ||
+				active === dialog ||
+				!elements.includes(active as HTMLElement)
+			) {
+				event.preventDefault();
+				(event.shiftKey ? last : first).focus();
+			} else if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		};
+		document.addEventListener('focusin', trapFocus);
+		document.addEventListener('keydown', trapKeys, true);
+		focusInside();
 		return () => {
+			document.removeEventListener('focusin', trapFocus);
+			document.removeEventListener('keydown', trapKeys, true);
 			portal.remove();
 			body.style.overflow = previousOverflow;
+			if (opener instanceof HTMLElement && isAvailable(opener)) opener.focus();
 		};
 	}, [isOpen, portal]);
 
@@ -92,15 +171,16 @@ export const Modal = ({
 
 	return createPortal(
 		<div
-			role="button"
-			aria-labelledby="У вас открыто модальное окно"
-			tabIndex={0}
+			role="presentation"
 			className={classNames(styles.overlay, { [styles['modal-open']]: isOpen })}
 			data-testid={modalTestIds.modalOverlay}
-			onKeyDown={handleKeyDown}
 			onClick={handleOverlayClick}
 		>
 			<div
+				role="dialog"
+				aria-modal="true"
+				aria-label={title?.trim() || 'Модальное окно'}
+				tabIndex={-1}
 				data-testid={dataTestId}
 				className={classNames(
 					className,
@@ -111,17 +191,15 @@ export const Modal = ({
 				ref={overlayRef}
 			>
 				{withCloseIcon && (
-					<Icon
-						icon="closeCircle"
+					<button
 						type="button"
 						className={styles['x-circle']}
-						color={closeIconColors[variant]}
 						onClick={handleClickXCircle}
-						tabIndex={0}
 						aria-label="Закрыть модальное окно"
-						dataTestId={modalTestIds.modalCloseIcon}
-						onKeyDown={handleKeyDown}
-					/>
+						data-testid={modalTestIds.modalCloseIcon}
+					>
+						<Icon icon="closeCircle" color={closeIconColors[variant]} aria-hidden="true" />
+					</button>
 				)}
 				<div
 					data-testid={modalTestIds.modalContentWrapper}

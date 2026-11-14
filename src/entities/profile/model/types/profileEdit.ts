@@ -1,4 +1,7 @@
 export type ProfileEditInput = {
+	// Optional precondition for legacy saves; required when initially assigning specialization.
+	expectedProfileId?: string;
+	specializationId?: number;
 	username: string;
 	city: string | null;
 	socialNetwork: { code: string; title: string }[];

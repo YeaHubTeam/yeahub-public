@@ -5,7 +5,7 @@ import { hasLocale } from 'next-intl';
 
 import { getOwnProfile } from '@/auth';
 import { getSkills } from '@/entities/skill';
-import { getSpecializationById } from '@/entities/specialization';
+import { getSpecializationById, getSpecializations } from '@/entities/specialization';
 import { ROUTES, redirect, routing } from '@/shared/config';
 import { EditProfileForm } from '@/widgets/profile/edit';
 import type { EditProfileFormProps } from '@/widgets/profile/edit';
@@ -34,11 +34,14 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
 	if (result.status === 'no-active-profile') return <ProfileStatus kind="no-active-profile" />;
 	if (result.status !== 'success') return <ProfileStatus kind="error" />;
 	const profile = result.profile;
-	const [specializationResult, skillsResult] = await Promise.allSettled([
+	const [specializationResult, skillsResult, optionsResult] = await Promise.allSettled([
 		profile.activeProfile.specializationId > 0
 			? getSpecializationById(profile.activeProfile.specializationId)
 			: Promise.resolve(null),
 		getSkills({ limit: 100 }),
+		profile.activeProfile.specializationId === 0
+			? getSpecializations({ limit: 100 })
+			: Promise.resolve(null),
 	]);
 	let specialization: EditProfileFormProps['specialization'] = null;
 	if (specializationResult.status === 'fulfilled') {
@@ -49,6 +52,26 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
 			value.title.trim()
 		)
 			specialization = { id: value.id, title: value.title };
+	}
+	let specializationOptions: NonNullable<EditProfileFormProps['specializationOptions']> = [];
+	let specializationError = profile.activeProfile.specializationId === 0;
+	if (optionsResult.status === 'fulfilled' && Array.isArray(optionsResult.value?.data)) {
+		const options = optionsResult.value.data;
+		if (
+			options.length > 0 &&
+			options.every(
+				(option) =>
+					option &&
+					Number.isSafeInteger(option.id) &&
+					option.id > 0 &&
+					typeof option.title === 'string' &&
+					option.title.trim(),
+			) &&
+			new Set(options.map((option) => option.id)).size === options.length
+		) {
+			specializationOptions = options.map(({ id, title }) => ({ id, title }));
+			specializationError = false;
+		}
 	}
 	let skills: EditProfileFormProps['skills'] = [];
 	let skillsError = true;
@@ -76,6 +99,8 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
 				specialization={specialization}
 				skills={skills}
 				skillsError={skillsError}
+				specializationOptions={specializationOptions}
+				specializationError={specializationError}
 				avatarAction={changeOwnAvatar}
 				saveAction={saveProfile}
 				readAction={readSavedProfile}

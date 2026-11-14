@@ -75,3 +75,24 @@ it('is compatible with yupResolver and requires description as a string in the c
 		createEditProfileSchema(messages, null).validate({ ...valid, description: undefined }),
 	).rejects.toThrow();
 });
+
+it('composes initial selection validation without changing other tabs', async () => {
+	const schema = createEditProfileSchema(messages, null, 0);
+	expect(await schema.isValid({ ...valid, specializationId: 0 })).toBe(false);
+	expect(await schema.validate({ ...valid, specializationId: 7 })).toEqual({
+		...valid,
+		specializationId: 7,
+	});
+	const resolver = yupResolver(schema);
+	const result = await resolver({ ...valid, specializationId: 7 }, undefined, {
+		fields: {},
+		shouldUseNativeValidation: false,
+	});
+	expect(result.errors).toEqual({});
+	expect(result.values).toEqual({ ...valid, specializationId: 7 });
+});
+it('locks the established specialization in the composed schema', async () => {
+	const schema = createEditProfileSchema(messages, null, 7);
+	expect(await schema.isValid({ ...valid, specializationId: 7 })).toBe(true);
+	expect(await schema.isValid({ ...valid, specializationId: 8 })).toBe(false);
+});

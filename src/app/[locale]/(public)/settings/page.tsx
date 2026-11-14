@@ -5,15 +5,21 @@ import { hasLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
 import { auth, getSettingsSnapshot } from '@/auth';
+import { getSpecializationById } from '@/entities/specialization';
 import { ROUTES, i18Namespace, redirect, routing } from '@/shared/config';
 import { getTelegramWidgetConfig } from '@/shared/config/telegram.server';
 import { Text } from '@/shared/ui/Text';
 import { SettingsShell } from '@/widgets/profile/settings';
 
 import {
+	changePassword,
+	createSettingsProfile,
+	deleteSettingsAccount,
+	deleteSettingsProfile,
 	linkTelegram,
 	readEmailVerificationStatus,
 	requestVerificationEmail,
+	selectSettingsProfile,
 	unlinkTelegram,
 } from './actions';
 
@@ -39,9 +45,50 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
 			</>
 		);
 	}
+	const ids = [
+		...new Set(
+			result.snapshot.profiles
+				.map((profile) => profile.specializationId)
+				.filter((id) => Number.isSafeInteger(id) && id > 0),
+		),
+	];
+	const entries = await Promise.all(
+		ids.map(async (id) => {
+			try {
+				const value = await getSpecializationById(id);
+				return [
+					id,
+					value?.id === id && typeof value.title === 'string' && value.title.trim()
+						? value.title
+						: null,
+				] as const;
+			} catch {
+				return [id, null] as const;
+			}
+		}),
+	);
+	const titles = new Map(entries);
+	const account = {
+		hasPremiumAccess: result.snapshot.hasPremiumAccess,
+		username: result.snapshot.username,
+		profiles: result.snapshot.profiles.map(({ id, specializationId, isActive }) => ({
+			id,
+			specializationId,
+			isActive,
+			specializationTitle: titles.get(specializationId) ?? null,
+		})),
+	};
 	const telegramConfig = getTelegramWidgetConfig();
 	return (
 		<SettingsShell
+			account={account}
+			deleteAccountAction={deleteSettingsAccount}
+			profileActions={{
+				select: selectSettingsProfile,
+				create: createSettingsProfile,
+				delete: deleteSettingsProfile,
+			}}
+			passwordAction={changePassword}
 			telegramVerification={{
 				botUsername: telegramConfig.status === 'success' ? telegramConfig.botUsername : null,
 				telegramUsername: result.snapshot.telegramUsername,

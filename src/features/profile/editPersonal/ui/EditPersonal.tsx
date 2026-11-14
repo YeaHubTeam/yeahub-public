@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
 
 import type { OwnProfile } from '@/entities/profile';
-import { i18Namespace } from '@/shared/config';
-import { Dropdown } from '@/shared/ui/Dropdown';
+import { Link, ROUTES, i18Namespace } from '@/shared/config';
+import { Dropdown, Option } from '@/shared/ui/Dropdown';
 import { Flex } from '@/shared/ui/Flex';
 import { FormControl } from '@/shared/ui/FormControl';
 import { Input } from '@/shared/ui/Input';
@@ -56,15 +56,26 @@ export type EditPersonalProps = {
 	profile: OwnProfile;
 	specialization: { id: number; title: string } | null;
 	avatar: ReactNode;
+	specializationOptions?: readonly { id: number; title: string }[];
+	specializationError?: boolean;
+	initialSpecializationId?: number;
 };
 
 const preventEnter = (event: KeyboardEvent<HTMLInputElement>) => {
 	if (event.key === 'Enter') event.preventDefault();
 };
 
-export const EditPersonal = ({ profile, specialization, avatar }: EditPersonalProps) => {
+export const EditPersonal = ({
+	profile,
+	specialization,
+	avatar,
+	specializationOptions = [],
+	specializationError = false,
+	initialSpecializationId = profile.activeProfile.specializationId,
+}: EditPersonalProps) => {
 	const t = useTranslations(i18Namespace.profile);
-	const { control } = useFormContext<PersonalFormValues>();
+	const selectText = useTranslations('specialization');
+	const { control } = useFormContext<PersonalFormValues & { specializationId?: number }>();
 	const heading = (title: string, description: string) => (
 		<Flex direction="column" gap="8" className={styles.titles}>
 			<Text variant="body4" color="black-800">
@@ -97,29 +108,80 @@ export const EditPersonal = ({ profile, specialization, avatar }: EditPersonalPr
 							/>
 						)}
 					</FormControl>
-					<Flex
-						direction="column"
-						gap="8"
-						role="group"
-						aria-label={t('edit.form.specialization')}
-						aria-disabled="true"
-					>
-						<Text variant="body2" color="black-700">
-							{t('edit.form.specialization')}
-						</Text>
-						<Dropdown
-							size="S"
-							disabled
-							label={t('edit.form.specializationEmpty')}
-							value={
-								specialization?.title.trim()
-									? specialization.title
-									: t('edit.form.specializationEmpty')
-							}
-							className={styles.input}
+					<Flex direction="column" gap="8">
+						{initialSpecializationId === 0 ? (
+							<FormControl
+								name="specializationId"
+								control={control}
+								label={t('edit.form.specialization')}
+							>
+								{(field) => (
+									<div onBlurCapture={field.onBlur}>
+										<Dropdown
+											size="S"
+											className={styles.input}
+											disabled={specializationError || specializationOptions.length === 0}
+											label={selectText(
+												specializationOptions.length ? 'select.choose' : 'select.empty',
+											)}
+											value={
+												specializationOptions.find((option) => option.id === field.value)?.title ??
+												''
+											}
+											onSelect={(value) => {
+												const option = specializationOptions.find((option) => option.id === value);
+												if (option && !specializationError) field.onChange(option.id);
+											}}
+										>
+											{specializationOptions.map((option) => (
+												<Option
+													key={option.id}
+													value={option.id}
+													label={option.title}
+													isSelected={field.value === option.id}
+												/>
+											))}
+										</Dropdown>
+										{specializationError && (
+											<Text variant="body1" color="red-700">
+												{t('edit.form.specializationError')}
+											</Text>
+										)}
+									</div>
+								)}
+							</FormControl>
+						) : (
+							<Flex
+								direction="column"
+								gap="8"
+								role="group"
+								aria-label={t('edit.form.specialization')}
+								aria-disabled="true"
+							>
+								<Text variant="body2" color="black-700">
+									{t('edit.form.specialization')}
+								</Text>
+								<Dropdown
+									size="S"
+									disabled
+									label={t('edit.form.specializationEmpty')}
+									value={
+										specialization?.title.trim()
+											? specialization.title
+											: t('edit.form.specializationEmpty')
+									}
+									className={styles.input}
+								>
+									{null}
+								</Dropdown>
+							</Flex>
+						)}
+						<Link
+							href={`${ROUTES.settings.page}#account`}
+							className={styles['specialization-link']}
 						>
-							{null}
-						</Dropdown>
+							{t('form.switch.specialization')}
+						</Link>
 					</Flex>
 					<label htmlFor="edit-personal-email">
 						<Flex direction="column" gap="8">

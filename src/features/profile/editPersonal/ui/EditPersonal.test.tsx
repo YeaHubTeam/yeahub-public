@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactElement, ReactNode } from 'react';
 
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render as rtlRender, screen, waitFor } from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
@@ -17,9 +18,12 @@ import {
 import type { PersonalFormValues } from '../index';
 
 jest.mock('@/shared/config', () => ({
+	Link: jest.requireActual('@/shared/config').Link,
+	ROUTES: { settings: { page: '/settings' } },
 	i18Namespace: { profile: 'profile', translation: 'translation' },
 }));
 jest.mock('next-intl', () => ({
+	...jest.requireActual('next-intl'),
 	useTranslations: (namespace: string) => {
 		const { createTranslator } = jest.requireActual('next-intl');
 		return createTranslator({
@@ -28,6 +32,37 @@ jest.mock('next-intl', () => ({
 		});
 	},
 }));
+const push = jest.fn();
+// Keep the real next-intl Link/localization; replace only Next's browser navigation boundary.
+jest.mock('next/link', () => ({
+	__esModule: true,
+	default: ({ href, onClick, ...props }: ComponentProps<'a'>) => (
+		<a
+			{...props}
+			href={href}
+			onClick={(event) => {
+				onClick?.(event);
+				if (!event.defaultPrevented) {
+					event.preventDefault();
+					push(href, {});
+				}
+			}}
+		/>
+	),
+}));
+
+jest.mock('next/navigation', () => ({
+	usePathname: () => '/ru/profile/edit',
+	useRouter: () => ({ push, replace: jest.fn(), prefetch: jest.fn() }),
+}));
+const render = (ui: ReactElement) =>
+	rtlRender(ui, {
+		wrapper: ({ children }) => (
+			<NextIntlClientProvider locale="ru" messages={{}}>
+				{children}
+			</NextIntlClientProvider>
+		),
+	});
 const profile: OwnProfile = {
 	id: 'user',
 	username: ' Name ',
@@ -55,11 +90,15 @@ const Harness = ({
 	avatar = <div data-testid="avatar-slot">Avatar</div>,
 	data = profile,
 	specialization = { id: 987654, title: 'Frontend' },
+	options = [] as { id: number; title: string }[],
+	optionsError = false,
 }: {
 	visible?: boolean;
 	avatar?: ReactNode;
 	data?: OwnProfile;
 	specialization?: { id: number; title: string } | null;
+	options?: { id: number; title: string }[];
+	optionsError?: boolean;
 }) => {
 	const methods = useForm<PersonalFormValues & { description: string }>({
 		defaultValues: { ...createPersonalDefaults(data), description: 'Other tab draft' },
@@ -68,7 +107,15 @@ const Harness = ({
 	const values = useWatch({ control: methods.control });
 	return (
 		<FormProvider {...methods}>
-			{visible && <EditPersonal profile={data} specialization={specialization} avatar={avatar} />}
+			{visible && (
+				<EditPersonal
+					profile={data}
+					specialization={specialization}
+					avatar={avatar}
+					specializationOptions={options}
+					specializationError={optionsError}
+				/>
+			)}
 			<button
 				type="button"
 				onClick={() => methods.setError('username', { message: 'Минимальная длина 2 символа' })}
@@ -96,7 +143,10 @@ it('renders initial data, the nine networks in original order and the avatar in 
 		'true',
 	);
 	expect(screen.getByText('Frontend')).toBeInTheDocument();
-	expect(container.querySelector('a')).toBeNull();
+	expect(screen.getByRole('link', { name: 'Сменить специальность' })).toHaveAttribute(
+		'href',
+		'/ru/settings#account',
+	);
 	expect(container.querySelector('form')).toBeNull();
 	expect(container.querySelector('input[type="file"]')).toBeNull();
 	const socialLabels = [...container.querySelectorAll('label')]
@@ -206,4 +256,67 @@ it('contains no upward imports, sibling feature imports, own form or reset', () 
 	expect(source).not.toMatch(/from ['"]@\/(app|widgets|features)\//);
 	expect(source).not.toMatch(/\b(useForm|reset|fetch)\s*\(/);
 	expect(source).not.toContain('AvatarEditor');
+});
+
+it('allows a keyboard selection only for an initially empty specialization', () => {
+	const data = { ...profile, activeProfile: { ...profile.activeProfile, specializationId: 0 } };
+	render(
+		<Harness data={data} specialization={null} options={[{ id: 7, title: 'Backend developer' }]} />,
+	);
+	fireEvent.keyDown(screen.getByRole('button', { name: 'Выберите специализацию' }), {
+		key: 'Enter',
+	});
+	fireEvent.keyDown(screen.getByRole('option', { name: 'Backend developer' }), { key: 'Enter' });
+	expect(screen.getByText('Backend developer')).toBeInTheDocument();
+	expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+});
+it('shows an explicit directory error without selectable options', () => {
+	render(
+		<Harness
+			data={{ ...profile, activeProfile: { ...profile.activeProfile, specializationId: 0 } }}
+			optionsError
+		/>,
+	);
+	expect(
+		screen.getByText('Не удалось загрузить доступные специализации. Обновите страницу.'),
+	).toBeInTheDocument();
+	fireEvent.click(screen.getByRole('button', { name: 'Нет доступных опций' }));
+	expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+});
+
+it.each([0, 987654])(
+	'renders an accessible account link below specialization %s and before email',
+	(specializationId) => {
+		render(
+			<Harness
+				data={{ ...profile, activeProfile: { ...profile.activeProfile, specializationId } }}
+				options={[{ id: 7, title: 'Backend developer' }]}
+			/>,
+		);
+		const link = screen.getByRole('link', { name: 'Сменить специальность' });
+		expect(link).toHaveAttribute('href', '/ru/settings#account');
+		expect(screen.getAllByRole('link', { name: 'Сменить специальность' })).toHaveLength(1);
+		const dropdown = screen.getAllByTestId('dropdown')[0];
+		expect(dropdown.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		expect(
+			link.compareDocumentPosition(screen.getByLabelText('Email для связи')) &
+				Node.DOCUMENT_POSITION_FOLLOWING,
+		).toBeTruthy();
+		link.focus();
+		expect(link).toHaveFocus();
+		fireEvent.click(link);
+		expect(push).toHaveBeenCalledWith('/ru/settings#account', expect.anything());
+	},
+);
+it('keeps the account link enabled when the specialization catalogue is unavailable', () => {
+	render(
+		<Harness
+			data={{ ...profile, activeProfile: { ...profile.activeProfile, specializationId: 0 } }}
+			optionsError
+		/>,
+	);
+	const link = screen.getByRole('link', { name: 'Сменить специальность' });
+	expect(link).not.toHaveAttribute('aria-disabled', 'true');
+	fireEvent.click(link);
+	expect(push).toHaveBeenCalled();
 });

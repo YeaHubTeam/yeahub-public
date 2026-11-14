@@ -8,6 +8,8 @@ import type { PersonalFormValues } from '@/features/profile/editPersonal';
 import { getInitialSkillIds } from '@/features/profile/editSkills';
 
 export type EditProfileValues = PersonalFormValues & {
+	// Optional for legacy readback/callers; createEditDefaults always initializes it.
+	specializationId?: number;
 	description: string;
 	profileSkills: number[];
 };
@@ -17,21 +19,44 @@ export type SavedProfileSnapshot = Pick<
 > & {
 	id: OwnProfile['id'];
 	profileId: ActiveProfile['id'];
+	specializationId?: ActiveProfile['specializationId'];
 	description: ActiveProfile['description'];
 };
 export const createEditDefaults = (profile: OwnProfile): EditProfileValues => ({
 	...createPersonalDefaults(profile),
+	specializationId: profile.activeProfile.specializationId,
 	description: profile.activeProfile.description ?? '',
 	profileSkills: getInitialSkillIds(profile.activeProfile.profileSkills),
 });
+export type InitialProfileContext = Pick<ActiveProfile, 'id' | 'specializationId'>;
 export const toEditPayload = (
 	values: EditProfileValues,
 	rawDescription: string | null,
-): ProfileEditInput => ({
-	...toPersonalPayload(values),
-	profileSkills: [...values.profileSkills],
-	...(values.description !== (rawDescription ?? '') ? { description: values.description } : {}),
-});
+	initialProfile?: InitialProfileContext,
+): ProfileEditInput => {
+	if (initialProfile) {
+		const id = values.specializationId;
+		if (
+			!initialProfile.id ||
+			typeof id !== 'number' ||
+			!Number.isSafeInteger(id) ||
+			id <= 0 ||
+			!Number.isSafeInteger(initialProfile.specializationId) ||
+			initialProfile.specializationId < 0 ||
+			(initialProfile.specializationId !== 0 && id !== initialProfile.specializationId)
+		)
+			throw new Error('Invalid initial specialization selection');
+	}
+	return {
+		...toPersonalPayload(values),
+		profileSkills: [...values.profileSkills],
+		...(values.description !== (rawDescription ?? '') ? { description: values.description } : {}),
+		...(initialProfile ? { expectedProfileId: initialProfile.id } : {}),
+		...(initialProfile?.specializationId === 0
+			? { specializationId: values.specializationId }
+			: {}),
+	};
+};
 const sameIds = (a: readonly number[], b: readonly number[]) =>
 	a.length === b.length && new Set(a).size === new Set(b).size && a.every((id) => b.includes(id));
 const sortedLinks = (links: { code: string; title: string }[]) =>
@@ -39,6 +64,7 @@ const sortedLinks = (links: { code: string; title: string }[]) =>
 const sameLinks = (a: { code: string; title: string }[], b: { code: string; title: string }[]) =>
 	JSON.stringify(sortedLinks(a)) === JSON.stringify(sortedLinks(b));
 export const sameEditValues = (a: EditProfileValues, b: EditProfileValues) =>
+	a.specializationId === b.specializationId &&
 	a.username === b.username &&
 	a.city === b.city &&
 	a.description === b.description &&
@@ -55,6 +81,8 @@ export const matchesSavedProfile = (
 ) =>
 	saved.id === expected.id &&
 	saved.profileId === expected.profileId &&
+	(sent.expectedProfileId === undefined || saved.profileId === sent.expectedProfileId) &&
+	(sent.specializationId === undefined || saved.specializationId === sent.specializationId) &&
 	saved.username === sent.username &&
 	saved.city === sent.city &&
 	saved.description ===
@@ -62,6 +90,7 @@ export const matchesSavedProfile = (
 	sameIds(saved.profileSkills, sent.profileSkills) &&
 	sameLinks(saved.socialNetwork, sent.socialNetwork);
 export const savedToEditValues = (saved: SavedProfileSnapshot): EditProfileValues => ({
+	specializationId: saved.specializationId,
 	username: saved.username,
 	city: saved.city ?? '',
 	description: saved.description ?? '',

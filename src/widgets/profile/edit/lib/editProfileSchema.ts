@@ -12,6 +12,7 @@ export type EditValidationMessages = {
 export const createEditProfileSchema = (
 	messages: EditValidationMessages,
 	rawDescription: string | null,
+	initialSpecializationId?: number,
 ) => {
 	const about = createAboutSchema(messages.about, rawDescription ?? '');
 	const description = about.fields.description;
@@ -19,7 +20,7 @@ export const createEditProfileSchema = (
 	if (!(description instanceof StringSchema))
 		throw new Error('Expected the existing description schema');
 	const descriptionSchema: StringSchema<string | undefined> = description;
-	return createPersonalSchema(messages.personal)
+	return createPersonalSchema(messages.personal, initialSpecializationId)
 		.concat(about.shape({ description: descriptionSchema.defined(messages.about.invalid) }))
 		.concat(createSkillsSchema(messages.skills));
 };

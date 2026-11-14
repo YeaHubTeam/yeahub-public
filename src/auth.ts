@@ -1,14 +1,19 @@
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import { createActionURL, setEnvDefaults } from '@auth/core';
 import type { AuthConfig } from '@auth/core';
 import NextAuth from 'next-auth';
 import { encode, getToken } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { createHash } from 'node:crypto';
 import 'server-only';
 
 import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
 import {
+	createOwnProfile,
+	deleteOwnAccount,
+	deleteOwnProfile,
 	mutateTelegram,
 	parseProfileEditInput,
 	parseTelegramPayload,
@@ -16,11 +21,16 @@ import {
 	readOwnProfile,
 	readSettingsSnapshot,
 	saveOwnProfile,
+	selectOwnProfile,
 	sendVerificationEmail,
 } from '@/entities/profile/server';
 import type {
+	AccountDeletionResult,
 	HeaderProfileResult,
+	ProfileCreationResult,
+	ProfileDeletionResult,
 	ProfileEditResult,
+	ProfileSelectionResult,
 	SettingsSnapshotResult,
 	TelegramMutationResult,
 	VerificationEmailResult,
@@ -82,6 +92,28 @@ const getTokenExpiry = (token: string): number => {
 		throw new BackendAuthError('protocol');
 	}
 };
+
+type PasswordReplacement = {
+	userId: string;
+	fingerprint: string;
+	originalDeadline: number;
+	next: BackendSession;
+	applied: boolean;
+};
+const passwordReplacement = new AsyncLocalStorage<PasswordReplacement>();
+const sessionFingerprint = (data: BackendSession) =>
+	createHash('sha256')
+		.update(
+			JSON.stringify([
+				data.userId,
+				data.accessToken,
+				data.refreshToken,
+				data.accessExpiresAt,
+				data.refreshExpiresAt,
+				data.sessionExpiresAt,
+			]),
+		)
+		.digest('hex');
 
 const nextAuth = NextAuth(() => ({
 	debug: false,
@@ -171,6 +203,21 @@ const nextAuth = NextAuth(() => ({
 			const stored = user && 'backendSession' in user ? user.backendSession : token.backendSession;
 			if (!isBackendSession(stored) || deadline(stored) <= Math.floor(Date.now() / 1000))
 				return null;
+
+			const replacement = passwordReplacement.getStore();
+			if (trigger === 'update' && replacement) {
+				if (
+					replacement.applied ||
+					replacement.userId !== stored.userId ||
+					token.sub !== stored.userId ||
+					replacement.fingerprint !== sessionFingerprint(stored) ||
+					replacement.originalDeadline !== stored.sessionExpiresAt ||
+					deadline(replacement.next) <= Math.floor(Date.now() / 1000)
+				)
+					return token;
+				replacement.applied = true;
+				return { sub: stored.userId, backendSession: replacement.next };
+			}
 			// Client data is a re-read signal only; username always comes from the verified backend.
 			if (trigger === 'update' && isObject(session) && session.syncProfile === true) {
 				if (stored.accessExpiresAt <= Math.floor(Date.now() / 1000)) return token;
@@ -266,7 +313,7 @@ const nextAuth = NextAuth(() => ({
 export const { handlers, auth, signIn, signOut } = nextAuth;
 
 // Shared, private cookie verification for server reads and mutations.
-const currentBackendSession = async () => {
+const currentBackendSession = async (writtenCookie?: string) => {
 	try {
 		const requestHeaders = await headers();
 		const config: AuthConfig = {
@@ -285,7 +332,9 @@ const currentBackendSession = async () => {
 		);
 		// Cookie only: do not accept a request Authorization header as a session.
 		const token = await getToken({
-			req: { headers: new Headers({ cookie: requestHeaders.get('cookie') ?? '' }) },
+			req: {
+				headers: new Headers({ cookie: writtenCookie ?? requestHeaders.get('cookie') ?? '' }),
+			},
 			secret: config.secret ?? [],
 			secureCookie: url.protocol === 'https:',
 		});
@@ -385,6 +434,237 @@ export const unlinkOwnTelegram = async (): Promise<TelegramMutationResult> => {
 		);
 	} catch {
 		return { status: 'error' };
+	}
+};
+
+export const deleteOwnSettingsAccount = async (
+	confirmationUsername: unknown,
+): Promise<AccountDeletionResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await deleteOwnAccount(
+			confirmationUsername,
+			{
+				userId: session.data.userId,
+				accessToken: session.data.accessToken,
+				accessExpiresAt: session.data.accessExpiresAt,
+				sessionDeadline: deadline(session.data),
+			},
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export const deleteOwnSettingsProfile = async (
+	profileId: string,
+	confirmationUsername: string,
+): Promise<ProfileDeletionResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await deleteOwnProfile(
+			profileId,
+			confirmationUsername,
+			{
+				userId: session.data.userId,
+				accessToken: session.data.accessToken,
+				accessExpiresAt: session.data.accessExpiresAt,
+				sessionDeadline: deadline(session.data),
+			},
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export const createOwnSettingsProfile = async (): Promise<ProfileCreationResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await createOwnProfile(
+			{
+				userId: session.data.userId,
+				accessToken: session.data.accessToken,
+				accessExpiresAt: session.data.accessExpiresAt,
+				sessionDeadline: deadline(session.data),
+			},
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export const selectOwnSettingsProfile = async (
+	profileId: unknown,
+): Promise<ProfileSelectionResult> => {
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	try {
+		return await selectOwnProfile(
+			profileId,
+			{
+				userId: session.data.userId,
+				accessToken: session.data.accessToken,
+				accessExpiresAt: session.data.accessExpiresAt,
+				sessionDeadline: deadline(session.data),
+			},
+			getAuthBackendConfig(),
+		);
+	} catch {
+		return { status: 'error' };
+	}
+};
+
+export type ChangePasswordResult =
+	| { status: 'success' }
+	| {
+			status:
+				| 'validation-error'
+				| 'unauthenticated'
+				| 'refresh-required'
+				| 'forbidden'
+				| 'not-found'
+				| 'error';
+	  }
+	| {
+			status: 'incomplete';
+			stage: 'backend-result-unverified' | 'session-update-failed' | 'deadline-expired';
+	  }
+	| { status: 'outcome-unknown' };
+
+export const changeOwnPassword = async (input: unknown): Promise<ChangePasswordResult> => {
+	if (
+		!isObject(input) ||
+		Object.keys(input).some((key) => !['password', 'passwordConfirm'].includes(key)) ||
+		!['password', 'passwordConfirm'].every((key) => Object.hasOwn(input, key)) ||
+		typeof input.password !== 'string' ||
+		typeof input.passwordConfirm !== 'string' ||
+		input.password.length < 8 ||
+		input.password.length > 255 ||
+		input.passwordConfirm.length < 8 ||
+		input.passwordConfirm.length > 255 ||
+		input.password !== input.passwordConfirm
+	)
+		return { status: 'validation-error' };
+	const session = await currentBackendSession();
+	if (session.status !== 'success') return session;
+	const original = session.data;
+	const controller = new AbortController();
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	let result: Awaited<ReturnType<ReturnType<typeof createBackendAuthTransport>['changePassword']>>;
+	try {
+		const transport = createBackendAuthTransport({
+			...getAuthBackendConfig(),
+			fetch: (url, init) => fetch(url, { ...init, signal: controller.signal }),
+		});
+		const timeout = new Promise<never>((_, reject) => {
+			timer = setTimeout(() => {
+				controller.abort();
+				reject(new Error('Password change outcome unknown'));
+			}, 5000);
+		});
+		result = await Promise.race([
+			transport.changePassword({
+				userId: original.userId,
+				accessToken: original.accessToken,
+				password: input.password,
+				passwordConfirm: input.passwordConfirm,
+			}),
+			timeout,
+		]);
+	} catch (error) {
+		if (error instanceof BackendAuthError) {
+			if (error.kind === 'http' && error.status !== undefined && error.status >= 500)
+				return { status: 'outcome-unknown' };
+			if (error.kind === 'http')
+				return {
+					status:
+						error.status === 400
+							? 'validation-error'
+							: error.status === 401
+								? 'unauthenticated'
+								: error.status === 403
+									? 'forbidden'
+									: error.status === 404
+										? 'not-found'
+										: 'error',
+				};
+			if (error.kind === 'configuration') return { status: 'error' };
+			if (error.kind === 'protocol')
+				return { status: 'incomplete', stage: 'backend-result-unverified' };
+		}
+		return { status: 'outcome-unknown' };
+	} finally {
+		clearTimeout(timer);
+	}
+	let replacement: PasswordReplacement;
+	try {
+		if (result.user.id !== original.userId) throw new Error('Identity mismatch');
+		const accessExpiresAt = getTokenExpiry(result.access_token);
+		const refreshExpiresAt = getTokenExpiry(result.refreshToken);
+		for (const value of [result.access_token, result.refreshToken]) {
+			const claims: unknown = JSON.parse(
+				Buffer.from(value.split('.')[1], 'base64url').toString('utf8'),
+			);
+			if (!isObject(claims) || claims.sub !== original.userId) throw new Error('Identity mismatch');
+		}
+		const next: BackendSession = {
+			...original,
+			accessToken: result.access_token,
+			refreshToken: result.refreshToken,
+			accessExpiresAt,
+			refreshExpiresAt,
+		};
+		delete next.refreshRetryRequired;
+		if (!isBackendSession(next)) throw new Error('Invalid credentials');
+		replacement = {
+			userId: original.userId,
+			fingerprint: sessionFingerprint(original),
+			originalDeadline: original.sessionExpiresAt,
+			next,
+			applied: false,
+		};
+	} catch {
+		return { status: 'incomplete', stage: 'backend-result-unverified' };
+	}
+	if (deadline(original) <= Math.floor(Date.now() / 1000))
+		return { status: 'incomplete', stage: 'deadline-expired' };
+	try {
+		const updated = await passwordReplacement.run(replacement, () => nextAuth.unstable_update({}));
+		if (!replacement.applied || updated?.user?.id !== original.userId)
+			return { status: 'incomplete', stage: 'session-update-failed' };
+		const jar = await cookies();
+		const written = jar
+			.getAll()
+			.map(({ name, value }) => `${name}=${value}`)
+			.join('; ');
+		const verified = await currentBackendSession(written);
+		if (
+			verified.status !== 'success' ||
+			sessionFingerprint(verified.data) !== sessionFingerprint(replacement.next)
+		) {
+			return {
+				status: 'incomplete',
+				stage:
+					deadline(original) <= Math.floor(Date.now() / 1000)
+						? 'deadline-expired'
+						: 'session-update-failed',
+			};
+		}
+		return { status: 'success' };
+	} catch {
+		return {
+			status: 'incomplete',
+			stage:
+				deadline(original) <= Math.floor(Date.now() / 1000)
+					? 'deadline-expired'
+					: 'session-update-failed',
+		};
 	}
 };
 

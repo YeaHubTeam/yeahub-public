@@ -73,6 +73,7 @@ it.each(['<p>New HTML</p>', ''])('includes explicitly changed description %j', (
 const saved = (): SavedProfileSnapshot => ({
 	id: 'user',
 	profileId: 'active',
+	specializationId: 1,
 	username: ' Name ',
 	city: '',
 	description: null,
@@ -119,4 +120,76 @@ it('creates a new baseline with all nine fields without modifying newer values',
 	const confirmed = savedToEditValues(saved());
 	expect(sameEditValues(confirmed, createEditDefaults(profile))).toBe(true);
 	expect(sameEditValues({ ...confirmed, username: 'Newer draft' }, confirmed)).toBe(false);
+});
+
+it.each([0, 7])('initializes specialization %s from the active profile', (specializationId) => {
+	expect(
+		createEditDefaults({
+			...profile,
+			activeProfile: { ...profile.activeProfile, specializationId },
+		}).specializationId,
+	).toBe(specializationId);
+});
+it('maps initial selection with original identity and every other editable value', () => {
+	const initial = { ...profile.activeProfile, specializationId: 0 };
+	const values = {
+		...createEditDefaults({ ...profile, activeProfile: initial }),
+		specializationId: 7,
+		description: 'Changed',
+	};
+	const sent = toEditPayload(values, null, initial);
+	expect(sent).toEqual({
+		expectedProfileId: 'active',
+		specializationId: 7,
+		username: ' Name ',
+		city: '',
+		description: 'Changed',
+		profileSkills: [999, 1],
+		socialNetwork: [{ code: 'github', title: 'GH' }],
+	});
+	expect(sent).not.toHaveProperty('avatar');
+	expect(sent).not.toHaveProperty('userId');
+});
+it('does not assign an established specialization and guards the original profile', () => {
+	expect(toEditPayload(createEditDefaults(profile), null, profile.activeProfile)).toEqual({
+		...toEditPayload(createEditDefaults(profile), null),
+		expectedProfileId: 'active',
+	});
+});
+it.each([undefined, 0, -1, 1.5, '7', null])(
+	'fails closed for invalid initial mapper selection %j',
+	(specializationId) => {
+		expect(() =>
+			toEditPayload(
+				{ ...createEditDefaults(profile), specializationId } as ReturnType<
+					typeof createEditDefaults
+				>,
+				null,
+				{ id: 'active', specializationId: 0 },
+			),
+		).toThrow();
+	},
+);
+it('rejects changing an established specialization', () => {
+	expect(() =>
+		toEditPayload(
+			{ ...createEditDefaults(profile), specializationId: 7 },
+			null,
+			profile.activeProfile,
+		),
+	).toThrow();
+});
+it('tracks specialization in dirty comparison and confirmed readback', () => {
+	const defaults = createEditDefaults(profile);
+	expect(sameEditValues(defaults, { ...defaults, specializationId: 7 })).toBe(false);
+	const sent = toEditPayload({ ...defaults, specializationId: 7 }, null, {
+		id: 'active',
+		specializationId: 0,
+	});
+	expect(matchesSavedProfile({ ...saved(), specializationId: 7 }, sent, identity)).toBe(true);
+	expect(matchesSavedProfile({ ...saved(), specializationId: 1 }, sent, identity)).toBe(false);
+	expect(
+		matchesSavedProfile({ ...saved(), specializationId: 7, profileId: 'another' }, sent, identity),
+	).toBe(false);
+	expect(savedToEditValues({ ...saved(), specializationId: 7 }).specializationId).toBe(7);
 });

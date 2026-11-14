@@ -493,3 +493,167 @@ describe('immutable unknown social records from the verified active profile', ()
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 });
+
+describe('initial specialization assignment', () => {
+	const assignment = () => ({ ...input(), expectedProfileId: 'profile-a', specializationId: 11 });
+	const initial = () => {
+		const data = current();
+		data.profiles[0].specializationId = 0;
+		return data;
+	};
+	const saved = () => ({
+		...current(),
+		username: input().username,
+		city: '',
+		profiles: [{ ...initial().profiles[0], ...put(), specializationId: 11 }],
+	});
+	const queue = (readback: unknown = saved()) =>
+		fetchMock
+			.mockResolvedValueOnce(response(initial()))
+			.mockResolvedValueOnce(response({ ...put(), specializationId: 11 }))
+			.mockResolvedValueOnce(response({ id: 'user-a', username: input().username, city: '' }))
+			.mockResolvedValueOnce(response(readback));
+	it('assigns 0 to ID using the complete PUT and confirms all values by readback', async () => {
+		queue();
+		expect(await saveOwnProfile(assignment(), credentials(), config)).toEqual({
+			status: 'success',
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+		expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({
+			socialNetwork: input().socialNetwork,
+			description: input().description,
+			profileSkills: [2, 1],
+			specializationId: 11,
+		});
+		expect(fetchMock.mock.calls[3][0].pathname).toBe('/auth/profile');
+	});
+	it.each([0, -1, 1.5, '11', undefined])(
+		'rejects invalid assignment %j before transport',
+		async (specializationId) => {
+			expect(
+				await saveOwnProfile({ ...assignment(), specializationId }, credentials(), config),
+			).toEqual({ status: 'validation-error' });
+			expect(fetchMock).not.toHaveBeenCalled();
+		},
+	);
+	it('requires the original profile ID', async () => {
+		const { expectedProfileId, ...data } = assignment();
+		expect(expectedProfileId).toBe('profile-a');
+		expect(await saveOwnProfile(data, credentials(), config)).toEqual({
+			status: 'validation-error',
+		});
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+	it('rejects changing an established specialization', async () => {
+		fetchMock.mockResolvedValueOnce(response(current()));
+		expect(await saveOwnProfile(assignment(), credentials(), config)).toEqual({
+			status: 'validation-error',
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+	it('rejects a switched or foreign profile before PUT', async () => {
+		fetchMock.mockResolvedValueOnce(response(initial()));
+		expect(
+			await saveOwnProfile(
+				{ ...assignment(), expectedProfileId: 'old-profile' },
+				credentials(),
+				config,
+			),
+		).toEqual({ status: 'forbidden' });
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+	it('rejects no active profile', async () => {
+		const data = initial();
+		data.profiles[0].isActive = false;
+		fetchMock.mockResolvedValueOnce(response(data));
+		expect(await saveOwnProfile(assignment(), credentials(), config)).toEqual({ status: 'error' });
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+	it.each([
+		'identity',
+		'active',
+		'profile',
+		'specialization',
+		'skills',
+		'description',
+		'social',
+		'username',
+		'city',
+	])('does not confirm mismatched readback: %s', async (field) => {
+		const data = saved();
+		switch (field) {
+			case 'identity':
+				data.id = 'other';
+				break;
+			case 'active':
+				data.profiles[0].isActive = false;
+				break;
+			case 'profile':
+				data.profiles[0].id = 'other';
+				break;
+			case 'specialization':
+				data.profiles[0].specializationId = 0;
+				break;
+			case 'skills':
+				data.profiles[0].profileSkills = [];
+				break;
+			case 'description':
+				data.profiles[0].description = 'Old';
+				break;
+			case 'social':
+				data.profiles[0].socialNetwork = [];
+				break;
+			case 'username':
+				data.username = 'Old';
+				break;
+			case 'city':
+				data.city = 'Old';
+				break;
+		}
+		queue(data);
+		expect(await saveOwnProfile(assignment(), credentials(), config)).toEqual({
+			status: 'partial-success',
+			profile: 'unconfirmed',
+			user: 'unconfirmed',
+			reason: 'error',
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+	});
+	it('preserves unknown social records and omitted description', async () => {
+		const original = initial();
+		original.profiles[0].socialNetwork = [{ code: 'legacy', title: 'Preserved' }] as never;
+		const socialNetwork = [...input().socialNetwork, ...original.profiles[0].socialNetwork];
+		const final = saved();
+		final.profiles[0].description = 'Existing';
+		final.profiles[0].socialNetwork = socialNetwork;
+		const { description, ...data } = assignment();
+		expect(description).toBeDefined();
+		fetchMock
+			.mockResolvedValueOnce(response(original))
+			.mockResolvedValueOnce(response({ ...put(), socialNetwork, description: 'Existing' }))
+			.mockResolvedValueOnce(response({ id: 'user-a', username: data.username, city: '' }))
+			.mockResolvedValueOnce(response(final));
+		expect(await saveOwnProfile(data, credentials(), config)).toEqual({ status: 'success' });
+		expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({
+			specializationId: 11,
+			profileSkills: [2, 1],
+			socialNetwork,
+		});
+	});
+	it('does not retry a failed readback', async () => {
+		queue();
+		fetchMock.mockReset();
+		fetchMock
+			.mockResolvedValueOnce(response(initial()))
+			.mockResolvedValueOnce(response(put()))
+			.mockResolvedValueOnce(response({ id: 'user-a', username: input().username, city: '' }))
+			.mockRejectedValueOnce(new Error('Private timeout'));
+		expect(await saveOwnProfile(assignment(), credentials(), config)).toEqual({
+			status: 'partial-success',
+			profile: 'unconfirmed',
+			user: 'unconfirmed',
+			reason: 'error',
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+	});
+});

@@ -45,6 +45,7 @@ import ImageEdit from '@/shared/assets/icons/imageEdit.svg';
 import Info from '@/shared/assets/icons/info.svg';
 import Instagram from '@/shared/assets/icons/instagram.svg';
 import KeySquare from '@/shared/assets/icons/keySquare.svg';
+import Lamp from '@/shared/assets/icons/lamp.svg';
 import LightBulb from '@/shared/assets/icons/lightBulb.svg';
 import Lightning from '@/shared/assets/icons/lightning.svg';
 import Like from '@/shared/assets/icons/like.svg';
@@ -198,6 +199,7 @@ export const icons: Record<IconName, IconComponent> = {
 	refferals: Referrals,
 	uploadFile: UploadFile,
 	errorCircle: ErrorCircle,
+	lamp: Lamp,
 	lightBulb: LightBulb,
 	successCircle: SuccessCircle,
 };
