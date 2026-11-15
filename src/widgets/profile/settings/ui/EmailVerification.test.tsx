@@ -6,6 +6,13 @@ import profile from '../../../../../public/locales/ru/profile.json';
 import { SettingsShell } from '../index';
 import type { ReadResult, SendResult } from './EmailVerification';
 
+jest.mock('next-auth/react', () => ({
+	useSession: () => ({
+		data: { user: { id: '11111111-1111-4111-8111-111111111111' } },
+		status: 'authenticated',
+	}),
+}));
+
 const replace = jest.fn();
 const router = { replace };
 jest.mock('@/shared/config', () => ({

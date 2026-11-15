@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { ActiveProfile, OwnProfile, OwnProfileResult } from '../model/types/profile';
 
 export interface ProfileBackendConfig {
@@ -54,81 +56,70 @@ export const readOwnProfile = async (
 	credentials: { userId: string; accessToken: string },
 	config: ProfileBackendConfig,
 ): Promise<OwnProfileResult> => {
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const { apiOrigin, allowedOrigins } = config;
-		if (
-			!allowedOrigins.includes(apiOrigin) ||
-			!text(credentials.userId) ||
-			!/^[A-Za-z0-9._~-]+$/.test(credentials.accessToken)
-		)
+		if (!text(credentials.userId) || !/^[A-Za-z0-9._~-]+$/.test(credentials.accessToken))
 			return { status: 'error' };
-		const request = async (): Promise<OwnProfileResult> => {
-			const response = await fetch(new URL('/auth/profile', apiOrigin), {
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-				signal: controller.signal,
-			});
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status !== 200) return { status: 'error' };
-			const data: unknown = await response.json();
-			if (!object(data) || !text(data.id)) return { status: 'error' };
-			if (data.id !== credentials.userId) return { status: 'identity-mismatch' };
-			if (
-				!text(data.username) ||
-				typeof data.email !== 'string' ||
-				typeof data.isVerified !== 'boolean' ||
-				!['avatarUrl', 'birthday', 'country', 'city'].every((key) => nullableString(data[key])) ||
-				!Array.isArray(data.userRoles) ||
-				!Array.isArray(data.profiles)
-			)
-				return { status: 'error' };
-			const roles: OwnProfile['userRoles'] = [];
-			for (const role of data.userRoles) {
-				if (!object(role) || !Number.isInteger(role.id) || !text(role.name))
+		const result = await backendHttp<OwnProfileResult>({
+			config,
+			path: '/auth/profile',
+			method: 'GET',
+			effect: 'read',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			decode: async (response) => {
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status !== 200) return { status: 'error' };
+				const data: unknown = await response.json();
+				if (!object(data) || !text(data.id)) return { status: 'error' };
+				if (data.id !== credentials.userId) return { status: 'identity-mismatch' };
+				if (
+					!text(data.username) ||
+					typeof data.email !== 'string' ||
+					typeof data.isVerified !== 'boolean' ||
+					!['avatarUrl', 'birthday', 'country', 'city'].every((key) => nullableString(data[key])) ||
+					!Array.isArray(data.userRoles) ||
+					!Array.isArray(data.profiles)
+				)
 					return { status: 'error' };
-				roles.push({ id: role.id as number, name: role.name });
-			}
-			if (
-				!data.profiles.every((profile) => object(profile) && typeof profile.isActive === 'boolean')
-			)
-				return { status: 'error' };
-			const active = data.profiles.filter(
-				(profile: Record<string, unknown>) => profile.isActive === true,
-			);
-			if (active.length === 0) return { status: 'no-active-profile' };
-			if (active.length !== 1) return { status: 'error' };
-			const activeProfile = projectActive(active[0]);
-			if (!activeProfile) return { status: 'error' };
-			return {
-				status: 'success',
-				profile: {
-					id: data.id,
-					username: data.username,
-					email: data.email,
-					isVerified: data.isVerified,
-					avatarUrl: data.avatarUrl as string | null,
-					birthday: data.birthday as string | null,
-					country: data.country as string | null,
-					city: data.city as string | null,
-					userRoles: roles,
-					activeProfile,
-				},
-			};
-		};
-		const timeout = new Promise<OwnProfileResult>((resolve) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				resolve({ status: 'error' });
-			}, 5000);
+				const roles: OwnProfile['userRoles'] = [];
+				for (const role of data.userRoles) {
+					if (!object(role) || !Number.isInteger(role.id) || !text(role.name))
+						return { status: 'error' };
+					roles.push({ id: role.id as number, name: role.name });
+				}
+				if (
+					!data.profiles.every(
+						(profile) => object(profile) && typeof profile.isActive === 'boolean',
+					)
+				)
+					return { status: 'error' };
+				const active = data.profiles.filter(
+					(profile: Record<string, unknown>) => profile.isActive === true,
+				);
+				if (active.length === 0) return { status: 'no-active-profile' };
+				if (active.length !== 1) return { status: 'error' };
+				const activeProfile = projectActive(active[0]);
+				if (!activeProfile) return { status: 'error' };
+				return {
+					status: 'success',
+					profile: {
+						id: data.id,
+						username: data.username,
+						email: data.email,
+						isVerified: data.isVerified,
+						avatarUrl: data.avatarUrl as string | null,
+						birthday: data.birthday as string | null,
+						country: data.country as string | null,
+						city: data.city as string | null,
+						userRoles: roles,
+						activeProfile,
+					},
+				};
+			},
 		});
-		return await Promise.race([request(), timeout]);
+		return result.status === 'response' ? result.value : { status: 'error' };
 	} catch {
 		return { status: 'error' };
-	} finally {
-		clearTimeout(timer);
 	}
 };

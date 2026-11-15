@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { sendVerificationEmail } from './verificationEmail.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const config = {
 	apiOrigin: 'https://backend.example',
 	allowedOrigins: ['https://backend.example'],
@@ -31,8 +37,11 @@ it('sends once to the server identity with no-store and returns no credentials',
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
+			headers: expect.any(Headers),
 		}),
+	);
+	expect(new Headers(fetchSpy.mock.calls[0][1].headers).get('Authorization')).toBe(
+		'Bearer synthetic-access',
 	);
 });
 it.each([
@@ -89,4 +98,32 @@ it('rejects invalid config and credentials before sending', async () => {
 		status: 'error',
 	});
 	expect(fetchSpy).not.toHaveBeenCalled();
+});
+
+it('marks the email GET as a mutation without replacing the real transport', async () => {
+	const transportSpy = jest.mocked(transport.backendHttp);
+	reply(200, 'Verification email was sent');
+	expect(await sendVerificationEmail(credentials, config)).toEqual({ status: 'success' });
+	expect(transportSpy).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'GET',
+			effect: 'mutation',
+			timeoutMs: 5000,
+			cache: 'no-store',
+		}),
+	);
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it.each([200, 403])('times out while reading HTTP %s body without retrying', async (status) => {
+	jest.useFakeTimers();
+	const json = jest.fn(() => new Promise(() => {}));
+	fetchSpy.mockResolvedValue({ status, json });
+	const result = sendVerificationEmail(credentials, config);
+	await jest.advanceTimersByTimeAsync(0);
+	expect(json).toHaveBeenCalledTimes(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await result).toEqual({ status: 'error' });
+	expect(fetchSpy.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
 });

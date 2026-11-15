@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 export type PublicBackendConfig = { apiOrigin: string; allowedOrigins: readonly string[] };
 export type TariffGate =
 	| { status: 'allowed'; showTariffs: true }
@@ -14,25 +16,21 @@ const object = (value: unknown): value is Record<string, unknown> =>
 const text = (value: unknown): value is string => typeof value === 'string' && value.length > 0;
 
 export const readTariffFlag = async (config: PublicBackendConfig): Promise<TariffFlagResult> => {
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	const unavailable = { status: 'unavailable' } as const;
-	try {
-		if (!config.allowedOrigins.includes(config.apiOrigin)) return unavailable;
-		const url = new URL('/feature-flags', config.apiOrigin);
-		url.search = new URLSearchParams({
-			clientType: 'WEB',
-			search: key,
-			page: '1',
-			limit: '10',
-		}).toString();
-		const request = async (): Promise<TariffFlagResult> => {
-			const response = await fetch(url, {
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-			});
+	const query = new URLSearchParams({
+		clientType: 'WEB',
+		search: key,
+		page: '1',
+		limit: '10',
+	});
+	const result = await backendHttp<TariffFlagResult>({
+		config,
+		path: `/feature-flags?${query.toString()}`,
+		method: 'GET',
+		effect: 'read',
+		cache: 'no-store',
+		timeoutMs: 5000,
+		decode: async (response) => {
 			if (response.status !== 200) return unavailable;
 			const data: unknown = await response.json();
 			if (
@@ -62,21 +60,9 @@ export const readTariffFlag = async (config: PublicBackendConfig): Promise<Tarif
 			}
 			if (matches.length > 1) return unavailable;
 			return matches.length ? { status: 'success', ...matches[0] } : { status: 'missing' };
-		};
-		return await Promise.race([
-			request(),
-			new Promise<TariffFlagResult>((resolve) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					resolve(unavailable);
-				}, 5000);
-			}),
-		]);
-	} catch {
-		return unavailable;
-	} finally {
-		clearTimeout(timer);
-	}
+		},
+	});
+	return result.status === 'response' ? result.value : unavailable;
 };
 
 // Only validated role names from the trusted backend profile may be supplied here.

@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { createOwnProfile, deleteOwnProfile, selectOwnProfile } from './profileManagement.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const target = '11111111-1111-4111-8111-111111111111';
 const other = '22222222-2222-4222-8222-222222222222';
 const config = {
@@ -61,10 +67,10 @@ it('performs one PATCH and requires readback, using the readback specialization'
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
+			headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 		}),
 	]);
-	expect(request.mock.calls[1][1]).not.toHaveProperty('body');
+	expect(request.mock.calls[1][1].body).toBeUndefined();
 	for (const [, options] of request.mock.calls) expect(options.cache).toBe('no-store');
 });
 it('uses a fresh already-active profile without PATCH or another GET', async () => {
@@ -281,7 +287,10 @@ describe('profile creation', () => {
 				cache: 'no-store',
 				redirect: 'manual',
 				credentials: 'omit',
-				headers: { Authorization: 'Bearer synthetic-access', 'Content-Type': 'application/json' },
+				headers: new Headers({
+					Authorization: 'Bearer synthetic-access',
+					'Content-Type': 'application/json',
+				}),
 			});
 			expect(JSON.parse(request.mock.calls[1][1].body)).toEqual({
 				userId: 'user-a',
@@ -462,9 +471,9 @@ describe('inactive profile deletion', () => {
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
+			headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 		});
-		expect(request.mock.calls[1][1]).not.toHaveProperty('body');
+		expect(request.mock.calls[1][1].body).toBeUndefined();
 	});
 	it.each([
 		null,
@@ -628,5 +637,52 @@ describe('inactive profile deletion', () => {
 		request.mockResolvedValueOnce(json(initial()));
 		expect(await remove()).toEqual({ status: 'outcome-unknown' });
 		expect(request).toHaveBeenCalledTimes(2);
+	});
+});
+
+describe('shared mutation transport regressions', () => {
+	const before = () => ({ ...body(), username: 'Name' });
+	const run = (kind: string) =>
+		kind === 'select'
+			? select()
+			: kind === 'create'
+				? createOwnProfile(credentials, config)
+				: deleteOwnProfile(target, 'Name', credentials, config);
+	it.each(['select', 'create', 'delete'])(
+		'keeps %s redirects as error without readback or retry',
+		async (kind) => {
+			request
+				.mockResolvedValueOnce(json(before()))
+				.mockResolvedValueOnce(new Response(null, { status: 302 }));
+			expect(await run(kind)).toEqual({ status: 'error' });
+			expect(transport.backendHttp).toHaveBeenCalledWith(
+				expect.objectContaining({
+					method: kind === 'select' ? 'PATCH' : kind === 'create' ? 'POST' : 'DELETE',
+					effect: 'mutation',
+					cache: 'no-store',
+					timeoutMs: 5000,
+				}),
+			);
+			expect(request).toHaveBeenCalledTimes(2);
+		},
+	);
+	it('reads back after malformed accepted creation JSON without repeating POST', async () => {
+		request
+			.mockResolvedValueOnce(json(before()))
+			.mockResolvedValueOnce(new Response('invalid', { status: 201 }))
+			.mockResolvedValueOnce(json(before()));
+		expect(await createOwnProfile(credentials, config)).toEqual({ status: 'incomplete' });
+		expect(request).toHaveBeenCalledTimes(3);
+	});
+	it('keeps accepted creation body timeout incomplete and performs one readback', async () => {
+		request
+			.mockResolvedValueOnce(json(before()))
+			.mockResolvedValueOnce({ status: 201, json: () => new Promise(() => {}) })
+			.mockResolvedValueOnce(json(before()));
+		const pending = createOwnProfile(credentials, config);
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await pending).toEqual({ status: 'incomplete' });
+		expect(request).toHaveBeenCalledTimes(3);
+		expect(request.mock.calls[1][1].signal.aborted).toBe(true);
 	});
 });

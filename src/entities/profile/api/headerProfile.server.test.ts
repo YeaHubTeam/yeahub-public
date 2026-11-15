@@ -41,9 +41,14 @@ it('reads only display fields, without requiring an active profile or unrelated 
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
 		}),
 	);
+	const [, options] = request.mock.calls[0];
+	expect(options.method).toBe('GET');
+	expect([...new Headers(options.headers).entries()]).toEqual([
+		['authorization', 'Bearer synthetic-access'],
+	]);
+	expect(options.body).toBeUndefined();
 });
 it.each([null, '', 'https://images.example/avatar'])('normalizes avatar %#', async (avatarUrl) => {
 	reply({ ...user(), avatarUrl, email: null });
@@ -107,3 +112,38 @@ it('rejects unapproved origin and invalid credentials before fetch', async () =>
 	});
 	expect(request).not.toHaveBeenCalled();
 });
+
+it('keeps the deadline while decoding the body and ignores late completion', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const response = new Response('{}');
+	const json = jest.spyOn(response, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	request.mockResolvedValue(response);
+	const pending = readHeaderProfile(credentials, config);
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error' });
+	expect(request.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve(user());
+	await Promise.resolve();
+	expect(request).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 400, 404, 502, 503])(
+	'preserves HTTP %i error without decoding or auth recovery',
+	async (status) => {
+		const response = new Response(null, { status });
+		const json = jest.spyOn(response, 'json');
+		request.mockResolvedValue(response);
+		expect(await readHeaderProfile(credentials, config)).toEqual({ status: 'error' });
+		expect(json).not.toHaveBeenCalled();
+		expect(request).toHaveBeenCalledTimes(1);
+	},
+);

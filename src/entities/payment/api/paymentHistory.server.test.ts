@@ -58,8 +58,10 @@ it('has no import side effects and sends one private GET with fixed limit and tr
 		cache: 'no-store',
 		credentials: 'omit',
 		redirect: 'manual',
-		headers: { Authorization: 'Bearer synthetic-access' },
 	});
+	expect([...new Headers(options.headers).entries()]).toEqual([
+		['authorization', 'Bearer synthetic-access'],
+	]);
 	expect(options.body).toBeUndefined();
 });
 it.each([undefined, null, 0, -1, 1.5, '1', true, {}, [], Infinity, NaN, Number.MAX_SAFE_INTEGER])(
@@ -106,6 +108,7 @@ it.each([
 			items: data.map(() => ({ dateLabel: '1 февраля 2026', isConfirmed: true })),
 		});
 		expect(request).toHaveBeenCalledTimes(1);
+		expect(request.mock.calls[0][0].search).toBe(`?page=${page}&limit=5`);
 	},
 );
 it.each([
@@ -218,3 +221,39 @@ it('formats offsets and leap days in the fixed UTC test process timezone', async
 		items: [{ dateLabel: '29 февраля 2024' }],
 	});
 });
+
+it('keeps the five-second deadline while decoding the body and ignores late completion', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const response = new Response('{}');
+	const json = jest.spyOn(response, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	request.mockResolvedValue(response);
+	const pending = read();
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error' });
+	expect(request.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve(body());
+	await Promise.resolve();
+	expect(request).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 409, 429, 502, 503])(
+	'keeps HTTP %i as an error without decoding or auth recovery',
+	async (status) => {
+		const response = new Response(null, { status });
+		const json = jest.spyOn(response, 'json');
+		request.mockResolvedValue(response);
+		expect(await read()).toEqual({ status: 'error' });
+		expect(json).not.toHaveBeenCalled();
+		expect(request).toHaveBeenCalledTimes(1);
+		expect(request.mock.calls[0][0].pathname).toBe(`/payments/${credentials.userId}`);
+	},
+);

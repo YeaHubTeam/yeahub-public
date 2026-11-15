@@ -2,6 +2,8 @@ import { format, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { PaymentHistoryResult } from '../model/types/paymentHistory';
 
 const object = (value: unknown): value is Record<string, unknown> =>
@@ -37,21 +39,16 @@ export const readPaymentHistory = async (
 		!/^[A-Za-z0-9._~-]+$/.test(credentials.accessToken)
 	)
 		return { status: 'unauthenticated' };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	try {
-		if (!config.allowedOrigins.includes(config.apiOrigin)) return { status: 'error' };
-		const url = new URL(`/payments/${credentials.userId}`, config.apiOrigin);
-		url.search = new URLSearchParams({ page: String(page), limit: '5' }).toString();
-		const request = async (): Promise<PaymentHistoryResult> => {
-			const response = await fetch(url, {
-				method: 'GET',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-			});
+	const query = new URLSearchParams({ page: String(page), limit: '5' });
+	const result = await backendHttp<PaymentHistoryResult>({
+		config,
+		path: `/payments/${credentials.userId}?${query.toString()}`,
+		method: 'GET',
+		effect: 'read',
+		cache: 'no-store',
+		timeoutMs: 5000,
+		headers: { Authorization: `Bearer ${credentials.accessToken}` },
+		decode: async (response) => {
 			if (response.status === 401) return { status: 'unauthenticated' };
 			if (response.status === 403) return { status: 'forbidden' };
 			if (response.status !== 200) return { status: 'error' };
@@ -74,19 +71,7 @@ export const readPaymentHistory = async (
 				items.push({ dateLabel: label, isConfirmed: item.status === 'CONFIRMED' });
 			}
 			return { status: 'success', items, page, limit: 5, total: data.total };
-		};
-		return await Promise.race([
-			request(),
-			new Promise<PaymentHistoryResult>((resolve) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					resolve({ status: 'error' });
-				}, 5000);
-			}),
-		]);
-	} catch {
-		return { status: 'error' };
-	} finally {
-		clearTimeout(timer);
-	}
+		},
+	});
+	return result.status === 'response' ? result.value : { status: 'error' };
 };

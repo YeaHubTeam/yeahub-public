@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
 import type { PublicBackendConfig, TariffGate } from '@/shared/config/index.server';
 
 import type { SettingsTariff, SettingsTariffCatalogResult } from '../model/types/settingsCatalog';
@@ -14,18 +15,14 @@ export const readSettingsCatalog = async (
 	config: PublicBackendConfig,
 ): Promise<SettingsTariffCatalogResult> => {
 	if (gate.status !== 'allowed') return { status: 'hidden', gate };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	try {
-		if (!config.allowedOrigins.includes(config.apiOrigin))
-			return { status: 'error', reason: 'backend' };
-		const request = async (): Promise<SettingsTariffCatalogResult> => {
-			const response = await fetch(new URL('/subscriptions', config.apiOrigin), {
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-			});
+	const result = await backendHttp<SettingsTariffCatalogResult>({
+		config,
+		path: '/subscriptions',
+		method: 'GET',
+		effect: 'read',
+		cache: 'no-store',
+		timeoutMs: 5000,
+		decode: async (response) => {
 			if (response.status !== 200) return { status: 'error', reason: 'backend' };
 			const invalid = { status: 'error', reason: 'invalid-response' } as const;
 			let data: unknown;
@@ -71,19 +68,9 @@ export const readSettingsCatalog = async (
 			}
 			tariffs.sort((a, b) => codes.indexOf(a.code) - codes.indexOf(b.code));
 			return { status: 'success', gate, tariffs };
-		};
-		return await Promise.race([
-			request(),
-			new Promise<SettingsTariffCatalogResult>((resolve) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					resolve({ status: 'error', reason: 'timeout' });
-				}, 5000);
-			}),
-		]);
-	} catch {
-		return { status: 'error', reason: 'backend' };
-	} finally {
-		clearTimeout(timer);
-	}
+		},
+	});
+	return result.status === 'response'
+		? result.value
+		: { status: 'error', reason: result.kind === 'timeout' ? 'timeout' : 'backend' };
 };

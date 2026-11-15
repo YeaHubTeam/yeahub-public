@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { deleteOwnAccount } from './accountDeletion.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const userId = '11111111-1111-4111-8111-111111111111';
 const config = {
 	apiOrigin: 'https://backend.example',
@@ -55,9 +61,13 @@ it('uses trusted identity, no-store and one DELETE without a body or a post-dele
 		cache: 'no-store',
 		redirect: 'manual',
 		credentials: 'omit',
-		headers: { Authorization: 'Bearer synthetic-access' },
+		headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 	});
-	expect(request.mock.calls[1][1]).not.toHaveProperty('body');
+	expect(request.mock.calls[1][1].body).toBeUndefined();
+	expect([...new Headers(request.mock.calls[1][1].headers).entries()]).toEqual([
+		['authorization', 'Bearer synthetic-access'],
+	]);
+	expect(new Headers(request.mock.calls[1][1].headers).has('Cookie')).toBe(false);
 });
 it.each([null, undefined, '', 1, {}, [], { userId, confirmationUsername: ' Name ' }])(
 	'rejects invalid confirmation %# without requests',
@@ -163,6 +173,9 @@ it.each([
 	[403, {}, 'forbidden'],
 	[404, { message: 'storage.s3.not_found' }, 'outcome-unknown'],
 	[500, {}, 'outcome-unknown'],
+	[409, {}, 'outcome-unknown'],
+	[429, {}, 'outcome-unknown'],
+	[302, {}, 'outcome-unknown'],
 	[204, {}, 'outcome-unknown'],
 ])('handles mutation HTTP %s without exposing the body (%#)', async (status, body, result) => {
 	request
@@ -214,5 +227,41 @@ it('returns only a safe status even when the backend response contains private e
 		username: 'private-name',
 	});
 	expect(await remove()).toEqual({ status: 'success' });
+	expect(request).toHaveBeenCalledTimes(2);
+});
+
+it('marks the single DELETE as a mutation with the existing deadline', async () => {
+	prepare();
+	expect(await remove()).toEqual({ status: 'success' });
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			path: `/users/${userId}`,
+			method: 'DELETE',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	expect(request).toHaveBeenCalledTimes(2);
+});
+it.each([400, 404, 409, 429, 500])(
+	'keeps malformed HTTP %s responses unknown without replay',
+	async (status) => {
+		request
+			.mockResolvedValueOnce(json(snapshot()))
+			.mockResolvedValueOnce(new Response('invalid', { status }));
+		expect(await remove()).toEqual({ status: 'outcome-unknown' });
+		expect(request).toHaveBeenCalledTimes(2);
+	},
+);
+it.each([
+	[401, 'unauthenticated'],
+	[403, 'forbidden'],
+] as const)('keeps HTTP %s priority without decoding its body', async (status, expected) => {
+	const value = new Response('invalid', { status });
+	const parse = jest.spyOn(value, 'json');
+	request.mockResolvedValueOnce(json(snapshot())).mockResolvedValueOnce(value);
+	expect(await remove()).toEqual({ status: expected });
+	expect(parse).not.toHaveBeenCalled();
 	expect(request).toHaveBeenCalledTimes(2);
 });

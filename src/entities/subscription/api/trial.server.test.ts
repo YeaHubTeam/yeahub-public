@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { requestTrial } from './trial.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const credentials = { accessToken: 'synthetic-access' };
 const config = {
 	apiOrigin: 'https://backend.example',
@@ -28,7 +34,7 @@ it('has no import effects and sends exactly one explicit mutation GET with no bo
 		cache: 'no-store',
 		redirect: 'manual',
 		credentials: 'omit',
-		headers: { Authorization: 'Bearer synthetic-access' },
+		headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 	});
 	expect(options.body).toBeUndefined();
 });
@@ -76,4 +82,44 @@ it('rejects untrusted config and unsafe credentials before dispatch', async () =
 		status: 'error',
 	});
 	expect(request).not.toHaveBeenCalled();
+});
+
+it('uses one explicit mutation transport call with the existing deadline', async () => {
+	request.mockResolvedValue(new Response(null, { status: 200 }));
+	await call();
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'GET',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(new Headers(request.mock.calls[0][1].headers).has('Cookie')).toBe(false);
+});
+it('bounds forbidden body decoding without retry or false success', async () => {
+	jest.useFakeTimers();
+	request.mockResolvedValue({ status: 403, json: () => new Promise(() => {}) });
+	const result = call();
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await result).toEqual({ status: 'outcome-unknown' });
+	expect(request.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
+});
+it('keeps malformed forbidden JSON as forbidden', async () => {
+	request.mockResolvedValue(new Response('not JSON', { status: 403 }));
+	expect(await call()).toEqual({ status: 'forbidden' });
+	expect(request).toHaveBeenCalledTimes(1);
+});
+
+it('does not decode a successful trial body', async () => {
+	const json = jest.fn();
+	const text = jest.fn();
+	request.mockResolvedValue({ status: 200, json, text });
+	expect(await call()).toEqual({ status: 'success' });
+	expect(json).not.toHaveBeenCalled();
+	expect(text).not.toHaveBeenCalled();
+	expect(request).toHaveBeenCalledTimes(1);
 });

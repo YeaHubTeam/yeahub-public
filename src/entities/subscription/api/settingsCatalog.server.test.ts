@@ -55,7 +55,8 @@ it('projects only display fields in React order without recomputing backend fina
 		new URL('https://backend.example/subscriptions'),
 		expect.objectContaining({ cache: 'no-store', credentials: 'omit', redirect: 'manual' }),
 	);
-	expect(fetchSpy.mock.calls[0][1].headers).toBeUndefined();
+	expect([...new Headers(fetchSpy.mock.calls[0][1].headers).entries()]).toEqual([]);
+	expect(fetchSpy.mock.calls[0][1].method).toBe('GET');
 });
 it.each([[], [tariff(2, 'quarter')]].map((items) => ({ items })))(
 	'accepts empty or partial catalogs %#',
@@ -149,4 +150,47 @@ it('does not fetch on import or use an untrusted origin', async () => {
 		reason: 'backend',
 	});
 	expect(fetchSpy).not.toHaveBeenCalled();
+});
+
+it('keeps its deadline while reading the body and cleans up after timeout', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const response = new Response('[]');
+	const json = jest.spyOn(response, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	fetchSpy.mockResolvedValue(response);
+	const pending = readSettingsCatalog(gate, config);
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error', reason: 'timeout' });
+	expect(fetchSpy.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve([]);
+	await Promise.resolve();
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 409, 429, 502, 503])(
+	'preserves backend classification for HTTP %i without parsing its body',
+	async (status) => {
+		const response = new Response(null, { status });
+		const json = jest.spyOn(response, 'json');
+		fetchSpy.mockResolvedValue(response);
+		expect(await readSettingsCatalog(gate, config)).toEqual({ status: 'error', reason: 'backend' });
+		expect(json).not.toHaveBeenCalled();
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	},
+);
+it('ignores inactive and unknown codes without validating their display-only fields', async () => {
+	reply([
+		{ ...tariff(), isActive: false, finalPrice: null },
+		{ ...tariff(2, 'trial'), monthPeriod: null },
+	]);
+	expect(await readSettingsCatalog(gate, config)).toEqual({ status: 'success', gate, tariffs: [] });
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
 });

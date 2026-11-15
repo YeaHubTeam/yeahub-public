@@ -54,6 +54,7 @@ import type {
 	SubscriptionCancellationResult,
 	TrialResult,
 } from '@/entities/subscription/index.server';
+import { backendHttp } from '@/shared/api/index.server';
 import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
 import { readTariffFlag } from '@/shared/config/index.server';
 
@@ -800,22 +801,6 @@ const validAvatarUrl = (value: unknown): value is string | null => {
 	}
 };
 
-const avatarTimeout = async <T>(request: (signal: AbortSignal) => Promise<T>): Promise<T> => {
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	try {
-		const timeout = new Promise<never>((_, reject) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				reject(new Error('Avatar request timed out'));
-			}, 5000);
-		});
-		return await Promise.race([request(controller.signal), timeout]);
-	} finally {
-		clearTimeout(timer);
-	}
-};
-
 // Canonical base64 validation in O(n) time and O(1) auxiliary space.
 // The Action validates PNG contents; this boundary does not decode the image again.
 const validAvatarBase64 = (value: unknown): value is string => {
@@ -860,36 +845,33 @@ export const mutateOwnAvatar = async (input: AvatarOperation): Promise<AvatarMut
 	if (session.status !== 'success') return session;
 	const { data } = session;
 	try {
-		const { apiOrigin, allowedOrigins } = getAuthBackendConfig();
-		if (!allowedOrigins.includes(apiOrigin)) return { status: 'error' };
-		const result = await avatarTimeout(async (signal): Promise<AvatarMutationResult> => {
-			const response = await fetch(
-				new URL(`/users/${encodeURIComponent(data.userId)}`, apiOrigin),
-				{
-					method: 'PATCH',
-					cache: 'no-store',
-					redirect: 'manual',
-					credentials: 'omit',
-					signal,
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${data.accessToken}`,
-					},
-					body: JSON.stringify(setting ? { avatarImage: input.avatarImage } : { avatarUrl: '' }),
-				},
-			);
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) return { status: 'forbidden' };
-			if (response.status !== 200) return { status: 'error' };
-			const value: unknown = await response.json();
-			if (!isObject(value) || typeof value.id !== 'string' || !validAvatarUrl(value.avatarUrl))
-				return { status: 'error' };
-			if (value.id !== data.userId) return { status: 'identity-mismatch' };
-			if ((setting && !value.avatarUrl) || (!setting && value.avatarUrl))
-				return { status: 'error' };
-			return { status: 'success', avatarUrl: value.avatarUrl || null };
+		const config = getAuthBackendConfig();
+		const result = await backendHttp<AvatarMutationResult>({
+			config,
+			path: `/users/${encodeURIComponent(data.userId)}`,
+			method: 'PATCH',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${data.accessToken}`,
+			},
+			body: JSON.stringify(setting ? { avatarImage: input.avatarImage } : { avatarUrl: '' }),
+			decode: async (response) => {
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status === 403) return { status: 'forbidden' };
+				if (response.status !== 200) return { status: 'error' };
+				const value: unknown = await response.json();
+				if (!isObject(value) || typeof value.id !== 'string' || !validAvatarUrl(value.avatarUrl))
+					return { status: 'error' };
+				if (value.id !== data.userId) return { status: 'identity-mismatch' };
+				if ((setting && !value.avatarUrl) || (!setting && value.avatarUrl))
+					return { status: 'error' };
+				return { status: 'success', avatarUrl: value.avatarUrl || null };
+			},
 		});
-		return result;
+		return result.status === 'response' ? result.value : { status: 'error' };
 	} catch {
 		return { status: 'error' };
 	}

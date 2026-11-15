@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { parsePaymentInitInput, requestPaymentInit } from './paymentInit.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const input = {
 	tariffId: 2,
 	email: 'receipt+tag@example.invalid',
@@ -39,7 +45,7 @@ it('imports without dispatch and returns only a trusted link after one explicit 
 		cache: 'no-store',
 		redirect: 'manual',
 		credentials: 'omit',
-		headers: { Authorization: 'Bearer synthetic-access' },
+		headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 	});
 	expect(options.body).toBeUndefined();
 });
@@ -185,4 +191,34 @@ it('rejects untrusted backend origin and unsafe credentials before dispatch', as
 		status: 'error',
 	});
 	expect(request).not.toHaveBeenCalled();
+});
+
+it('uses one explicit mutation transport call with the existing deadline', async () => {
+	request.mockResolvedValue(new Response(paymentUrl, { status: 200 }));
+	await requestPaymentInit(input, credentials, config);
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'GET',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 45000,
+		}),
+	);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(new Headers(request.mock.calls[0][1].headers).has('Cookie')).toBe(false);
+});
+it('bounds forbidden body decoding without retry or false success', async () => {
+	jest.useFakeTimers();
+	request.mockResolvedValue({ status: 403, json: () => new Promise(() => {}) });
+	const result = requestPaymentInit(input, credentials, config);
+	await jest.advanceTimersByTimeAsync(45000);
+	expect(await result).toEqual({ status: 'outcome-unknown' });
+	expect(request.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
+});
+it('keeps malformed forbidden JSON as forbidden', async () => {
+	request.mockResolvedValue(new Response('not JSON', { status: 403 }));
+	expect(await requestPaymentInit(input, credentials, config)).toEqual({ status: 'forbidden' });
+	expect(request).toHaveBeenCalledTimes(1);
 });

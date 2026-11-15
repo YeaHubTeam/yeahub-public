@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type {
 	ProfileCreationResult,
 	ProfileDeletionResult,
@@ -45,43 +47,38 @@ export const selectOwnProfile = async (
 			specializationId: profile.specializationId,
 			changed: false,
 		};
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const request = async (): Promise<ProfileSelectionResult> => {
-			const response = await fetch(new URL(`/profiles/${profileId}/active`, config.apiOrigin), {
-				method: 'PATCH',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-			});
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) return { status: 'forbidden' };
-			if (response.status === 404) return { status: 'not-found' };
-			if (response.status >= 500) return { status: 'outcome-unknown' };
-			if (response.status !== 204) return { status: 'error' };
-			// An empty 204 confirms the mutation endpoint only; the selected profile still needs readback.
-			return {
-				status: 'success',
-				profileId,
-				specializationId: profile.specializationId,
-				changed: true,
-			};
-		};
-		const timeout = new Promise<ProfileSelectionResult>((resolve) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				resolve({ status: 'outcome-unknown' });
-			}, 5000);
+		const transport = await backendHttp<ProfileSelectionResult>({
+			config,
+			path: `/profiles/${profileId}/active`,
+			method: 'PATCH',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			decode: (response) =>
+				Promise.resolve(
+					((): ProfileSelectionResult => {
+						if (response.status === 401) return { status: 'unauthenticated' };
+						if (response.status === 403) return { status: 'forbidden' };
+						if (response.status === 404) return { status: 'not-found' };
+						if (response.status >= 500) return { status: 'outcome-unknown' };
+						if (response.status !== 204) return { status: 'error' };
+						// An empty 204 confirms the mutation endpoint only; the selected profile still needs readback.
+						return {
+							status: 'success',
+							profileId,
+							specializationId: profile.specializationId,
+							changed: true,
+						};
+					})(),
+				),
 		});
-		const mutation = await Promise.race([request(), timeout]);
-		if (mutation.status !== 'success') return mutation;
+		if (transport.status === 'error')
+			return { status: transport.kind === 'redirect' ? 'error' : 'outcome-unknown' };
+		if (transport.value.status !== 'success') return transport.value;
 	} catch {
 		return { status: 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 	if (validity()) return { status: 'incomplete' };
 	const after = await readSettingsSnapshot(credentials, config);
@@ -119,62 +116,62 @@ export const createOwnProfile = async (
 		return { status: 'limit-reached' };
 	const expiredAfterRead = validity();
 	if (expiredAfterRead) return { status: expiredAfterRead };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	let accepted = false;
 	let createdId: string | null = null;
 	try {
-		const request = async (): Promise<ProfileCreationResult> => {
-			const response = await fetch(new URL('/profiles', config.apiOrigin), {
-				method: 'POST',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: {
-					Authorization: `Bearer ${credentials.accessToken}`,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					userId: credentials.userId,
-					profileType: 1,
-					specializationId: 0,
-					markingWeight: 1,
-				}),
-			});
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) return { status: 'forbidden' };
-			if (response.status >= 500) return { status: 'outcome-unknown' };
-			if (response.status !== 201) return { status: 'error' };
-			accepted = true;
-			const value: unknown = await response.json().catch(() => null);
-			if (typeof value !== 'object' || value === null || Array.isArray(value))
-				return { status: 'incomplete' };
-			const profile = value as Record<string, unknown>;
-			if (
-				typeof profile.id !== 'string' ||
-				!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(profile.id) ||
-				profile.userId !== credentials.userId ||
-				profile.specializationId !== 0 ||
-				profile.isActive !== true ||
-				before.snapshot.profiles.some((item) => item.id === profile.id)
-			)
-				return { status: 'incomplete' };
-			return { status: 'success', profileId: profile.id };
-		};
-		const timeout = new Promise<ProfileCreationResult>((resolve) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				resolve({ status: accepted ? 'incomplete' : 'outcome-unknown' });
-			}, 5000);
+		const transport = await backendHttp<ProfileCreationResult>({
+			config,
+			path: '/profiles',
+			method: 'POST',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: {
+				Authorization: `Bearer ${credentials.accessToken}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				userId: credentials.userId,
+				profileType: 1,
+				specializationId: 0,
+				markingWeight: 1,
+			}),
+			decode: async (response) => {
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status === 403) return { status: 'forbidden' };
+				if (response.status >= 500) return { status: 'outcome-unknown' };
+				if (response.status !== 201) return { status: 'error' };
+				accepted = true;
+				const value: unknown = await response.json().catch(() => null);
+				if (typeof value !== 'object' || value === null || Array.isArray(value))
+					return { status: 'incomplete' };
+				const profile = value as Record<string, unknown>;
+				if (
+					typeof profile.id !== 'string' ||
+					!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(profile.id) ||
+					profile.userId !== credentials.userId ||
+					profile.specializationId !== 0 ||
+					profile.isActive !== true ||
+					before.snapshot.profiles.some((item) => item.id === profile.id)
+				)
+					return { status: 'incomplete' };
+				return { status: 'success', profileId: profile.id };
+			},
 		});
-		const mutation = await Promise.race([request(), timeout]);
+		const mutation: ProfileCreationResult =
+			transport.status === 'response'
+				? transport.value
+				: {
+						status: accepted
+							? 'incomplete'
+							: transport.kind === 'redirect'
+								? 'error'
+								: 'outcome-unknown',
+					};
 		if (mutation.status === 'success') createdId = mutation.profileId;
 		else if (!accepted || mutation.status !== 'incomplete') return mutation;
 	} catch {
 		return { status: accepted ? 'incomplete' : 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 	if (validity()) return { status: 'incomplete' };
 	// Even a malformed 201 must not be retried: read fresh state, but require a trustworthy created ID.
@@ -232,36 +229,31 @@ export const deleteOwnProfile = async (
 		return { status: 'confirmation-mismatch' };
 	const expiredAfterRead = validity();
 	if (expiredAfterRead) return { status: expiredAfterRead };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const request = async (): Promise<ProfileDeletionResult> => {
-			const response = await fetch(new URL(`/profiles/${profileId}`, config.apiOrigin), {
-				method: 'DELETE',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-			});
-			if (response.status === 204) return { status: 'success' };
-			if (response.status === 400) return { status: 'invalid-input' };
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403 || response.status === 404) return { status: 'forbidden' };
-			return { status: response.status >= 500 ? 'outcome-unknown' : 'error' };
-		};
-		const timeout = new Promise<ProfileDeletionResult>((resolve) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				resolve({ status: 'outcome-unknown' });
-			}, 5000);
+		const transport = await backendHttp<ProfileDeletionResult>({
+			config,
+			path: `/profiles/${profileId}`,
+			method: 'DELETE',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			decode: (response) =>
+				Promise.resolve(
+					((): ProfileDeletionResult => {
+						if (response.status === 204) return { status: 'success' };
+						if (response.status === 400) return { status: 'invalid-input' };
+						if (response.status === 401) return { status: 'unauthenticated' };
+						if (response.status === 403 || response.status === 404) return { status: 'forbidden' };
+						return { status: response.status >= 500 ? 'outcome-unknown' : 'error' };
+					})(),
+				),
 		});
-		const result = await Promise.race([request(), timeout]);
-		if (result.status !== 'success') return result;
+		if (transport.status === 'error')
+			return { status: transport.kind === 'redirect' ? 'error' : 'outcome-unknown' };
+		if (transport.value.status !== 'success') return transport.value;
 	} catch {
 		return { status: 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 	if (validity()) return { status: 'incomplete' };
 	// Snapshot errors deliberately hide transport details. Enforce an explicit readback time budget

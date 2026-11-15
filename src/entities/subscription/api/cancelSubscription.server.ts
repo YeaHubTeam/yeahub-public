@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { SubscriptionCancellationResult } from '../model/types/cancelSubscription';
 
 // Same UUID syntax as profile management and backend ParseUUIDPipe (all).
@@ -24,56 +26,45 @@ export const requestSubscriptionCancellation = async (
 		!config.allowedOrigins.includes(config.apiOrigin)
 	)
 		return { status: 'error' };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const request = async (): Promise<TransportResult> => {
-			const response = await fetch(new URL('/subscriptions/users', config.apiOrigin), {
-				method: 'DELETE',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: {
-					Authorization: `Bearer ${credentials.accessToken}`,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ userId: credentials.userId, subscriptionId }),
-			});
-			if (response.status === 200) return { status: 'success' };
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) {
-				try {
-					const value: unknown = await response.json();
-					if (
-						typeof value === 'object' &&
-						value !== null &&
-						'message' in value &&
-						value.message === 'auth.user.verified'
-					)
-						return { status: 'verification-required' };
-				} catch {
-					/* An unspecified 403 remains forbidden. */
+		const result = await backendHttp<TransportResult>({
+			config,
+			path: '/subscriptions/users',
+			method: 'DELETE',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: {
+				Authorization: `Bearer ${credentials.accessToken}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ userId: credentials.userId, subscriptionId }),
+			decode: async (response) => {
+				if (response.status === 200) return { status: 'success' };
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status === 403) {
+					try {
+						const value: unknown = await response.json();
+						if (
+							typeof value === 'object' &&
+							value !== null &&
+							'message' in value &&
+							value.message === 'auth.user.verified'
+						)
+							return { status: 'verification-required' };
+					} catch {
+						/* An unspecified 403 remains forbidden. */
+					}
+					return { status: 'forbidden' };
 				}
-				return { status: 'forbidden' };
-			}
-			if (response.status === 404) return { status: 'not-available' };
-			if (response.status === 409) return { status: 'conflict' };
-			if (response.status === 400) return { status: 'error' };
-			return { status: 'outcome-unknown' };
-		};
-		return await Promise.race([
-			request(),
-			new Promise<TransportResult>((resolve) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					resolve({ status: 'outcome-unknown' });
-				}, 5000);
-			}),
-		]);
+				if (response.status === 404) return { status: 'not-available' };
+				if (response.status === 409) return { status: 'conflict' };
+				if (response.status === 400) return { status: 'error' };
+				return { status: 'outcome-unknown' };
+			},
+		});
+		return result.status === 'response' ? result.value : { status: 'outcome-unknown' };
 	} catch {
 		return { status: 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 };

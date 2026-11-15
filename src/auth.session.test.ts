@@ -122,6 +122,16 @@ let logs: jest.SpyInstance[];
 let expectedRefreshCalls = 0;
 let expectedLogoutCalls = 0;
 let expectedProfileFetchCalls = 0;
+const expectRequestHeaders = (index: number, expected: Record<string, string>) => {
+	const options = jest.mocked(globalThis.fetch).mock.calls[index][1];
+	const headers = new Headers(options?.headers);
+	expect([...headers.entries()]).toEqual([...new Headers(expected).entries()]);
+	expect(headers.has('Cookie')).toBe(false);
+	expect(options?.cache).toBe('no-store');
+	expect(options?.redirect).toBe('manual');
+	expect(options?.credentials).toBe('omit');
+};
+
 let expectedProfileCalls = 0;
 let writableCookies = true;
 let cookieWrites: { name: string; value: string }[] = [];
@@ -821,9 +831,9 @@ describe('server-only own profile access', () => {
 			new URL('https://backend.example/auth/profile'),
 			expect.objectContaining({
 				cache: 'no-store',
-				headers: { Authorization: `Bearer ${token(now + 3600)}` },
 			}),
 		);
+		expectRequestHeaders(0, { Authorization: `Bearer ${token(now + 3600)}` });
 	});
 
 	it('requires writable refresh after access expiry without rotating on read', async () => {
@@ -992,10 +1002,10 @@ describe('authorized avatar mutation and writable session', () => {
 					cache: 'no-store',
 					redirect: 'manual',
 					credentials: 'omit',
-					headers: {
+					headers: new Headers({
 						'Content-Type': 'application/json',
 						Authorization: `Bearer ${token(now + 3600)}`,
-					},
+					}),
 					body: JSON.stringify(operation === 'set' ? { avatarImage: image } : { avatarUrl: '' }),
 				}),
 			);
@@ -1104,6 +1114,28 @@ describe('authorized avatar mutation and writable session', () => {
 		});
 	});
 
+	it('bounds avatar response decoding without retry or session writes', async () => {
+		await prepare();
+		expectedProfileFetchCalls++;
+		jest
+			.mocked(globalThis.fetch)
+			.mockResolvedValue({ status: 200, json: () => new Promise(() => {}) } as unknown as Response);
+		const pending = mutateOwnAvatar({ operation: 'delete' });
+		while (jest.mocked(globalThis.fetch).mock.calls.length === 0)
+			await new Promise<void>((resolve) => setImmediate(resolve));
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await pending).toEqual({ status: 'error' });
+		expect(jest.mocked(globalThis.fetch).mock.calls).toHaveLength(1);
+		expect(jest.mocked(globalThis.fetch).mock.calls[0][1]?.signal?.aborted).toBe(true);
+		expect(cookieWrites).toHaveLength(0);
+	});
+	it('does not follow avatar redirects or write a session', async () => {
+		await prepare();
+		patchReply({}, 302);
+		expect(await mutateOwnAvatar({ operation: 'delete' })).toEqual({ status: 'error' });
+		expect(jest.mocked(globalThis.fetch).mock.calls).toHaveLength(1);
+		expect(cookieWrites).toHaveLength(0);
+	});
 	it('does not require writable cookies to confirm a backend mutation', async () => {
 		await prepare();
 		patchReply({ id: 'user-id', avatarUrl });
@@ -1617,9 +1649,9 @@ describe('verification email authorization through existing session credentials'
 			expect.objectContaining({
 				method: 'GET',
 				cache: 'no-store',
-				headers: { Authorization: expect.any(String) },
 			}),
 		);
+		expectRequestHeaders(0, { Authorization: `Bearer ${token(now + 3600)}` });
 		expect(cookieWrites).toHaveLength(0);
 		expect(await decodeSession(cookie)).toEqual(original);
 		expect((await restore(cookie))?.user?.image).toBe('https://images.example/avatar');
@@ -1729,9 +1761,15 @@ describe('Telegram operations use existing private credentials without session u
 				expect.objectContaining({
 					method: 'POST',
 					cache: 'no-store',
-					headers: expect.objectContaining({ Authorization: expect.any(String) }),
 				}),
 			);
+			expectRequestHeaders(0, {
+				Authorization: `Bearer ${token(now + 3600)}`,
+				...(operation === 'link' ? { 'Content-Type': 'application/json' } : {}),
+			});
+			expect(
+				JSON.parse((jest.mocked(globalThis.fetch).mock.calls[0][1]?.body as string) || 'null'),
+			).toEqual(operation === 'link' ? telegramPayload : null);
 			expect(cookieWrites).toHaveLength(0);
 			expect(await decodeSession(cookie)).toEqual(original);
 		},
@@ -2166,9 +2204,10 @@ describe('settings profile selection with the private auth boundary', () => {
 			new URL(`https://backend.example/profiles/${target}/active`),
 			expect.objectContaining({
 				method: 'PATCH',
-				headers: { Authorization: `Bearer ${token(now + 3600)}` },
 			}),
 		);
+		expectRequestHeaders(1, { Authorization: `Bearer ${token(now + 3600)}` });
+		expect(jest.mocked(globalThis.fetch).mock.calls[1][1]?.body).toBeUndefined();
 		expect(cookieWrites).toHaveLength(0);
 		expect(await decodeSession(cookie)).toEqual(original);
 	});
@@ -2353,9 +2392,10 @@ describe('settings profile deletion via trusted session', () => {
 			new URL(`https://backend.example/profiles/${target}`),
 			expect.objectContaining({
 				method: 'DELETE',
-				headers: { Authorization: expect.stringMatching(/^Bearer /) },
 			}),
 		]);
+		expectRequestHeaders(1, { Authorization: `Bearer ${token(now + 3600)}` });
+		expect(jest.mocked(globalThis.fetch).mock.calls[1][1]?.body).toBeUndefined();
 		expect(cookieWrites).toHaveLength(0);
 		expect(await decodeSession(cookie)).toEqual(original);
 	});
@@ -2544,7 +2584,16 @@ describe('explicit read-only Settings page tariff composition', () => {
 		for (const [url, options] of jest.mocked(globalThis.fetch).mock.calls) {
 			expect(options?.cache).toBe('no-store');
 			expect(options?.method ?? 'GET').toBe('GET');
-			if ((url as URL).pathname !== '/auth/profile') expect(options?.headers).toBeUndefined();
+			const headers = new Headers(options?.headers);
+			expect([...headers.entries()]).toEqual(
+				(url as URL).pathname === '/auth/profile'
+					? [['authorization', `Bearer ${token(now + 3600)}`]]
+					: [],
+			);
+			expect(headers.has('Cookie')).toBe(false);
+			expect(options?.credentials).toBe('omit');
+			expect(options?.redirect).toBe('manual');
+			expect(options?.body).toBeUndefined();
 		}
 		expect(cookieWrites).toHaveLength(0);
 		expect(await decodeSession(cookie)).toEqual(original);
@@ -3006,9 +3055,9 @@ describe('payment initialization server boundary', () => {
 				'/subscriptions',
 				'/subscriptions/2/payment/init',
 			]);
-			const [url, options] = jest.mocked(globalThis.fetch).mock.calls[3];
+			const [url] = jest.mocked(globalThis.fetch).mock.calls[3];
 			expect((url as URL).searchParams.get('email')).toBe('server@example.invalid');
-			expect(options?.headers).toEqual({ Authorization: `Bearer ${token(now + 3600)}` });
+			expectRequestHeaders(3, { Authorization: `Bearer ${token(now + 3600)}` });
 			expect(cookieWrites).toHaveLength(0);
 			expect((await decodeSession(cookie))?.backendSession).toEqual(original?.backendSession);
 		},
@@ -3274,7 +3323,10 @@ describe('subscription cancellation server boundary', () => {
 		const [, options] = jest.mocked(globalThis.fetch).mock.calls[1];
 		expect(options?.method).toBe('DELETE');
 		expect(JSON.parse(options!.body as string)).toEqual({ userId: 'user-id', subscriptionId: 2 });
-		expect(options?.headers).toMatchObject({ Authorization: `Bearer ${token(now + 3600)}` });
+		expectRequestHeaders(1, {
+			Authorization: `Bearer ${token(now + 3600)}`,
+			'Content-Type': 'application/json',
+		});
 		expect((await decodeSession(cookie))?.backendSession).toEqual(original?.backendSession);
 	});
 	it.each(['guest', 'expired', 'deadline', 'identity', 'cookie'])(

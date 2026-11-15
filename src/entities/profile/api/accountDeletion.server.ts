@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { ProfileBackendConfig } from './profile.server';
 import { readSettingsSnapshot } from './settings.server';
 
@@ -44,45 +46,36 @@ export const deleteOwnAccount = async (
 		return { status: 'confirmation-mismatch' };
 	const expiredAfterRead = validity();
 	if (expiredAfterRead) return { status: expiredAfterRead };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const request = async (): Promise<AccountDeletionResult> => {
-			const response = await fetch(new URL(`/users/${credentials.userId}`, config.apiOrigin), {
-				method: 'DELETE',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-			});
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) return { status: 'forbidden' };
-			const value: unknown = await response.json();
-			const message =
-				typeof value === 'object' && value !== null && !Array.isArray(value) && 'message' in value
-					? value.message
-					: undefined;
-			if (response.status === 200 && message === 'User deleted successfully')
-				return { status: 'success' };
-			// Storage failures may happen after the database deletion, including HTTP 400/404.
-			// Recognize only specific pre-mutation refusals; never infer rollback from an HTTP error.
-			if (response.status === 400 && message === 'Validation failed (uuid is expected)')
-				return { status: 'invalid-input' };
-			if (response.status === 400 && message === 'user.user.already_deleted')
-				return { status: 'error' };
-			return { status: 'outcome-unknown' };
-		};
-		const timeout = new Promise<AccountDeletionResult>((resolve) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				resolve({ status: 'outcome-unknown' });
-			}, 5000);
+		const result = await backendHttp<AccountDeletionResult>({
+			config,
+			path: `/users/${credentials.userId}`,
+			method: 'DELETE',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			decode: async (response) => {
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status === 403) return { status: 'forbidden' };
+				const value: unknown = await response.json();
+				const message =
+					typeof value === 'object' && value !== null && !Array.isArray(value) && 'message' in value
+						? value.message
+						: undefined;
+				if (response.status === 200 && message === 'User deleted successfully')
+					return { status: 'success' };
+				// Storage failures may happen after the database deletion, including HTTP 400/404.
+				// Recognize only specific pre-mutation refusals; never infer rollback from an HTTP error.
+				if (response.status === 400 && message === 'Validation failed (uuid is expected)')
+					return { status: 'invalid-input' };
+				if (response.status === 400 && message === 'user.user.already_deleted')
+					return { status: 'error' };
+				return { status: 'outcome-unknown' };
+			},
 		});
-		return await Promise.race([request(), timeout]);
+		return result.status === 'response' ? result.value : { status: 'outcome-unknown' };
 	} catch {
 		return { status: 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 };

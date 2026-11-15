@@ -84,8 +84,10 @@ it('saves exact allowlisted payloads, full skills, and unchanged strings without
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: expect.objectContaining({ Authorization: 'Bearer synthetic-access' }),
+			headers: expect.any(Headers),
 		});
+	for (const [, options] of calls)
+		expect(new Headers(options.headers).get('Authorization')).toBe('Bearer synthetic-access');
 });
 
 it.each([
@@ -656,4 +658,27 @@ describe('initial specialization assignment', () => {
 		});
 		expect(fetchMock).toHaveBeenCalledTimes(4);
 	});
+});
+
+it('bounds initial GET timeout without starting a mutation', async () => {
+	jest.useFakeTimers();
+	fetchMock.mockImplementation(() => new Promise(() => {}));
+	const pending = saveOwnProfile(input(), credentials(), config);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+	expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+});
+it('keeps PATCH redirects as confirmed profile partial success', async () => {
+	fetchMock
+		.mockResolvedValueOnce(response(current()))
+		.mockResolvedValueOnce(response(put()))
+		.mockResolvedValueOnce(new Response(null, { status: 307 }));
+	expect(await saveOwnProfile(input(), credentials(), config)).toEqual({
+		status: 'partial-success',
+		profile: 'confirmed',
+		user: 'unconfirmed',
+		reason: 'error',
+	});
+	expect(fetchMock).toHaveBeenCalledTimes(3);
 });

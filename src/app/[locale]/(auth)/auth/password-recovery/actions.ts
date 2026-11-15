@@ -2,6 +2,7 @@
 
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
 import { getAuthBackendConfig } from '@/shared/config/index.server';
 import { passwordRules } from '@/shared/libs';
 
@@ -33,65 +34,55 @@ export async function resetPassword(
 	)
 		return { status: 'validation-error' };
 
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const { apiOrigin, allowedOrigins } = getAuthBackendConfig();
-		if (!allowedOrigins.includes(apiOrigin)) return { status: 'error' };
-		const timeout = new Promise<never>((_, reject) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				reject(new Error('Password reset timed out'));
-			}, 5000);
+		const config = getAuthBackendConfig();
+		const result = await backendHttp<ResetPasswordResult>({
+			config,
+			path: '/auth/reset-password',
+			method: 'PATCH',
+			effect: 'mutation',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ password, passwordConfirm, token }),
+			cache: 'no-store',
+			timeoutMs: 5000,
+			decode: async (response) => {
+				if (![200, 400, 401].includes(response.status)) return { status: 'error' };
+				const data: unknown = await response.json();
+				if (!isObject(data)) return { status: 'error' };
+				if (response.status === 401) {
+					return {
+						status:
+							data.message === 'auth.user.reset_password_token.verification_failed'
+								? 'invalid-token'
+								: 'error',
+					};
+				}
+				if (response.status === 400) {
+					return {
+						status:
+							data.statusCode === 400 &&
+							Array.isArray(data.message) &&
+							data.message.length > 0 &&
+							data.message.every((message: unknown) => typeof message === 'string')
+								? 'validation-error'
+								: 'error',
+					};
+				}
+				// Check the success envelope only. Do not decode, retain or return credentials.
+				return {
+					status:
+						typeof data.access_token === 'string' &&
+						data.access_token.trim().length > 0 &&
+						isObject(data.user) &&
+						typeof data.user.id === 'string' &&
+						data.user.id.trim().length > 0
+							? 'success'
+							: 'error',
+				};
+			},
 		});
-		const request = async (): Promise<ResetPasswordResult> => {
-			const response = await fetch(new URL('/auth/reset-password', apiOrigin), {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ password, passwordConfirm, token }),
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-			});
-			if (![200, 400, 401].includes(response.status)) return { status: 'error' };
-			const data: unknown = await response.json();
-			if (!isObject(data)) return { status: 'error' };
-			if (response.status === 401) {
-				return {
-					status:
-						data.message === 'auth.user.reset_password_token.verification_failed'
-							? 'invalid-token'
-							: 'error',
-				};
-			}
-			if (response.status === 400) {
-				return {
-					status:
-						data.statusCode === 400 &&
-						Array.isArray(data.message) &&
-						data.message.length > 0 &&
-						data.message.every((message: unknown) => typeof message === 'string')
-							? 'validation-error'
-							: 'error',
-				};
-			}
-			// Check the success envelope only. Do not decode, retain or return credentials.
-			return {
-				status:
-					typeof data.access_token === 'string' &&
-					data.access_token.trim().length > 0 &&
-					isObject(data.user) &&
-					typeof data.user.id === 'string' &&
-					data.user.id.trim().length > 0
-						? 'success'
-						: 'error',
-			};
-		};
-		return await Promise.race([request(), timeout]);
+		return result.status === 'response' ? result.value : { status: 'error' };
 	} catch {
 		return { status: 'error' };
-	} finally {
-		clearTimeout(timer);
 	}
 }

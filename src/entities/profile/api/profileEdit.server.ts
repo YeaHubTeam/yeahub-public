@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { ProfileEditInput, ProfileEditResult } from '../model/types/profileEdit';
 import type { ProfileBackendConfig } from './profile.server';
 
@@ -97,34 +99,31 @@ const failure = (status: number): Failure =>
 	status === 401 ? 'unauthorized' : status === 403 ? 'forbidden' : 'error';
 
 // Each request, including response parsing, has a deadline. A timed-out request never starts the next mutation.
-const request = async (url: URL, init: RequestInit): Promise<{ status: number; body: unknown }> => {
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	try {
-		return await Promise.race([
-			(async () => {
-				const response = await fetch(url, {
-					...init,
-					cache: 'no-store',
-					credentials: 'omit',
-					redirect: 'manual',
-					signal: controller.signal,
-				});
-				return {
-					status: response.status,
-					body: response.status === 200 ? ((await response.json()) as unknown) : null,
-				};
-			})(),
-			new Promise<never>((_, reject) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					reject(new Error('Profile request timed out'));
-				}, 5000);
-			}),
-		]);
-	} finally {
-		clearTimeout(timer);
+const request = async (
+	config: ProfileBackendConfig,
+	path: string,
+	method: 'GET' | 'PUT' | 'PATCH',
+	init: { headers: Record<string, string>; body?: string },
+): Promise<{ status: number; body: unknown }> => {
+	const result = await backendHttp({
+		config,
+		path,
+		method,
+		effect: method === 'GET' ? 'read' : 'mutation',
+		...init,
+		cache: 'no-store',
+		timeoutMs: 5000,
+		decode: async (response) => ({
+			status: response.status,
+			body: response.status === 200 ? ((await response.json()) as unknown) : null,
+		}),
+	});
+	if (result.status === 'error') {
+		// Redirects were ordinary non-200 failures, not uncertain transport exceptions.
+		if (result.kind === 'redirect') return { status: 0, body: null };
+		throw new Error('Profile request failed');
 	}
+	return result.value;
 };
 
 export const saveOwnProfile = async (
@@ -149,7 +148,7 @@ export const saveOwnProfile = async (
 			return { status: 'error' };
 		if (!credentials.userId || !/^[A-Za-z0-9._~-]+$/.test(credentials.accessToken))
 			return { status: 'unauthorized' };
-		const loaded = await request(new URL('/auth/profile', origin), {
+		const loaded = await request(config, '/auth/profile', 'GET', {
 			headers: { Authorization: `Bearer ${credentials.accessToken}` },
 		});
 		if (loaded.status !== 200) return { status: failure(loaded.status) };
@@ -224,8 +223,7 @@ export const saveOwnProfile = async (
 			...(own(data, 'description') ? { description: data.description } : {}),
 		};
 		attempted = true;
-		const saved = await request(new URL(`/profiles/${encodeURIComponent(profileId)}`, origin), {
-			method: 'PUT',
+		const saved = await request(config, `/profiles/${encodeURIComponent(profileId)}`, 'PUT', {
 			headers,
 			body: JSON.stringify(body),
 		});
@@ -267,8 +265,7 @@ export const saveOwnProfile = async (
 				reason: 'unauthorized',
 			};
 		userAttempted = true;
-		const user = await request(new URL(`/users/${encodeURIComponent(current.id)}`, origin), {
-			method: 'PATCH',
+		const user = await request(config, `/users/${encodeURIComponent(current.id)}`, 'PATCH', {
 			headers,
 			body: JSON.stringify({ username: data.username, city: data.city }),
 		});
@@ -300,7 +297,7 @@ export const saveOwnProfile = async (
 					user: 'unconfirmed',
 					reason: 'unauthorized',
 				};
-			const readback = await request(new URL('/auth/profile', origin), {
+			const readback = await request(config, '/auth/profile', 'GET', {
 				headers: { Authorization: `Bearer ${credentials.accessToken}` },
 			});
 			const loaded = readback.body;

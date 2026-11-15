@@ -1,10 +1,16 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import {
 	isCancellationSubscriptionId,
 	requestSubscriptionCancellation,
 } from './cancelSubscription.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const userId = '11111111-1111-4111-8111-111111111111';
 const credentials = { userId, accessToken: 'synthetic-access' };
 const config = {
@@ -34,7 +40,10 @@ it('imports without side effects, performs one DELETE with trusted body, and acc
 		cache: 'no-store',
 		redirect: 'manual',
 		credentials: 'omit',
-		headers: { Authorization: 'Bearer synthetic-access', 'Content-Type': 'application/json' },
+		headers: new Headers({
+			Authorization: 'Bearer synthetic-access',
+			'Content-Type': 'application/json',
+		}),
 	});
 	expect(JSON.parse(options.body)).toEqual({ userId, subscriptionId: 2 });
 	expect(text).not.toHaveBeenCalled();
@@ -109,3 +118,33 @@ it.each([null, 1, '', 'other', '11111111-1111-4111-8111-11111111111Z'])(
 );
 it('keeps UUID syntax consistent with existing profile operations', () =>
 	expect(isCancellationSubscriptionId(userId)).toBe(true));
+
+it('uses one explicit mutation transport call with the existing deadline', async () => {
+	request.mockResolvedValue(new Response(null, { status: 200 }));
+	await call();
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'DELETE',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(new Headers(request.mock.calls[0][1].headers).has('Cookie')).toBe(false);
+});
+it('bounds forbidden body decoding without retry or false success', async () => {
+	jest.useFakeTimers();
+	request.mockResolvedValue({ status: 403, json: () => new Promise(() => {}) });
+	const result = call();
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await result).toEqual({ status: 'outcome-unknown' });
+	expect(request.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(request).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
+});
+it('keeps malformed forbidden JSON as forbidden', async () => {
+	request.mockResolvedValue(new Response('not JSON', { status: 403 }));
+	expect(await call()).toEqual({ status: 'forbidden' });
+	expect(request).toHaveBeenCalledTimes(1);
+});

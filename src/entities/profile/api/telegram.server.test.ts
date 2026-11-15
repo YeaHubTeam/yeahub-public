@@ -1,7 +1,13 @@
 /** @jest-environment node */
+import * as transport from '@/shared/api/index.server';
+
 import { mutateTelegram, parseTelegramPayload } from './telegram.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
 const config = {
 	apiOrigin: 'https://backend.example',
 	allowedOrigins: ['https://backend.example'],
@@ -52,7 +58,10 @@ it('links with exactly the signed fields unchanged and returns only safe data', 
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access', 'Content-Type': 'application/json' },
+			headers: new Headers({
+				Authorization: 'Bearer synthetic-access',
+				'Content-Type': 'application/json',
+			}),
 			body: expect.any(String),
 		}),
 	);
@@ -65,10 +74,11 @@ it('unlinks without identity or payload in the body', async () => {
 		expect.objectContaining({
 			method: 'POST',
 			cache: 'no-store',
-			headers: { Authorization: 'Bearer synthetic-access' },
+			headers: new Headers({ Authorization: 'Bearer synthetic-access' }),
 		}),
 	);
-	expect(fetchSpy.mock.calls[0][1]).not.toHaveProperty('body');
+	expect(fetchSpy.mock.calls[0][1].body).toBeUndefined();
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
 });
 it('allows absent username without inventing an unlinked flag', async () => {
 	const { username, ...input } = payload();
@@ -129,6 +139,7 @@ it.each([
 	[404, 'user.user.id.not_found', 'not-found'],
 	[400, 'invalid', 'error'],
 	[500, 'unknown', 'error'],
+	[409, 'user.telegram.already_linked', 'error'],
 	[429, 'unknown', 'error'],
 ] as const)('maps HTTP %s / %s without retry', async (status, message, expected) => {
 	reply({ message }, status);
@@ -182,3 +193,58 @@ it('rejects invalid origin and credentials before HTTP', async () => {
 	).toEqual({ status: 'error' });
 	expect(fetchSpy).not.toHaveBeenCalled();
 });
+
+it.each(['link', 'unlink'] as const)('marks %s as a single mutation', async (type) => {
+	reply({ id: credentials.userId, telegramUsername: type === 'link' ? payload().username : null });
+	expect(await (type === 'link' ? link() : unlink())).toEqual({
+		status: 'success',
+		telegramUsername: type === 'link' ? payload().username : null,
+	});
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			path: `/users/${type}-telegram`,
+			method: 'POST',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	expect(fetchSpy.mock.calls[0][1]).toEqual(
+		expect.objectContaining({ redirect: 'manual', credentials: 'omit' }),
+	);
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it.each(['link', 'unlink'] as const)(
+	'times out during %s body decoding without retry',
+	async (type) => {
+		jest.useFakeTimers();
+		const json = jest.fn(() => new Promise(() => {}));
+		fetchSpy.mockResolvedValue({ status: 201, json });
+		const result = type === 'link' ? link() : unlink();
+		await jest.advanceTimersByTimeAsync(0);
+		expect(json).toHaveBeenCalledTimes(1);
+		await jest.advanceTimersByTimeAsync(5000);
+		expect(await result).toEqual({ status: 'error' });
+		expect(fetchSpy.mock.calls[0][1].signal.aborted).toBe(true);
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+		expect(jest.getTimerCount()).toBe(0);
+	},
+);
+it.each([201, 400, 401, 403, 404])(
+	'preserves malformed HTTP %s JSON error priority',
+	async (status) => {
+		fetchSpy.mockResolvedValue(new Response('invalid', { status }));
+		expect(await link()).toEqual({ status: 'error' });
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	},
+);
+it.each(['link', 'unlink'] as const)(
+	'rejects %s redirects without decoding or repeating',
+	async (type) => {
+		const json = jest.fn();
+		fetchSpy.mockResolvedValue({ status: 302, json });
+		expect(await (type === 'link' ? link() : unlink())).toEqual({ status: 'error' });
+		expect(json).not.toHaveBeenCalled();
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	},
+);

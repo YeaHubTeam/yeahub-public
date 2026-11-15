@@ -43,7 +43,9 @@ it('loads the public exact WEB flag once without credentials or extra fields', a
 		limit: '10',
 	});
 	expect(options).toMatchObject({ cache: 'no-store', redirect: 'manual', credentials: 'omit' });
-	expect(options.headers).toBeUndefined();
+	expect([...new Headers(options.headers).entries()]).toEqual([]);
+	expect(options.method).toBe('GET');
+	expect(options.body).toBeUndefined();
 });
 it.each(
 	[[], [{ ...flag, flag: `${key}.other` }], [{ ...flag, clientType: 'IOS' }]].map((items) => ({
@@ -120,3 +122,47 @@ it('preserves disabled, missing and unavailable decisions', () => {
 it('does not fetch on import', () => {
 	expect(fetchSpy).not.toHaveBeenCalled();
 });
+
+it('preserves a valid disabled flag as success rather than missing or unavailable', async () => {
+	reply(list([{ ...flag, enabled: false, roles: ['candidate'] }]));
+	expect(await readTariffFlag(config)).toEqual({
+		status: 'success',
+		enabled: false,
+		roles: ['candidate'],
+	});
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it('keeps the deadline while decoding the body and ignores late completion', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const response = new Response('{}');
+	const json = jest.spyOn(response, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	fetchSpy.mockResolvedValue(response);
+	const pending = readTariffFlag(config);
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'unavailable' });
+	expect(fetchSpy.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve(list());
+	await Promise.resolve();
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 400, 429, 502, 503])(
+	'keeps HTTP %i unavailable without parsing or retries',
+	async (status) => {
+		const response = new Response(null, { status });
+		const json = jest.spyOn(response, 'json');
+		fetchSpy.mockResolvedValue(response);
+		expect(await readTariffFlag(config)).toEqual({ status: 'unavailable' });
+		expect(json).not.toHaveBeenCalled();
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	},
+);

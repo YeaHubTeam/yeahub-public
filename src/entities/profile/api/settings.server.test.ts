@@ -55,9 +55,14 @@ it('projects only necessary fields and uses a private no-store request', async (
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
 		}),
 	);
+	const [, options] = fetchSpy.mock.calls[0];
+	expect(options.method).toBe('GET');
+	expect([...new Headers(options.headers).entries()]).toEqual([
+		['authorization', 'Bearer synthetic-access'],
+	]);
+	expect(options.body).toBeUndefined();
 });
 it.each([null, ''])('preserves missing email value %s', async (email) => {
 	reply({ ...body(), email });
@@ -439,3 +444,38 @@ it('keeps identity checking ahead of the page gate', async () => {
 		}),
 	).toEqual({ status: 'identity-mismatch' });
 });
+
+it('keeps the deadline while decoding the body and ignores late completion', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const response = new Response('{}');
+	const json = jest.spyOn(response, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	fetchSpy.mockResolvedValue(response);
+	const pending = readSettingsSnapshot(credentials, config);
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error' });
+	expect(fetchSpy.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve(body());
+	await Promise.resolve();
+	expect(fetchSpy).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 400, 404, 502, 503])(
+	'keeps HTTP %i as an error without decoding or auth recovery',
+	async (status) => {
+		const response = new Response(null, { status });
+		const json = jest.spyOn(response, 'json');
+		fetchSpy.mockResolvedValue(response);
+		expect(await readSettingsSnapshot(credentials, config)).toEqual({ status: 'error' });
+		expect(json).not.toHaveBeenCalled();
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	},
+);

@@ -75,9 +75,14 @@ it('projects only required fields and sends a no-store cookie-free request', asy
 			cache: 'no-store',
 			redirect: 'manual',
 			credentials: 'omit',
-			headers: { Authorization: 'Bearer synthetic-access' },
 		}),
 	);
+	const [, options] = fetchMock.mock.calls[0];
+	expect(options.method).toBe('GET');
+	expect([...new Headers(options.headers).entries()]).toEqual([
+		['authorization', 'Bearer synthetic-access'],
+	]);
+	expect(options.body).toBeUndefined();
 	expect(JSON.stringify(result)).not.toMatch(/synthetic|permissions|subscriptions|refresh_token/);
 });
 it('handles no active profile explicitly', async () => {
@@ -115,4 +120,70 @@ it('bounds a hanging request and aborts it', async () => {
 	await jest.advanceTimersByTimeAsync(5000);
 	expect(await result).toEqual({ status: 'error' });
 	expect((fetchMock.mock.calls[0][1] as RequestInit).signal?.aborted).toBe(true);
+});
+
+it('bounds body decoding at five seconds and ignores a late successful body', async () => {
+	jest.useFakeTimers();
+	let resolve!: (value: unknown) => void;
+	const reply = new Response('{}');
+	const json = jest.spyOn(reply, 'json').mockImplementation(
+		() =>
+			new Promise((done) => {
+				resolve = done;
+			}),
+	);
+	fetchMock.mockResolvedValue(reply);
+	const pending = readOwnProfile(credentials, backendConfig);
+	await Promise.resolve();
+	expect(json).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(1);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await pending).toEqual({ status: 'error' });
+	expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(jest.getTimerCount()).toBe(0);
+	resolve(response());
+	await Promise.resolve();
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it.each([201, 204, 400, 404, 502, 503])(
+	'keeps HTTP %i as an error without body parsing or auth recovery',
+	async (status) => {
+		const reply = new Response(null, { status });
+		const json = jest.spyOn(reply, 'json');
+		fetchMock.mockResolvedValue(reply);
+		expect(await readOwnProfile(credentials, backendConfig)).toEqual({ status: 'error' });
+		expect(json).not.toHaveBeenCalled();
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	},
+);
+it('handles malformed JSON without retries', async () => {
+	fetchMock.mockResolvedValue(new Response('not-json'));
+	expect(await readOwnProfile(credentials, backendConfig)).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it('rejects invalid server credentials and unapproved origin before HTTP', async () => {
+	expect(await readOwnProfile({ ...credentials, userId: '' }, backendConfig)).toEqual({
+		status: 'error',
+	});
+	expect(
+		await readOwnProfile({ ...credentials, accessToken: 'unsafe\r\nheader' }, backendConfig),
+	).toEqual({ status: 'error' });
+	expect(await readOwnProfile(credentials, { ...backendConfig, allowedOrigins: [] })).toEqual({
+		status: 'error',
+	});
+	expect(fetchMock).not.toHaveBeenCalled();
+});
+it.each([
+	{ username: null },
+	{ email: null },
+	{ isVerified: 'true' },
+	{ city: undefined },
+	{ profiles: [{ ...response().profiles[0], specializationId: '11' }] },
+	{ profiles: [{ ...response().profiles[0], description: 1 }] },
+	{ profiles: [{ ...response().profiles[0], profileSkills: [{}] }] },
+	{ profiles: [{ ...response().profiles[0], socialNetwork: [{}] }] },
+])('preserves rejection of partial or malformed DTO %#', async (patch) => {
+	reply({ ...response(), ...patch });
+	expect(await readOwnProfile(credentials, backendConfig)).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
 });

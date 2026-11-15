@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { backendHttp } from '@/shared/api/index.server';
+
 import type { PaymentInitInput, PaymentInitResult } from '../model/types/paymentInit';
 
 // Same email rule as the React subscription agreement form; do not normalize input.
@@ -64,59 +66,46 @@ export const requestPaymentInit = async (
 		!/^[A-Za-z0-9._~-]+$/.test(credentials.accessToken)
 	)
 		return { status: 'error' };
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const url = new URL(`/subscriptions/${parsed.tariffId}/payment/init`, config.apiOrigin);
-		url.search = new URLSearchParams({ email: parsed.email }).toString();
-		const request = async (): Promise<PaymentInitResult> => {
-			const response = await fetch(url, {
-				method: 'GET',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-				headers: { Authorization: `Bearer ${credentials.accessToken}` },
-			});
-			if (response.status === 200) {
-				const paymentUrl = await response.text();
-				return trustedPaymentUrl(paymentUrl)
-					? { status: 'success', paymentUrl }
-					: { status: 'outcome-unknown' };
-			}
-			if (response.status === 401) return { status: 'unauthenticated' };
-			if (response.status === 403) {
-				try {
-					const body: unknown = await response.json();
-					if (
-						typeof body === 'object' &&
-						body !== null &&
-						'message' in body &&
-						body.message === 'auth.user.verified'
-					)
-						return { status: 'verification-required' };
-				} catch {
-					/* Generic forbidden is not a verification or logout signal. */
+		const result = await backendHttp<PaymentInitResult>({
+			config,
+			path: `/subscriptions/${parsed.tariffId}/payment/init?${new URLSearchParams({ email: parsed.email })}`,
+			method: 'GET',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 45000,
+			headers: { Authorization: `Bearer ${credentials.accessToken}` },
+			decode: async (response) => {
+				if (response.status === 200) {
+					const paymentUrl = await response.text();
+					return trustedPaymentUrl(paymentUrl)
+						? { status: 'success', paymentUrl }
+						: { status: 'outcome-unknown' };
 				}
-				return { status: 'forbidden' };
-			}
-			if (response.status === 404) return { status: 'not-available' };
-			if (response.status === 409) return { status: 'conflict' };
-			if (response.status === 400) return { status: 'error' };
-			return { status: 'outcome-unknown' };
-		};
-		return await Promise.race([
-			request(),
-			new Promise<PaymentInitResult>((resolve) => {
-				timer = setTimeout(() => {
-					controller.abort();
-					resolve({ status: 'outcome-unknown' });
-				}, 45000);
-			}),
-		]);
+				if (response.status === 401) return { status: 'unauthenticated' };
+				if (response.status === 403) {
+					try {
+						const body: unknown = await response.json();
+						if (
+							typeof body === 'object' &&
+							body !== null &&
+							'message' in body &&
+							body.message === 'auth.user.verified'
+						)
+							return { status: 'verification-required' };
+					} catch {
+						/* Generic forbidden is not a verification or logout signal. */
+					}
+					return { status: 'forbidden' };
+				}
+				if (response.status === 404) return { status: 'not-available' };
+				if (response.status === 409) return { status: 'conflict' };
+				if (response.status === 400) return { status: 'error' };
+				return { status: 'outcome-unknown' };
+			},
+		});
+		return result.status === 'response' ? result.value : { status: 'outcome-unknown' };
 	} catch {
 		return { status: 'outcome-unknown' };
-	} finally {
-		clearTimeout(timer);
 	}
 };
