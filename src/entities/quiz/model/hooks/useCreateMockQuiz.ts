@@ -1,9 +1,7 @@
-import {
-	CreateNewMockQuizParamsRequest,
-	CreateNewMockQuizResponse,
-	createNewMockQuiz,
-} from '@/entities/quiz';
 import { useLazyFetchData } from '@/shared/api';
+
+import { createNewMockQuiz } from '../../api/createNewMockQuiz';
+import type { CreateNewMockQuizParamsRequest, CreateNewMockQuizResponse } from '../types/quiz';
 
 interface UseCreateMockQuizProps {
 	onSuccess?: (data: CreateNewMockQuizResponse) => void;
