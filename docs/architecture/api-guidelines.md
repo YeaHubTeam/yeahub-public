@@ -1,5 +1,7 @@
 # Практические правила API и BFF
 
+Практический вход: [API recipes R01–R07](../../../yeahub-dev-guide/projects/yeahub-public/recipes/api.md). Карточки в конце — нормативный источник HTTP/security правил. Структура Auth.js/BFF: [BFF](bff.md); UI-контроллеры и i18n: [UI recipes](../../../yeahub-dev-guide/projects/yeahub-public/recipes/ui-i18n.md); безопасный запуск тестов: [testing/refactoring](../../../yeahub-dev-guide/projects/yeahub-public/recipes/testing-refactoring.md).
+
 Это руководство для новых запросов и согласованных переносов. Оно не разрешает массовый рефакторинг существующих модулей. Сначала прочитать [AGENTS.md](../../AGENTS.md) и [фактическую архитектуру](bff.md).
 
 ## Границы Auth.js и доменного BFF
@@ -137,7 +139,7 @@ GET `/subscriptions/trial`, GET payment-init, GET отправки verification/
 
 Выполнять только согласованную адресную locale-aware revalidation после нужного уровня подтверждения. Пример: [Settings Actions](<../../src/app/[locale]/(public)/settings/actions.ts>) инвалидируют profile/profile-edit/settings после подтверждённых операций; ошибки после подтверждения не всегда равны полному успеху.
 
-Не добавлять глобальную очистку cache. `router.refresh()` не является повтором mutation, но не должен снимать terminal lock той же identity. Pending/terminal состояние, переживающее hash-размонтирование, хранится в существующем controller выше панели; новый global store не требуется. Поздние ответы прежней identity должны игнорироваться.
+UI-применение адресной revalidation и router.refresh описано в [YH-PUB-UI-01](../../../yeahub-dev-guide/projects/yeahub-public/recipes/ui-i18n.md#yh-pub-ui-01): это правило существующего тарифного controller, не обязательный универсальный gate для каждой формы.
 
 ## Особые операции: сохранять реальные контракты
 
@@ -157,6 +159,8 @@ GET `/subscriptions/trial`, GET payment-init, GET отправки verification/
 Для всех этих операций разрешены тесты только с mocks и вымышленными идентификаторами. Не использовать настоящий тестовый аккаунт, не выполнять DELETE, trial, payment-init, cancel или банковские операции для QA. Ссылки на исходники не являются инструкцией вызывать endpoints.
 
 ## Тестовое окружение
+
+Воспроизводимый порядок и карточки тестирования: [R11/R12](../../../yeahub-dev-guide/projects/yeahub-public/recipes/testing-refactoring.md). `/tmp`-профили предыдущих прогонов не являются штатным setup. Безопасные долговечные node/UI profiles — отдельная будущая tooling-задача, не реализованная этим документом.
 
 Существующий [jest.config.ts](../../jest.config.ts) использует next/jest, jsdom и [jest.setup.ts](../../jest.setup.ts). В конфиге пути к polyfill и mock-файлам не совпадают с их фактическим расположением: [src/shared/config/jest](../../src/shared/config/jest). Общий setup обращается к window без node guard. Эти проблемы не исправлены документацией.
 
@@ -182,7 +186,7 @@ GET `/subscriptions/trial`, GET payment-init, GET отправки verification/
 - [ ] Ровно нужное число запросов, метод/query/body/headers; никаких retry/refresh/logout или дополнительных profile reads.
 - [ ] JSON/text/empty читаются внутри deadline; нет credentials/full DTO в UI result.
 - [ ] Для mutation: precheck/readback, partial effects, incomplete/outcome-unknown, двойной клик и terminal lock через hash/refresh/смену identity.
-- [ ] Для UI: React parity, locale-aware navigation, настоящие i18n messages, другие вкладки без регрессий.
+- [ ] Для UI: locale-aware navigation, настоящие i18n messages и регрессии других вкладок. React parity проверяется только для миграционной задачи (YH-PUB-MIGRATION-01).
 
 ## Статические проверки и завершение
 
@@ -206,3 +210,101 @@ Steiger запускать однократно, без watch. Не отключ
 ## Что пока не решено
 
 Исправление стандартного Jest-профиля, полный перевод старых APIs, дополнительный HTTP helper layer, поддержка Cookie/FormData и перенос оставшегося legacy Auth transport требуют отдельных задач. Корневой auth.ts удалён; новую композицию размещать в соответствующем app/\_bff домене. Новый domain result/mutation recovery согласуется по конкретному use case. Этот документ не меняет существующие React parity, auth или backend-контракты.
+
+## Карточки HTTP и security правил
+
+### YH-PUB-HTTP-01
+
+- **Статус:** MUST.
+- **Когда применять:** новый server-only BFF HTTP-вызов.
+- **Что делать:** использовать backendHttp из shared/api/index.server; передать checked config, root-relative path, method/effect/cache/timeout/headers; decoder и exact business status оставить домену.
+- **Реализация в проекте:** [src/entities/subscription/api/settingsCatalog.server.ts](../../src/entities/subscription/api/settingsCatalog.server.ts), readSettingsCatalog(), строки 13–33.
+- **Пример:** `method: 'GET', effect: 'read', cache: 'no-store', timeoutMs: 5000` — короткий фрагмент указанного источника.
+- **Антипример:** новый локальный AbortController/Promise.race ограничивает только headers и оставляет body без deadline.
+- **Проверка:** transport/domain tests: unsafe path/origin, redirect, headers/body timeout, abort/cleanup и один fetch.
+- **Исключения:** Auth transport и browser apiFetch описаны в YH-PUB-HTTP-02; transport принимает только string body, не Cookie/FormData.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-HTTP-02
+
+- **Статус:** MUST.
+- **Когда применять:** выбор транспорта до добавления endpoint.
+- **Что делать:** определить server/browser, credentials и cache; public browser-compatible requests — apiFetch, server BFF — backendHttp, Auth cookie/token lifecycle — существующий backendAuth; не смешивать их entrypoints.
+- **Реализация в проекте:** [src/shared/api/httpClient.ts](../../src/shared/api/httpClient.ts), apiFetch(), строки 19–35.
+- **Пример:** `const { cacheStrategy = 'force-cache', searchParams, headers, ...rest } = options` — короткий фрагмент указанного источника.
+- **Антипример:** выбрать apiFetch с default cache для персональной mutation.
+- **Проверка:** проверить transport import, cache, отсутствие Bearer/refresh в browser и точный contract в tests.
+- **Исключения:** публичный GET каталога внутри server BFF использует backendHttp; Auth не переносить автоматически; apiFetch<T> не runtime validator.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-SEC-01
+
+- **Статус:** MUST.
+- **Когда применять:** чувствительная операция с целевой записью пользователя.
+- **Что делать:** получить trusted session; валидировать input; свежим read проверить identity/ownership/expected state; после precheck повторно проверить deadline при необходимости; отказ без mutation.
+- **Реализация в проекте:** [src/entities/profile/api/profileManagement.server.ts](../../src/entities/profile/api/profileManagement.server.ts), selectOwnProfile(), строки 13–51.
+- **Пример:** `const profile = before.snapshot.profiles.find((item) => item.id === profileId)` — короткий фрагмент указанного источника.
+- **Антипример:** валидный UUID считается доказательством ownership; snapshot страницы заменяет fresh precheck.
+- **Проверка:** foreign/missing UUID, expired precheck, already-active no PATCH; identity mismatch и точное число reads.
+- **Исключения:** обычный read не требует универсального precheck; не добавлять новые ограничения сверх domain contract.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-MUT-01
+
+- **Статус:** MUST.
+- **Когда применять:** запрос с побочным эффектом, включая GET.
+- **Что делать:** выставить effect mutation и no-store явно; один mutation request без retry/refresh/replay; не вызывать из render/prefetch/hash/проверки доступности.
+- **Реализация в проекте:** [src/entities/subscription/api/paymentInit.server.ts](../../src/entities/subscription/api/paymentInit.server.ts), requestPaymentInit(), строки 56–77.
+- **Пример:** `method: 'GET', effect: 'mutation', cache: 'no-store'` — короткий фрагмент указанного источника.
+- **Антипример:** повторить trial/payment-init после timeout потому что HTTP method GET.
+- **Проверка:** tests: ноль mutations до действия, одна после, нет retries; headers/body deadline.
+- **Исключения:** действительно read-only GET; Auth logout также mutating GET, но остаётся в Auth transport.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-MUT-02
+
+- **Статус:** MUST.
+- **Когда применять:** workflow с incomplete/outcome-unknown и readback.
+- **Что делать:** проверить exact status и нужный JSON/text/empty; после подтверждённой mutation выполнить только contract readback; отличать отказ, неподтверждённое состояние и неизвестный эффект; не восстанавливать повторной mutation.
+- **Реализация в проекте:** [src/app/\_bff/subscription/trial.server.ts](../../src/app/_bff/subscription/trial.server.ts), startOwnSettingsTrial(), строки 29–48.
+- **Пример:** `return { status: confirmed ? 'incomplete' : sent ? 'outcome-unknown' : 'error' }` — короткий фрагмент указанного источника.
+- **Антипример:** response.ok автоматически success либо timeout трактуется как rollback.
+- **Проверка:** malformed 200, failed readback, network/timeout/5xx; unchanged request count.
+- **Исключения:** readback определяется доменом: account deletion — exact message; payment link не подтверждает оплату; configuration до fetch отличается от ошибок после отправки.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-PAY-01
+
+- **Статус:** MUST.
+- **Когда применять:** существующий payment-init или согласованный аналог финансовой операции.
+- **Что делать:** fresh identity/verified/catalog и consents; tariff ID из актуального server catalog; exact 200 TEXT; bank URL проверить по HTTPS/точному host/no userinfo/no port/no whitespace; не fetch-ить URL.
+- **Реализация в проекте:** [src/entities/subscription/api/paymentInit.server.ts](../../src/entities/subscription/api/paymentInit.server.ts), trustedPaymentUrl(), строки 33–54; requestPaymentInit(), строки 70–107.
+- **Пример:** `url.protocol === 'https:' && url.hostname === 'securepay.tinkoff.ru'` — короткий фрагмент указанного источника.
+- **Антипример:** переход по URL из query/hash или allowlist через endsWith(host).
+- **Проверка:** malicious URL fixtures, 45s existing payment timeout, unknown/no retry; reuse ready URL в UI.
+- **Исключения:** новый provider/timeout требует отдельного contract decision; возврат с банка не success оплаты.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-PROFILE-01
+
+- **Статус:** MUST.
+- **Когда применять:** рефакторинг или развитие текущего многошагового profile save.
+- **Что делать:** сохранить GET → PUT → PATCH и условный readback; подтверждать каждый шаг; после сохранения использовать существующий session sync; сохранить partial-success/sync-required.
+- **Реализация в проекте:** [src/entities/profile/api/profileEdit.server.ts](../../src/entities/profile/api/profileEdit.server.ts), saveOwnProfile(), строки 226–315.
+- **Пример:** `status: 'partial-success', profile: 'confirmed', user: 'unconfirmed'` — короткий фрагмент указанного источника.
+- **Антипример:** успешный PUT и failed PATCH превращаются в полный success или будто ничего не изменилось.
+- **Проверка:** отказ/timeout на каждом шаге, first specialization/readback, unchanged request order/count; BFF edit tests session sync.
+- **Исключения:** одношаговые операции не обязаны иметь такой result union.
+- **Происхождение:** подтверждённая практика миграции; применяется только в указанной области.
+
+### YH-PUB-DELETE-01
+
+- **Статус:** MUST.
+- **Когда применять:** account deletion и его тестирование.
+- **Что делать:** сохранить trusted UUID, fresh snapshot и exact username без normalization; один DELETE; exact 200/message; timeout/неподтверждённый ответ не повторять; проверять только mocks с фиктивными UUID.
+- **Реализация в проекте:** [src/entities/profile/api/accountDeletion.server.ts](../../src/entities/profile/api/accountDeletion.server.ts), deleteOwnAccount(), строки 29–79.
+- **Пример:** `response.status === 200 && message === 'User deleted successfully'` — короткий фрагмент указанного источника.
+- **Антипример:** проверить реальным DELETE тестового аккаунта или добавить обязательную отмену подписки.
+- **Проверка:** confirmation mismatch — ноль DELETE; success/malformed/unknown; один mocked DELETE; UI completion только после success.
+- **Исключения:** readback после удаления не обязателен; signOut failure разрешает повтор signOut, не удаления; новых subscription restrictions нет.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.

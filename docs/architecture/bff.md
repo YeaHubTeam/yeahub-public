@@ -1,5 +1,7 @@
 # API и BFF: текущее состояние
 
+Практический вход: [API recipes R01–R07](../../../yeahub-dev-guide/projects/yeahub-public/recipes/api.md). Карточки ниже — нормативный источник структурных правил; HTTP-политики принадлежат [API guidelines](api-guidelines.md). Существующая карта и описание транспорта ниже служат справочником, а не отдельным набором RULE-ID.
+
 Документ сверён после BFF-AUTH-ARCHITECTURE-06. BFF reads и mutations используют backendHttp; Auth.js lifecycle transport и публичный apiFetch остаются отдельными механизмами. Источник истины для контрактов — связанные исходники. Новых бизнес-правил этот документ не вводит.
 
 - [Практическое руководство](api-guidelines.md)
@@ -8,6 +10,8 @@
 - [Проектные правила public](../../../yeahub-dev-guide/projects/yeahub-public/AGENTS.md)
 
 ## Миграция React → Next.js
+
+Этот раздел применяется только к переносу существующего сценария, не к новым функциям; нормативная область — [YH-PUB-MIGRATION-01](#yh-pub-migration-01).
 
 `yeahub-platform` задаёт согласованное пользовательское поведение: тексты, порядок действий, navigation, loading/error/success. `yeahub-backend` задаёт фактические endpoints, DTO, HTTP status и побочные эффекты. Контроллеры и DTO важнее предположений по React; спорные различия сначала согласуются.
 
@@ -207,3 +211,109 @@ Anonymous auth Actions, Profile Editing/Management, Telegram, verification email
 - Дедупликация read-only Header/page запросов не внедрена. Не распространять потенциальный request-scope cache на mutation readback.
 - Общая тестовая конфигурация требует отдельного исправления: см. [ограничения Jest](api-guidelines.md#тестовое-окружение).
 - [README](../../README.md) пока является шаблоном create-next-app и не описывает BFF. Рабочие архитектурные правила находятся здесь; README не обновлён в рамках ограниченного documentation scope.
+
+## Карточки архитектурных правил
+
+MUST обязателен в указанной области, SHOULD — подтверждённый рекомендуемый приём, MAY — допустимый выбор, EXCEPTION — ограниченное исключение. Статус не распространяет правило на другие репозитории. Новое неподтверждённое решение помечается PROPOSAL, не MUST.
+
+### YH-PUB-AUTH-01
+
+- **Статус:** MUST.
+- **Когда применять:** новый персональный read или mutation BFF.
+- **Что делать:** вызвать currentBackendSession(); обработать отказ до domain API; взять identity/Bearer только из session; не получать их из клиентских аргументов.
+- **Реализация в проекте:** [src/app/\_bff/profile/reads.server.ts](../../src/app/_bff/profile/reads.server.ts), getOwnProfile(), строки 10–19; boundary — currentBackendSession() в session.server.ts.
+- **Пример:** `if (session.status !== 'success') return session` — короткий фрагмент указанного источника.
+- **Антипример:** доверять request Authorization вместо проверенной cookie или передавать session credentials в UI.
+- **Проверка:** session integration tests: missing cookie, sub mismatch, JWT/access expiry и deadline.
+- **Исключения:** анонимные login/register/reset flows; writtenCookie — внутренний механизм password writer, не клиентский аргумент.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-BFF-01
+
+- **Статус:** MUST.
+- **Когда применять:** композиция session, domain API и нескольких шагов.
+- **Что делать:** Action разместить в route, orchestration в app/\_bff/<domain>, HTTP/DTO в entity API; использовать public entrypoints; runtime не импортирует BFF.
+- **Реализация в проекте:** [src/app/\_bff/settings/reads.server.ts](../../src/app/_bff/settings/reads.server.ts), getSettingsPageData(), строки 26–53.
+- **Пример:** `const session = await currentBackendSession()` — короткий фрагмент указанного источника.
+- **Антипример:** shared HTTP transport читает cookies, выбирает тариф или делает readback.
+- **Проверка:** проверить imports и tests порядка flag → snapshot → catalog; обычный snapshot не делает дополнительных flag/catalog requests.
+- **Исключения:** password writer — app/\_auth; profile sync использует тот же runtime; новый Service/framework не нужен.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-FSD-01
+
+- **Статус:** MUST.
+- **Когда применять:** внешние slice imports и client-facing types нового кода.
+- **Что делать:** runtime server API экспортировать через index.server.ts с server-only; browser API и новые client-facing типы — через index.ts; типы импортировать type-only; не дублировать определения.
+- **Реализация в проекте:** [src/entities/auth/index.ts](../../src/entities/auth/index.ts), export type ChangePasswordResult, строка 11.
+- **Пример:** `export type { ChangePasswordResult } from './model/types/passwordChange'` — короткий фрагмент указанного источника.
+- **Антипример:** export server loader через browser barrel или runtime import server-only из client component.
+- **Проверка:** Steiger и runtime client graph; import type исчезает после TS erasure.
+- **Исключения:** существующие import type из index.server.ts (SubscribeModal/TrialActivation) допустимы как legacy: не runtime-утечка и не повод переписывать их без задачи.
+- **Происхождение:** согласованное новое правило YEAHUB-DEVELOPER-GUIDE-IMPLEMENT-01.
+
+### YH-PUB-FSD-02
+
+- **Статус:** MUST.
+- **Когда применять:** runtime import внутри собственного slice.
+- **Что делать:** импортировать конкретную реализацию относительным путём; внешние slice imports оставить через public API; не менять exports ради устранения цикла.
+- **Реализация в проекте:** [src/entities/quiz/model/hooks/useCreateMockQuiz.ts](../../src/entities/quiz/model/hooks/useCreateMockQuiz.ts), useCreateMockQuiz(), imports строки 1–4.
+- **Пример:** `import { createNewMockQuiz } from '../../api/createNewMockQuiz'` — короткий фрагмент указанного источника.
+- **Антипример:** index → собственный hook/component → index.
+- **Проверка:** runtime graph после TS erasure: нет новых strongly connected components; Steiger отдельно, он не доказывает отсутствие циклов.
+- **Исключения:** type-only edges не являются runtime-циклами; внешние deep imports не разрешены.
+- **Происхождение:** согласованное новое правило YEAHUB-DEVELOPER-GUIDE-IMPLEMENT-01.
+
+Четыре проверенных источника этого решения: [src/widgets/Collection/ui/CollectionHeader/CollectionHeader.tsx](../../src/widgets/Collection/ui/CollectionHeader/CollectionHeader.tsx), [src/entities/quiz/model/hooks/useCreateMockQuiz.ts](../../src/entities/quiz/model/hooks/useCreateMockQuiz.ts), [src/widgets/Landing/PrepareForInterview/ui/PrepareForInterviewSection/PrepareForInterviewSection.tsx](../../src/widgets/Landing/PrepareForInterview/ui/PrepareForInterviewSection/PrepareForInterviewSection.tsx), [src/entities/task/ui/CategoriesFilterSection/CategoriesFilterSection.tsx](../../src/entities/task/ui/CategoriesFilterSection/CategoriesFilterSection.tsx). Во всех исправлен возврат через собственный barrel, JSX/hooks не переписаны.
+
+### YH-PUB-STRUCT-01
+
+- **Статус:** MUST.
+- **Когда применять:** размещение новых source/test/helper файлов.
+- **Что делать:** непосредственно в src оставлять только proxy.ts; Auth размещать в app/\_auth, orchestration в app/\_bff; route в app/[locale]; существующий \_pages не переименовывать в pages.
+- **Реализация в проекте:** [src/proxy.ts](../../src/proxy.ts), proxy(); размещение единственного корневого source-файла.
+- **Пример:** `src/app/_auth/session.server.ts` — короткий фрагмент указанного источника.
+- **Антипример:** вернуть src/auth.ts с постоянными совместимыми реэкспортами.
+- **Проверка:** find src -maxdepth 1 -type f; rg по старым imports @/auth; отсутствие src/pages.
+- **Исключения:** другое размещение требует отдельного архитектурного согласования.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-AUTH-02
+
+- **Статус:** MUST.
+- **Когда применять:** изменение password/session writes и profile session sync.
+- **Что делать:** использовать один runtime, один passwordReplacement ALS и fingerprint; сохранить expiry/deadline/identity; password writer проверяет записанную cookie; profile sync перечитывает trusted username.
+- **Реализация в проекте:** [src/app/\_auth/password.server.ts](../../src/app/_auth/password.server.ts), changeOwnPassword(), строки 81–135.
+- **Пример:** `passwordReplacement.run(replacement, () => nextAuth.unstable_update({}))` — короткий фрагмент указанного источника.
+- **Антипример:** создать второй NextAuth/ALS или принять replacement tokens из client session.update.
+- **Проверка:** runtime/session integration: fingerprint, applied once, wrong identity, session-write failure; profile edit sync-required.
+- **Исключения:** обычные BFF mutations не меняют Auth.js; callbacks/JWT/cookies/refresh менять только отдельной задачей.
+- **Происхождение:** действующее правило локального AGENTS и подтверждённая реализация.
+
+### YH-PUB-MIGRATION-01
+
+- **Статус:** MUST.
+- **Когда применять:** согласованный перенос существующего React-сценария.
+- **Что делать:** сопоставить reference UI/API порядок, тексты, validation, routes и ошибки; технические защиты перечислить отдельно; продуктовые отклонения согласовать.
+- **Реализация в проекте:** [src/widgets/profile/settings/ui/SubscribeModal.tsx](../../src/widgets/profile/settings/ui/SubscribeModal.tsx), usePaymentCheckout(), строки 109–167.
+- **Пример:** `router.push(`${ROUTES.settings.page}#email-verify`)` — короткий фрагмент указанного источника.
+- **Антипример:** добавить новое confirmation или restriction в транспортном refactor.
+- **Проверка:** сравнить с [React SubscribeModal](../../../yeahub-platform/src/features/subscriptions/subscribe/ui/SubscribeModal/SubscribeModal.tsx) и UI tests; manual QA отделять от mocks.
+- **Исключения:** новые функции следуют текущим продуктовым требованиям и не обязаны копировать React.
+- **Происхождение:** подтверждённая практика миграции; применяется только в указанной области.
+
+## Выбор места для новой функции
+
+Таблица помогает применить карточки выше; она не требует создавать пустые сегменты.
+
+| Что требуется                                   | Куда смотреть / размещать                                                                    | Проверенный пример                                     |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Данные домена, decoder и backend contract       | Расширить существующий entities/<domain>; api для запросов, model/types для контрактов       | entities/profile/api/profile.server.ts                 |
+| Переиспользуемое пользовательское действие      | features/<action>, ui/model/lib по фактической ответственности                               | features/profile/avatar, features/profile/editPersonal |
+| Составной экранный блок и локальные контроллеры | widgets/<block>, без нового global store ради одного workflow                                | widgets/profile/settings                               |
+| Route, server props, Action                     | app/[locale]/…/page.tsx и actions.ts; существующие экранные реализации в \_pages сохраняются | settings/page.tsx и actions.ts                         |
+| Trusted session + несколько domain calls        | app/\_bff/<domain>, узкий module и index.server                                              | settings/reads.server.ts                               |
+| Auth.js lifecycle/session write                 | Только существующий app/\_auth, отдельный scope для изменения                                | runtime.server.ts, password.server.ts                  |
+| Formatter/mapper/schema конкретного workflow    | lib внутри его slice, types в model/types, ui отдельно                                       | widgets/profile/edit/lib/editProfileMapper.ts          |
+
+Сначала найти реализацию и её потребителей через rg. Расширять существующий модуль, если ответственность и contract совпадают. Новый slice оправдан отдельным доменом/пользовательским действием, а не одним файлом или endpoint. Локальная схожесть кода с разными status/identity/readback semantics не основание для универсального decoder. Пример: HeaderProfile, OwnProfile и SettingsSnapshot остаются разными. При сомнении оставить небольшие доменные проверки локально и предложить извлечение только после подтверждения общего контракта. Это рекомендация подтверждённой архитектуры, не требование общего ApiService.
