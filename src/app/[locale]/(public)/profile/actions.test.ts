@@ -1,12 +1,12 @@
 /** @jest-environment node */
 import { deflateSync } from 'node:zlib';
 
-import { mutateOwnAvatar } from '@/auth';
+import { mutateOwnAvatar } from '@/app/_bff/profile/index.server';
 
 import { changeOwnAvatar } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/auth', () => ({ mutateOwnAvatar: jest.fn() }));
+jest.mock('@/app/_bff/profile/index.server', () => ({ mutateOwnAvatar: jest.fn() }));
 const mutation = jest.mocked(mutateOwnAvatar);
 const MAX = 5 * 1024 * 1024;
 const crc = (bytes: Buffer) => {

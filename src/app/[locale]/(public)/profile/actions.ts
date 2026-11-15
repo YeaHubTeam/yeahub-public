@@ -3,7 +3,7 @@
 import { inflateSync } from 'node:zlib';
 import 'server-only';
 
-import { mutateOwnAvatar } from '@/auth';
+import { mutateOwnAvatar } from '@/app/_bff/profile/index.server';
 import type { AvatarActionResult } from '@/features/profile/avatar';
 
 const MAX_BYTES = 5 * 1024 * 1024;

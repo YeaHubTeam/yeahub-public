@@ -39,6 +39,9 @@
 	},
 	"age": "{count, plural, one {# год} few {# года} many {# лет} other {# лет}}",
 	"email": {
+		"verified": "E-mail подтвержден",
+		"unverified": "E-mail не подтвержден",
+		"verify": "Подтвердить e-mail",
 		"verification": {
 			"title": "Подтвердите ваш e-mail",
 			"description": "Подтвердите ваш e-mail для активации учетной записи, после активации вы получите доступ к нашей платформе",

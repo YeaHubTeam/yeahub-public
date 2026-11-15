@@ -7,3 +7,5 @@ export type {
 	AuthPermission,
 } from './model/types/authApi';
 export { RegistrationLabel } from './ui/RegistrationLabel/RegistrationLabel';
+
+export type { ChangePasswordResult } from './model/types/passwordChange';

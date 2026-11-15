@@ -3,21 +3,23 @@ import { revalidatePath } from 'next/cache';
 
 import { getLocale } from 'next-intl/server';
 
+import { changeOwnPassword } from '@/app/_auth/index.server';
+import { getSettingsPaymentHistory } from '@/app/_bff/payment/index.server';
 import {
-	cancelOwnSettingsSubscription,
-	changeOwnPassword,
 	createOwnSettingsProfile,
 	deleteOwnSettingsAccount,
 	deleteOwnSettingsProfile,
-	getSettingsPaymentHistory,
-	getSettingsSnapshot,
-	initializeOwnSettingsPayment,
 	linkOwnTelegram,
 	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
-	startOwnSettingsTrial,
 	unlinkOwnTelegram,
-} from '@/auth';
+} from '@/app/_bff/profile/index.server';
+import { getSettingsSnapshot } from '@/app/_bff/settings/index.server';
+import {
+	cancelOwnSettingsSubscription,
+	initializeOwnSettingsPayment,
+	startOwnSettingsTrial,
+} from '@/app/_bff/subscription/index.server';
 import { getSpecializationById } from '@/entities/specialization';
 
 import {
@@ -44,21 +46,23 @@ jest.mock('next-intl/server', () => ({
 jest.mock('@/entities/specialization', () => ({ getSpecializationById: jest.fn() }));
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/auth', () => ({
+jest.mock('@/app/_bff/subscription/index.server', () => ({
 	cancelOwnSettingsSubscription: jest.fn(),
 	initializeOwnSettingsPayment: jest.fn(),
+	startOwnSettingsTrial: jest.fn(),
+}));
+jest.mock('@/app/_bff/profile/index.server', () => ({
 	deleteOwnSettingsAccount: jest.fn(),
 	deleteOwnSettingsProfile: jest.fn(),
 	createOwnSettingsProfile: jest.fn(),
 	sendOwnVerificationEmail: jest.fn(),
-	startOwnSettingsTrial: jest.fn(),
-	changeOwnPassword: jest.fn(),
-	getSettingsSnapshot: jest.fn(),
-	getSettingsPaymentHistory: jest.fn(),
 	selectOwnSettingsProfile: jest.fn(),
 	linkOwnTelegram: jest.fn(),
 	unlinkOwnTelegram: jest.fn(),
 }));
+jest.mock('@/app/_auth/index.server', () => ({ changeOwnPassword: jest.fn() }));
+jest.mock('@/app/_bff/settings/index.server', () => ({ getSettingsSnapshot: jest.fn() }));
+jest.mock('@/app/_bff/payment/index.server', () => ({ getSettingsPaymentHistory: jest.fn() }));
 beforeEach(() => jest.clearAllMocks());
 it('has no import side effects or client identity argument', () => {
 	expect(sendOwnVerificationEmail).not.toHaveBeenCalled();

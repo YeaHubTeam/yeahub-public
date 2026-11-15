@@ -1,7 +1,7 @@
 /** @jest-environment node */
 import { notFound } from 'next/navigation';
 
-import { getOwnProfile } from '@/auth';
+import { getOwnProfile } from '@/app/_bff/profile/index.server';
 import { getSpecializationById } from '@/entities/specialization';
 import { redirect } from '@/shared/config';
 
@@ -10,7 +10,7 @@ import Page, { dynamic, metadata, runtime } from '../../(public)/profile/page';
 import ProfilePage from './ProfilePage';
 import { ProfileStatus } from './ProfileStatus';
 
-jest.mock('@/auth', () => ({ getOwnProfile: jest.fn() }));
+jest.mock('@/app/_bff/profile/index.server', () => ({ getOwnProfile: jest.fn() }));
 jest.mock('@/entities/specialization', () => ({ getSpecializationById: jest.fn() }));
 jest.mock('@/shared/config', () => ({
 	ROUTES: { auth: { login: { page: '/auth/login' } } },

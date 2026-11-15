@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 
-import type { ChangePasswordResult } from '@/auth';
+import type { ChangePasswordResult } from '@/entities/auth';
 
 import header from '../../../../../public/locales/ru/header.json';
 import profile from '../../../../../public/locales/ru/profile.json';

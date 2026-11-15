@@ -6,31 +6,29 @@ import { encode, getToken } from 'next-auth/jwt';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { deflateSync } from 'node:zlib';
 
-import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
-
+import { auth, changeOwnPassword, handlers } from '@/app/_auth/index.server';
+import { getSettingsPaymentHistory } from '@/app/_bff/payment/index.server';
 import {
-	auth,
-	cancelOwnSettingsSubscription,
-	changeOwnPassword,
 	createOwnSettingsProfile,
 	deleteOwnSettingsAccount,
 	deleteOwnSettingsProfile,
 	getHeaderProfile,
 	getOwnProfile,
-	getSettingsPageData,
-	getSettingsPaymentHistory,
-	getSettingsSnapshot,
-	handlers,
-	initializeOwnSettingsPayment,
 	linkOwnTelegram,
 	mutateOwnAvatar,
 	mutateOwnProfile,
 	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
-	startOwnSettingsTrial,
 	unlinkOwnTelegram,
-} from './auth';
-import { createAuthRefreshCoordinator, refreshAuthCredentials } from './lib/authRefresh.server';
+} from '@/app/_bff/profile/index.server';
+import { getSettingsPageData, getSettingsSnapshot } from '@/app/_bff/settings/index.server';
+import {
+	cancelOwnSettingsSubscription,
+	initializeOwnSettingsPayment,
+	startOwnSettingsTrial,
+} from '@/app/_bff/subscription/index.server';
+import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/index.server';
+import { createAuthRefreshCoordinator, refreshAuthCredentials } from '@/lib/authRefresh.server';
 
 jest.mock('next-auth/jwt', () => {
 	const actual = jest.requireActual('next-auth/jwt');
@@ -76,26 +74,20 @@ jest.mock('next/headers', () => ({
 		}),
 	),
 }));
-jest.mock('@/shared/config/authBackend.server', () => ({
+jest.mock('@/shared/config/index.server', () => ({
+	...jest.requireActual('@/shared/config/index.server'),
 	getAuthBackendConfig: jest.fn(() => ({
 		apiOrigin: 'https://backend.example',
 		allowedOrigins: ['https://backend.example'],
 	})),
 }));
-jest.mock('@/entities/auth/server', () => ({
-	BackendAuthError: class extends Error {
-		constructor(
-			public kind: string,
-			public status?: number,
-		) {
-			super('Synthetic backend failure');
-		}
-	},
+jest.mock('@/entities/auth/index.server', () => ({
+	...jest.requireActual('@/entities/auth/index.server'),
 	createBackendAuthTransport: jest.fn(),
 }));
 
-jest.mock('./lib/authRefresh.server', () => ({
-	...jest.requireActual('./lib/authRefresh.server'),
+jest.mock('@/lib/authRefresh.server', () => ({
+	...jest.requireActual('@/lib/authRefresh.server'),
 	refreshAuthCredentials: jest.fn(),
 }));
 
@@ -966,7 +958,7 @@ describe('authorized avatar mutation and writable session', () => {
 	it.each(['success', 'error'] as const)(
 		'passes through the real Action and real mutator: %s',
 		async (status) => {
-			const { changeOwnAvatar } = await import('./app/[locale]/(public)/profile/actions');
+			const { changeOwnAvatar } = await import('@/app/[locale]/(public)/profile/actions');
 			expect(jest.isMockFunction(mutateOwnAvatar)).toBe(false);
 			await prepare();
 			const avatarImage = sizedPng(status === 'success' ? 5 * 1024 * 1024 : 0);
@@ -1390,7 +1382,7 @@ describe('authorized profile editing and persisted username', () => {
 	it('runs the real Server Action, mutator, backend transport and writable Auth.js update', async () => {
 		await prepare();
 		replies();
-		const { saveProfile } = await import('./app/[locale]/(public)/profile/edit/actions');
+		const { saveProfile } = await import('@/app/[locale]/(public)/profile/edit/actions');
 		expect(await saveProfile(input)).toEqual({ status: 'success' });
 		expect((await decodeSession(savedCookie()))!.backendSession).toMatchObject({
 			username: input.username,
@@ -1882,8 +1874,8 @@ describe('password change using real Auth.js writer and private ALS credentials'
 		await setupPassword();
 		expectedPasswordCalls = 0;
 		expectedProfileFetchCalls = 1;
-		const actual: typeof import('@/entities/auth/api/backendAuth.server') = jest.requireActual(
-			'@/entities/auth/api/backendAuth.server',
+		const actual: typeof import('@/entities/auth/index.server') = jest.requireActual(
+			'@/entities/auth/index.server',
 		);
 		jest
 			.mocked(createBackendAuthTransport)

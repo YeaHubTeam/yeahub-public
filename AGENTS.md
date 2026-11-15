@@ -16,6 +16,10 @@
 
 ## Архитектурные границы
 
+- Непосредственно в `src/` допустим только `proxy.ts`. Не возвращать `src/auth.ts`, корневые auth-тесты или временные реэкспорты.
+- Auth.js singleton расположен в `app/_auth/runtime.server.ts`, cookie-only session boundary — в `app/_auth/session.server.ts`. Password writer и profile sync используют тот же runtime и единственный password replacement AsyncLocalStorage. Runtime не импортирует BFF orchestration.
+- Route Handler импортирует `app/_auth/index.server`; доменные операции — через `app/_bff/{profile,settings,payment,subscription}/index.server`. Клиентские типы, включая ChangePasswordResult, импортировать type-only из browser-safe entity public API. Не экспортировать session credentials через клиентский API.
+
 - Соблюдать FSD: внешние импорты через public API. Клиентский код — через `index.ts`, серверный — через подходящий `index.server.ts` с `import 'server-only'`. Type-only импорты обозначать явно. Существующие legacy entrypoints не копировать как новый стандарт.
 - Для новых BFF-запросов использовать [backendHttp public API](src/shared/api/index.server.ts), сохраняя DTO validation, identity/ownership, domain errors и readback в доменных модулях/серверной композиции.
 - Не получать session/cookies в HTTP transport и не передавать backend credentials клиенту. Auth.js callbacks, JWT, cookies, refresh и session lifecycle менять только отдельной согласованной задачей.

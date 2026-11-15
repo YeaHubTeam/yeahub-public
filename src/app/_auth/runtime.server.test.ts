@@ -1,11 +1,11 @@
+/** @jest-environment node */
 import NextAuth from 'next-auth';
 
-import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
-
-import { GET, POST, runtime } from './app/api/auth/[...nextauth]/route';
-import { auth, handlers, signIn, signOut } from './auth';
-import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
+import { auth, handlers, signIn, signOut } from '@/app/_auth/index.server';
+import { GET, POST, runtime } from '@/app/api/auth/[...nextauth]/route';
+import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/index.server';
+import { AuthRefreshError, refreshAuthCredentials } from '@/lib/authRefresh.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 jest.mock('server-only', () => ({}), { virtual: true });
 jest.mock('next-auth', () => ({
@@ -21,20 +21,16 @@ jest.mock('next-auth/providers/credentials', () => ({
 	__esModule: true,
 	default: jest.fn((options: object) => ({ type: 'credentials', ...options })),
 }));
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
-jest.mock('@/entities/auth/server', () => {
-	class MockBackendAuthError extends Error {
-		constructor(
-			public kind: string,
-			public status?: number,
-		) {
-			super('Synthetic backend error');
-		}
-	}
-	return { BackendAuthError: MockBackendAuthError, createBackendAuthTransport: jest.fn() };
-});
+jest.mock('@/shared/config/index.server', () => ({
+	...jest.requireActual('@/shared/config/index.server'),
+	getAuthBackendConfig: jest.fn(),
+}));
+jest.mock('@/entities/auth/index.server', () => ({
+	...jest.requireActual('@/entities/auth/index.server'),
+	createBackendAuthTransport: jest.fn(),
+}));
 
-jest.mock('./lib/authRefresh.server', () => ({
+jest.mock('@/lib/authRefresh.server', () => ({
 	AuthRefreshError: class extends Error {
 		constructor(public code: string) {
 			super('Synthetic refresh error');
@@ -67,8 +63,9 @@ const serverConfig = {
 	allowLocalHttp: false,
 };
 
+// clearMocks clears call history before each test; retain the initialization argument.
+const factory = jest.mocked(NextAuth).mock.calls[0][0];
 const configuration = async () => {
-	const factory = jest.mocked(NextAuth).mock.calls[0][0];
 	if (typeof factory !== 'function') throw new Error('Expected lazy configuration');
 	const config = await factory(undefined);
 	const provider = config.providers[0];
@@ -91,7 +88,7 @@ beforeEach(() => {
 	jest
 		.mocked(createBackendAuthTransport)
 		.mockReset()
-		.mockReturnValue({ login, refresh, profile, logout });
+		.mockReturnValue({ login, refresh, profile, logout, changePassword: jest.fn() });
 	jest.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Real fetch forbidden'));
 });
 afterEach(() => {

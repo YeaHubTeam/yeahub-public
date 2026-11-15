@@ -5,22 +5,24 @@ import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import 'server-only';
 
+import { changeOwnPassword } from '@/app/_auth/index.server';
+import { getSettingsPaymentHistory } from '@/app/_bff/payment/index.server';
 import {
-	cancelOwnSettingsSubscription,
-	changeOwnPassword,
 	createOwnSettingsProfile,
 	deleteOwnSettingsAccount,
 	deleteOwnSettingsProfile,
-	getSettingsPaymentHistory,
-	getSettingsSnapshot,
-	initializeOwnSettingsPayment,
 	linkOwnTelegram,
 	selectOwnSettingsProfile,
 	sendOwnVerificationEmail,
-	startOwnSettingsTrial,
 	unlinkOwnTelegram,
-} from '@/auth';
-import type { ChangePasswordResult } from '@/auth';
+} from '@/app/_bff/profile/index.server';
+import { getSettingsSnapshot } from '@/app/_bff/settings/index.server';
+import {
+	cancelOwnSettingsSubscription,
+	initializeOwnSettingsPayment,
+	startOwnSettingsTrial,
+} from '@/app/_bff/subscription/index.server';
+import type { ChangePasswordResult } from '@/entities/auth';
 import type { PaymentHistoryResult } from '@/entities/payment/index.server';
 import type {
 	AccountDeletionResult,

@@ -6,7 +6,9 @@ import { ru } from 'date-fns/locale';
 import { hasLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
-import { auth, getSettingsPageData, getSettingsPaymentHistory } from '@/auth';
+import { auth } from '@/app/_auth/index.server';
+import { getSettingsPaymentHistory } from '@/app/_bff/payment/index.server';
+import { getSettingsPageData } from '@/app/_bff/settings/index.server';
 import { getSpecializationById } from '@/entities/specialization';
 import { ROUTES, i18Namespace, redirect, routing } from '@/shared/config';
 import { getTelegramWidgetConfig } from '@/shared/config/index.server';

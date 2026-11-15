@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { hasLocale } from 'next-intl';
 
-import { getOwnProfile } from '@/auth';
+import { getOwnProfile } from '@/app/_bff/profile/index.server';
 import { getSkills } from '@/entities/skill';
 import { getSpecializationById, getSpecializations } from '@/entities/specialization';
 import { ROUTES, redirect, routing } from '@/shared/config';

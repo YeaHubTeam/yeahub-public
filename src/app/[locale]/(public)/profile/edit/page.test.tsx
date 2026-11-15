@@ -1,14 +1,14 @@
 /** @jest-environment node */
 import type { ReactElement } from 'react';
 
-import { getOwnProfile } from '@/auth';
+import { getOwnProfile } from '@/app/_bff/profile/index.server';
 import { getSkills } from '@/entities/skill';
 import { getSpecializationById, getSpecializations } from '@/entities/specialization';
 import type { EditProfileFormProps } from '@/widgets/profile/edit';
 
 import Page from './page';
 
-jest.mock('@/auth', () => ({ getOwnProfile: jest.fn() }));
+jest.mock('@/app/_bff/profile/index.server', () => ({ getOwnProfile: jest.fn() }));
 jest.mock('@/entities/skill', () => ({ getSkills: jest.fn() }));
 jest.mock('@/entities/specialization', () => ({
 	getSpecializationById: jest.fn(),

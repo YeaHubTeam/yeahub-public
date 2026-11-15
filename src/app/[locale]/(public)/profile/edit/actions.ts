@@ -2,7 +2,7 @@
 
 import 'server-only';
 
-import { getOwnProfile, mutateOwnProfile } from '@/auth';
+import { getOwnProfile, mutateOwnProfile } from '@/app/_bff/profile/index.server';
 import type {
 	ActiveProfile,
 	OwnProfile,

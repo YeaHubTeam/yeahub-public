@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getHeaderProfile } from '@/auth';
+import { getHeaderProfile } from '@/app/_bff/profile/index.server';
 import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
 

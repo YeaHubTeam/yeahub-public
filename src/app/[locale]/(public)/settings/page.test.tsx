@@ -4,13 +4,10 @@ import { notFound } from 'next/navigation';
 import type { Session } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 
-import {
-	auth,
-	getHeaderProfile,
-	getOwnProfile,
-	getSettingsPageData,
-	getSettingsPaymentHistory,
-} from '@/auth';
+import { auth } from '@/app/_auth/index.server';
+import { getSettingsPaymentHistory } from '@/app/_bff/payment/index.server';
+import { getHeaderProfile, getOwnProfile } from '@/app/_bff/profile/index.server';
+import { getSettingsPageData } from '@/app/_bff/settings/index.server';
 import { getSpecializationById } from '@/entities/specialization';
 import type { SettingsTariffCatalogResult } from '@/entities/subscription/index.server';
 import { Header, ROUTES, redirect } from '@/shared/config';
@@ -53,13 +50,13 @@ jest.mock('./actions', () => ({
 }));
 
 const authenticate = jest.fn<Promise<Session | null>, []>();
-jest.mock('@/auth', () => ({
-	auth: jest.fn(() => authenticate()),
+jest.mock('@/app/_auth/index.server', () => ({ auth: jest.fn(() => authenticate()) }));
+jest.mock('@/app/_bff/profile/index.server', () => ({
 	getOwnProfile: jest.fn(),
 	getHeaderProfile: jest.fn(),
-	getSettingsPageData: jest.fn(),
-	getSettingsPaymentHistory: jest.fn(),
 }));
+jest.mock('@/app/_bff/settings/index.server', () => ({ getSettingsPageData: jest.fn() }));
+jest.mock('@/app/_bff/payment/index.server', () => ({ getSettingsPaymentHistory: jest.fn() }));
 jest.mock('next/navigation', () => ({
 	notFound: jest.fn(() => {
 		throw new Error('NOT_FOUND');

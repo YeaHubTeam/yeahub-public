@@ -1,6 +1,6 @@
 # API и BFF: текущее состояние
 
-Документ сверён с кодом после BFF-REFACTOR-05. Источник истины для типов и поведения — связанные исходники. Миграция transport частичная: ниже отдельно перечислены переведённые и legacy-модули. Новых бизнес-контрактов этот документ не вводит.
+Документ сверён после BFF-AUTH-ARCHITECTURE-06. BFF reads и mutations используют backendHttp; Auth.js lifecycle transport и публичный apiFetch остаются отдельными механизмами. Источник истины для контрактов — связанные исходники. Новых бизнес-правил этот документ не вводит.
 
 - [Практическое руководство](api-guidelines.md)
 - [Инструкции разработчикам и агентам](../../AGENTS.md)
@@ -19,7 +19,7 @@ Next.js добавляет серверную boundary: backend Bearer и refres
 Защищённые запросы:
 Next.js Server Components / Server Actions
                 |
-  src/auth.ts: currentBackendSession + композиция
+  app/_auth/session.server + app/_bff/<domain>
                 |
         Domain API modules
                 |
@@ -37,7 +37,7 @@ Auth.js lifecycle (отдельный текущий механизм):
 Auth.js handler/callbacks/events -> backendAuth transport / refresh coordinator -> backend
 ```
 
-Не каждый запрос проходит session boundary. Settings catalog и feature flags публичны; credentials им не нужны. У ряда ещё не переведённых модулей HTTP-механика пока локальная.
+Не каждый запрос проходит session boundary. Settings catalog и feature flags публичны; credentials им не нужны. Отдельный HTTP-механизм сохраняется только у перечисленных ниже исключений Auth transport и публичного apiFetch.
 
 ## Ответственность слоёв
 
@@ -52,11 +52,11 @@ Auth.js handler/callbacks/events -> backendAuth transport / refresh coordinator 
 
 ## Session boundary и Auth.js
 
-[Текущая композиция находится в src/auth.ts](../../src/auth.ts). `currentBackendSession()` приватна: читает Auth.js cookie, проверяет backendSession, соответствие subject/userId, JWT expiry, access expiry и абсолютный session deadline. Request Authorization не принимается вместо cookie-сессии.
+[Session boundary](../../src/app/_auth/session.server.ts) экспортирует `currentBackendSession()` только для серверной композиции: читает Auth.js cookie, проверяет backendSession, соответствие subject/userId, JWT expiry, access expiry и абсолютный session deadline. Request Authorization не принимается вместо cookie-сессии.
 
 `getOwnProfile()`, `getHeaderProfile()`, `getSettingsSnapshot()` и другие server helpers вызывают boundary, затем доменный loader с доверенными credentials. `getSettingsSnapshot()` не перемещён в entity: HTTP выполняет `readSettingsSnapshot()`.
 
-Рабочий пример из `src/auth.ts` (в контексте этого модуля, где boundary приватна):
+Рабочий пример из [Settings BFF](../../src/app/_bff/settings/reads.server.ts), в контексте его imports:
 
 ```typescript
 export const getSettingsSnapshot = async (): Promise<SettingsSnapshotResult> => {
@@ -78,6 +78,28 @@ Auth.js session callback возвращает публичные поля пол
 См. [backend-auth transport](../../src/entities/auth/api/backendAuth.server.ts), [refresh coordinator](../../src/lib/authRefresh.server.ts), [AuthRefreshProvider](../../src/app/[locale]/_providers/AuthRefreshProvider.tsx), [Auth.js Route Handler](../../src/app/api/auth/[...nextauth]/route.ts). Browser provider обращается к same-origin Auth.js, а не посылает backend Bearer самостоятельно.
 
 Auth transport пока не переведён на `backendHttp`: refresh использует Cookie, ответ login/refresh/change-password содержит Set-Cookie; новый transport не разрешает Cookie в request headers. Не расширять allowlist заголовков и не менять callbacks/JWT/cookies/refresh без отдельного дизайна. Координатор refresh делает process-local single-flight и краткое повторное использование результата; это не general retry денежных запросов.
+
+## Размещение и импорты после декомпозиции
+
+В корне `src/` находится только [proxy.ts](../../src/proxy.ts); он сохраняет locale middleware и www redirect, без добавления Auth.js guard.
+
+| Задача                                                                  | Модуль / public API                                                                |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Один NextAuth runtime, provider, callbacks, JWT encode, logout          | [runtime.server.ts](../../src/app/_auth/runtime.server.ts)                         |
+| Route Handler и серверные auth-потребители                              | [app/\_auth/index.server.ts](../../src/app/_auth/index.server.ts)                  |
+| Проверка cookie, sub, JWT/access expiry и абсолютного deadline          | [session.server.ts](../../src/app/_auth/session.server.ts)                         |
+| Password replacement AsyncLocalStorage и fingerprint                    | [passwordReplacement.server.ts](../../src/app/_auth/passwordReplacement.server.ts) |
+| Смена пароля и проверка session writes                                  | [password.server.ts](../../src/app/_auth/password.server.ts)                       |
+| Profile reads, verification, management, account deletion, avatar, edit | [profile/index.server.ts](../../src/app/_bff/profile/index.server.ts)              |
+| Profile save и trusted username sync через тот же runtime               | [profile/edit.server.ts](../../src/app/_bff/profile/edit.server.ts)                |
+| Settings snapshot и flag/profile/catalog composition                    | [settings/index.server.ts](../../src/app/_bff/settings/index.server.ts)            |
+| Payment History                                                         | [payment/index.server.ts](../../src/app/_bff/payment/index.server.ts)              |
+| Trial, payment-init, cancellation                                       | [subscription/index.server.ts](../../src/app/_bff/subscription/index.server.ts)    |
+| Browser-safe ChangePasswordResult                                       | type-only из [entities/auth/index.ts](../../src/entities/auth/index.ts)            |
+
+Граф направлен от Actions/Server Components к app composition, session boundary и entities. Runtime использует entity readers и refresh coordinator, но не импортирует app/\_bff. Password writer и profile sync импортируют один runtime напрямую; public auth entrypoint не экспортирует credentials или внутренний nextAuth объект. Server modules защищены server-only. Не добавлять use server ко всему runtime: Actions остаются явной границей вызова из UI.
+
+Перенесённые тесты: [runtime](../../src/app/_auth/runtime.server.test.ts), [session integration](../../src/app/_auth/session.integration.test.ts). Все прежние 39 + 342 сценария и assertions сохранены; изменились imports и mocks.
 
 ## Публичный server-only API транспорта
 
@@ -156,15 +178,15 @@ JSON/text/empty выбирает домен. Нельзя автоматичес
 
 В [readSettingsCatalog](../../src/entities/subscription/api/settingsCatalog.server.ts) decoder отдельно ловит malformed JSON как invalid-response; технический timeout мапится в timeout, остальные technical errors — backend. В Header/Own/Settings/History technical errors дают прежний error; у flag — unavailable. Универсального доменного error mapper нет.
 
-## Что ещё не переведено
+## Оставшиеся отдельные механизмы
 
-| Группа                    | Текущий механизм / источник                                                                                                                                                                                                                                                                                                                                                                           |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public browser/server API | [httpClient/apiFetch](../../src/shared/api/httpClient.ts), [browser hooks](../../src/shared/api/useFetchData.ts), [lazy hook](../../src/shared/api/useLazyFetchData.ts), например [getSubscriptions](../../src/entities/subscription/api/getSubscriptions.ts)                                                                                                                                         |
-| Анонимные auth Actions    | [register](<../../src/app/[locale]/(auth)/auth/register/actions.ts>), [forgot-password](<../../src/app/[locale]/(auth)/auth/forgot-password/actions.ts>), [password-recovery](<../../src/app/[locale]/(auth)/auth/password-recovery/actions.ts>): локальный fetch/timeout                                                                                                                             |
-| Profile mutations         | [profileManagement](../../src/entities/profile/api/profileManagement.server.ts), [profileEdit](../../src/entities/profile/api/profileEdit.server.ts), [telegram](../../src/entities/profile/api/telegram.server.ts), [verificationEmail](../../src/entities/profile/api/verificationEmail.server.ts), [accountDeletion](../../src/entities/profile/api/accountDeletion.server.ts): локальная механика |
-| Subscription mutations    | [trial](../../src/entities/subscription/api/trial.server.ts), [paymentInit](../../src/entities/subscription/api/paymentInit.server.ts), [cancelSubscription](../../src/entities/subscription/api/cancelSubscription.server.ts): отдельные bounded transports                                                                                                                                          |
-| Auth.js и avatar          | [backendAuth](../../src/entities/auth/api/backendAuth.server.ts), [auth.ts](../../src/auth.ts), [authRefresh](../../src/lib/authRefresh.server.ts)                                                                                                                                                                                                                                                    |
+- [Auth transport](../../src/entities/auth/api/backendAuth.server.ts): login, refresh, logout и password change. Refresh отправляет Cookie; ответы login/refresh/password change несут новые credentials. Это согласованное исключение из backendHttp.
+- [Публичный apiFetch](../../src/shared/api/httpClient.ts) и browser hooks: публичные JSON-запросы с отдельной cache policy. Не подменять их server-only API.
+- [Refresh coordinator](../../src/lib/authRefresh.server.ts) сохранён на прежнем месте и в единственном экземпляре; его перемещение не входило в эту задачу.
+- [Logout](../../src/app/_auth/runtime.server.ts) сохраняет best-effort deadline 3000 мс. [Password change](../../src/app/_auth/password.server.ts) сохраняет 5000 мс, проверку replacement и записанной cookie.
+- [Profile deletion readback](../../src/entities/profile/api/profileManagement.server.ts) сохраняет отдельный доменный timeout для различения outcome-unknown и incomplete. Это не повторная HTTP-обвязка.
+
+Anonymous auth Actions, Profile Editing/Management, Telegram, verification email, avatar, account deletion и subscription mutations уже используют backendHttp. Trial и cancellation сохраняют 5000 мс, payment-init — 45000 мс. Эти мутационные GET нельзя вызывать при рендере или автоматически повторять.
 
 `apiFetch` не server-only: origin берётся при импорте из public environment с fallback, cache по умолчанию force-cache, response всегда JSON с TS assertion, нет собственного timeout/allowlist. Non-ok выбрасывает Error. Это отличается от backendHttp; не подменять один другим через клиентский entrypoint.
 
@@ -174,14 +196,14 @@ JSON/text/empty выбирает домен. Нельзя автоматичес
 - [shared/api/index.ts](../../src/shared/api/index.ts) остаётся browser-safe; server-only exports туда не добавляются.
 - Доменные server exports идут через подходящий существующий entrypoint, например [subscription/index.server](../../src/entities/subscription/index.server.ts) или [payment/index.server](../../src/entities/payment/index.server.ts). Новый entrypoint/экспорт включать в allowlist задачи.
 - Клиентам нужны безопасные domain types через `export type`/`import type`, например [profile/index.ts](../../src/entities/profile/index.ts). Они не должны получать runtime server dependencies.
-- [profile/index.server](../../src/entities/profile/index.server.ts) сейчас экспортирует типы для Settings Actions; [profile/server.ts](../../src/entities/profile/server.ts) и [auth/server.ts](../../src/entities/auth/server.ts) сохраняются как существующие legacy server entrypoints. Их массовое переименование не часть добавления endpoint.
-- Shared transport не импортирует auth.ts, entities, features, widgets или app. Domain API не импортирует app Actions: app передаёт Actions в widgets через props.
+- [Profile public API](../../src/entities/profile/index.server.ts) экспортирует loaders, mutations и типы. [Auth public API](../../src/entities/auth/index.server.ts) экспортирует существующий BackendAuthError и transport factory. Старые server.ts остаются внутренними/legacy entrypoints для существующих потребителей; новые app-модули их не обходят.
+- Shared transport не импортирует Auth.js runtime, entities, features, widgets или app. Domain API не импортирует app Actions: app передаёт Actions в widgets через props.
 
 ## Не принятые решения и известные пробелы
 
-- Полный перевод legacy API, mutations и Auth.js transport не выполнен и не разрешается этим документом.
+- BFF transport migration завершена для согласованных операций. Отдельная миграция Auth.js transport или публичного apiFetch этим документом не разрешается.
 - Дополнительные HTTP/error helpers, общий domain-aware client, Cookie support, FormData и внешний AbortSignal пока не приняты. Не добавлять их на вырост.
-- `auth.ts` всё ещё содержит Auth.js, session boundary и доменную композицию; разделение возможно отдельной задачей, без второго механизма авторизации.
+- Корневой auth.ts и корневые auth-тесты удалены; постоянных compatibility exports нет. В корне src разрешён только proxy.ts.
 - Дедупликация read-only Header/page запросов не внедрена. Не распространять потенциальный request-scope cache на mutation readback.
 - Общая тестовая конфигурация требует отдельного исправления: см. [ограничения Jest](api-guidelines.md#тестовое-окружение).
 - [README](../../README.md) пока является шаблоном create-next-app и не описывает BFF. Рабочие архитектурные правила находятся здесь; README не обновлён в рамках ограниченного documentation scope.

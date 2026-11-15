@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { getOwnProfile, mutateOwnProfile } from '@/auth';
+import { getOwnProfile, mutateOwnProfile } from '@/app/_bff/profile/index.server';
 import type { ProfileEditInput, ProfileEditResult } from '@/entities/profile';
 import { getSpecializationById } from '@/entities/specialization';
 
@@ -8,7 +8,10 @@ import { readSavedProfile, saveProfile } from './actions';
 jest.mock('@/entities/specialization', () => ({ getSpecializationById: jest.fn() }));
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/auth', () => ({ mutateOwnProfile: jest.fn(), getOwnProfile: jest.fn() }));
+jest.mock('@/app/_bff/profile/index.server', () => ({
+	mutateOwnProfile: jest.fn(),
+	getOwnProfile: jest.fn(),
+}));
 const value: ProfileEditInput = {
 	username: 'Name',
 	city: null,
