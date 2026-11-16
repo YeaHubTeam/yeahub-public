@@ -13,7 +13,7 @@ export const HeaderAuthDesktop = async () => {
 	return (
 		<Flex justify="between" align="center" gap="26">
 			<Button
-				variant="link"
+				variant="primary"
 				size="large"
 				className={styles['register-button']}
 				href={getPathname({ locale, href: ROUTES.auth.login.page })}
