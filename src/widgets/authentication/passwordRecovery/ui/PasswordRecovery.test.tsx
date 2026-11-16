@@ -4,6 +4,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PasswordRecovery } from '../index';
 
 jest.mock('@/shared/config', () => ({
+	getPathname: jest.requireActual('@/shared/config/navigation').getPathname,
 	...jest.requireActual('@/shared/config/i18n/i18nTranslations'),
 	i18Namespace: { auth: 'auth', translation: 'translation' },
 	ROUTES: { auth: { login: { page: '/auth/login' } } },

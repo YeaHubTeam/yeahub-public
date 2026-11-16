@@ -178,8 +178,13 @@ export const createBackendAuthTransport = (config: BackendAuthConfig) => {
 	const fetcher = config.fetch ?? fetch;
 
 	const request = async (
-		path: '/auth/login' | '/auth/refresh' | '/auth/profile' | '/auth/logout',
-		method: 'GET' | 'POST',
+		path:
+			| '/auth/login'
+			| '/auth/refresh'
+			| '/auth/profile'
+			| '/auth/logout'
+			| `/auth/password-change/${string}`,
+		method: 'GET' | 'POST' | 'PATCH',
 		headers: Record<string, string>,
 		sensitive: string[],
 		body?: string,
@@ -263,6 +268,23 @@ export const createBackendAuthTransport = (config: BackendAuthConfig) => {
 	};
 
 	return {
+		changePassword: async (input: {
+			userId: string;
+			accessToken: string;
+			password: string;
+			passwordConfirm: string;
+		}): Promise<BackendAuthTokens> => {
+			const result = await request(
+				`/auth/password-change/${encodeURIComponent(input.userId)}`,
+				'PATCH',
+				{ ...bearer(input.accessToken), 'Content-Type': 'application/json' },
+				[input.accessToken, input.password, input.passwordConfirm],
+				JSON.stringify({ password: input.password, passwordConfirm: input.passwordConfirm }),
+			);
+			if (result.response.status !== 200)
+				throw new BackendAuthError('protocol', result.response.status);
+			return tokens(result);
+		},
 		login: async (input: LoginRequest): Promise<BackendLoginTokens> => {
 			const { response, data } = await request(
 				'/auth/login',

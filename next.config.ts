@@ -6,6 +6,7 @@ import withSvgr from 'next-svgr';
 const withNextIntl = createNextIntlPlugin('./src/shared/config/i18n/i18n.ts');
 
 const nextConfig: NextConfig = {
+	experimental: { serverActions: { bodySizeLimit: '8mb' } },
 	headers: () => [
 		{
 			source: '/:locale/auth/password-recovery',

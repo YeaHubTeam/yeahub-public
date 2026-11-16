@@ -7,8 +7,8 @@ import { Card } from '@/shared/ui/Card';
 import { Flex } from '@/shared/ui/Flex';
 import { ImageWithWrapper } from '@/shared/ui/ImageWithWrapper';
 import { Text } from '@/shared/ui/Text';
-import { AdditionalInfo } from '@/widgets/Collection';
 
+import { AdditionalInfo } from '../AdditionalInfo/AdditionalInfo';
 import styles from './CollectionHeader.module.css';
 
 interface CollectionHeaderProps {

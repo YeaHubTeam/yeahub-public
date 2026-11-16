@@ -3,9 +3,9 @@ import { useTranslations } from 'next-intl';
 import { Landing, ROUTES, i18Namespace } from '@/shared/config';
 import { route } from '@/shared/libs';
 import { SectionWrapper } from '@/shared/ui/SectionWrapper';
-import { SpecializationCard } from '@/widgets/Landing/PrepareForInterview';
 
 import { Specialization } from '../../model/types';
+import { SpecializationCard } from '../SpecializationCard/SpecializationCard';
 import styles from './PrepareForInterviewSection.module.css';
 
 const specializations: Specialization[] = [

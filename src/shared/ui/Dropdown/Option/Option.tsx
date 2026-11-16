@@ -1,3 +1,5 @@
+import type { KeyboardEvent } from 'react';
+
 import classNames from 'classnames';
 
 import styles from './Option.module.css';
@@ -20,6 +22,11 @@ export const Option = ({
 	className,
 	isSelected = false,
 }: OptionProps) => {
+	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key !== 'Enter' && event.key !== ' ') return;
+		event.preventDefault();
+		if (!event.repeat) onClick?.();
+	};
 	return (
 		<div
 			className={classNames(styles['dropdown-option'], className, {
@@ -30,7 +37,7 @@ export const Option = ({
 			aria-selected={isSelected}
 			aria-disabled={disabled}
 			onClick={!disabled ? onClick : undefined}
-			onKeyDown={!disabled ? onClick : undefined}
+			onKeyDown={!disabled ? handleKeyDown : undefined}
 			tabIndex={disabled ? -1 : 0}
 		>
 			{label}

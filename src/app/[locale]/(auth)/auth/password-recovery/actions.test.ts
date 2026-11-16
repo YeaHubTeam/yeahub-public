@@ -1,10 +1,15 @@
 /** @jest-environment node */
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import * as transport from '@/shared/api/index.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 import { resetPassword } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
+jest.mock('@/shared/config/index.server', () => ({ getAuthBackendConfig: jest.fn() }));
 jest.mock('@/shared/libs', () => ({
 	passwordRules: jest.requireActual('@/shared/libs/app/regexp').passwordRules,
 }));
@@ -39,7 +44,7 @@ it('sends exact PATCH body without credentials and returns only success', async 
 	expect(url.toString()).toBe('https://backend.example/auth/reset-password');
 	expect(options).toEqual({
 		method: 'PATCH',
-		headers: { 'Content-Type': 'application/json' },
+		headers: new Headers({ 'Content-Type': 'application/json' }),
 		body: JSON.stringify({ password, passwordConfirm: password, token }),
 		cache: 'no-store',
 		redirect: 'manual',
@@ -92,6 +97,10 @@ it.each([
 	[400, { statusCode: 400, message: ['invalid password'] }, 'validation-error'],
 	[400, { message: 'unknown' }, 'error'],
 	[500, {}, 'error'],
+	[403, {}, 'error'],
+	[404, {}, 'error'],
+	[409, {}, 'error'],
+	[429, {}, 'error'],
 	[302, {}, 'error'],
 	[307, {}, 'error'],
 	[201, {}, 'error'],
@@ -100,6 +109,7 @@ it.each([
 ])('maps response case %# safely', async (status, body, expected) => {
 	fetchMock.mockResolvedValue(response(status, body));
 	expect(await resetPassword(token, password, password)).toEqual({ status: expected });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
 });
 it('rejects malformed JSON on HTTP 200', async () => {
 	fetchMock.mockResolvedValue(new Response('not JSON', { status: 200 }));
@@ -115,6 +125,7 @@ it('aborts timeout without exposing credentials', async () => {
 	await jest.advanceTimersByTimeAsync(5000);
 	expect(await result).toEqual({ status: 'error' });
 	expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(fetchMock).toHaveBeenCalledTimes(1);
 });
 it('times out while response JSON is stalled too', async () => {
 	fetchMock.mockResolvedValue({ status: 200, json: () => new Promise(() => {}) });
@@ -128,4 +139,43 @@ it('hides configuration errors', async () => {
 	});
 	expect(await resetPassword(token, password, password)).toEqual({ status: 'error' });
 	expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it('uses one mutation transport call without Authorization or Cookie', async () => {
+	expect(await resetPassword(token, password, password)).toEqual({ status: 'success' });
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'PATCH',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	const headers = new Headers(fetchMock.mock.calls[0][1].headers);
+	expect([...headers.entries()]).toEqual([['content-type', 'application/json']]);
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it.each([400, 401])('keeps malformed HTTP %s body as a generic error', async (status) => {
+	fetchMock.mockResolvedValue(new Response('not JSON', { status }));
+	expect(await resetPassword(token, password, password)).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it.each([
+	null,
+	[],
+	{ access_token: 'synthetic-access' },
+	{ access_token: 'synthetic-access', user: { id: '' } },
+])('rejects invalid success envelope %#', async (body) => {
+	fetchMock.mockResolvedValue(response(200, body));
+	expect(await resetPassword(token, password, password)).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it.each([400, 401])('times out while decoding HTTP %s without retry', async (status) => {
+	fetchMock.mockResolvedValue({ status, json: () => new Promise(() => {}) });
+	const result = resetPassword(token, password, password);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await result).toEqual({ status: 'error' });
+	expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
 });

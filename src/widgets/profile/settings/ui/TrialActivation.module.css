@@ -1,0 +1,23 @@
+.toast {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	z-index: 9999;
+	padding: 6px 12px;
+	width: 348px;
+	max-width: calc(100vw - 32px);
+	border: 1px solid;
+	border-radius: 14px;
+	color: var(--color-black-900);
+	pointer-events: none;
+}
+
+.success {
+	border-color: var(--color-green-900);
+	background-color: var(--color-green-007);
+}
+
+.error {
+	border-color: var(--color-red-700);
+	background-color: var(--color-red-50);
+}

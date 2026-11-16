@@ -1,0 +1,46 @@
+# Правила работы в yeahub-public
+
+## Перед началом
+
+- Прочитать [общие инструкции workspace](../yeahub-dev-guide/AGENTS.md) и [проектные дополнения](../yeahub-dev-guide/projects/yeahub-public/AGENTS.md). Этот файл дополняет их, не заменяет и не ослабляет. При отсутствии документов или конфликте остановиться и сообщить причину.
+- Учитывать [Product Vision](../yeahub-dev-guide/PRODUCT_VISION.md). Перед UI-задачей, включая аудит, прочитать [дизайн-систему public](../yeahub-dev-guide/docs/design-system/projects/yeahub-public.md).
+- Проверить ветку, Git-статус и фактические исходники. Существующие изменения принадлежат пользователю: сохранять их, не откатывать и не форматировать посторонние файлы.
+
+## Bootstrap и workflow
+
+Явно прочитать [единый протокол](../yeahub-dev-guide/docs/development/AI_TASK_WORKFLOWS.md): режим, автономность, три границы scope и checkpoint определяются там. Рутинный IMPLEMENT не требует approval каждого технического шага. Для fullstack пользователь может разрешить изменения public и backend; разрешение кода не разрешает реальные mutations/migrations или публикацию.
+
+Пути guide разрешать относительно этого AGENTS, не shell cwd. Если соседний guide отсутствует в worktree, использовать явно известный альтернативный путь и проверить его инструкции; если пути нет — запросить его, не продолжать по предположениям. Ссылки не означают автоматическую загрузку.
+
+## Репозитории и scope
+
+- `yeahub-public` — Next.js App Router: новые функции и миграционные задачи. Изменения ограничивать явно заданным scope; точный файловый allowlist необязателен, но если указан — соблюдать строго. Без него выбирать минимальные файлы внутри use case.
+- `yeahub-platform` — React reference пользовательского поведения; `yeahub-backend` — источник фактических HTTP-контрактов. В frontend-задачах оба репозитория только читать, если пользователь явно не поручил отдельные изменения.
+- Не менять endpoints, бизнес-правила, тексты и маршруты ради транспортного рефакторинга. Не расширять scope без согласования.
+- Не читать `.env`, credentials и другую защищённую конфигурацию. Не выполнять реальные backend mutations, trial, payment-init, финансовые операции или DELETE для проверки frontend-кода. Использовать моки.
+- Без явного поручения не выполнять commit, push, merge, deploy; не обходить Husky и не запускать инфраструктурные операции.
+
+## Архитектурные границы
+
+- Непосредственно в `src/` допустим только `proxy.ts`. Не возвращать `src/auth.ts`, корневые auth-тесты или временные реэкспорты.
+- Auth.js singleton расположен в `app/_auth/runtime.server.ts`, cookie-only session boundary — в `app/_auth/session.server.ts`. Password writer и profile sync используют тот же runtime и единственный password replacement AsyncLocalStorage. Runtime не импортирует BFF orchestration.
+- Route Handler импортирует `app/_auth/index.server`; доменные операции — через `app/_bff/{profile,settings,payment,subscription}/index.server`. Новые клиентские типы, включая ChangePasswordResult, импортировать type-only из browser-safe entity public API. Существующие import type из index.server.ts не являются runtime-нарушением и не переписываются без отдельной задачи (YH-PUB-FSD-01). Не экспортировать session credentials через клиентский API.
+
+- Соблюдать FSD: внешние импорты через public API. Клиентский код — через `index.ts`, серверный — через подходящий `index.server.ts` с `import 'server-only'`. Type-only импорты обозначать явно. Существующие legacy entrypoints не копировать как новый стандарт. Внутри собственного slice runtime-импорты — прямо из реализации относительным путём, не через собственный barrel (YH-PUB-FSD-02).
+- Для новых BFF-запросов использовать [backendHttp public API](src/shared/api/index.server.ts), сохраняя DTO validation, identity/ownership, domain errors и readback в доменных модулях/серверной композиции.
+- Не получать session/cookies в HTTP transport и не передавать backend credentials клиенту. Auth.js callbacks, JWT, cookies, refresh и session lifecycle менять только отдельной согласованной задачей.
+- Не добавлять автоматические retry/refresh/logout. GET может быть mutation. Timeout не доказывает откат; неопределённый результат не объявлять успехом.
+- Не заменять browser-safe `apiFetch` серверным transport через клиентский barrel. Не переносить остальные endpoints автоматически вслед за текущей задачей.
+
+Подробности: [архитектура BFF](docs/architecture/bff.md), [практические правила API](docs/architecture/api-guidelines.md).
+
+## Практический маршрут
+
+[API/BFF R01–R07](../yeahub-dev-guide/projects/yeahub-public/recipes/api.md), [UI/i18n R08–R10](../yeahub-dev-guide/projects/yeahub-public/recipes/ui-i18n.md), [Testing/refactoring R11–R12](../yeahub-dev-guide/projects/yeahub-public/recipes/testing-refactoring.md). Нормативный источник каждого RULE-ID указан в recipe. Для новой функции использовать актуальные продуктовые требования; React parity применяется только к миграции. Проверки обязательны независимо от фактической активности Husky; hooks не менять автоматически.
+
+## Перед завершением
+
+- Выполнить подходящие scoped TypeScript, ESLint, Prettier, целевые тесты только с моками; Stylelint при изменении CSS. Проверить FSD/Steiger при изменении кода/imports. Для documentation-only задач достаточно Markdown, ссылок и diff.
+- Сначала проверить безопасность тестового профиля: [известные ограничения Jest](docs/architecture/api-guidelines.md#тестовое-окружение). Не запускать build или проверки, читающие секреты/обращающиеся к backend, автоматически.
+- Не использовать auto-fix как проверку; не отключать правила ради зелёного результата. Команды выбирать по [package.json](package.json) и фактическим конфигам; Steiger запускать однократно без watch.
+- Выполнить `git diff --check`, проверить allowlist и новые неотслеживаемые файлы. В отчёте отделить выполненные проверки от непроведённых, указать ограничения и фактический baseline diagnostics.

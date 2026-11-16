@@ -7,8 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
 
 import type { LoginFormValues } from '@/entities/auth';
-import { Auth, ROUTES, i18Namespace } from '@/shared/config';
-import { useRouter } from '@/shared/config/navigation';
+import { Auth, ROUTES, i18Namespace, useRouter } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { FormControl } from '@/shared/ui/FormControl';
 import { Input } from '@/shared/ui/Input';

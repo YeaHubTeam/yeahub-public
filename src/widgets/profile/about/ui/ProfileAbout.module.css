@@ -1,0 +1,20 @@
+.content,
+.expandable {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.description > div {
+	line-height: 25px;
+	font-weight: var(--font-weight-500);
+	font-size: var(--font-size-p-m);
+	font-family: inherit;
+}
+
+.collapsed {
+	max-height: 250px;
+	overflow: hidden;
+}

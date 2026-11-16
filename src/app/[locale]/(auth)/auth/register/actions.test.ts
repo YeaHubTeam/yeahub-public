@@ -1,11 +1,16 @@
 /** @jest-environment node */
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import * as transport from '@/shared/api/index.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
 import { registerUser } from './actions';
 import type { RegistrationInput } from './actions';
 
 jest.mock('server-only', () => ({}), { virtual: true });
-jest.mock('@/shared/config/authBackend.server', () => ({ getAuthBackendConfig: jest.fn() }));
+jest.mock('@/shared/api/index.server', () => {
+	const actual = jest.requireActual('@/shared/api/index.server');
+	return { ...actual, backendHttp: jest.fn(actual.backendHttp) };
+});
+jest.mock('@/shared/config/index.server', () => ({ getAuthBackendConfig: jest.fn() }));
 jest.mock('@/shared/libs', () => jest.requireActual('@/shared/libs/app/regexp'));
 const input: RegistrationInput = {
 	username: 'test-user',
@@ -60,7 +65,7 @@ it('trims username/email and sends exactly three fields without credentials', as
 	expect(url.toString()).toBe('https://backend.example/auth/signUp');
 	expect(options).toEqual({
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: new Headers({ 'Content-Type': 'application/json' }),
 		body: JSON.stringify({
 			username: input.username,
 			email: input.email,
@@ -116,6 +121,8 @@ it.each([
 	[409, { message: 'unknown' }, 'error'],
 	[400, {}, 'validation-error'],
 	[401, {}, 'error'],
+	[403, {}, 'error'],
+	[404, {}, 'error'],
 	[429, {}, 'error'],
 	[500, {}, 'error'],
 	[302, {}, 'error'],
@@ -161,4 +168,51 @@ it('fails safely if configuration cannot be read', async () => {
 	});
 	expect(await registerUser(input)).toEqual({ status: 'error' });
 	expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it('uses one mutation transport call without Authorization or Cookie', async () => {
+	expect(await registerUser(input)).toEqual({ status: 'success' });
+	expect(transport.backendHttp).toHaveBeenCalledWith(
+		expect.objectContaining({
+			method: 'POST',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+		}),
+	);
+	expect([...new Headers(fetchMock.mock.calls[0][1].headers).entries()]).toEqual([
+		['content-type', 'application/json'],
+	]);
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it('preserves HTTP 400 priority without parsing malformed body', async () => {
+	const value = new Response('not JSON', { status: 400 });
+	const json = jest.spyOn(value, 'json');
+	fetchMock.mockResolvedValue(value);
+	expect(await registerUser(input)).toEqual({ status: 'validation-error' });
+	expect(json).not.toHaveBeenCalled();
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it('rejects malformed conflict JSON without exposing backend details', async () => {
+	fetchMock.mockResolvedValue(new Response('not JSON', { status: 409 }));
+	expect(await registerUser(input)).toEqual({ status: 'error' });
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+it.each([
+	null,
+	[],
+	{ access_token: 'synthetic-access' },
+	{ access_token: 'synthetic-access', user: { id: '' } },
+])('rejects malformed success envelope %#', async (body) => {
+	fetchMock.mockResolvedValue(response(201, body));
+	expect(await registerUser(input)).toEqual({ status: 'error' });
+});
+it('bounds conflict body parsing without retrying account creation', async () => {
+	fetchMock.mockResolvedValue({ status: 409, json: () => new Promise(() => {}) });
+	const result = registerUser(input);
+	await jest.advanceTimersByTimeAsync(5000);
+	expect(await result).toEqual({ status: 'error' });
+	expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+	expect(fetchMock).toHaveBeenCalledTimes(1);
+	expect(jest.getTimerCount()).toBe(0);
 });

@@ -23,6 +23,40 @@ export const processHtmlContent = (html: string): ProcessHtmlResult => {
 	const window = new JSDOM('').window;
 	const DOMPurifyServer = DOMPurify(window);
 
+	// Keep the existing style ban. Reconstruct only a canonical, allowlisted alignment
+	// after DOMPurify has removed the original style and all other forbidden attributes.
+	const alignmentTags = new Set(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+	const alignments = new Set(['left', 'center', 'right', 'justify']);
+	const verifiedAlignments = new WeakMap<Element, string>();
+	DOMPurifyServer.addHook('uponSanitizeAttribute', (node, attribute) => {
+		if (
+			attribute.attrName !== 'style' ||
+			node.namespaceURI !== 'http://www.w3.org/1999/xhtml' ||
+			!alignmentTags.has(node.localName)
+		)
+			return;
+		// The installed CSSOM parser drops !important for text-align. Require one exact
+		// source declaration too; reject priorities, escaped values and ambiguous duplicates.
+		const declarations = attribute.attrValue
+			.split(';')
+			.filter((value) => /^\s*text-align\s*:/i.test(value));
+		if (
+			declarations.length !== 1 ||
+			!/^\s*text-align\s*:\s*(left|center|right|justify)\s*$/i.test(declarations[0])
+		)
+			return;
+		// Parse CSS on a detached element, without assigning untrusted HTML or applying styles.
+		const style = window.document.createElement('span').style;
+		style.cssText = attribute.attrValue;
+		const alignment = style.getPropertyValue('text-align').trim().toLowerCase();
+		if (alignments.has(alignment) && style.getPropertyPriority('text-align') === '')
+			verifiedAlignments.set(node, alignment);
+	});
+	DOMPurifyServer.addHook('afterSanitizeAttributes', (node) => {
+		const alignment = verifiedAlignments.get(node);
+		if (alignment) node.setAttribute('style', `text-align: ${alignment}`);
+	});
+
 	const normalizedHtml = normalizeHtmlContent(html);
 
 	const sanitizedHtml = DOMPurifyServer.sanitize(normalizedHtml, {

@@ -1,5 +1,8 @@
+import { useState } from 'react';
+
 import '@testing-library/jest-dom';
 import { act, cleanup, fireEvent, render as renderComponent, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { hydrateRoot } from 'react-dom/client';
@@ -119,7 +122,7 @@ describe('Modal', () => {
 			expect(screen.getByTestId(modalTestIds.modalTitle)).toHaveClass(
 				`text-${titleColors[variant]}`,
 			);
-			expect(screen.getByTestId(modalTestIds.modalCloseIcon)).toHaveAttribute(
+			expect(screen.getByTestId(modalTestIds.modalCloseIcon).firstElementChild).toHaveAttribute(
 				'data-color',
 				closeIconColors[variant],
 			);
@@ -311,5 +314,193 @@ describe('SSR and arbitrary content', () => {
 		expect(onClose).not.toHaveBeenCalled();
 		expect(overlay.isConnected).toBe(false);
 		document.body.style.overflow = '';
+	});
+});
+
+describe('dialog accessibility', () => {
+	const Harness = () => {
+		const [open, setOpen] = useState(false);
+		return (
+			<>
+				<button onClick={() => setOpen(true)}>Open dialog</button>
+				<Modal isOpen={open} onClose={() => setOpen(false)} title="Accessible title">
+					<input aria-label="First field" />
+					<button>Last action</button>
+				</Modal>
+			</>
+		);
+	};
+	it('names the dialog from title with a compatible fallback for untitled content', () => {
+		const view = renderComponent(
+			<Modal isOpen title="Named" onClose={onClose}>
+				Text
+			</Modal>,
+		);
+		expect(screen.getByRole('dialog', { name: 'Named' })).toHaveAttribute('aria-modal', 'true');
+		expect(screen.getByTestId(modalTestIds.modalOverlay)).toHaveAttribute('role', 'presentation');
+		view.rerender(
+			<Modal isOpen onClose={onClose}>
+				Text
+			</Modal>,
+		);
+		expect(screen.getByRole('dialog', { name: 'Модальное окно' })).toBeInTheDocument();
+	});
+	it.each(['{Enter}', ' '])(
+		'closes via the native close button using %s and restores the opener',
+		async (key) => {
+			const user = userEvent.setup();
+			renderComponent(<Harness />);
+			const opener = screen.getByRole('button', { name: 'Open dialog' });
+			await user.click(opener);
+			const close = screen.getByRole('button', { name: 'Закрыть модальное окно' });
+			expect(close).toHaveFocus();
+			expect(close.tagName).toBe('BUTTON');
+			expect(close).toHaveAttribute('type', 'button');
+			await user.keyboard(key);
+			expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+			expect(opener).toHaveFocus();
+		},
+	);
+	it('cycles focus in both directions, closes by Escape and can reopen', async () => {
+		const user = userEvent.setup();
+		renderComponent(<Harness />);
+		const opener = screen.getByRole('button', { name: 'Open dialog' });
+		await user.click(opener);
+		const close = screen.getByRole('button', { name: 'Закрыть модальное окно' });
+		await user.tab({ shift: true });
+		expect(screen.getByRole('button', { name: 'Last action' })).toHaveFocus();
+		await user.tab();
+		expect(close).toHaveFocus();
+		await user.tab();
+		expect(screen.getByRole('textbox', { name: 'First field' })).toHaveFocus();
+		await user.keyboard('{Escape}');
+		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+		expect(opener).toHaveFocus();
+		await user.click(opener);
+		expect(screen.getByRole('dialog', { name: 'Accessible title' })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Закрыть модальное окно' })).toHaveFocus();
+	});
+	it('keeps focus on the dialog when it has no focusable controls', async () => {
+		const user = userEvent.setup();
+		renderComponent(
+			<Modal isOpen withCloseIcon={false} onClose={onClose}>
+				Text
+			</Modal>,
+		);
+		const dialog = screen.getByRole('dialog');
+		expect(dialog).toHaveFocus();
+		await user.tab();
+		expect(dialog).toHaveFocus();
+		await user.tab({ shift: true });
+		expect(dialog).toHaveFocus();
+	});
+	it('skips disabled, hidden and inert elements', async () => {
+		const user = userEvent.setup();
+		renderComponent(
+			<Modal isOpen withCloseIcon={false} onClose={onClose}>
+				<button disabled>Disabled</button>
+				<div hidden>
+					<button>Hidden</button>
+				</div>
+				<div inert>
+					<button>Inert</button>
+				</div>
+				<button>Available</button>
+			</Modal>,
+		);
+		const available = screen.getByRole('button', { name: 'Available' });
+		expect(available).toHaveFocus();
+		await user.tab();
+		expect(available).toHaveFocus();
+	});
+	it('prevents focus from moving outside and cleans document handlers on unmount', () => {
+		const outside = document.createElement('button');
+		document.body.appendChild(outside);
+		outside.focus();
+		const view = renderComponent(
+			<Modal isOpen onClose={onClose}>
+				Content
+			</Modal>,
+		);
+		outside.focus();
+		expect(screen.getByRole('button', { name: 'Закрыть модальное окно' })).toHaveFocus();
+		view.unmount();
+		expect(outside).toHaveFocus();
+		fireEvent.keyDown(outside, { key: 'Escape' });
+		expect(onClose).not.toHaveBeenCalled();
+		outside.remove();
+	});
+	it('does not restore focus to a removed opener', () => {
+		const opener = document.createElement('button');
+		document.body.appendChild(opener);
+		opener.focus();
+		const view = renderComponent(
+			<Modal isOpen onClose={onClose}>
+				Content
+			</Modal>,
+		);
+		opener.remove();
+		expect(() => view.unmount()).not.toThrow();
+	});
+	it('keeps focus stable when a consumer recreates onClose during rerender', () => {
+		const view = renderComponent(
+			<Modal isOpen onClose={() => onClose()}>
+				<input aria-label="Field" />
+			</Modal>,
+		);
+		const input = screen.getByRole('textbox', { name: 'Field' });
+		input.focus();
+		view.rerender(
+			<Modal isOpen onClose={() => onClose()}>
+				<input aria-label="Field" />
+			</Modal>,
+		);
+		expect(input).toHaveFocus();
+	});
+	it('does not restore focus to an opener that became disabled', () => {
+		const opener = document.createElement('button');
+		document.body.appendChild(opener);
+		opener.focus();
+		const view = renderComponent(
+			<Modal isOpen onClose={onClose}>
+				Content
+			</Modal>,
+		);
+		opener.disabled = true;
+		view.unmount();
+		expect(opener).not.toHaveFocus();
+		opener.remove();
+	});
+	it('only the topmost open dialog handles Escape and restores focus to the underlying dialog', () => {
+		const first = jest.fn();
+		const second = jest.fn();
+		const view = renderComponent(
+			<>
+				<Modal isOpen title="First" onClose={first}>
+					First content
+				</Modal>
+				<Modal isOpen title="Second" onClose={second}>
+					Second content
+				</Modal>
+			</>,
+		);
+		const dialogs = screen.getAllByRole('dialog');
+		expect(dialogs[1]).toContainElement(document.activeElement as HTMLElement);
+		fireEvent.keyDown(document.activeElement!, { key: 'Escape' });
+		expect(second).toHaveBeenCalledTimes(1);
+		expect(first).not.toHaveBeenCalled();
+		view.rerender(
+			<>
+				<Modal isOpen title="First" onClose={first}>
+					First content
+				</Modal>
+				<Modal isOpen={false} title="Second" onClose={second}>
+					Second content
+				</Modal>
+			</>,
+		);
+		expect(screen.getByRole('dialog', { name: 'First' })).toContainElement(
+			document.activeElement as HTMLElement,
+		);
 	});
 });

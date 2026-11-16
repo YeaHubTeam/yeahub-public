@@ -2,7 +2,8 @@
 
 import 'server-only';
 
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { backendHttp } from '@/shared/api/index.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 import { emailRule } from '@/shared/libs';
 
 export type PasswordResetResult =
@@ -16,34 +17,22 @@ export async function sendPasswordResetEmail(email: string): Promise<PasswordRes
 	if (!normalized || normalized.length > 254 || !emailRule.test(normalized))
 		return { status: 'validation-error' };
 
-	const controller = new AbortController();
-	let timer: ReturnType<typeof setTimeout> | undefined;
 	try {
-		const { apiOrigin, allowedOrigins } = getAuthBackendConfig();
-		if (!allowedOrigins.includes(apiOrigin)) return { status: 'error' };
-		const url = new URL('/auth/send-reset-password', apiOrigin);
-		url.search = new URLSearchParams({ email: normalized }).toString();
-		const timeout = new Promise<never>((_, reject) => {
-			timer = setTimeout(() => {
-				controller.abort();
-				reject(new Error('Password reset request timed out'));
-			}, 5000);
+		const config = getAuthBackendConfig();
+		const query = new URLSearchParams({ email: normalized });
+		const result = await backendHttp<PasswordResetResult>({
+			config,
+			path: `/auth/send-reset-password?${query}`,
+			method: 'GET',
+			effect: 'mutation',
+			cache: 'no-store',
+			timeoutMs: 5000,
+			decode: (response) =>
+				Promise.resolve({ status: response.status === 200 ? 'success' : 'error' }),
 		});
-		const response = await Promise.race([
-			fetch(url, {
-				method: 'GET',
-				cache: 'no-store',
-				redirect: 'manual',
-				credentials: 'omit',
-				signal: controller.signal,
-			}),
-			timeout,
-		]);
-		return { status: response.status === 200 ? 'success' : 'error' };
+		return result.status === 'response' ? result.value : { status: 'error' };
 	} catch {
 		// Never expose backend errors, email, response bodies or request URLs.
 		return { status: 'error' };
-	} finally {
-		clearTimeout(timer);
 	}
 }

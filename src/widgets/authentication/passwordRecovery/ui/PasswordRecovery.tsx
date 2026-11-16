@@ -7,8 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { PasswordRecoveryForm } from '@/features/authentication/passwordRecovery';
-import { Auth, ROUTES, Translation, i18Namespace } from '@/shared/config';
-import { getPathname } from '@/shared/config/navigation';
+import { Auth, ROUTES, Translation, getPathname, i18Namespace } from '@/shared/config';
 import { Text } from '@/shared/ui/Text';
 
 import { createPasswordRecoverySchema } from '../lib/validation/passwordRecoverySchema';

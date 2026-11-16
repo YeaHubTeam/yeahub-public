@@ -99,5 +99,6 @@ export type IconName =
 	| 'refferals'
 	| 'successCircle'
 	| 'errorCircle'
+	| 'lamp'
 	| 'lightBulb';
 export type IconComponent = React.FunctionComponent<React.SVGAttributes<SVGElement>>;

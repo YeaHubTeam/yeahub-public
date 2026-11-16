@@ -3,66 +3,22 @@ import { encode } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
 import 'server-only';
 
-import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/server';
-import { getAuthBackendConfig } from '@/shared/config/authBackend.server';
+import { BackendAuthError, createBackendAuthTransport } from '@/entities/auth/index.server';
+import { readOwnProfile } from '@/entities/profile/index.server';
+import { AuthRefreshError, refreshAuthCredentials } from '@/lib/authRefresh.server';
+import { getAuthBackendConfig } from '@/shared/config/index.server';
 
-import { AuthRefreshError, refreshAuthCredentials } from './lib/authRefresh.server';
+import {
+	deadline,
+	emailField,
+	getTokenExpiry,
+	isBackendSession,
+	isObject,
+} from './backendSession.server';
+import type { BackendSession } from './backendSession.server';
+import { passwordReplacement, sessionFingerprint } from './passwordReplacement.server';
 
-type BackendSession = {
-	userId: string;
-	username: string;
-	avatarUrl: string | null;
-	email?: string | null;
-	accessToken: string;
-	refreshToken: string;
-	accessExpiresAt: number;
-	refreshExpiresAt: number;
-	sessionExpiresAt: number;
-	refreshRetryRequired?: boolean;
-};
-
-const isObject = (value: unknown): value is Record<string, unknown> =>
-	typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const isBackendSession = (value: unknown): value is BackendSession =>
-	isObject(value) &&
-	['userId', 'username', 'accessToken', 'refreshToken'].every(
-		(key) => typeof value[key] === 'string' && value[key].length > 0,
-	) &&
-	(value.avatarUrl === null || typeof value.avatarUrl === 'string') &&
-	(value.email === undefined || value.email === null || typeof value.email === 'string') &&
-	(value.refreshRetryRequired === undefined || typeof value.refreshRetryRequired === 'boolean') &&
-	['accessExpiresAt', 'refreshExpiresAt', 'sessionExpiresAt'].every(
-		(key) => typeof value[key] === 'number' && Number.isSafeInteger(value[key]),
-	);
-
-// Pick only the optional, server-confirmed field; never copy client update data.
-const emailField = (email: unknown): { email?: string | null } =>
-	typeof email === 'string' || email === null ? { email } : {};
-
-const deadline = (session: BackendSession) =>
-	Math.min(session.refreshExpiresAt, session.sessionExpiresAt);
-
-// Expiry metadata from a trusted backend response is not signature/session verification.
-const getTokenExpiry = (token: string): number => {
-	try {
-		const parts = token.split('.');
-		if (parts.length !== 3) throw new Error();
-		const payload: unknown = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
-		if (
-			!isObject(payload) ||
-			typeof payload.exp !== 'number' ||
-			!Number.isSafeInteger(payload.exp) ||
-			payload.exp <= Math.floor(Date.now() / 1000)
-		)
-			throw new Error();
-		return payload.exp;
-	} catch {
-		throw new BackendAuthError('protocol');
-	}
-};
-
-export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
+export const nextAuth = NextAuth(() => ({
 	debug: false,
 	session: { strategy: 'jwt', maxAge: 7 * 24 * 60 * 60 },
 	jwt: {
@@ -146,10 +102,47 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 		},
 	},
 	callbacks: {
-		async jwt({ token, user, trigger }) {
+		async jwt({ token, user, trigger, session }) {
 			const stored = user && 'backendSession' in user ? user.backendSession : token.backendSession;
 			if (!isBackendSession(stored) || deadline(stored) <= Math.floor(Date.now() / 1000))
 				return null;
+
+			const replacement = passwordReplacement.getStore();
+			if (trigger === 'update' && replacement) {
+				if (
+					replacement.applied ||
+					replacement.userId !== stored.userId ||
+					token.sub !== stored.userId ||
+					replacement.fingerprint !== sessionFingerprint(stored) ||
+					replacement.originalDeadline !== stored.sessionExpiresAt ||
+					deadline(replacement.next) <= Math.floor(Date.now() / 1000)
+				)
+					return token;
+				replacement.applied = true;
+				return { sub: stored.userId, backendSession: replacement.next };
+			}
+			// Client data is a re-read signal only; username always comes from the verified backend.
+			if (trigger === 'update' && isObject(session) && session.syncProfile === true) {
+				if (stored.accessExpiresAt <= Math.floor(Date.now() / 1000)) return token;
+				try {
+					const result = await readOwnProfile(
+						{ userId: stored.userId, accessToken: stored.accessToken },
+						getAuthBackendConfig(),
+					);
+					if (
+						result.status !== 'success' ||
+						result.profile.username.length < 2 ||
+						result.profile.username.length > 30
+					)
+						return token;
+					return {
+						sub: stored.userId,
+						backendSession: { ...stored, username: result.profile.username },
+					};
+				} catch {
+					return token;
+				}
+			}
 			let data = stored;
 			// Auth.js sets update only for writable operations. Client session data is ignored.
 			if (trigger === 'update' && data.accessExpiresAt <= Math.floor(Date.now() / 1000) + 60) {
@@ -219,3 +212,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
 		},
 	},
 }));
+
+export const { handlers, auth, signIn, signOut } = nextAuth;

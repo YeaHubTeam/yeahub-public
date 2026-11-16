@@ -7,7 +7,7 @@ import { renderToString } from 'react-dom/server.node';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { LoginFormValues } from '@/entities/auth';
-import { useRouter } from '@/shared/config/navigation';
+import { useRouter } from '@/shared/config';
 
 import { LoginForm } from './LoginForm';
 
@@ -24,8 +24,8 @@ jest.mock('next-intl', () => ({
 	},
 }));
 jest.mock('next-auth/react', () => ({ signIn: jest.fn() }));
-jest.mock('@/shared/config/navigation', () => ({ useRouter: jest.fn() }));
 jest.mock('@/shared/config', () => ({
+	useRouter: jest.fn(),
 	Auth: {
 		FORM_EMAIL_LABEL: 'form.email.label',
 		FORM_EMAIL_PLACEHOLDER: 'form.email.placeholder',

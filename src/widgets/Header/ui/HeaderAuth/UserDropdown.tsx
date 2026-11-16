@@ -6,9 +6,8 @@ import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 import LogoutIcon from '@/shared/assets/icons/logout-icon.svg';
-import { Header, ROUTES, Translation, i18Namespace } from '@/shared/config';
-import { useRouter } from '@/shared/config/navigation';
-import { useScreenSize } from '@/shared/libs';
+import { Header, ROUTES, Translation, i18Namespace, usePathname, useRouter } from '@/shared/config';
+import { SELECT_TARIFF_SETTINGS_TAB, useScreenSize } from '@/shared/libs';
 import { AvatarWithoutPhoto } from '@/shared/ui/AvatarWithoutPhoto';
 import { Button } from '@/shared/ui/Button';
 import { Popover } from '@/shared/ui/Popover';
@@ -24,11 +23,13 @@ interface UserDropdownProps {
 }
 
 export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
+	const [failedImage, setFailedImage] = useState<string | null>(null);
 	const t = useTranslations(i18Namespace.header);
 	const tCommon = useTranslations(i18Namespace.translation);
 	const { isMobile, isTablet } = useScreenSize();
 	const visibleEmail = email?.trim();
 	const router = useRouter();
+	const pathname = usePathname();
 	const pending = useRef(false);
 	const [isSigningOut, setIsSigningOut] = useState(false);
 	const onLogout = async () => {
@@ -51,9 +52,10 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 	if (isMobile || isTablet) return null;
 
 	const avatar = (size: number) =>
-		image ? (
+		image && failedImage !== image ? (
 			<Image
 				src={image}
+				onError={() => setFailedImage(image)}
 				alt={tCommon(Translation.AVATAR)}
 				width={size}
 				height={size}
@@ -69,13 +71,42 @@ export const UserDropdown = ({ username, image, email }: UserDropdownProps) => {
 		Header.USER_SETTINGS,
 		Header.USER_LOGOUT,
 	].map((key) => ({
-		renderComponent: () => (
+		renderComponent: (close) => (
 			<Button
 				type="button"
 				variant="tertiary-link"
-				disabled={key !== Header.USER_LOGOUT || isSigningOut}
+				disabled={
+					(key !== Header.USER_LOGOUT &&
+						key !== Header.USER_PROFILE &&
+						key !== Header.USER_SETTINGS &&
+						key !== Header.USER_MEMBERSHIP) ||
+					isSigningOut
+				}
 				aria-busy={key === Header.USER_LOGOUT ? isSigningOut : undefined}
-				onClick={key === Header.USER_LOGOUT ? () => void onLogout() : undefined}
+				onClick={
+					key === Header.USER_PROFILE
+						? () => {
+								close();
+								router.push(ROUTES.profile.page);
+							}
+						: key === Header.USER_MEMBERSHIP
+							? () => {
+									if (pending.current) return;
+									close();
+									if (pathname === ROUTES.settings.page) {
+										// Native same-document navigation emits hashchange and preserves Back/Forward.
+										window.location.hash = SELECT_TARIFF_SETTINGS_TAB.split('#')[1];
+									} else router.push(SELECT_TARIFF_SETTINGS_TAB);
+								}
+							: key === Header.USER_SETTINGS
+								? () => {
+										close();
+										router.push(ROUTES.settings.page);
+									}
+								: key === Header.USER_LOGOUT
+									? () => void onLogout()
+									: undefined
+				}
 				className={
 					key === Header.USER_LOGOUT
 						? `${styles['menu-item']} ${styles.logout}`

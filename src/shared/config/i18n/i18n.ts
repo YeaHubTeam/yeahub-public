@@ -5,6 +5,8 @@ import { routing } from '../routing';
 
 export const i18Namespace = {
 	auth: 'auth',
+	profile: 'profile',
+	user: 'user',
 	docs: 'docs',
 	header: 'header',
 	footer: 'footer',

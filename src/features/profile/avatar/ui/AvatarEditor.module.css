@@ -1,0 +1,185 @@
+.container {
+	flex-shrink: 0;
+	width: 170px;
+}
+
+.frame {
+	position: relative;
+	height: 188px;
+	overflow: hidden;
+	border-radius: 20px;
+	background-color: var(--color-purple-100);
+}
+
+/* Anchor to the frame, not the auto-height wrapper introduced by Popover. */
+.trigger {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.trigger:disabled {
+	cursor: wait;
+}
+
+.image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.file-input {
+	display: none;
+}
+
+.modal {
+	max-width: min(800px, 95vw);
+}
+
+.crop-layout {
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+	margin-top: 25px;
+}
+
+.cropper {
+	width: 500px;
+	max-width: 100%;
+	height: 400px;
+	max-height: 500px;
+	overflow: hidden;
+	border-radius: 24px;
+}
+
+.previews {
+	display: flex;
+	flex-shrink: 0;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 16px;
+}
+
+.preview {
+	border-radius: 50%;
+}
+
+@media (width <= 768px) {
+	.crop-layout {
+		flex-wrap: wrap;
+	}
+
+	.frame {
+		aspect-ratio: 296 / 263;
+	}
+}
+
+@media (width <= 576px) {
+	.container {
+		width: 100%;
+	}
+
+	.frame {
+		height: auto;
+	}
+}
+
+.edit-container {
+	width: 100%;
+}
+
+.edit-layout {
+	display: flex;
+	gap: 40px;
+}
+
+.edit-preview {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	flex-direction: column;
+	gap: 8px;
+	width: 170px;
+	min-height: 188px;
+}
+
+.edit-picture {
+	height: 188px;
+}
+
+.edit-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 20px;
+	object-fit: cover;
+}
+
+.edit-delete {
+	position: absolute;
+	right: 50%;
+	bottom: -40px;
+	background: none;
+	transform: translateX(50%);
+}
+
+.upload-zone {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	padding: 0 40px;
+	width: 100%;
+	min-height: 188px;
+	border: 2px dashed var(--color-purple-400);
+	border-radius: 16px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.upload-zone:focus-visible {
+	box-shadow: var(--focus-shadow);
+	outline: none;
+}
+
+.upload-active {
+	background-color: var(--background-progress-bar);
+}
+
+.upload-disabled {
+	pointer-events: none;
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.upload-instruction {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
+}
+
+@media (width < 768px) {
+	.edit-layout {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.edit-preview {
+		width: 100%;
+	}
+
+	.edit-delete {
+		align-self: center;
+	}
+}

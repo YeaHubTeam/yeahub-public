@@ -1,0 +1,73 @@
+.sections {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.card > div {
+	gap: 30px;
+}
+
+.heading {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.description {
+	white-space: pre-wrap;
+}
+
+.username {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: fit-content;
+}
+
+.card svg {
+	flex-shrink: 0;
+}
+
+.card button {
+	max-width: 328px;
+}
+
+@media (width < 1024px) {
+	.card {
+		padding: 20px 16px;
+	}
+
+	.card > div {
+		gap: 20px;
+	}
+}
+
+@media (width <= 480px) {
+	.heading {
+		flex-direction: column-reverse;
+		align-items: flex-start;
+	}
+
+	.title {
+		line-height: 120%;
+		font-weight: var(--font-weight-500);
+		font-size: var(--font-size-h-xs);
+	}
+}
+
+@media (width < 480px) {
+	.card {
+		padding: 20px 10px;
+	}
+
+	.card > div {
+		gap: 16px;
+	}
+}

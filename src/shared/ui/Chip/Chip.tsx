@@ -29,6 +29,16 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
 		ref,
 	): React.JSX.Element => {
 		const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+			if (
+				(event.key === 'Delete' || event.key === 'Backspace') &&
+				onDelete &&
+				event.target === event.currentTarget
+			) {
+				event.preventDefault();
+				event.stopPropagation();
+				if (!event.repeat) onDelete();
+				return;
+			}
 			if (event.key === 'Enter' || event.key === ' ') {
 				event.preventDefault();
 				onClick?.();

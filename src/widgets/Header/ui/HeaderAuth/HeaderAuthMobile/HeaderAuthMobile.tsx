@@ -5,8 +5,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { TariffsModal } from '@/entities/subscription';
-import { Header, ROUTES, Subscription, i18Namespace } from '@/shared/config';
-import { useRouter } from '@/shared/config/navigation';
+import { Header, ROUTES, Subscription, i18Namespace, useRouter } from '@/shared/config';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover, PopoverMenuItem } from '@/shared/ui/Popover';

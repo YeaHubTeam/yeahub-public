@@ -4,13 +4,13 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useTaskCategories } from '@/entities/task';
 import { Tasks, Translation, i18Namespace } from '@/shared/config';
 import { BaseFilterSection } from '@/shared/ui/BaseFilterSection';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 
 import { taskCategories } from '../../model/constants/task';
+import { useTaskCategories } from '../../model/hooks/useTaskCategories';
 import { TaskCategory, TaskCategoryCode } from '../../model/types/task';
 
 const MAX_VISIBLE = 4;

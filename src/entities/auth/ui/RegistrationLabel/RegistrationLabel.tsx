@@ -2,8 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Auth, ROUTES, i18Namespace } from '@/shared/config';
-import { useRouter } from '@/shared/config/navigation';
+import { Auth, ROUTES, i18Namespace, useRouter } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 
 import styles from './RegistrationLabel.module.css';

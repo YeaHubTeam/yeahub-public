@@ -1,7 +1,6 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { Header, ROUTES, i18Namespace } from '@/shared/config';
-import { getPathname } from '@/shared/config/navigation';
+import { Header, ROUTES, getPathname, i18Namespace } from '@/shared/config';
 import { Button } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
 
@@ -14,7 +13,7 @@ export const HeaderAuthDesktop = async () => {
 	return (
 		<Flex justify="between" align="center" gap="26">
 			<Button
-				variant="link"
+				variant="primary"
 				size="large"
 				className={styles['register-button']}
 				href={getPathname({ locale, href: ROUTES.auth.login.page })}
