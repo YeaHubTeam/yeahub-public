@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -10,7 +12,7 @@ import {
 	getSpecializationSlugs,
 	getSpecializations,
 } from '@/entities/specialization';
-import { QuestionsPage } from '@/pages/QuestionsPage';
+import { QuestionsPage, QuestionsPageSkeleton } from '@/pages/QuestionsPage';
 import { Landing, Questions, i18Namespace } from '@/shared/config';
 import { locales } from '@/shared/config';
 import { APP_ROUTE } from '@/shared/config';
@@ -81,9 +83,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	};
 }
 
-const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
+const MainQuestionsPageContent = async ({ params, searchParams }: PageProps) => {
 	const { locale, specialization } = await params;
-	const { titleOrDescription, skills, complexity, rate, page = '1' } = await searchParams;
+	const listParams = await searchParams;
+	const { titleOrDescription = listParams.title, skills, complexity, rate, order, orderBy, page = '1' } = listParams;
+	const navigationSearch = new URLSearchParams();
+	for (const [key, value] of Object.entries(listParams)) {
+		if (value !== undefined) navigationSearch.set(key, String(value));
+	}
 
 	const pageNum = Number(page);
 
@@ -106,6 +113,8 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 			complexity,
 			rate,
 			titleOrDescription,
+			order: order === 'ASC' || order === 'DESC' ? order : undefined,
+			orderBy: orderBy && ['title', 'complexity', 'rate'].includes(orderBy) ? orderBy : undefined,
 			skillFilterMode: 'ANY',
 		}),
 		getSpecializations({ limit: 5 }),
@@ -181,6 +190,7 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 			<QuestionsPage
+				navigationSearch={navigationSearch.toString()}
 				locale={locale}
 				page={pageNum}
 				questions={questionsResponse?.data || []}
@@ -195,5 +205,12 @@ const MainQuestionsPage = async ({ params, searchParams }: PageProps) => {
 		</>
 	);
 };
+
+// This fallback belongs only to the list, not to nested question detail routes.
+const MainQuestionsPage = (props: PageProps) => (
+	<Suspense fallback={<QuestionsPageSkeleton />}>
+		<MainQuestionsPageContent {...props} />
+	</Suspense>
+);
 
 export default MainQuestionsPage;

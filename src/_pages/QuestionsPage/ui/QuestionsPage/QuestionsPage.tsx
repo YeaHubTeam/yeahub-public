@@ -16,6 +16,7 @@ import styles from './QuestionsPage.module.css';
 
 interface QuestionsPageProps {
 	locale: string;
+	navigationSearch?: string;
 	page: number;
 	questions: Question[];
 	total: number;
@@ -29,6 +30,7 @@ interface QuestionsPageProps {
 
 export const QuestionsPage = ({
 	locale,
+	navigationSearch,
 	page,
 	questions,
 	total,
@@ -50,6 +52,7 @@ export const QuestionsPage = ({
 					initialSkills={initialSkills}
 				/>
 				<FullQuestionsList
+					navigationSearch={navigationSearch}
 					questions={questions}
 					specialization={specialization}
 					hasFilters={hasFilters}

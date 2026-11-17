@@ -16,12 +16,14 @@ interface FullQuestionItemProps {
 	question: Question;
 	specialization: string;
 	locale: string;
+	navigationSearch?: string;
 }
 
 export const FullQuestionItem = async ({
 	question,
 	specialization,
 	locale,
+	navigationSearch,
 }: FullQuestionItemProps) => {
 	const t = await getTranslations(i18Namespace.questions);
 	const { slug, imageSrc, complexity = 0, rate, shortAnswer } = question;
@@ -52,7 +54,7 @@ export const FullQuestionItem = async ({
 
 			<TextHtml html={shortAnswer} />
 
-			<Link href={detailRoute} className={styles.link}>
+			<Link href={navigationSearch ? `${detailRoute}?${navigationSearch}` : detailRoute} className={styles.link}>
 				{t(Questions.QUESTIONS_LINK)}
 				<Icon icon="arrowRight" size={24} />
 			</Link>

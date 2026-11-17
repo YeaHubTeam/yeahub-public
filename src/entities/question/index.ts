@@ -28,3 +28,14 @@ export { PreviewQuestionsItem } from './ui/PreviewQuestionsItem/PreviewQuestions
 export { ChooseQuestionCount } from './ui/ChooseQuestionCount/ChooseQuestionCount';
 export { QuestionAdditionalInfo } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo';
 export { QuestionAdditionalInfoSkeleton } from './ui/QuestionAdditionalInfo/QuestionAdditionalInfo.skeleton';
+export type {
+	QuestionPersonalState,
+	QuestionPersonalStateResult,
+} from './model/types/personalState';
+
+export { ProgressBlock } from './ui/ProgressBlock/ProgressBlock';
+export { ProgressBlockSkeleton } from './ui/ProgressBlock/ProgressBlock.skeleton';
+
+export type { FavoriteQuestionInput, FavoriteQuestionResult } from './model/types/favorite';
+
+export type { QuestionStudyInput, QuestionStudyResult, QuestionStudyOperation } from './model/types/studyProgress';
