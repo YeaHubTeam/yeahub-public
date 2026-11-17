@@ -1,4 +1,5 @@
 {
+	"answerVariants": { "title": "Answer options" },
 	"title": "Questions",
 	"questions_title": "Questions {specialization}",
 	"questions": {

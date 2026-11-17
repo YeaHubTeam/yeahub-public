@@ -1,4 +1,5 @@
 {
+	"answerVariants": { "title": "Варианты ответа" },
 	"title": "База вопросов",
 	"questions_title": "Вопросы {specialization}",
 	"questions": {

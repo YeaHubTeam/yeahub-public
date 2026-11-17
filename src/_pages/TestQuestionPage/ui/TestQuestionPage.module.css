@@ -1,0 +1,58 @@
+.page {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 740px;
+}
+
+.header .image {
+	width: 160px;
+	height: 160px;
+	border-radius: 12px;
+}
+
+.details {
+	min-width: 0;
+}
+
+.description,
+.variant {
+	white-space: pre-wrap;
+}
+
+.variant {
+	list-style-type: decimal;
+}
+
+.answers-title {
+	font-size: var(--font-size-h-xs);
+}
+
+.variants {
+	margin: 0;
+	padding-left: 20px;
+	color: var(--color-black-800);
+	list-style: decimal outside;
+	line-height: 120%;
+	font-size: var(--font-size-p-m);
+}
+
+@media (width < 768px) {
+	.header {
+		padding: 10px 10px 20px;
+	}
+
+	.header .header-content {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.title {
+		font-size: var(--font-size-h-xs);
+	}
+
+	.header .image {
+		aspect-ratio: 1;
+		width: 100%;
+		height: auto;
+	}
+}
