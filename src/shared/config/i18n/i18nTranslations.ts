@@ -90,6 +90,7 @@ export enum Footer {
 }
 
 export enum Questions {
+	ANSWER_VARIANTS_TITLE = 'answerVariants.title',
 	IMAGE_ALT = 'image-alt',
 	SHORT_ANSWER_TITLE = 'short.answer.title',
 	LONG_ANSWER_TITLE = 'long.answer.title',

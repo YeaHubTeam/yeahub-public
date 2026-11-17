@@ -3,7 +3,9 @@ import type { MetadataRoute } from 'next';
 import { getCollectionSlugs } from '@/entities/collection';
 import { getQuestionSlugs } from '@/entities/question';
 import { getSpecializationSlugs } from '@/entities/specialization';
-import { locales } from '@/shared/config';
+import { getAllPublicTestQuestions } from '@/entities/testQuestion';
+import { ROUTES, locales } from '@/shared/config';
+import { route } from '@/shared/libs';
 
 const BATCH_SIZE = 50;
 
@@ -136,6 +138,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				}
 			} catch {
 				// пропускаем специализацию при ошибке
+			}
+		}
+		const testQuestions = await getAllPublicTestQuestions();
+		for (const locale of locales) {
+			for (const question of testQuestions) {
+				urls.push({
+					url: `${baseUrl}/${locale}${route(ROUTES.testQuestions.detail.page, question.id)}`,
+					lastModified: question.updatedAt,
+					changeFrequency: 'monthly',
+					priority: 0.7,
+				});
 			}
 		}
 	} catch (error) {

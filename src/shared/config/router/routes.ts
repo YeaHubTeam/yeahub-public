@@ -10,6 +10,13 @@ export const ROUTES = {
 			page: '/:locale/questions/:specialization/:slug',
 		},
 	},
+	testQuestions: {
+		route: 'test-questions',
+		detail: {
+			route: 'test-questions/:testQuestionId',
+			page: '/test-questions/:testQuestionId',
+		},
+	},
 	resources: {
 		route: 'resources',
 		page: '/resources/:specialization',
