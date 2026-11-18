@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 
 import { ProgressBlock, ProgressBlockSkeleton } from '@/entities/question';
 import type {
+	PersonalNavigationPageReader,
 	FavoriteQuestionInput,
 	FavoriteQuestionResult,
 	QuestionPersonalStateResult,
@@ -185,7 +186,7 @@ export const QuestionFavoriteActions = ({
 	progressAction,
 }: {
 	action: (input: FavoriteQuestionInput) => Promise<FavoriteQuestionResult>;
-	navigation?: { questionId: number; specialization?: { id: number; slug: string } };
+	navigation?: { readPersonalPage?: PersonalNavigationPageReader; questionId: number; specialization?: { id: number; slug: string } };
 	progressAction?: (input: QuestionStudyInput) => Promise<QuestionStudyResult>;
 }) => {
 	const result = useContext(PersonalStateContext);
@@ -265,6 +266,8 @@ export const QuestionFavoriteActions = ({
 			isGuest={isGuest}
 			questionId={navigation?.questionId}
 			specialization={navigation?.specialization}
+			readPersonalPage={navigation?.readPersonalPage}
+			personalNavigationState={success ?? undefined}
 			checksCount={success?.state.checksCount ?? 0}
 			isEmailVerified={success?.isVerified === true}
 			hasPremium={success?.hasPremiumAccess}

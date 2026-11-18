@@ -17,7 +17,7 @@ interface ResetQuestionStudyProgressButtonProps {
 	isGuest?: boolean;
 	isPopover?: boolean;
 	variant?: 'tertiary' | 'link-gray';
-	checksCount: number;
+	checksCount?: number;
 	placementTooltip?: Placement;
 	offsetTooltip?: number;
 	isEmailVerified?: boolean;
@@ -47,7 +47,7 @@ export const ResetQuestionStudyProgressButton = ({
 			: 'tooltip.repeat';
 	const iconSize = isPopover ? 20 : 24;
 	const shouldShowTooltip = !isEmailVerified || hasPremium === false || progressDisabled;
-	const isButtonDisabled = isGuest || !onReset || isLoading || !isEmailVerified || hasPremium !== true || progressDisabled;
+	const isButtonDisabled = checksCount === undefined || isGuest || !onReset || isLoading || !isEmailVerified || hasPremium !== true || progressDisabled;
 
 	const button = (
 		<Button
@@ -93,11 +93,11 @@ export const ResetQuestionStudyProgressButton = ({
 	}
 	return (
 		<Tooltip
-			title={t(tooltipTitle)}
+			title={t(isPopover && !onReset ? 'actions.notConnected' : tooltipTitle)}
 			placement={placementTooltip}
 			color="violet"
 			offsetTooltip={offsetTooltip}
-			shouldShowTooltip={shouldShowTooltip}
+			shouldShowTooltip={shouldShowTooltip || (isPopover && !onReset)}
 		>
 			{button}
 		</Tooltip>

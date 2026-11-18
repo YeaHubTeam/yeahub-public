@@ -37,6 +37,7 @@ export const QuestionsPageHeader = ({
 				</Text>
 				<FiltersDrawer>
 					<QuestionsFilterPanel
+						inDrawer
 						initialSpecializations={initialSpecializations}
 						initialSkills={initialSkills}
 						currentSpecialization={currentSpecialization}

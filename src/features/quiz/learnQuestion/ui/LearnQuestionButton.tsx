@@ -17,7 +17,7 @@ interface LearnQuestionButtonProps {
 	isGuest?: boolean;
 	isPopover?: boolean;
 	variant?: 'tertiary' | 'link-gray';
-	checksCount: number;
+	checksCount?: number;
 	placementTooltip?: Placement;
 	offsetTooltip?: number;
 	isEmailVerified?: boolean;
@@ -39,7 +39,7 @@ export const LearnQuestionButton = ({
 	onLearn,
 }: LearnQuestionButtonProps) => {
 	const t = useTranslations(i18Namespace.questions);
-	const progressDisabled = checksCount >= 3;
+	const progressDisabled = checksCount !== undefined && checksCount >= 3;
 	const tooltipTitle = !isEmailVerified
 		? 'tooltip.not.confirmed'
 		: hasPremium === false
@@ -47,7 +47,7 @@ export const LearnQuestionButton = ({
 			: 'tooltip.learn';
 	const iconSize = isPopover ? 20 : 24;
 	const shouldShowTooltip = !isEmailVerified || hasPremium === false || progressDisabled;
-	const isButtonDisabled = isGuest || !onLearn || isLoading || !isEmailVerified || hasPremium !== true || progressDisabled;
+	const isButtonDisabled = checksCount === undefined || isGuest || !onLearn || isLoading || !isEmailVerified || hasPremium !== true || progressDisabled;
 
 	const button = (
 		<Button
@@ -93,11 +93,11 @@ export const LearnQuestionButton = ({
 	}
 	return (
 		<Tooltip
-			title={t(tooltipTitle)}
+			title={t(isPopover && !onLearn ? 'actions.notConnected' : tooltipTitle)}
 			placement={placementTooltip}
 			color="violet"
 			offsetTooltip={offsetTooltip}
-			shouldShowTooltip={shouldShowTooltip}
+			shouldShowTooltip={shouldShowTooltip || (isPopover && !onLearn)}
 		>
 			{button}
 		</Tooltip>

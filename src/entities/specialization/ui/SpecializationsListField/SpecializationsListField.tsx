@@ -20,12 +20,14 @@ interface SpecializationsListFieldProps {
 	selectedSpecialization?: number;
 	onChangeSpecialization: (specialization: number | undefined, slug?: string) => void;
 	initialData?: GetSpecializationsListResponse | null;
+	disabled?: boolean;
 }
 
 export const SpecializationsListField = ({
 	selectedSpecialization = DEFAULT_SPECIALIZATION_ID,
 	onChangeSpecialization,
 	initialData,
+	disabled = false,
 }: SpecializationsListFieldProps) => {
 	const t = useTranslations(i18Namespace.specialization);
 	const tCommon = useTranslations(i18Namespace.translation);
@@ -50,6 +52,7 @@ export const SpecializationsListField = ({
 	};
 
 	const onChooseSpecialization = (id: number) => {
+		if (disabled) return;
 		const slug = specializations?.data?.find((specialization) => specialization.id === id)?.slug;
 		onChangeSpecialization(id, slug);
 	};
@@ -69,11 +72,12 @@ export const SpecializationsListField = ({
 	return (
 		<Flex direction="column" align="start" gap="8">
 			<BaseFilterSection
+				disabled={disabled}
 				data={specializationsItems}
 				title={t(Specializations.TITLE_MAIN)}
 				onClick={onChooseSpecialization}
 			/>
-			<Button variant="link" onClick={onToggleShowAll}>
+			<Button variant="link" onClick={onToggleShowAll} disabled={disabled}>
 				{!showAll ? tCommon(Translation.SHOW_ALL) : tCommon(Translation.HIDE)}
 			</Button>
 		</Flex>

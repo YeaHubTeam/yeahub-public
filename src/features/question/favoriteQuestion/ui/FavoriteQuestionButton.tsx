@@ -1,5 +1,6 @@
 'use client';
 
+import type { Placement } from '@floating-ui/react';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 
@@ -18,33 +19,39 @@ export const FavoriteQuestionButton = ({
 	disabled,
 	onClick,
 	variant = 'tertiary',
+	isPopover = false,
+	placementTooltip = 'top',
+	offsetTooltip = 10,
 }: {
 	isGuest?: boolean;
 	isFavorite?: boolean;
 	disabled: boolean;
-	onClick: () => void;
+	onClick?: () => void;
+	isPopover?: boolean;
+	placementTooltip?: Placement;
+	offsetTooltip?: number;
 	variant?: 'tertiary' | 'link-gray';
 }) => {
 	const t = useTranslations(i18Namespace.questions);
 	const activate = () => {
-		if (!disabled && !isGuest) onClick();
+		if (!disabled && !isGuest) onClick?.();
 	};
 	const button = (
 		<Button
-			className={classNames({ [styles.red]: isFavorite, [styles.guest]: isGuest })}
+			className={classNames({ [styles.button]: isPopover, [styles.red]: isFavorite, [styles.guest]: isGuest })}
 			preffix={
 				<Icon
 					icon={isFavorite ? 'favoriteRed' : 'favorite'}
 					color={isFavorite ? 'red-800' : 'black-600'}
-					size={24}
+					size={isPopover ? 20 : 24}
 				/>
 			}
 			aria-hidden={isGuest || undefined}
 			variant={variant}
 			onClick={activate}
-			disabled={disabled || isGuest}
-			aria-disabled={disabled || isGuest}
-			aria-pressed={isFavorite}
+			disabled={disabled || isGuest || !onClick}
+			aria-disabled={disabled || isGuest || !onClick}
+			aria-pressed={isPopover && !onClick ? undefined : isFavorite}
 			role="button"
 			tabIndex={disabled || isGuest ? -1 : 0}
 			onKeyDown={(e) => {
@@ -86,10 +93,10 @@ export const FavoriteQuestionButton = ({
 	}
 	return (
 		<Tooltip
-			title={t(isFavorite ? 'tooltip.favorite.delete' : 'tooltip.favorite.add')}
-			placement="top"
+			title={t(isPopover && !onClick ? 'actions.notConnected' : isFavorite ? 'tooltip.favorite.delete' : 'tooltip.favorite.add')}
+			placement={placementTooltip}
 			color="violet"
-			offsetTooltip={10}
+			offsetTooltip={offsetTooltip}
 			shouldShowTooltip
 		>
 			{button}

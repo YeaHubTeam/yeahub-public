@@ -2,7 +2,7 @@ import {
 	getGuruWithMatchingSpecialization,
 	getNewGuruWithMatchingSpecialization,
 } from '@/entities/guru';
-import type { FavoriteQuestionInput, FavoriteQuestionResult, QuestionStudyInput, QuestionStudyResult } from '@/entities/question';
+import type { PersonalNavigationPageReader, FavoriteQuestionInput, FavoriteQuestionResult, QuestionStudyInput, QuestionStudyResult } from '@/entities/question';
 import { Question, QuestionAdditionalInfo } from '@/entities/question';
 import { BackButton } from '@/shared/ui/BackButton';
 import { Flex } from '@/shared/ui/Flex';
@@ -22,9 +22,10 @@ interface QuestionPageProps {
 	specialization?: string;
 	favoriteAction: (input: FavoriteQuestionInput) => Promise<FavoriteQuestionResult>;
 	progressAction?: (input: QuestionStudyInput) => Promise<QuestionStudyResult>;
+	navigationAction?: PersonalNavigationPageReader;
 }
 
-export const QuestionPage = ({ question, specialization, favoriteAction, progressAction }: QuestionPageProps) => {
+export const QuestionPage = ({ question, specialization, favoriteAction, progressAction, navigationAction }: QuestionPageProps) => {
 	if (!question) {
 		return null;
 	}
@@ -51,7 +52,7 @@ export const QuestionPage = ({ question, specialization, favoriteAction, progres
 				<Flex gap="20" maxWidth>
 					<Flex gap="20" direction="column" flex={1} className={styles.main}>
 						<QuestionHeader question={question} personalProgress={<QuestionProgress inDrawer />} />
-						<QuestionFavoriteActions navigation={{ questionId: question.id, specialization: questionSpecializations?.find(item => item.slug === specialization) }} action={favoriteAction} progressAction={progressAction} />
+						<QuestionFavoriteActions navigation={{ readPersonalPage: navigationAction, questionId: question.id, specialization: questionSpecializations?.find(item => item.slug === specialization) }} action={favoriteAction} progressAction={progressAction} />
 						<QuestionBody shortAnswer={shortAnswer} longAnswer={longAnswer} />
 						<div className={styles.banner}>
 							<SidebarBanner guru={guru} newGuru={newGuru} />

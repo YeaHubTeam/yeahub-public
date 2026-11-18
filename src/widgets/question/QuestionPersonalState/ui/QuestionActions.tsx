@@ -2,6 +2,8 @@
 
 import type { ReactNode } from 'react';
 
+import type { PersonalNavigationPageReader, QuestionPersonalStateResult } from '@/entities/question';
+
 import { QuestionNavigationButtons } from '@/features/question/navigateQuestion';
 import { LearnQuestionButton } from '@/features/quiz/learnQuestion';
 import { ResetQuestionStudyProgressButton } from '@/features/quiz/resetQuestionStudyProgress';
@@ -10,6 +12,8 @@ import { Flex } from '@/shared/ui/Flex';
 
 interface QuestionActionsProps {
 	isGuest?: boolean;
+	readPersonalPage?: PersonalNavigationPageReader;
+	personalNavigationState?: Extract<QuestionPersonalStateResult, { status: 'success' }>;
 	questionId?: number;
 	specialization?: { id: number; slug: string };
 	checksCount: number;
@@ -27,6 +31,8 @@ export const QuestionActions = ({
 	isGuest = false,
 	questionId,
 	specialization,
+	readPersonalPage,
+	personalNavigationState,
 	checksCount,
 	isEmailVerified,
 	hasPremium,
@@ -64,7 +70,7 @@ export const QuestionActions = ({
 				/>
 				{favoriteButton}
 			</Flex>
-			<QuestionNavigationButtons variant={variant} questionId={questionId} specialization={specialization} />
+			<QuestionNavigationButtons readPersonalPage={readPersonalPage} personalState={personalNavigationState} variant={variant} questionId={questionId} specialization={specialization} />
 			{error}
 		</Flex>
 	</Card>

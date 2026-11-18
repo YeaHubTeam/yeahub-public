@@ -4,6 +4,8 @@ import { Suspense } from 'react';
 
 import { useTranslations } from 'next-intl';
 
+import type { PersonalNavigationPageReader, QuestionPersonalStateResult } from '@/entities/question';
+
 import { i18Namespace } from '@/shared/config';
 import { Button, ButtonSkeleton } from '@/shared/ui/Button';
 import { Flex } from '@/shared/ui/Flex';
@@ -13,6 +15,8 @@ import { useQuestionNavigation } from '../model/useQuestionNavigation';
 
 interface QuestionNavigationButtonsProps {
 	variant?: 'tertiary' | 'link-gray';
+	readPersonalPage?: PersonalNavigationPageReader;
+	personalState?: Extract<QuestionPersonalStateResult, { status: 'success' }>;
 	questionId?: number;
 	specialization?: { id: number; slug: string };
 }
@@ -21,9 +25,11 @@ const QuestionNavigationButtonsContent = ({
 	variant,
 	questionId,
 	specialization,
+	readPersonalPage,
+	personalState,
 }: QuestionNavigationButtonsProps) => {
 	const t = useTranslations(i18Namespace.questions);
-	const { onMovePrev, onMoveNext, isDisabled } = useQuestionNavigation({ questionId, specialization });
+	const { onMovePrev, onMoveNext, isDisabled } = useQuestionNavigation({ questionId, specialization, readPersonalPage, personalState });
 
 	return (
 		<Flex justify="center" gap="20">

@@ -9,25 +9,30 @@ import { QuestionFilterStatus, QuestionFilterStatusItem } from '../../model/type
 
 interface StatusFilterSectionProps {
 	selectedStatus?: QuestionFilterStatus;
-	onChangeStatus: (status: QuestionFilterStatus) => void;
+	onChangeStatus?: (status: QuestionFilterStatus) => void;
+	hasPremium?: boolean;
 }
 
 export const StatusFilterSection = ({
 	onChangeStatus,
-	selectedStatus,
+	selectedStatus = 'all',
+	hasPremium = false,
 }: StatusFilterSectionProps) => {
 	const t = useTranslations(i18Namespace.questions);
+	const tSubscription = useTranslations(i18Namespace.subscription);
 
 	const progressStatus: QuestionFilterStatusItem[] = [
 		{
 			id: 'not-learned',
 			title: t(Questions.QUESTIONS_STATUS_UNLEARNED),
-			tooltip: '',
+			tooltip: !hasPremium ? tSubscription('changeTariffPlan') : undefined,
+			disabled: !hasPremium,
 		},
 		{
 			id: 'learned',
 			title: t(Questions.QUESTIONS_STATUS_LEARNED),
-			tooltip: '',
+			tooltip: !hasPremium ? tSubscription('changeTariffPlan') : undefined,
+			disabled: !hasPremium,
 		},
 		{ id: 'all', title: t(Questions.QUESTIONS_STATUS_ALL) },
 		{ id: 'favorite', title: t(Questions.QUESTIONS_STATUS_FAVORITE) },
@@ -36,13 +41,17 @@ export const StatusFilterSection = ({
 	const preparedData = progressStatus.map((item) => ({
 		...item,
 		active: item.id === selectedStatus,
+		disabled: !onChangeStatus || item.disabled,
 	}));
 
 	return (
 		<BaseFilterSection
 			data={preparedData}
 			title={t(Questions.QUESTIONS_STATUS_TITLE)}
-			onClick={onChangeStatus}
+			onClick={(status) => {
+				const item = preparedData.find((item) => item.id === status);
+				if (!item?.disabled) onChangeStatus?.(status);
+			}}
 		/>
 	);
 };
