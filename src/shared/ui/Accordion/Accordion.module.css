@@ -86,3 +86,32 @@
 		padding-left: 16px;
 	}
 }
+
+.heading-with-prefix {
+	align-items: flex-start;
+}
+
+.left-content {
+	display: flex;
+	gap: 8px;
+}
+
+.prefix-wrapper {
+	display: flex;
+	min-width: 84px;
+}
+
+.title.with-prefix {
+	padding-left: 0;
+}
+
+.title.with-prefix::before {
+	display: none;
+}
+
+@media (width <= 767px) {
+	.left-content {
+		gap: 4px;
+		padding-left: 4px;
+	}
+}

@@ -10,6 +10,8 @@ import { Translation, i18Namespace, locales } from '@/shared/config';
 import { APP_ROUTE, SITE_URL } from '@/shared/config';
 import { getQuestionSpecializationTitle } from '@/shared/libs';
 
+import { changeQuestionStudyProgress, setQuestionFavorite, readQuestionNavigationPage } from './actions';
+
 interface PageProps {
 	params: Promise<{ locale: string; specialization: string; slug: string }>;
 }
@@ -186,7 +188,7 @@ const QuestionPage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<QuestionPageComponent question={question} />
+			<QuestionPageComponent specialization={specialization} favoriteAction={setQuestionFavorite} progressAction={changeQuestionStudyProgress} navigationAction={readQuestionNavigationPage} question={question} />
 		</>
 	);
 };

@@ -1,0 +1,17 @@
+@media (width < 768px) {
+	/* Keep the mobile inset on the list card itself, including its summary and arrow. */
+	details.question {
+		padding-inline: 16px;
+	}
+
+	/* Accordion's inner content already adds a left inset on mobile.
+	   The card now supplies both sides, so do not apply it a second time. */
+	.question > div > div {
+		padding-inline: 0;
+	}
+
+	/* The optional prefix/title group must share the card's left edge too. */
+	.question > summary > div {
+		padding-inline: 0;
+	}
+}

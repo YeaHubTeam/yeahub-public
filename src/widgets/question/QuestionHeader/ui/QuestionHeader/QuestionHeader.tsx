@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -14,9 +15,10 @@ import styles from './QuestionHeader.module.css';
 
 interface QuestionHeaderProps {
 	question: Question;
+	personalProgress?: ReactNode;
 }
 
-export const QuestionHeader = ({ question }: QuestionHeaderProps) => {
+export const QuestionHeader = ({ question, personalProgress }: QuestionHeaderProps) => {
 	const t = useTranslations(i18Namespace.questions);
 	const { title, description } = question;
 	const imagePriorityToShow = getQuestionImage(question);
@@ -39,6 +41,7 @@ export const QuestionHeader = ({ question }: QuestionHeaderProps) => {
 							{title}
 						</Text>
 						<AdditionalInfoDrawer>
+							{personalProgress}
 							<QuestionAdditionalInfo
 								className={styles['additional-info-wrapper']}
 								rate={rate}

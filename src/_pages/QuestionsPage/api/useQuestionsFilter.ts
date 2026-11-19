@@ -9,7 +9,7 @@ import { useLocale } from 'next-intl';
 import { getChannelsForSpecialization } from '@/entities/socialMedia';
 import { DEFAULT_SPECIALIZATION_ID, Specialization } from '@/entities/specialization';
 import { parseNumberArray, useDebounce } from '@/shared/libs';
-import type { FilterParams } from '@/widgets/question/QuestionsFilterPanel';
+import type { FilterParams, QuestionFilterStatus } from '@/widgets/question/QuestionsFilterPanel';
 
 export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 	const router = useRouter();
@@ -22,11 +22,11 @@ export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 
 	const filter: FilterParams = useMemo(
 		() => ({
-			title: searchParams?.get('titleOrDescription') ?? '',
+			title: searchParams?.get('title') ?? searchParams?.get('titleOrDescription') ?? '',
 			skills: parseNumberArray(searchParams?.get('skills') ?? ''),
 			complexity: parseNumberArray(searchParams?.get('complexity') ?? ''),
 			rate: parseNumberArray(searchParams?.get('rate') ?? ''),
-			status: 'all',
+			status: (searchParams?.get('status') ?? 'all') as QuestionFilterStatus,
 			specialization: specializationId,
 		}),
 		[searchParams, specializationId],
@@ -35,6 +35,8 @@ export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 	const setParam = useCallback(
 		(key: string, value?: string | number | number[]) => {
 			const params = new URLSearchParams(searchParamsString);
+
+			if (key === 'title') params.delete('titleOrDescription');
 
 			if (!value || (Array.isArray(value) && value.length === 0)) {
 				params.delete(key);
@@ -50,7 +52,7 @@ export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 	);
 
 	const onChangeSearch = useCallback(
-		(value: string) => setParam('titleOrDescription', value),
+		(value: string) => setParam('title', value),
 		[setParam],
 	);
 	const onChangeSkills = useCallback((skills?: number[]) => setParam('skills', skills), [setParam]);
@@ -58,6 +60,7 @@ export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 		(values?: number[]) => setParam('complexity', values),
 		[setParam],
 	);
+	const onChangeStatus = useCallback((status: QuestionFilterStatus) => setParam('status', status), [setParam]);
 	const onChangeRate = useCallback((rate: number[]) => setParam('rate', rate), [setParam]);
 
 	const onChangeSpecialization = useCallback(
@@ -91,6 +94,7 @@ export const useQuestionsFilter = (currentSpecialization: Specialization) => {
 			onChangeSkills,
 			onChangeComplexity,
 			onChangeRate,
+			onChangeStatus,
 			onChangeSpecialization,
 		},
 	};

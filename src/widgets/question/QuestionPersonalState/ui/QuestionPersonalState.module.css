@@ -1,0 +1,9 @@
+.drawer {
+	box-shadow: none;
+}
+
+@media (width <= 1023px) {
+	.drawer {
+		padding: 8px 24px 24px;
+	}
+}
